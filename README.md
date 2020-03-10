@@ -1,2 +1,4 @@
-# Arkadmin (derzeit nicht für den Öffentl. gebraucht geeignet da u.a. die Zusatz Java datei fehlt)
+# Arkadmin 
 Webbasiertes Admin Panel für Ark-Gameserver
+
+- Noch nicht für den Allgemeinen gebrauch geeignet
