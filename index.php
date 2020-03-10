@@ -17,7 +17,7 @@ if($url[1] == "") {
 }
 $tpl = null;
 #Wichtige PHP daten
-require_once 'inc/class/tpl.class.inc.php';
+require_once 'inc/class/Template.class.inc.php';
 require_once 'inc/config.inc.php';
 require_once 'inc/class/mysql.class.inc.php';
 require_once 'inc/class/rcon.class.inc.php';

@@ -15,8 +15,8 @@ class helper {
         }
     }
 
-    public function str_to_json($str) {
-        return json_decode($str);
+    public function str_to_json($str, $array = true) {
+        return json_decode($str, $array);
     }
 
     public function json_to_str($json) {

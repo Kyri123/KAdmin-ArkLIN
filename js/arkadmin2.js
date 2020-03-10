@@ -11,9 +11,9 @@ function server_glob_data(){
     xmlhttp.send();
 }
 
-server_glob_data(); // This will run on page load
+server_glob_data();
 setInterval(function(){
-    server_glob_data() // this will run after every 5 seconds
+    server_glob_data()
 }, 1000);
 
 function generate_getlogmax(id, id_target) {
@@ -91,11 +91,7 @@ function get(url, id) {
             dataType: "json",
             data: {get:'true'},
             success : function(data){
-                if (data.code == "200"){
-                    $(id).html(data.msg);
-                } else {
-                    $(id).html(data.msg);
-                }
+                $(id).html(data.msg);
             }
         });
     });

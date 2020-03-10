@@ -1,0 +1,30 @@
+<li class="list-group-item">
+    <div class="row p-0">
+        <div class="col-12">
+            <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50">
+            {empty}<div class="ml-auto float-right  btn-group">
+                {ifup}<a href="http://dev.aa.chiraya.de/serverpage/{cfg}/mods/top/{modid}" class="btn btn-info">
+                                        <span class="icon text-white">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </span>
+                </a>{/ifup}
+                {ifdown}<a href="http://dev.aa.chiraya.de/serverpage/{cfg}/mods/bot/{modid}" class="btn btn-info">
+                                        <span class="icon text-white">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </span>
+                </a>{/ifdown}
+                <a href="http://dev.aa.chiraya.de/serverpage/{cfg}/mods/remove/{modid}" class="btn btn-danger">
+                                        <span class="icon text-white">
+                                            <i class="fas fa-times"></i>
+                                        </span>
+                </a>
+                <a href="https://steamcommunity.com/sharedfiles/filedetails/?id={modid}" class="btn btn-dark" target="_blank">
+                                        <span class="icon text-white">
+                                            <i class="fab fa-steam-symbol"></i>
+                                        </span>
+                </a>
+            </div>{/empty}
+            <div style="margin-left: 60px;">{title}<br />{empty}<span class="font-weight-light" style="font-size: 11px;"> {modid} | Updated: {lastupdate}</span>&nbsp;{/empty}&nbsp;</div>
+        </div>
+    </div>
+</li>

@@ -5,6 +5,7 @@
 chdir($_SERVER['DOCUMENT_ROOT']);
 include('inc/class/server.class.inc.php');
 include('inc/class/steamAPI.class.inc.php');
+include('inc/class/Template.class.inc.php');
 include('inc/func/allg.func.inc.php');
 $cfg = $_GET['cfg'];
 $resp = null;
@@ -17,62 +18,45 @@ $y = 1;
 
 $api = new steamapi();
 
-for($i=0;$i<count($mods);$i++) {
-    $json = $api->getmod($mods[$i]);
-    $y = $i+1;
-    $btns= null;
-    if($i == 0) {
-        $btns = '
-                                    <a href="http://dev.aa.chiraya.de/serverpage/'.$cfg.'/mods/bot/'.$mods[$i].'" class="btn btn-info">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-arrow-down"></i>
-                                        </span>
-                                    </a>';
+$total_count = count($mods);
+if($total_count > 1 || $mods[0] != 0) {
+    for($i=0;$i<count($mods);$i++) {
+        $tpl = new Template('list_mods.htm', 'tpl/serv/sites/list/');
+        $tpl->load();
+        $json = $api->getmod($mods[$i]);
+        $y = $i+1;
+        $btns= null;
+        if($i == 0) {
+            $tpl->replif('ifup', false);
+            $tpl->replif('ifdown', true);
+        }
+        elseif($y != count($mods)) {
+            $tpl->replif('ifup', true);
+            $tpl->replif('ifdown', true);
+        }
+        else {
+            $tpl->replif('ifup', true);
+            $tpl->replif('ifdown', false);
+        }
+        $tpl->repl('modid', $mods[$i]);
+        $tpl->replif('empty', false);
+        $tpl->repl('img', $json->response->publishedfiledetails[0]->preview_url);
+        $tpl->repl('cfg', $cfg);
+        $tpl->repl('title', $json->response->publishedfiledetails[0]->title);
+        $tpl->repl('lastupdate', date('d.m.Y - H:m', $json->response->publishedfiledetails[0]->time_updated));
+        $resp .= $tpl->loadin();
+        $tpl = null;
     }
-    elseif($y != count($mods)) {
-        $btns = '
-                                    <a href="http://dev.aa.chiraya.de/serverpage/'.$cfg.'/mods/top/'.$mods[$i].'" class="btn btn-info">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-arrow-up"></i>
-                                        </span>
-                                    </a>
-                                    <a href="http://dev.aa.chiraya.de/serverpage/'.$cfg.'/mods/bot/'.$mods[$i].'" class="btn btn-info">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-arrow-down"></i>
-                                        </span>
-                                    </a>';
-    }
-    else {
-        $btns = '
-                                    <a href="http://dev.aa.chiraya.de/serverpage/'.$cfg.'/mods/top/'.$mods[$i].'" class="btn btn-info">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-arrow-up"></i>
-                                        </span>
-                                    </a>';
-    }
-    $resp .= '<li class="list-group-item">
-                        <div class="row p-0">
-                            <div class="col-12">
-                                <img class="rounded -align-left position-absolute" src="'.$json->response->publishedfiledetails[0]->preview_url.'" height="50" width="50">
-                                <div class="ml-auto float-right  btn-group">
-                                    '.$btns.'
-                                    <a href="http://dev.aa.chiraya.de/serverpage/'.$cfg.'/mods/remove/'.$mods[$i].'" class="btn btn-danger">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-times"></i>
-                                        </span>
-                                    </a>
-                                    <a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$mods[$i].'" class="btn btn-dark" target="_blank">
-                                        <span class="icon text-white">
-                                            <i class="fab fa-steam-symbol"></i>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div style="margin-left: 60px;">'.$json->response->publishedfiledetails[0]->title.'<br /><span class="font-weight-light" style="font-size: 11px;"> '.$mods[$i].' | Updated: '.date('d.m.Y - H:m', $json->response->publishedfiledetails[0]->time_updated).'</span></div>                               
-                            </div>
-                        </div>
-                    </li>';
 }
-
+else {
+    $tpl = new Template('list_mods.htm', 'tpl/serv/sites/list/');
+    $tpl->load();
+    $tpl->repl('img', "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
+    $tpl->repl('title', "Es wurden keine Mods gefunden");
+    $tpl->replif('empty', false);
+    $resp .= $tpl->loadin();
+    $tpl = null;
+}
 
 if(empty($errorMSG)){
     echo json_encode(['code'=>200, 'msg'=>$resp]);

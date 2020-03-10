@@ -107,6 +107,67 @@ if($globa_json->warning_count > 0) {
     }
 }
 
+$savedir = $serv->get_save_dir();
+$player_json = $helper->file_to_json('data/saves/player_' . $serv->show_name() . '.json');
+$tribe_json = $helper->file_to_json('data/saves/tribes_' . $serv->show_name() . '.json');
+if (!is_array($player_json)) $player_json = array();
+if (!is_array($tribe_json)) $tribe_json = array();
+$jhelper = new player_json_helper();
+
+
+$player = null;
+$c_pl = 0;
+// Spieler
+if (is_array($player_json)) {
+    for ($i = 0; $i < count($player_json); $i++) {
+        $list_tpl = new Template('list_user.htm', 'tpl/serv/sites/list/');
+        $list_tpl->load();
+
+        $pl = $jhelper->player($player_json, $i);
+
+        if (is_array($tribe_json)) {
+            for ($z = 0; $z < count($tribe_json); $z++) {
+                $tribe = $jhelper->tribe($tribe_json, $z);
+                if ($tribe->Id == $pl->TribeId) {
+                    $list_tpl->repl('tribe', $tribe->Name);
+                }
+            }
+        }
+        $list_tpl->repl('tribe', '[Kein Stamm]');
+
+        if ($pl->Level > 1000) $pl->Level = 0;
+        if ($pl->TribeId == 7) $pl->TribeId = null;
+
+        $list_tpl->repl('IG:name', $pl->CharacterName);
+        $list_tpl->repl('IG:Level', $pl->Level);
+        $list_tpl->repl('lastupdate', converttime($pl->FileUpdated));
+        $list_tpl->repl('rnd', rndbit(10));
+        $list_tpl->repl('url', $steamapi->getsteamprofile_class($pl->SteamId)->profileurl);
+        $list_tpl->repl('img', $steamapi->getsteamprofile_class($pl->SteamId)->avatar);
+        $list_tpl->repl('steamname', $steamapi->getsteamprofile_class($pl->SteamId)->personaname);
+
+        $list_tpl->repl('rm_url', '/serverpage/' . $serv->show_name() . '/saves/remove/' . $pl->SteamId . '.arkprofile');
+
+        $list_tpl->repl('EP', round($pl->ExperiencePoints, '2'));
+        $list_tpl->repl('SpielerID', $pl->Id);
+        $list_tpl->repl('TEP', $pl->TotalEngramPoints);
+        $list_tpl->repl('TID', $pl->TribeId);
+        $list_tpl->replif('empty', true);
+
+        $player .= $list_tpl->loadin();
+        $c_pl++;
+        break;
+    }
+}
+if ($player == null) {
+    $list_tpl = new Template('list_user.htm', 'tpl/serv/sites/list/');
+    $list_tpl->load();
+    $list_tpl->repl('img', "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
+    $list_tpl->replif('empty', false);
+    $list_tpl->repl('IG:name', 'Niemand ist Online!');
+    $player .= $list_tpl->loadin();
+}
+
 
 $tpl->repl('danger_resp', $danger_listitem);
 $tpl->repl('warning_resp', $warning_listitem);
@@ -124,6 +185,7 @@ $tpl->repl('last_backup', 'Deaktiviert');
 $tpl->repl('url_site', 'http://'.$_SERVER['SERVER_NAME']);
 $tpl->repl('panel', $panel);
 $tpl->repl('resp', $resp);
+$tpl->repl('playerlist', $player);
 // lade in TPL
 $content = $tpl->loadin();
 $btns .= '

@@ -12,7 +12,7 @@
             <div class="icon">
                 <i class="fa fa-server"></i>
             </div>
-            <a href="#" class="small-box-footer" data-toggle="modal" data-target="#playerlist_modal" id="rcon_btn">R-Con Konsole <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="#" class="small-box-footer" id="rcon_btn">&nbsp;</a>
         </div>
     </div>
 
@@ -100,8 +100,6 @@
             if (this.readyState == 4 && this.status == 200) {
                 var Obj = JSON.parse(this.responseText);
 
-                document.getElementById("rcon_btn").dataset.target = "";
-                document.getElementById("rcon_btn").innerHTML = "Server muss Online sein";
                 document.getElementById("player_btn").dataset.target = "";
                 document.getElementById("player_btn").innerHTML = "Server muss Online sein";
 
@@ -145,8 +143,6 @@
                     document.getElementById("stateclass").classList.add('bg-success');
                     document.getElementById("stateclass").classList.add('small-box');
                     document.getElementById("stateclass").classList.add('m-0');
-                    document.getElementById("rcon_btn").dataset.target = "#rcon_modal";
-                    document.getElementById("rcon_btn").innerHTML = "R-Con Konsole <i class=\"fa fa-arrow-circle-right\"></i>";
                     document.getElementById("player_btn").dataset.target = "#playerlist_modal";
                     document.getElementById("player_btn").innerHTML = "Spieler Anzeigen <i class=\"fa fa-arrow-circle-right\"></i>";
                 }
@@ -289,10 +285,10 @@
 
 <!-- Modal -->
 <div class="modal fade" id="action" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document" id="form" style="max-width: 700px">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Befehl an den Server senden</h5>
+                <h5 class="modal-title">Befehl an den Server senden</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -404,16 +400,16 @@
 
 <!-- Danger -->
 <div class="modal fade" id="danger_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" id="form" style="max-width: 700px">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 700px">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Fehler!</h5>
+                <h5 class="modal-title">Fehler!</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body p-0">
-                <ul class="list-group" id="modlist" style="border:0; border-radius: 0">
+                <ul class="list-group" style="border:0; border-radius: 0">
                     {danger_resp}
                 </ul>
             </div>
@@ -436,7 +432,7 @@
                 </button>
             </div>
             <div class="modal-body p-0">
-                <ul class="list-group" id="modlist" style="border:0; border-radius: 0">
+                <ul class="list-group" style="border:0; border-radius: 0">
                     {warning_resp}
                 </ul>
             </div>
@@ -452,13 +448,13 @@
     <div class="modal-dialog modal-lg" role="document" style="max-width: 700px">
         <div class="modal-content ">
             <div class="modal-header bg-orange text-white rounded-0">
-                <h5 class="modal-title" id="exampleModalLabel">Warnungen</h5>
+                <h5 class="modal-title">Spieler (Online)</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body p-0">
-                <ul class="list-group" id="playerlist_main" style="border:0; border-radius: 0"></ul>
+                <ul class="list-group" style="border:0; border-radius: 0">{playerlist}</ul>
             </div>
             <div class="modal-footer bg-gray-200">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
@@ -468,15 +464,23 @@
 </div>
 
 
+<script type="javascript">
 
-<!-- player_modal -->
+    function getphp(url, id){
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('playerlist').innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", '/sites/js/getuser.php?cfg={cfg}', true);
+        xmlhttp.send();
+    }
 
-
-<script>
-    get('/sites/js/getuser.php?cfg={cfg}', '#playerlist_main');
-    get('/sites/js/getchat.php?cfg={cfg}', '#chatlist_main');
+    getphp('/sites/js/getuser.php?cfg={cfg}', 'playerlist');
     setInterval(function(){
-        get('/sites/js/getuser22.php?cfg={cfg}', '#playerlist_main');
-        get('/sites/js/getchat.php?cfg={cfg}', '#chatlist_main');
-    }, 10000);
+        getphp('/sites/js/getuser.php?cfg={cfg}', 'playerlist');
+    }, 1000);
+
+
 </script>
