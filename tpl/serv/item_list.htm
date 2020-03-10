@@ -1,0 +1,55 @@
+<a class="dropdown-item d-flex align-items-center" href="/serverpage/{cfg}/home">
+    <div class="dropdown-list-image mr-3">
+        <img class="rounded-circle" src="{map}" alt="">
+        <div class="status-indicator {state}" id="sitem_{cfg}"></div>
+    </div>
+    <div class="font-weight-bold">
+        <div class="text-truncate">{servername}</div>
+        <div class="small text-gray-500">{subline}</div>
+    </div>
+</a>
+
+
+<script>
+	function server_item{cfg}(){
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var Obj = JSON.parse(this.responseText);
+
+				// is ONLINE
+				if(Obj.installed == 'FALSE') {
+					document.getElementById("sitem_{cfg}").className = '';
+					document.getElementById("sitem_{cfg}").classList.add('bg-warning');
+					document.getElementById("sitem_{cfg}").classList.add('status-indicator');
+				}
+				else if(Obj.run == 'Yes' && Obj.listening == 'No') {
+					document.getElementById("sitem_{cfg}").className = '';
+					document.getElementById("sitem_{cfg}").classList.add('bg-info');
+					document.getElementById("sitem_{cfg}").classList.add('status-indicator');
+				}
+				else if(Obj.online == 'Yes') {
+					document.getElementById("sitem_{cfg}").className = '';
+					document.getElementById("sitem_{cfg}").classList.add('bg-success');
+					document.getElementById("sitem_{cfg}").classList.add('status-indicator');
+				}
+				else {
+					document.getElementById("sitem_{cfg}").className = '';
+					document.getElementById("sitem_{cfg}").classList.add('bg-danger');
+					document.getElementById("sitem_{cfg}").classList.add('status-indicator');
+				}
+
+				// PLAYER
+			}
+		};
+		xmlhttp.open("GET", "/data/serv/{cfg}.json", true);
+		xmlhttp.send();
+	}
+
+	server_item{cfg}(); // This will run on page load
+	setInterval(function(){
+		server_item{cfg}() // this will run after every 5 seconds
+	}, 1000);
+
+
+</script>

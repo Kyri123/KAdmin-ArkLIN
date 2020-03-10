@@ -1,0 +1,1 @@
+echo "" > /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/serv/check_server_ID_tiamat.sh ;arkmanager status @tiamat > /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/resp/tiamat/status.log ;exit

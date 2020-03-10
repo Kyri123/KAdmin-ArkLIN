@@ -1,0 +1,72 @@
+<div class="col-xl-9 col-md-9 mb-4" onload="getmods('{cfg}')">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="nav navbar-nav nav-pills mr-auto aa-nav" id="pills-tab">
+                <li class="nav-item" style="margin-right: 5px">
+                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-GameUserStetting" role="tab" aria-controls="pills-home" aria-selected="true">Liste</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-Game" role="tab" aria-controls="pills-profile" aria-selected="false">Mods Hinzufügen</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel" aria-labelledby="pills-home-tab">
+                <ul class="list-group" id="modlist" style="border:0;">
+                    <li class="list-group-item">
+                        <div class="row p-0">
+                            <div class="col-12">
+                                <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                <div style="margin-left: 60px;">Lade Mods....<br><span class="font-weight-light" style="font-size: 11px;">Bitte Warten</span></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="pills-Game" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <form action="{urls}" method="post" class="p-4">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Workshop URL</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="url" class="form-control" placeholder="https://steamcommunity.com/sharedfiles/filedetails/?id=<id>">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3" name="addmod" style="width:100%">Speichern</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getmods(cfg) {
+        $(document).ready(function() {
+            $.ajax({
+                type: "POST",
+                url: "/sites/js/getmods.php?cfg=" + cfg,
+                dataType: "json",
+                data: {cfg:cfg},
+                success : function(data){
+                    if (data.code == "200"){
+                        $("#modlist").html(data.msg);
+                    } else {
+                        $("#modlist").html(data.msg);
+                    }
+                }
+            });
+        });
+    }
+    getmods('{cfg}');
+
+
+</script>

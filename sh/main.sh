@@ -1,0 +1,9 @@
+screen -d -m -t check_server_ID_main sh /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/serv/check_server_ID_main.sh
+screen -d -m -t jobs_ID_main sh /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/serv/jobs_ID_main.sh
+screen -d -m -t sub_jobs_ID_main sh /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/serv/sub_jobs_ID_main.sh
+screen -d -m -t check_server_ID_sub sh /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/serv/check_server_ID_sub.sh
+screen -d -m -t jobs_ID_sub sh /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/serv/jobs_ID_sub.sh
+screen -d -m -t sub_jobs_ID_sub sh /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/serv/sub_jobs_ID_sub.sh
+screen -d -m -t check_server_ID_tiamat sh /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/serv/check_server_ID_tiamat.sh
+screen -d -m -t jobs_ID_tiamat sh /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/serv/jobs_ID_tiamat.sh
+screen -d -m -t sub_jobs_ID_tiamat sh /var/www/vhosts/chiraya.de/dev.aa.chiraya.de/sh/serv/sub_jobs_ID_tiamat.sh
