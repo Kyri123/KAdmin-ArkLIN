@@ -1,5 +1,7 @@
 <?php
 
+chdir('../../');
+
 include('inc/class/helper.class.inc.php');
 include('inc/class/user.class.inc.php');
 include('inc/class/steamAPI.class.inc.php');

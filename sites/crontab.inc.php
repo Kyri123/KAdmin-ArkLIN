@@ -297,7 +297,12 @@ elseif($job == "player") {
                 $file = file_get_contents($log);
                 $rcon->send_command('getchat');
                 $resp = $rcon->get_response();
-                $file = $file."\n".$resp;
+                $exp = explode("\n", $resp);
+                $string = null;
+                for ($u=0;$u<count($exp);$u++) {
+                    $string .= "\n".time()."(-/-)".$exp[$u];
+                }
+                $file = $file.$string;
 
                 if(strpos($resp, 'But no response') !== false) {null;}
                 elseif(strpos($resp, 'Connection refused') !== false) {null;}
@@ -380,14 +385,20 @@ for($i=0;$i<count($dir);$i++) {
         $filestring = null;
         for($z=0;$z<$y;$z++) {
             $string = json_encode($array[$z]);
+            if(strpos($string, '(-\/-)') !== false) {
+                $exp = explode('(-\/-)', $string);
+                $string = $exp[1];
+            }
             $string = str_replace(" ", null, $string);
             $string = str_replace("\n", null, $string);
             $string = str_replace('\n', null, $string);
             $string = str_replace('\u0000\u0000', null, $string);
             $string = str_replace("\"", null, $string);
-            if($string != null && $string != "") $filestring .= $array[$z];
+            if($string != null && $string != "") {
+                $filestring .= $array[$z];
+            }
         }
-        file_put_contents($file, $filestring);
+        file_put_contents($path, $filestring);
         $s++;
     }
 }

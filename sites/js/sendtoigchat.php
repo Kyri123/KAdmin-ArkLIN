@@ -14,15 +14,13 @@ if($server->online == 'Yes' && $serv->cfg_read('ark_RCONEnabled') == 'True' && $
     $port = $serv->cfg_read('ark_RCONPort');
     $pw = $serv->cfg_read('ark_ServerAdminPassword');
     $rcon = new Rcon($ip, $port, $pw, 3);
-    $rcon->connect();
 
     if($rcon->connect()) {
         $code = '1';
         $text = $_POST['txt'];
         $user = $_POST['user'];
 
-        $rcon->send_command('serverchat ['.$user.']: '.$text);
-        if() {
+        if(!$rcon->send_command('serverchat ['.$user.']: '.$text)) {
             $msg = alert('danger', 'Konnte nicht ausgef&uuml;hrt werden...', '5px 5px 5px 5px', 'Fehler!');
         }
         else {

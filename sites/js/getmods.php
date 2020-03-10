@@ -19,16 +19,20 @@ $y = 1;
 $api = new steamapi();
 
 $total_count = count($mods);
-if($total_count > 1 || $mods[0] != 0) {
+if($total_count > 1 || $mods[0] > 0) {
     for($i=0;$i<count($mods);$i++) {
         $tpl = new Template('list_mods.htm', 'tpl/serv/sites/list/');
         $tpl->load();
         $json = $api->getmod($mods[$i]);
         $y = $i+1;
         $btns= null;
-        if($i == 0) {
+        if($i == 0 && $total_count > 1) {
             $tpl->replif('ifup', false);
             $tpl->replif('ifdown', true);
+        }
+        elseif($i == 0) {
+            $tpl->replif('ifup', false);
+            $tpl->replif('ifdown', false);
         }
         elseif($y != count($mods)) {
             $tpl->replif('ifup', true);
@@ -39,7 +43,7 @@ if($total_count > 1 || $mods[0] != 0) {
             $tpl->replif('ifdown', false);
         }
         $tpl->repl('modid', $mods[$i]);
-        $tpl->replif('empty', false);
+        $tpl->replif('empty', true);
         $tpl->repl('img', $json->response->publishedfiledetails[0]->preview_url);
         $tpl->repl('cfg', $cfg);
         $tpl->repl('title', $json->response->publishedfiledetails[0]->title);

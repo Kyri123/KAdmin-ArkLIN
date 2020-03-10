@@ -3,7 +3,6 @@ $resp = null;
 $urls = 'http://dev.aa.chiraya.de/serverpage/'.$url[2].'/mods/';
 
 if(isset($_POST['addmod'])) {
-    #https://steamcommunity.com/sharedfiles/filedetails/?id=719928795
     $urle = $_POST['url'];
     if(strpos($urle, 'steamcommunity.com/sharedfiles/filedetails') !== false) {
         if(strpos($urle, 'id=') !== false) {
@@ -27,24 +26,30 @@ if(isset($_POST['addmod'])) {
             if($json->response->publishedfiledetails[0]->consumer_app_id == 346110) {
                 $mod_cfg = $serv->cfg_read('ark_GameModIds');
                 $mods = explode(',', $mod_cfg);
-                $exsists = false;
-                for($i=0;$i<count($mods);$i++) {
-                    if($mods[$i] == $modid) {
-                        $exsists = true;
-                        break;
+                if(count($mods) > 1 || $mods[0] > 0) {
+                    $exsists = false;
+                    for($i=0;$i<count($mods);$i++) {
+                        if($mods[$i] == $modid) {
+                            $exsists = true;
+                            break;
+                        }
+                    }
+                    if($exsists === false) {
+                        $i = count($mods)+1;
+                        $mods[$i] = $modid;
+                        $save_data = implode(',', $mods);
+                        $serv->cfg_write('ark_GameModIds', $save_data);
+                        $serv->cfg_save();
+                        header('Location: '.$urls);
+                        exit;
+                    }
+                    else {
+                        $resp = meld('danger', 'Mod Exsistiert bereits', 'Fehler!', null);
                     }
                 }
-                if($exsists === false) {
-                    $i = count($mods)+1;
-                    $mods[$i] = $modid;
-                    $save_data = implode(',', $mods);
-                    $serv->cfg_write('ark_GameModIds', $save_data);
-                    $serv->cfg_save();
-                    header('Location: '.$urls);
-                    exit;
-                }
                 else {
-                    $resp = meld('danger', 'Mod Exsistiert bereits', 'Fehler!', null);
+                    $serv->cfg_write('ark_GameModIds', $modid);
+                    $serv->cfg_save();
                 }
             }
             else {
