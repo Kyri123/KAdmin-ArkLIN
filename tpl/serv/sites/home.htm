@@ -46,6 +46,20 @@
 
 
             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="p-2" id="livechatresp"></div>
+                <div class="p-2 pb-0">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Nachricht:</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="livechat_text" class="form-control" placeholder="Nachricht (Es dauert kurz bevor es im Live-Chat zu sehen ist)">
+                            <input type="hidden" id="livechat_user" value="{SESSION_USERNAME}">
+                            <input type="hidden"id="livechat_cfg" value="{cfg}">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" id="sendchat">Senden</button>
+                        </div>
+                    </div>
+                </div>
                 <ul class="list-group" id="livechat">
                     <li class="list-group-item">
                         <div class="row p-0">
@@ -57,20 +71,94 @@
                     </li>
                 </ul>
             </div>
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">Soon</div>
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <div class="p-2" id="rconresp"></div>
+                <div class="p-2 pb-0">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Befehl:</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="rcon_text" class="form-control" placeholder="Befehl">
+                            <input type="hidden" id="rcon_user" value="{SESSION_USERNAME}">
+                            <input type="hidden"id="rcon_cfg" value="{cfg}">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3"style="width:100%" id="send_rcon">Senden</button>
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-group" id="rconlog">
+                    <li class="list-group-item">
+                        <div class="row p-0">
+                            <div class="col-12">
+                                <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                <div style="margin-left: 60px;">Lade Rcon Log....<br><span class="font-weight-light" style="font-size: 11px;">Bitte Warten</span></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
 
+
+    $(document).ready(function() {
+        $('#send_rcon').click(function(e){
+            e.preventDefault();
+            var cfg = $("#rcon_cfg").val();
+            var user = $("#rcon_user").val();
+            var text = $("#rcon_text").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/sites/js/sendrcon.php",
+                dataType: "json",
+                data: {cfg:cfg, user:user, text:text},
+                success : function(data){
+                    if (data.code == "200"){
+                        $("#rconresp").html(data.msg);
+                        get('/sites/js/getrcon.php?cfg={cfg}', "#rconlog");
+                    } else {
+                        $("#rconresp").html(data.msg);
+                        get('/sites/js/getrcon.php?cfg={cfg}', "#rconlog");
+                    }
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        $('#sendchat').click(function(e){
+            e.preventDefault();
+            var cfg = $("#livechat_cfg").val();
+            var user = $("#livechat_user").val();
+            var text = $("#livechat_text").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/sites/js/sendtoigchat.php",
+                dataType: "json",
+                data: {cfg:cfg, user:user, text:text},
+                success : function(data){
+                    if (data.code == "200"){
+                        $("#livechatresp").html(data.msg);
+                    } else {
+                        $("#livechatresp").html(data.msg);
+                    }
+                }
+            });
+        });
+    });
+
     generate_getlogmax('logbar', 'max');
     generate_hidebtn('hidebar', 'hide');
-    get('sites/js/getchat?cfg={cfg}', "#livechat");
 
     setInterval(function(){
         getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide');
         get('/sites/js/getchat.php?cfg={cfg}', "#livechat");
+        get('/sites/js/getrcon.php?cfg={cfg}', "#rconlog");
     }, 1000);
 
 </script>

@@ -9,7 +9,7 @@ $dbname = 'AA_dev';
 #allgmeine
 $sitename = "ArkAdmin";
 $sitename_short = "AA";
-$version = '0.2.50 (WIP)';
+$version = '0.2.50';
 $ip = '81.169.207.145';
 $buildid = 132;
 

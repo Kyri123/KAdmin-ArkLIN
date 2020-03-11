@@ -140,27 +140,5 @@
             });
         });
     });
-    $(document).ready(function() {
-        $('#sendini_cfg').click(function(e){
-            e.preventDefault();
-            var cfg = $("#cfg_cfg").val();
-            var type = $("#type_cfg").val();
-            var text = $("#text_cfg").val();
-
-            $.ajax({
-                type: "POST",
-                url: "/sites/js/sendini.php",
-                dataType: "json",
-                data: {cfg:cfg, type:type, text:text},
-                success : function(data){
-                    if (data.code == "200"){
-                        $("#all_resp").html(data.msg);
-                    } else {
-                        $("#all_resp").html(data.msg);
-                    }
-                }
-            });
-        });
-    });
 
 </script>

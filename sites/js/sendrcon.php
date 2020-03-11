@@ -17,19 +17,28 @@ if($server->online == 'Yes' && $serv->cfg_read('ark_RCONEnabled') == 'True' && $
 
     if($rcon->connect()) {
         $code = '1';
-        $text = $_POST['text'];
-        $isnull = false; if($text == null) $isnull = true;
+        $command = $_POST['text'];
+        $isnull = false; if($command == null) $isnull = true;
         $user = $_POST['user'];
-        $text = '{'.$user.'} '.$text;
 
 
         if ($isnull === true) {
-            $msg = alert('danger', 'Es wurde kein Text angegeben!', '5px 5px 5px 5px', 'Fehler!');
+            $msg = alert('danger', 'Es wurde kein Befehl angegeben!', '5px 5px 5px 5px', 'Fehler!');
         }
-        elseif(!$rcon->send_command('serverchat '.$text)) {
-        $msg = alert('danger', 'Konnte nicht ausgef&uuml;hrt werden...', '5px 5px 5px 5px', 'Fehler!');
+        elseif(!$rcon->send_command($command)) {
+            $msg = alert('danger', 'Konnte nicht ausgef&uuml;hrt werden...', '5px 5px 5px 5px', 'Fehler!');
         } else {
-            $msg = alert('success', '<b>Nachricht gesendet - Bitte kurz warten bis es im Chat auftaucht :)</b> <br />'.$text, '5px 5px 5px 5px', 'Gesendet');
+            $resp = $rcon->get_response();
+            $msg = alert('success', '<b>Rcon Gesendet: <i style="color:#00a65a !important">'.$command.'</i></b><hr />'.nl2br($resp), '5px 5px 5px 5px', 'Gesendet');
+            $log = 'data/saves/rconlog_'.$serv->show_name().'.txt';
+            if(file_exists($log)) {
+                $file = file_get_contents($log);
+                $file = $file."\n".time().'(-/-)['.$user.'] '.$command;
+                if(file_put_contents($log, $file));
+            }
+            else {
+                    if(file_put_contents($log, time().'(-/-)['.$user.'] '.$command));
+            }
         }
         $rcon->disconnect();
     }

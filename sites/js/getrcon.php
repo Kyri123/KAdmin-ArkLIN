@@ -4,7 +4,7 @@ include('js_inz.inc.php');
 $tpl = new Template('list_chat.htm', 'tpl/serv/sites/list/');
 $tpl->load();
 $serv = new server($_GET['cfg']);
-$path = 'data/saves/chat_'.$serv->show_name().'.log';
+$path = 'data/saves/rconlog_'.$serv->show_name().'.txt';
 $filearray = file($path);
 $resp = null;
 $z = count($filearray);
