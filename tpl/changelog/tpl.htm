@@ -1,0 +1,379 @@
+<style>
+    li.timeline_soon:before {
+        border: 3px solid #e74a3b!important;
+    }
+    li.timeline_upcomming:before {
+        border: 3px solid #1cc88a!important;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <ul class="timeline">
+
+            <li class="time-label">
+                  <span class="bg-red">
+                    Version 0.3 | --.--.----
+                  </span>
+            </li>
+
+            <li>
+                <i class="fa fa-server bg-red"></i>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Neuerungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Server erstellen</li>
+                            <li>Aufgaben erstellen (bsp.: Täglicher restart)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+
+                    <div class="timeline-header"><h4>Java (WebHelper)</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Version 0.1</li>
+                            <li>Erste Version, Konfig beiliegend. Bitte im Screen starten und im Hintergrund laufen lassen damit das Panel Shell Aktionen usw ausführt!</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="time-label">
+              <span class="bg-primary text-white">
+                Version 0.2.5 | 11.03.2020
+              </span>
+            </li>
+
+            <li>
+                <i class="fa fa-server bg-primary text-white"></i>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Neuerungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Ingame-Chat</li>
+                            <li>Rcon</li>
+                            <li>Spieler Listen</li>
+                            <li>Neue Parameter eingefügt</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Änderungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Crontab aufgesplittet somit führt das Panel Aktionen besser aus</li>
+                            <li>Panel an Java (WebHelper) angepasst</li>
+                            <li>Script anpassungen</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Bugfixes</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Wenn kein Mod in der Liste ist wird letzt nicht mehr ein leerer Platzhalter angezeigt sondern eine Meldung</li>
+                            <li>Einige Meldungen haben nun wie gewollt ein Titel und zeigen nicht mehr "{ALERT_TITLE}" an.</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+            </li>
+
+
+
+
+
+
+            <li class="time-label">
+              <span class="bg-green text-white">
+                Version 0.2.25 | 02.02.2020
+              </span>
+            </li>
+
+            <li>
+                <i class="fa fa-server bg-green text-white"></i>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Neuerungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Savedaten von Spielern (mit SteamAPI) und Karten (Löschen <s>& Downloaden</s>)</li>
+                            <li>[Intern] Klassen für bessere Programmierung erstellt</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Änderungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Bei einfügen einer Mod wird jetzte Geprüft ob diese im Workshop exsistiert</li>
+                            <li>Wenn der Server "Gesperrt" ist das Aktionsfenster nun Gesperrt</li>
+                            <li>Eigene Klasse für SteamAPI Angepasst</li>
+                            <li>Alerts lassen sich nun Schließen und sind besser angepasst.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+
+                    <div class="timeline-header"><h4>Bugfixes</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Man wird nun wieder weitergeleitet wenn man Eingeloggt ist (Login / Registrieren)</li>
+                            <li>Spielerlisten & Tribelisten werden richtig erfasst</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+            </li>
+
+            <li class="time-label">
+                  <span class="bg-green text-white">
+                    Version 0.2 | 18.01.2020
+                  </span>
+            </li>
+
+            <li>
+                <i class="fa fa-server bg-green"></i>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Neuerungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Im Livelog wird nun alles über 250 Zeichen deaktiviert (dies kann über ein Button an/aus geschalten werden)</li>
+                            <li>Logs können jetzt maximal X Zeilen anzeigen (dies kann über ein Button ausgewählt werden - bis ∞)</li>
+                            <li>Angefangen die Logs zu Modifzieren zur besseren Übersicht und schneller Erkennung von Mods etc. (und Übersetzung auf Deutsch)</li>
+                            <li>System für das Erfassen vom Chat [RCON muss Aktiviert sein!]</li>
+                            <li>System für das Erfassen von Spielern [RCON muss Aktiviert sein!]</li>
+                            <li>Spieler & Tribe dateien werden nun Ausgelesen und Gespeichert (für spätere verwendung)</li>
+                            <li>Vorbereitung auf Patch 0.2.25</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Änderungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Weitere Platzhalter für spätere Updates hinzugefügt</li>
+                            <li>Interne Anpassungen</li>
+                            <li>Anpassungen ServerCenter </li>
+                            <li>Anpassungen Changelogs </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+
+                    <div class="timeline-header"><h4>Bugfixes</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Fixes der Abfrage des Status</li>
+                            <li>Interne Anpassungen</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="time-label">
+                  <span class="bg-green text-white">
+                    Version 0.1.75 | 01.01.2020
+                  </span>
+            </li>
+
+            <li>
+                <i class="fa fa-server bg-green"></i>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Neuerungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Logs können jetzt gelesen werden</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Änderungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Weiter Anpassungen am auslesen der Server</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+
+                    <div class="timeline-header"><h4>Bugfixes</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Kleine Fixes</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="time-label">
+                  <span class="bg-green text-white">
+                    Version 0.1.6 | 29.12.2019
+                  </span>
+            </li>
+
+            <li>
+                <i class="fa fa-server bg-green"></i>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Neuerungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Error und Warnung Übersicht und Darstellung</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Änderungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Statusabfrage Deutlich verbessert</li>
+                            <li>Verschnellerung von Befehlen und Logs</li>
+                            <li>Mods haben jetzt ein Workshop Link</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+
+                    <div class="timeline-header"><h4>Bugfixes</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Fixes in Abfragen des Aktionsstatus</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="time-label">
+                  <span class="bg-green text-white">
+                    Version 0.1.5 | 15.12.2019
+                  </span>
+            </li>
+
+            <li>
+                <i class="fa fa-server bg-green"></i>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Neuerungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Mod Panel (mit SteamAPI)</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="time-label">
+                  <span class="bg-green text-white">
+                    Version 0.1.1 | 10.12.2019
+                  </span>
+            </li>
+
+            <li>
+                <i class="fa fa-server bg-green"></i>
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Änderungen</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Arkmanager Konfig überarbeitet um Fehler zu vermeiden</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+
+                    <div class="timeline-header"><h4>Bugfixes</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Fixes für Server Center anzeige</li>
+                            <li>Fixes für Konfigurationen</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="time-label">
+                  <span class="bg-green text-white">
+                    Version 0.1 | 01.12.2019
+                  </span>
+            </li>
+
+            <li>
+                <i class="fa fa-server bg-green"></i>
+
+                <div class="timeline-item" style="margin-bottom: 5px;">
+
+                    <div class="timeline-header"><h4>Erste Arkadmin Version mit folgenden Funktionen:</h4></div>
+
+                    <div class="timeline-body">
+                        <ul>
+                            <li>Serversteuerung (ServerCenter)</li>
+                            <li>LiveLog</li>
+                            <li>Statusanzeige</li>
+                            <li>Konfigurationen</li>
+                            <li>Login & Registrierung mit Code</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <i class="fa fa-clock-o bg-gray"></i>
+            </li>
+        </ul>
+<br>
+        <br>
+
+
+    </div>
+</div>

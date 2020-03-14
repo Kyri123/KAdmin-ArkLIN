@@ -1,0 +1,486 @@
+<div id="all_resp" class="mb-4">{resp}</div>
+
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-4 col-md-4 mb-4">
+        <div id="stateclass" class="small-box bg-danger m-0">
+            <div class="inner">
+                <h3 class="text-white" id="state">Läd...</h3>
+                <p class="text-white">Server Status</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-server"></i>
+            </div>
+            <a href="#" class="small-box-footer" id="rcon_btn">&nbsp;</a>
+        </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-4 col-md-4 mb-4">
+
+        <div class="small-box bg-yellow m-0">
+            <div class="inner">
+                <h3><span id="players">0</span> / {max_player}</h3>
+
+                <p>Spieler Online</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <a href="#" class="small-box-footer" data-toggle="modal" data-target="#playerlist_modal" id="player_btn">Spieler Anzeigen <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-4 col-md-4 mb-4">
+        <div id="colsedclass" class="small-box bg-danger m-0">
+            <div class="inner">
+                <h3 class="text-white" id="colsed">Gesperrt</h3>
+                <p class="text-white">Aktion Status</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-tasks"></i>
+            </div>
+            <a href="#" class="small-box-footer" data-toggle="modal" data-target="#action" id="action_modal_btn">Befehle <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <style>
+        .server_head {
+            max-height:240px;
+        }
+        .server_head > span {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 15px;
+            color: #f8f9fa;
+            font-size: 1.2rem;
+        }
+    </style>
+
+
+    <!-- Pending Requests Card Example -->
+    <div class="list-group col-xl-3 col-md-3 mb-4" style="padding-left: .75rem;">
+        <div class="row">
+            <ul class="list-group col-xl-12 col-md-12" style="padding-left: .75rem;">
+                <li class="list-group-item server_head" style="padding: 0px!important;">
+                    <img src="https://i.pinimg.com/originals/38/3b/d4/383bd47a5ea8211a038f5447110a8fea.jpg" style="width:100%">
+                    <span>{servername}</span>
+                </li>
+                <li class="list-group-item">Karte: {map_str}</li>
+                <li class="list-group-item">Total-Mod: {tmod}</li>
+                <li class="list-group-item">IP: <a href="{con_url}" target="_blank">{global_IP}:{QPort}</a></li>
+                <li class="list-group-item">ARKServers.net: <a href="{arkservers}" target="_blank">Öffnen</a></li>
+            </ul>
+            <ul class="list-group col-xl-12 col-md-12 " style="padding-left: .75rem;">
+                <li class="list-group-item-mod bg-green text-white p-3"><h3 class="p-0 m-0">Navigation</h3></li>
+                <a href="/serverpage/{cfg}/home" class="list-group-item text-gray-700 nav_customa p-2">Startseite</a>
+                <a href="/serverpage/{cfg}/konfig" class="list-group-item text-gray-700 nav_customa p-2">Konfiguration</a>
+                <a href="/serverpage/{cfg}/mods" class="list-group-item text-gray-700 nav_customa p-2">Modifikationen</a>
+                <a href="/serverpage/{cfg}/logs" class="list-group-item text-gray-700 nav_customa p-2">Logs</a>
+                <a href="/serverpage/{cfg}/backups" class="list-group-item text-gray-700 nav_customa p-2">{Soon} Backups</a>
+                <a href="/serverpage/{cfg}/saves" class="list-group-item text-gray-700 nav_customa p-2">Savegames</a>
+                <a href="/serverpage/{cfg}/jobs" class="list-group-item text-gray-700 nav_customa p-2">{Soon} Aufgaben</a>
+                <li class="bg-green" style="height: 5px!important;"></li>
+            </ul>
+        </div>
+    </div>
+    <!-- Pending Requests Card Example -->
+    {panel}
+</div>
+
+<script>
+    function server_data(){
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var Obj = JSON.parse(this.responseText);
+
+                document.getElementById("player_btn").dataset.target = "";
+                document.getElementById("player_btn").innerHTML = "Server muss Online sein";
+
+                if(Obj.next == 'FALSE') {
+                    document.getElementById("colsed").innerHTML = 'Frei';
+                    document.getElementById("colsedclass").className = '';
+                    document.getElementById("colsedclass").classList.add('bg-success');
+                    document.getElementById("colsedclass").classList.add('small-box');
+                    document.getElementById("colsedclass").classList.add('m-0');
+                    document.getElementById("action_modal_btn").dataset.target = "#action";
+                    document.getElementById("action_modal_btn").innerHTML = "Befehle <i class=\"fa fa-arrow-circle-right\"></i>";
+                }
+                else {
+                    document.getElementById("colsed").innerHTML = 'Gesperrt';
+                    document.getElementById("colsedclass").className = '';
+                    document.getElementById("colsedclass").classList.add('bg-danger');
+                    document.getElementById("colsedclass").classList.add('small-box');
+                    document.getElementById("colsedclass").classList.add('m-0');
+                    document.getElementById("action_modal_btn").dataset.target = "";
+                    document.getElementById("action_modal_btn").innerHTML = "Aktionen müssen Frei sein";
+                }
+
+                // is ONLINE
+                if(Obj.installed == 'FALSE') {
+                    document.getElementById("state").innerHTML = 'Nicht Installiert';
+                    document.getElementById("stateclass").className = '';
+                    document.getElementById("stateclass").classList.add('bg-warning');
+                    document.getElementById("stateclass").classList.add('small-box');
+                    document.getElementById("stateclass").classList.add('m-0');
+                }
+                else if(Obj.run == 'Yes' && Obj.listening == 'No') {
+                    document.getElementById("state").innerHTML = 'Startet';
+                    document.getElementById("stateclass").className = '';
+                    document.getElementById("stateclass").classList.add('bg-info');
+                    document.getElementById("stateclass").classList.add('small-box');
+                    document.getElementById("stateclass").classList.add('m-0');
+                }
+                else if(Obj.online == 'Yes') {
+                    document.getElementById("state").innerHTML = 'Online';
+                    document.getElementById("stateclass").className = '';
+                    document.getElementById("stateclass").classList.add('bg-success');
+                    document.getElementById("stateclass").classList.add('small-box');
+                    document.getElementById("stateclass").classList.add('m-0');
+                    document.getElementById("player_btn").dataset.target = "#playerlist_modal";
+                    document.getElementById("player_btn").innerHTML = "Spieler Anzeigen <i class=\"fa fa-arrow-circle-right\"></i>";
+                }
+                else {
+                    document.getElementById("state").innerHTML = 'Offline';
+                    document.getElementById("stateclass").className = '';
+                    document.getElementById("stateclass").classList.add('bg-danger');
+                    document.getElementById("stateclass").classList.add('small-box');
+                    document.getElementById("stateclass").classList.add('m-0');
+                }
+                document.getElementById("players").innerHTML = Obj.aplayers;
+
+                // PLAYER
+            }
+        };
+        xmlhttp.open("GET", "/data/serv/{cfg}.json", true);
+        xmlhttp.send();
+    }
+
+    server_data(); // This will run on page load
+    setInterval(function(){
+        server_data() // this will run after every 5 seconds
+    }, 1000);
+
+    $(document).ready(function() {
+
+
+        $('#sendaction').click(function(e){
+            e.preventDefault();
+
+
+            var cfg = $("#cfg").val();
+            var action = $("#action_sel").val();
+            var para = new Array();
+            $("input:checked").each(function() {
+                para.push($(this).val());
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/sites/js/inzaction.php",
+                dataType: "json",
+                data: {cfg:cfg, action:action, para:para},
+                success : function(data){
+                    if (data.code == "200"){
+                        $("#action_resp").html(data.msg);
+                        $("#all_resp").html(data.msg);
+                        $('#action').modal('hide')
+                    } else {
+                        $("#action_resp").html(data.msg);
+                    }
+                    server_data();
+                }
+            });
+
+
+        });
+    });
+
+    $(document).ready(function() {
+        $('#action_sel').change(function(e){
+            var action = $("#action_sel").val();
+            // uncheck_all
+            $('#noautoupdate').prop('checked', false);
+            $('#alwaysrestart').prop('checked', false);
+            $('#warn').prop('checked', false);
+            $('#saveworld').prop('checked', false);
+            $('#force').prop('checked', false);
+            $('#safe').prop('checked', false);
+            $('#backup').prop('checked', false);
+            $('#downloadonly').prop('checked', false);
+            $('#ifempty').prop('checked', false);
+            $('#update-mods').prop('checked', false);
+            $('#allmaps').prop('checked', false);
+            $('#autobackups').prop('checked', false);
+            $('#revstatus').prop('checked', false);
+            $('#validate').prop('checked', false);
+
+            $('#noautoupdate').attr('disabled', true);
+            $('#alwaysrestart').attr('disabled', true);
+            $('#warn').attr('disabled', true);
+            $('#saveworld').attr('disabled', true);
+            $('#force').attr('disabled', true);
+            $('#safe').attr('disabled', true);
+            $('#backup').attr('disabled', true);
+            $('#downloadonly').attr('disabled', true);
+            $('#ifempty').attr('disabled', true);
+            $('#update-mods').attr('disabled', true);
+            $('#allmaps').attr('disabled', true);
+            $('#autobackups').attr('disabled', true);
+            $('#validate').attr('disabled', true);
+            $('#revstatus').attr('disabled', true);
+
+
+            if(action === 'status') {}
+            if(action === 'install') {}
+            if(action === 'start') {
+                $('#noautoupdate').attr('disabled', false);
+                $('#alwaysrestart').attr('disabled', false);
+                $('#validate').prop('disabled', false);
+            }
+            if(action === 'update') {
+                $('#warn').attr('disabled', false);
+                $('#saveworld').attr('disabled', false);
+                $('#force').attr('disabled', false);
+                $('#safe').attr('disabled', false);
+                $('#backup').attr('disabled', false);
+                $('#downloadonly').attr('disabled', false);
+                $('#ifempty').attr('disabled', false);
+                $('#update-mods').attr('disabled', false);
+                $('#validate').prop('disabled', false);
+            }
+            if(action === 'restart') {
+                $('#noautoupdate').attr('disabled', false);
+                $('#warn').attr('disabled', false);
+                $('#saveworld').attr('disabled', false);
+            }
+            if(action === 'stop') {
+                $('#warn').attr('disabled', false);
+                $('#saveworld').attr('disabled', false);
+            }
+            if(action === 'checkupdate') {
+                $('#revstatus').prop('disabled', false);
+            }
+            if(action === 'checkmodupdate') {
+                $('#revstatus').prop('disabled', false);
+            }
+            if(action === 'installmods') {}
+            if(action === 'uninstallmods') { }
+            if(action === 'backup') {
+                $('#allmaps').prop('disabled', false);
+                $('#autobackups').prop('disabled', false);
+            }
+        });
+    });
+
+</script>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="action" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Befehl an den Server senden</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="action_resp"></p>
+                <input name="cfg" id="cfg" value="{cfg}" type="hidden">
+                <select name="action" id="action_sel" class="form-control">
+                    <option value="">Aktion wählen...</option>
+                    <option value="install">Server Installieren</option>
+                    <option value="start">Starte</option>
+                    <option value="update">Update</option>
+                    <option value="restart">Neustarten</option>
+                    <option value="stop">Stoppen</option>
+                    <option value="backup">Backup erstellen</option>
+                    <option value="checkupdate">Prüfe Update</option>
+                    <option value="checkmodupdate">Prüfe Mod Update</option>
+                    <option value="installmods">Installiere alle Mods</option>
+                    <option value="uninstallmods">Deinstalliere alle Mods</option>
+                    <option value="saveworld">Speichern</option>
+                    <option value="status">Status</option>
+                </select><br >
+
+                <div class="form-row" style="padding-left: 25px">
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--noautoupdate" type="checkbox" class="custom-control-input" id="noautoupdate" disabled>
+                        <label class="custom-control-label" for="noautoupdate">--noautoupdate {_1_disc}</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--alwaysrestart" type="checkbox" class="custom-control-input" id="alwaysrestart" disabled>
+                        <label class="custom-control-label" for="alwaysrestart">--alwaysrestart {_2_disc}</label>
+                    </div>
+                </div>
+
+                <div class="form-row" style="padding-left: 25px">
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--warn" type="checkbox" class="custom-control-input" id="warn" disabled>
+                        <label class="custom-control-label" for="warn">--warn {_3_disc}</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--saveworld" type="checkbox" class="custom-control-input" id="saveworld" disabled>
+                        <label class="custom-control-label" for="saveworld">--saveworld {_4_disc}</label>
+                    </div>
+                </div>
+
+                <div class="form-row" style="padding-left: 25px">
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--force" type="checkbox" class="custom-control-input" id="force" disabled>
+                        <label class="custom-control-label" for="force">--force {_5_disc}</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--safe" type="checkbox" class="custom-control-input" id="safe" disabled>
+                        <label class="custom-control-label" for="safe">--safe {_6_disc}</label>
+                    </div>
+                </div>
+
+                <div class="form-row" style="padding-left: 25px">
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--backup" type="checkbox" class="custom-control-input" id="backup" disabled>
+                        <label class="custom-control-label" for="backup">--backup {_7_disc}</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--downloadonly" type="checkbox" class="custom-control-input" id="downloadonly" disabled>
+                        <label class="custom-control-label" for="downloadonly">--downloadonly {_8_disc}</label>
+                    </div>
+                </div>
+
+                <div class="form-row" style="padding-left: 25px">
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--ifempty" type="checkbox" class="custom-control-input" id="ifempty" disabled>
+                        <label class="custom-control-label" for="ifempty">--ifempty {_9_disc}</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--update-mods" type="checkbox" class="custom-control-input" id="update-mods" disabled>
+                        <label class="custom-control-label" for="update-mods">--update-mods {_10_disc}</label>
+                    </div>
+                </div>
+
+                <div class="form-row" style="padding-left: 25px">
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--autobackups" type="checkbox" class="custom-control-input" id="autobackups" disabled>
+                        <label class="custom-control-label" for="autobackups">--autobackups {_11_disc}</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--allmaps" type="checkbox" class="custom-control-input" id="allmaps" disabled>
+                        <label class="custom-control-label" for="allmaps">--allmaps {_12_disc}</label>
+                    </div>
+                </div>
+
+                <div class="form-row" style="padding-left: 25px">
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--revstatus" type="checkbox" class="custom-control-input" id="revstatus" disabled>
+                        <label class="custom-control-label" for="revstatus">--revstatus {_13_disc}</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-3 col-md-6">
+                        <input name="para[]" value="--validate" type="checkbox" class="custom-control-input" id="validate" disabled>
+                        <label class="custom-control-label" for="validate">--validate {_14_disc}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                <button type="submit" class="btn btn-primary" id="sendaction">Senden</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Danger -->
+<div class="modal fade" id="danger_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Fehler!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <ul class="list-group" style="border:0; border-radius: 0">
+                    {danger_resp}
+                </ul>
+            </div>
+            <div class="modal-footer bg-gray-200">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Danger -->
+<div class="modal fade" id="warning_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" id="form" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Warnungen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <ul class="list-group" style="border:0; border-radius: 0">
+                    {warning_resp}
+                </ul>
+            </div>
+            <div class="modal-footer bg-gray-200">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Player -->
+<div class="modal fade" id="playerlist_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 700px">
+        <div class="modal-content ">
+            <div class="modal-header bg-orange text-white rounded-0">
+                <h5 class="modal-title">Spieler (Online)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <ul class="list-group" style="border:0; border-radius: 0">{playerlist}</ul>
+            </div>
+            <div class="modal-footer bg-gray-200">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="javascript">
+
+    function getphp(url, id){
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('playerlist').innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", '/sites/js/getuser.php?cfg={cfg}', true);
+        xmlhttp.send();
+    }
+
+    getphp('/sites/js/getuser.php?cfg={cfg}', 'playerlist');
+    setInterval(function(){
+        getphp('/sites/js/getuser.php?cfg={cfg}', 'playerlist');
+    }, 1000);
+
+
+</script>

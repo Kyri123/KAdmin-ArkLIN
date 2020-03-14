@@ -1,0 +1,90 @@
+
+/*
+ * Utilities
+ */
+
+.border-top { border-top: 1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+
+.aa_nav-link {
+    border-bottom: 1px solid #e5e5e5;
+}
+.aa_nav-link:hover {
+    background-color: #00000024;
+}
+.active i{
+    color: #fff!important;
+}
+.aa_nav-link_start {
+    border-bottom: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
+}
+.aa_nav-link_start:hover {
+    background-color: #00000024;
+}
+
+.list-group-item-mod:first-child {
+    border-top-left-radius: 0rem;
+    border-top-right-radius: 0rem;
+    border-top: 0rem;
+}
+.list-group-item-mod {
+    border-left: 0rem;
+    border-right: 0rem;
+}
+.list-group-item-mod:first-child {
+    border-bottom-left-radius: 0rem;
+    border-bottom-right-radius: 0rem;
+    border-bottom: 0rem;
+}
+
+.list-group-item {
+    border-radius: 0rem;
+    border-top-width: 1px!important;
+    border-radius: 0rem!important;
+}
+
+.nav_customa {
+    text-decoration: none!important;
+}
+
+.nav_customa:hover {
+    background: #e9ecef!important;
+}
+
+
+.list-group-item:hover {
+    border-top-width: 1px!important;
+}
+
+.list-group-item:last-child {
+    border-bottom-left-radius: 0rem;
+    border-bottom-right-radius: 0rem;
+    border-bottom: #1d2124 1px!important;
+    border-bottom-width: 1px!important;
+    margin-bottom: 1px;
+}
+
+.aa-nav .nav-item a:hover {
+    color: #1d2124!important;
+    background: #f7f7f7;
+}
+
+.aa-nav .nav-item a {
+    padding-left: 10px;
+}
+
+.aa-nav .nav-item {
+    margin-top: 2.5px!important;
+    margin-bottom: 2.5px!important;
+}
+
+.aa-nav .nav-item a.active {
+    color: #1d2124!important;
+    background: #f7f7f7;
+}
+
+.card {
+    border-radius: 0rem;
+}
