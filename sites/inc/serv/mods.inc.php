@@ -4,26 +4,32 @@ $urls = 'http://dev.aa.chiraya.de/serverpage/'.$url[2].'/mods/';
 
 if(isset($_POST['addmod'])) {
     $urle = $_POST['url'];
-    if(strpos($urle, 'steamcommunity.com/sharedfiles/filedetails') !== false) {
-        if(strpos($urle, 'id=') !== false) {
-            $urle = parse_url($urle);
-            $query = $urle['query'];
-            if (strpos($query, '&') !== false) {
-                $exp = explode('&', $query);
-                for($i=0;$i<count($exp);$i++) {
-                    if(strpos($exp[$i], 'id') !== false) {
+    $int = false;
+    if(is_numeric($urle)) $int = true;
+    if(strpos($urle, 'steamcommunity.com/sharedfiles/filedetails') || $int === true) {
+        if(strpos($urle, 'id=') || $int === true) {
+            $modid = $urle;
+            if(!$int) {
+                $urle = parse_url($urle);
+                $query = $urle['query'];
+                if (strpos($query, '&')) {
+                    $exp = explode('&', $query);
+                    for($i=0;$i<count($exp);$i++) {
                         $expm = explode('=', $exp[$i]);
-                        $modid = $expm[1];
+                        if($expm[0] == 'id') {
+                            $modid = $expm[1];
+                            break;
+                        }
                     }
                 }
-            }
-            else {
-                $expm = explode('=', $query);
-                $modid = $expm[1];
+                else {
+                    $expm = explode('=', $query);
+                    $modid = $expm[1];
+                }
             }
 
-            $json = $steamapi->getmod($modid);
-            if($json->response->publishedfiledetails[0]->consumer_app_id == 346110) {
+            $steamapi->modid = $modid;
+            if($steamapi->check_mod()) {
                 $mod_cfg = $serv->cfg_read('ark_GameModIds');
                 $mods = explode(',', $mod_cfg);
                 if(count($mods) > 1 || $mods[0] > 0) {
@@ -35,6 +41,10 @@ if(isset($_POST['addmod'])) {
                         }
                     }
                     if($exsists === false) {
+                        if($ckonfig['install_mod']) {
+                            $jobs->set($serv->show_name());
+                            $jobs->create('installmod ' . $modid);
+                        }
                         $i = count($mods)+1;
                         $mods[$i] = $modid;
                         $save_data = implode(',', $mods);
@@ -89,6 +99,7 @@ if(isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' OR $url[4] == 'bot' 
                 break;
             }
             if($action == 'remove') {
+                $id = $mods[$i];
                 $mods[$i] = 'removed';
                 break;
             }
@@ -97,6 +108,10 @@ if(isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' OR $url[4] == 'bot' 
     // builder
     for($i=0;$i<count($mods);$i++) {
         if($mods[$i] == 'removed') {
+            if($ckonfig['uninstall_mod']) {
+                $jobs->set($serv->show_name());
+                $jobs->create('uninstallmod ' . $id);
+            }
             unset($mods[$i]);
             break;
         }

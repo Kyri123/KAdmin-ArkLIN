@@ -1,0 +1,156 @@
+
+
+
+<div class="col-xl-9 col-md-9 mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="nav navbar-nav nav-pills mr-auto aa-nav" id="pills-tab">
+                <li class="nav-item" style="margin-right: 5px">
+                    <a class="nav-link active" id="pills-jobs-tab" data-toggle="pill" href="#pills-jobs" role="tab" aria-controls="pills-jobs" aria-selected="true">Jobs</a>
+                </li>
+                <li class="nav-item" style="margin-right: 5px">
+                    <a class="nav-link" id="pills-backup-tab" data-toggle="pill" href="#pills-backup" role="tab" aria-controls="pills-backup" aria-selected="false">Auto Backup</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-update-tab" data-toggle="pill" href="#pills-update" role="tab" aria-controls="pills-update" aria-selected="false">Auto Update</a>
+                </li>
+            </ul>
+            <div class="form-inline">
+                <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex" id="logbar"></div>
+                <div class="m-1 float-right btn-group" style="display: inline-flex" id="hidebar"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="card shadow">
+        <div class="tab-content" id="pills-tabContent">
+            <!-- Jobs -->
+            <div class="tab-pane fade show active" id="pills-jobs" role="tabpanel" aria-labelledby="pills-jobs-tab">
+                <div>
+                    <form action="/serverpage/{cfg}/jobs" method="post" class="pb-0 pt-4 pl-4 pr-4">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Bezeichnung</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="name" class="form-control" placeholder="Neustart">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Aufgabe</label>
+                            <div class="col-sm-10">
+                                <select name="action" class="form-control">
+                                    <option value="">Aktion wählen...</option>
+                                    <option value="start">Starte</option>
+                                    <option value="restart">Neustarten</option>
+                                    <option value="stop">Stoppen</option>
+                                    <option value="installmods">Installiere alle Mods</option>
+                                    <option value="uninstallmods">Deinstalliere alle Mods</option>
+                                    <option value="saveworld">Speichern</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Parameter</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="parameter" class="form-control" placeholder="z.b. --validate">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Ausführung</label>
+                            <div class="col-sm-10">
+                                <input type="datetime-local" name="datetime" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Intervall (in Sekunden)</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="intervall" class="form-control" placeholder="3600 = 1h, 86400 = 1 Tag">
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="submit" class="btn btn-primary mb-3" name="addjob" style="width:100%">Speichern</button>
+                            </div>
+                        </div>
+                    </form>
+                    <ul class="list-group" id="livelog">
+                        {list}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Auto Backup -->
+            <div class="tab-pane fade" id="pills-backup" role="tabpanel" aria-labelledby="pills-backup-tab">
+                <form action="/serverpage/{cfg}/jobs" method="post" class="pb-0 pt-4 pl-4 pr-4">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Aufgabe</label>
+                        <div class="col-sm-10">
+                            <select name="active" class="form-control">
+                                <option value="false">Deaktiviert</option>
+                                <option value="true" {true_backup}>Aktiviert</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Parameter</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="parameter" class="form-control" placeholder="z.b. --validate" value="{para_backup}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Ausführung</label>
+                        <div class="col-sm-10">
+                            <input type="datetime-local" name="datetime" class="form-control" value="{datetime_backup}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Intervall (in Sekunden)</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="intervall" class="form-control" placeholder="3600 = 1h, 86400 = 1 Tag" value="{intervall_backup}">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3" name="setbackup" style="width:100%">Speichern</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Auto Update -->
+            <div class="tab-pane fade" id="pills-update" role="tabpanel" aria-labelledby="pills-update-tab">
+                <form action="/serverpage/{cfg}/jobs" method="post" class="pb-0 pt-4 pl-4 pr-4">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Aufgabe</label>
+                        <div class="col-sm-10">
+                            <select name="active" class="form-control">
+                                <option value="false">Deaktiviert</option>
+                                <option value="true" {true_update}>Aktiviert</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Parameter</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="parameter" class="form-control" placeholder="z.b. --validate" value="{para_update}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Ausführung</label>
+                        <div class="col-sm-10">
+                            <input type="datetime-local" name="datetime" class="form-control" value="{datetime_update}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Intervall (in Sekunden)</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="intervall" class="form-control" placeholder="3600 = 1h, 86400 = 1 Tag" value="{intervall_update}">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3" name="setupdate" style="width:100%">Speichern</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -32,11 +32,22 @@
                 </ul>
             </div>
             <div class="tab-pane fade" id="pills-Game" role="tabpanel" aria-labelledby="pills-profile-tab">
-                <form action="{urls}" method="post" class="p-4">
+                <form action="{urls}" method="post" class="pb-0 pt-4 pl-4 pr-4">
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Workshop URL</label>
                         <div class="col-sm-7">
                             <input type="text" name="url" class="form-control" placeholder="https://steamcommunity.com/sharedfiles/filedetails/?id=<id>">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3" name="addmod" style="width:100%">Speichern</button>
+                        </div>
+                    </div>
+                </form>
+                <form action="{urls}" method="post" class="pb-4 pt-0 pl-4 pr-4">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Mod ID</label>
+                        <div class="col-sm-7">
+                            <input type="number" name="url" class="form-control" placeholder="ID (.../filedetails/?id=<id>)">
                         </div>
                         <div class="col-sm-3">
                             <button type="submit" class="btn btn-primary mb-3" name="addmod" style="width:100%">Speichern</button>

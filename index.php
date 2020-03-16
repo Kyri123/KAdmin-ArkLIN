@@ -40,12 +40,15 @@ if(isset($_SESSION["id"])) {
 }
 #Include
 
-// if(isset($_SESSION["id"])) include('inc/make_default_datas.inc.php');
 include('inc/session.inc.php');
 
 #definiere defaultsite
 $page = $url[1];
 include('inc/class/server.class.inc.php');
+include('inc/class/aajobs.class.inc.php');
+
+$jobs = new jobs();
+$ckonfig = $helper->file_to_json('inc/custom_konfig.json', true);
 
 if(file_exists('sites/'.$page.'.inc.php')) {
     include('sites/'.$page.'.inc.php');

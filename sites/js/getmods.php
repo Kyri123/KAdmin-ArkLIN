@@ -47,7 +47,7 @@ if($total_count > 1 || $mods[0] > 0) {
         $tpl->repl('img', $json->response->publishedfiledetails[0]->preview_url);
         $tpl->repl('cfg', $cfg);
         $tpl->repl('title', $json->response->publishedfiledetails[0]->title);
-        $tpl->repl('lastupdate', date('d.m.Y - H:m', $json->response->publishedfiledetails[0]->time_updated));
+        $tpl->repl('lastupdate', date('d.m.Y - H:i', $json->response->publishedfiledetails[0]->time_updated));
         $resp .= $tpl->loadin();
         $tpl = null;
     }

@@ -30,6 +30,10 @@ elseif($url[3] == 'saves') {
     $pagename = 'ServerCenter - Savegames';
     include('sites/inc/serv/saves.inc.php');
 }
+elseif($url[3] == 'jobs') {
+    $pagename = 'ServerCenter - Aufgaben';
+    include('sites/inc/serv/jobs.inc.php');
+}
 else {
     $pagename = 'ServerCenter - Startseite';
     include('sites/inc/serv/home.inc.php');

@@ -1,0 +1,23 @@
+
+<<<<<<< Updated upstream
+.idea/workspace.xml
+.idea/workspace - Kopie.xml
+.idea/webServers.xml
+.idea/php.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/deployment.xml
+.idea/arkadmin.iml
+.idea/vcs.xml
+inc/pconfig.inc.php
+.idea/.name
+=======
+.idea/.name
+.idea/arkadmin.iml
+.idea/deployment.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+inc/pconfig.inc.php
+>>>>>>> Stashed changes

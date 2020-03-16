@@ -1,0 +1,15 @@
+<li class="list-group-item">
+    <div class="row p-0">
+        <div class="col-12">
+            <i class="fas fa-briefcase rounded -align-left position-absolute" style="height: 50px; width: 50px; color: #858796!important; font-size: 50px;"></i>
+            {empty}<div class="ml-auto float-right  btn-group">
+                <a href="/serverpage/{cfg}/jobs/delete/{i}" class="btn btn-danger" target="_blank">
+                                        <span class="icon text-white">
+                                            <i class="fa fa-times"></i>
+                                        </span>
+                </a>
+            </div>{/empty}
+            <div style="margin-left: 60px;"><b>{title}</b> {empty}aller <b>{intervall} Sekunden</b>{/empty}<br />{empty}<span class="font-weight-light" style="font-size: 11px;"> {action} {parameter} | Nächste ausführung: {datetime}</span>&nbsp;{/empty}&nbsp;</div>
+        </div>
+    </div>
+</li>

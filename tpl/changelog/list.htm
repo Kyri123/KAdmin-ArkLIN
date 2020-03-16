@@ -1,0 +1,45 @@
+
+<li class="time-label">
+                  <span class="{color} text-white">
+                    Version {version} | {datestring}
+                  </span>
+</li>
+
+<li>
+    <i class="fa fa-server {color} text-white"></i>
+    {ifnew}<div class="timeline-item" style="margin-bottom: 5px;">
+
+        <div class="timeline-header"><h4>Neuerungen</h4></div>
+
+        <div class="timeline-body">
+                {new}
+        </div>
+    </div>{/ifnew}
+
+    {ifchange}<div class="timeline-item" style="margin-bottom: 5px;">
+
+        <div class="timeline-header"><h4>Änderungen</h4></div>
+
+        <div class="timeline-body">
+                {change}
+        </div>
+    </div>{/ifchange}
+
+    {iffix}<div class="timeline-item" style="margin-bottom: 5px;">
+
+        <div class="timeline-header"><h4>Bugfixes</h4></div>
+
+        <div class="timeline-body">
+                {fix}
+        </div>
+    </div>{/iffix}
+
+    {ifjava}<div class="timeline-item" style="margin-bottom: 5px;">
+
+        <div class="timeline-header"><h4>Java (WebHelper)</h4></div>
+
+        <div class="timeline-body">
+                {java}
+        </div>
+    </div>{/ifjava}
+</li>
