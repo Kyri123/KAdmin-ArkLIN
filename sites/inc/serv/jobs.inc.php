@@ -174,9 +174,9 @@ if($json['option']['backup']['active'] == "true") $page_tpl->repl('true_backup',
 $page_tpl->repl('para_backup', $json['option']['backup']['para']);
 $page_tpl->repl('datetime_backup', date('Y-m-d\TH:i', $json['option']['backup']['datetime']));
 $page_tpl->repl('intervall_backup', $json['option']['backup']['intervall']);
-if($json['option']['update']['active'] == "true") $page_tpl->repl('true_backup', 'Selected'); $page_tpl->repl('true_backup', null);
+if($json['option']['update']['active'] == "true") $page_tpl->repl('true_update', 'Selected'); $page_tpl->repl('true_update', null);
 $page_tpl->repl('para_update', $json['option']['update']['para']);
-$page_tpl->repl('datetime_backup', date('Y-m-d\TH:i', $json['option']['update']['datetime']));
+$page_tpl->repl('datetime_update', date('Y-m-d\TH:i', $json['option']['update']['datetime']));
 $page_tpl->repl('intervall_update', $json['option']['update']['intervall']);
 
 $page_tpl->repl('list', $jobs);

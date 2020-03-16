@@ -364,15 +364,61 @@ elseif($job == "jobs") {
                 $json = $helper->file_to_json($cpath, true);
                 if(count($json['jobs']) > 0) {
                     for($z=0;$z<count($json['jobs']);$z++) {
-                        $nextrun = $json['jobs'][$z]['datetime'] + $json['jobs'][$z]['intervall'];
                         $diff =  time() - $json['jobs'][$z]['datetime'];
                         if($diff >= 0) {
+                            if($diff > $json['jobs'][$z]['intervall']) {
+                                $x = $diff / $json['jobs'][$z]['intervall'];
+                                $x = floor($x);
+                                $x = $x * $json['jobs'][$z]['intervall'];
+                            }
+                            else {
+                                $x = $json['jobs'][$z]['intervall'];
+                            }
+                            $nextrun = $json['jobs'][$z]['datetime'] + $x;
                             $jobs->create($json['jobs'][$z]['action'].' '.$json['jobs'][$z]['parameter']);
                             $json['jobs'][$z]['datetime'] = $nextrun;
-                            $helper->savejson_exsists($json, $cpath);
                         }
                     }
                 }
+
+                // Backup
+                if($json['option']['backup']['active'] == "true") {
+                    $diff =  time() - $json['option']['backup']['datetime'];
+                    if($diff >= 0) {
+                        if($diff > $json['option']['backup']['intervall']) {
+                            $x = $diff / $json['option']['backup']['intervall'];
+                            $x = floor($x);
+                            $x = $x * $json['option']['backup']['intervall'];
+                        }
+                        else {
+                            $x = $json['option']['backup']['intervall'];
+                        }
+                        $nextrun = $json['option']['backup']['datetime'] + $x;
+                        echo $x;
+                        $jobs->create('backup '.$json['option']['backup']['parameter']);
+                        $json['option']['backup']['datetime'] = $nextrun;
+                    }
+                }
+
+                // Update
+                if($json['option']['update']['active'] == "true") {
+                    $diff =  time() - $json['option']['update']['datetime'];
+                    if($diff >= 0) {
+                        if($diff > $json['option']['update']['intervall']) {
+                            $x = $diff / $json['option']['update']['intervall'];
+                            $x = floor($x);
+                            $x = $x * $json['option']['update']['intervall'];
+                        }
+                        else {
+                            $x = $json['option']['update']['intervall'];
+                        }
+                        $nextrun = $json['option']['update']['datetime'] + $x;
+                        echo $x;
+                        $jobs->create('update '.$json['option']['update']['parameter']);
+                        $json['option']['update']['datetime'] = $nextrun;
+                    }
+                }
+                $helper->savejson_exsists($json, $cpath);
             }
         }
     }
@@ -429,7 +475,6 @@ for($i=0;$i<count($dir);$i++) {
 
 $json_all['maxserv'] = $max;
 $json_all['onserv'] = $on;
-print_r($json_all);
 $json_all = json_encode($json_all, true);
 if(file_put_contents($file, $json_all));
 
