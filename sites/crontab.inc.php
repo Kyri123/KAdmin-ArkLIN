@@ -365,7 +365,7 @@ elseif($job == "jobs") {
                 if(count($json['jobs']) > 0) {
                     for($z=0;$z<count($json['jobs']);$z++) {
                         $diff =  time() - $json['jobs'][$z]['datetime'];
-                        if($diff >= 0) {
+                        if($diff >= 0 && $json['jobs'][$z]['active'] == "true") {
                             if($diff > $json['jobs'][$z]['intervall']) {
                                 $x = $diff / $json['jobs'][$z]['intervall'];
                                 $x = floor($x);
@@ -380,44 +380,27 @@ elseif($job == "jobs") {
                         }
                     }
                 }
-
-                // Backup
-                if($json['option']['backup']['active'] == "true") {
-                    $diff =  time() - $json['option']['backup']['datetime'];
-                    if($diff >= 0) {
-                        if($diff > $json['option']['backup']['intervall']) {
-                            $x = $diff / $json['option']['backup']['intervall'];
-                            $x = floor($x);
-                            $x = $x * $json['option']['backup']['intervall'];
+                // Backup & Update
+                $key[0] = 'backup'; $key[1] = 'update';
+                for($z=0;$z<count($key);$z++) {
+                    if($json['option'][$key[$z]]['active'] == "true") {
+                        $diff =  time() - $json['option'][$key[$z]]['datetime'];
+                        if($diff >= 0) {
+                            if($diff > $json['option'][$key[$z]]['intervall']) {
+                                $x = $diff / $json['option'][$key[$z]]['intervall'];
+                                $x = floor($x);
+                                $x = $x * $json['option'][$key[$z]]['intervall'];
+                            }
+                            else {
+                                $x = $json['option'][$key[$z]]['intervall'];
+                            }
+                            $nextrun = $json['option'][$key[$z]]['datetime'] + $x;
+                            $jobs->create('backup '.$json['option'][$key[$z]]['parameter']);
+                            $json['option'][$key[$z]]['datetime'] = $nextrun;
                         }
-                        else {
-                            $x = $json['option']['backup']['intervall'];
-                        }
-                        $nextrun = $json['option']['backup']['datetime'] + $x;
-                        echo $x;
-                        $jobs->create('backup '.$json['option']['backup']['parameter']);
-                        $json['option']['backup']['datetime'] = $nextrun;
                     }
                 }
-
-                // Update
-                if($json['option']['update']['active'] == "true") {
-                    $diff =  time() - $json['option']['update']['datetime'];
-                    if($diff >= 0) {
-                        if($diff > $json['option']['update']['intervall']) {
-                            $x = $diff / $json['option']['update']['intervall'];
-                            $x = floor($x);
-                            $x = $x * $json['option']['update']['intervall'];
-                        }
-                        else {
-                            $x = $json['option']['update']['intervall'];
-                        }
-                        $nextrun = $json['option']['update']['datetime'] + $x;
-                        echo $x;
-                        $jobs->create('update '.$json['option']['update']['parameter']);
-                        $json['option']['update']['datetime'] = $nextrun;
-                    }
-                }
+                
                 $helper->savejson_exsists($json, $cpath);
             }
         }

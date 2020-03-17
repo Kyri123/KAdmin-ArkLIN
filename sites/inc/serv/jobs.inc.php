@@ -35,19 +35,19 @@ if(!file_exists($cpath)) {
     file_put_contents($cpath, $helper->json_to_str($array));
 }
 
-if(isset($_POST['setbackup'])) {
+if(isset($_POST['set'])) {
+    $key = $_POST['key'];
     $intervall = $_POST['intervall'];
     $datetime = strtotime($_POST['datetime']);
     $json = $helper->file_to_json($cpath, true);
     if($intervall != null && is_numeric($intervall) && $intervall > 0) {
         if($datetime != null && $datetime > time()) {
-            $json['option']['backup']['active'] = $_POST['active'];
-            $json['option']['backup']['para'] = $_POST['para'];
-            $json['option']['backup']['datetime'] = $datetime;
-            $json['option']['backup']['intervall'] = $intervall;
-            $json['option']['backup']['para'] = $_POST['setbackup'];
+            $json['option'][$key]['active'] = $_POST['active'];
+            $json['option'][$key]['datetime'] = $datetime;
+            $json['option'][$key]['intervall'] = $intervall;
+            $json['option'][$key]['para'] = $_POST['parameter'];
             if($helper->savejson_exsists($json, $cpath)) {
-                $resp = meld('success', 'Backups Aktualisiert.', 'Erfolgreich!', null);
+                $resp = meld('success', 'Aktualisiert.', 'Erfolgreich!', null);
             }
             else {
                 $resp = meld('danger', 'Konnte Datei nicht speichern.', 'Fehler!', null);
@@ -62,32 +62,6 @@ if(isset($_POST['setbackup'])) {
     }
 }
 
-if(isset($_POST['setupdate'])) {
-    $intervall = $_POST['intervall'];
-    $datetime = strtotime($_POST['datetime']);
-    $json = $helper->file_to_json($cpath, true);
-    if($intervall != null && is_numeric($intervall) && $intervall > 0) {
-        if($datetime != null && $datetime > time()) {
-            $json['option']['update']['active'] = $_POST['active'];
-            $json['option']['update']['para'] = $_POST['para'];
-            $json['option']['update']['datetime'] = $datetime;
-            $json['option']['update']['intervall'] = $intervall;
-            $json['option']['update']['para'] = $_POST['setbackup'];
-            if($helper->savejson_exsists($json, $cpath)) {
-                $resp = meld('success', 'Updates Aktualisiert.', 'Erfolgreich!', null);
-            }
-            else {
-                $resp = meld('danger', 'Konnte Datei nicht speichern.', 'Fehler!', null);
-            }
-        }
-        else {
-            $resp = meld('danger', 'Intervall hat kein gültiges Format oder ist Leer.', 'Fehler!', null);
-        }
-    }
-    else {
-        $resp = meld('danger', 'Intervall hat kein gültiges Format, Ist kleiner als 0 oder ist Leer.', 'Fehler!', null);
-    }
-}
 
 if(isset($_POST['addjob'])) {
     $json = $helper->file_to_json($cpath, true);
@@ -144,6 +118,30 @@ if(isset($url[4]) && isset($url[5]) && $url[4] == "delete") {
     }
 }
 
+if(isset($url[4]) && isset($url[5]) && $url[4] == "toggle") {
+    $i = $url[5];
+    $json = $helper->file_to_json($cpath, true);
+    if(isset($json['jobs'][$i])) {
+        if($json['jobs'][$i]['active'] == "true") {
+            $json['jobs'][$i]['active'] = "false";
+            $txt = "Aufgabe wurde aktiviert";
+        }
+        else {
+            $json['jobs'][$i]['active'] = "true";
+            $txt = "Aufgabe wurde deaktiviert";
+        }
+        if($helper->savejson_exsists($json, $cpath)) {
+            $resp = meld('success', $txt, 'Erfolgreich!', null);
+        }
+        else {
+            $resp = meld('danger', 'Konnte Datei nicht speichern.', 'Fehler!', null);
+        }
+    }
+    else {
+        $resp = meld('danger', 'Aufgabe gibt es nicht.', 'Fehler!', null);
+    }
+}
+
 
 $json = null; $jobs = null;
 $json = $helper->file_to_json($cpath, true);
@@ -152,6 +150,19 @@ if(count($json['jobs']) > 0) {
         $list = new Template('list_jobs.htm', 'tpl/serv/sites/list/');
         $list->load();
         $list->replif('empty', true);
+        if($json['jobs'][$z]['active'] == "true") {
+            $toggle_icon = 'fa fa-check';
+            $toggle_btn_color = 'btn-success';
+            $toggle_tooltip = 'Deaktivieren';
+        }
+        else {
+            $toggle_icon = 'fa fa-times';
+            $toggle_btn_color = 'btn-danger';
+            $toggle_tooltip = 'Aktivieren';
+        }
+        $list->repl('toggle_tooltip', $toggle_tooltip);
+        $list->repl('toggle_icon', $toggle_icon);
+        $list->repl('toggle_btn_color', $toggle_btn_color);
         $list->repl('title', $json['jobs'][$z]['name']);
         $list->repl('action', $json['jobs'][$z]['action']);
         $list->repl('parameter', $json['jobs'][$z]['parameter']);
