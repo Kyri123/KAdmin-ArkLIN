@@ -1,0 +1,46 @@
+<div class="col-xl-4 col-md-0 mb-0">
+    <div class="small-box bg-{serv_color}">
+        <div class="inner">
+            <h3>{serv_state}</h3>
+
+            <p>Server Status</p>
+        </div>
+        <div class="icon">
+            <i class="fa fa-server"></i>
+        </div>
+        <a href="#" class="small-box-footer">&nbsp;{serv_pid}</a>
+    </div>
+</div>
+
+<div class="col-xl-4 col-md-0 mb-0">
+    <div class="info-box bg-info" style="height: 142px;">
+        <span class="info-box-icon"><i class="fa fa-users"></i></span>
+
+        <div class="info-box-content">
+            <span class="info-box-text">Spieler</span>
+            <span class="info-box-number">{pl_pla} / {pl_plmax}</span>
+
+            <div class="progress">
+                <div class="progress-bar" style="width: {pl_plpro}%"></div>
+            </div>
+            <span class="progress-description">
+                    <br />
+                      <button type="button" class="btn btn-block btn-dark btn-sm {pl_disabled}" {pl_modal}>{pl_btntxt}</button>
+                    </span>
+        </div>
+        <!-- /.info-box-content -->
+    </div>
+</div>
+
+<div class="col-xl-4 col-md-0 mb-0">
+    <div class="small-box bg-{action_color}">
+        <div class="inner">
+            <h3 class="text-white">{action_state}</h3>
+            <p class="text-white">Aktion Status</p>
+        </div>
+        <div class="icon">
+            <i class="fa fa-tasks"></i>
+        </div>
+        <a href="#" class="small-box-footer" {action_modal}>{action_btntxt}</a>
+    </div>
+</div>

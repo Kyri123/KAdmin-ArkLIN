@@ -1,9 +1,5 @@
 <?php
-chdir($_SERVER['DOCUMENT_ROOT']);
-include('inc/class/server.class.inc.php');
-include('inc/class/steamAPI.class.inc.php');
-include('inc/func/allg.func.inc.php');
-$steamapi = new steamapi();
+require('js_inz.inc.php');
 $cfg = $_GET['cfg'];
 $file = $_GET['file'];
 $max = $_GET['max'];

@@ -1,11 +1,4 @@
 <?php
-# Lang Function
-
-function lang($id1, $id2, $id3) {
-    global $lang;
-    $r = $lang[$id1][$id2][$id3];
-    return $r;
-}
 
 
 #user allgmeine daten
@@ -25,65 +18,112 @@ function rndbit($l) {
     return bin2hex(random_bytes($l));
 }
 
-function meld($type, $txt, $title, $icon) {
+
+function del_dir( $dir )
+{
+    if ( is_dir( $dir ) )
+    {
+        $dir_handle = opendir( $dir );
+        if( $dir_handle )
+        {
+            while( $file = readdir( $dir_handle ) )
+            {
+                if($file != "." && $file != "..")
+           {
+               if( ! is_dir( $dir."/".$file ) )
+               {
+                   unlink( $dir."/".$file );
+               }
+               else
+               {
+                   delete_directory($dir.'/'.$file);
+               }
+
+           }
+      }
+            closedir( $dir_handle );
+        }
+        rmdir( $dir );
+        return true;
+    }
+    return false;
+}
+
+function bitrechner( $size, $sourceUnit = 'bit', $targetUnit = 'MB' ) {
+    $units = array(
+        'bit' => 0,
+        'B' => 1,
+        'KB' => 2,
+        'MB' => 3,
+        'GB' => 4
+    );
+
+    if( $units[$sourceUnit] <= $units[$targetUnit] ) {
+        for( $i = $units[$sourceUnit]; $size >= 1024; $i++ ) {
+            if( $i === 0 ) {
+                $size /= 8;
+            } else {
+                $size /= 1024;
+            }
+        }
+    } else {
+        for( $i = $units[$sourceUnit]; $i > $units[$targetUnit]; $i-- ) {
+            if( $i === 1 ) {
+                $size *= 8;
+            } else {
+                $size *= 1024;
+            }
+        }
+    }
+    return round( $size, 2 ) . ' ' . array_keys($units)[$i];
+}
+
+function meld($type, $txt = '{ALERT_TXT}', $title = '{ALERT_TITLE}', $icon = null) {
     $rnd = bin2hex(random_bytes(50));
-    return '<div class="box box-'.$type.' box-solid" id="'.$rnd.'">
-            <div class="box-header with-border">
-                <h3 class="box-title">'.$title.'</h3>
-        
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" onclick="remove(\''.$rnd.'\')"><i class="fa fa-times"></i></button>
+    return '<div class="card card-'.$type.'" id="'.$rnd.'">
+              <div class="card-header">
+                <h3 class="card-title">'.$title.'</h3>
+
+                <div class="card-tools">
+                      <button type="button" class="btn btn-tool" onclick="remove(\''.$rnd.'\')">
+                            <i class="fas fa-times"></i>
+                      </button>
                 </div>
-                <!-- /.box-tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                '.$txt.'
-            </div>
-            <!-- /.box-body -->
-        </div> ';
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                    '.$txt.'
+              </div>
+              <!-- /.card-body -->
+            </div>';
 }
-
-#user allgmeine daten
-function getSessionData($data) {
-    global $mycon;
-    global $_SESSION;
-    if(!isset($_SESSION["id"])) {
-        $id = 1;
-    }
-    else {
-        $id = $_SESSION["id"];
-    }
-    $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \''.$id.'\'';
-    $row = $mycon->query($query)->fetchArray();
-    return $row[$data];
-}
-
 
 # Time
 function converttime($stamp) {
     return date("d.m.Y H:i", $stamp); ;
 }
 
-
 # Alerts
-function alert($type, $text, $margin = null, $title = '{ALERT_TITLE}') {
+function alert($type, $text = '{ALERT_TXT}', $css = null, $title = '{ALERT_TITLE}') {
     $rnd = bin2hex(random_bytes(50));
-    return '<div class="box box-'.$type.' box-solid " id="'.$rnd.'" style="margin-top: 15px;margin-bottom: 0">
-            <div class="box-header with-border">
-                <h3 class="box-title">'.$title.'</h3>
-        
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" onclick="remove(\''.$rnd.'\')"><i class="fa fa-times"></i></button>
+    return '<div class="card card-'.$type.' '.$css.'" id="'.$rnd.'">
+              <div class="card-header">
+                <h3 class="card-title">'.$title.'</h3>
+
+                <div class="card-tools">
+                      <button type="button" class="btn btn-tool" onclick="remove(\''.$rnd.'\')">
+                            <i class="fas fa-times"></i>
+                      </button>
                 </div>
-                <!-- /.box-tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                '.$text.'
-            </div>
-            <!-- /.box-body -->
-        </div> ';
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                    '.$text.'
+              </div>
+              <!-- /.card-body -->
+            </div>';
 }
 
 #
@@ -101,6 +141,7 @@ function write_ini_file($array, $file)
     }
     safefilerewrite($file, implode("\n", $res));
 }
+
 function safefilerewrite($fileName, $dataToSave)
 {    if ($fp = fopen($fileName, 'w'))
 {
@@ -146,20 +187,79 @@ function dirToArray($dir) {
 #
 
 function filtersh($str) {
-    $str = str_replace("\e[0;39m", null, $str);
-    $str = str_replace("\e[1;32m", null, $str);
-    $str = str_replace("\e[0;39m", null, $str);
-    $str = str_replace(" \n", null, $str);
-    $str = str_replace("\n", null, $str);
-    $str = str_replace("   ", null, $str);
-    $str = str_replace(" 0 \/ ", null, $str);
-    $str = str_replace("  \e[1;32m ", null, $str);
-    $str = str_replace("  \e[1;31m ", null, $str);
-    $str = str_replace(" \e[0;39m ] 	", null, $str);
-    $str = str_replace("[ \e[1;31m ", ' ', $str);
-    $str = str_replace("\e8\e[J", ' ', $str);
-    $str = str_replace("\e7", ' ', $str);
-    $str = str_replace("[ \e[0;33m WARN \e[0;39m ] 	", '[WARN]', $str);
+    $search  = array(
+        "\e[0;39m",
+        "\e[1;32m",
+        "\e[1;31m",
+        " \n",
+        "   ",
+        "  ] 	",
+        " 0 \/ ",
+        "  \e[1;32m ",
+        "  \e[1;31m ",
+        " \e[0;39m ] 	",
+        "[ \e[1;31m ",
+        "\e8\e[J",
+        "\e7",
+        "[ \e[0;33m WARN \e[0;39m ] 	",
+        "\n"
+    );
+    $replace = array(
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        ' ',
+        ' ',
+        ' ',
+        '[WARN]',
+        null
+    );
+    $str = str_replace($search, $replace, $str);
+    return $str;
+}
+
+function sh_crontab($str) {
+    $search  = array(
+        "\e[0;39m",
+        "\e[1;32m",
+        "\e[1;31m",
+        " \n",
+        "   ",
+        "  ] 	",
+        " 0 \/ ",
+        "  \e[1;32m ",
+        "  \e[1;31m ",
+        " \e[0;39m ] 	",
+        "[ \e[1;31m ",
+        "\e8\e[J",
+        "\e7",
+        "[ \e[0;33m WARN \e[0;39m ] 	"
+    );
+    $replace = array(
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        ' ',
+        ' ',
+        ' ',
+        '[WARN]'
+    );
+    $str = str_replace($search, $replace, $str);
     return $str;
 }
 
@@ -168,6 +268,8 @@ function alog($str) {
 
     $str = str_replace('ERROR [0;39m ] 	', '<b class="text-danger">ERROR</b> ', $str);
     $str = str_replace('WARNING [0;39m ] 	', '<b class="text-warning">WARNUNG</b> ', $str);
+    $str = str_replace('Retries exhausted', 'Neuer versuch wird gestartet', $str);
+    $str = str_replace('Your server is already up to date! The most recent version is', 'Der Server ist auf der aktuellen Version:', $str);
     $str = str_replace('\033[0;39m ', null, $str);
     $str = str_replace('\033[0;39m\e[68G[', null, $str);
     $str = str_replace('\033[1;31mFAILED]', '<b class="text-danger">[Fehlgeschlagen]</b>', $str);
@@ -217,7 +319,12 @@ function alog($str) {
         $json = $steamapi->getmod($modid);
         $str = '<b class="text-gray-800">Update Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $json->response->publishedfiledetails[0]->title.'</a></b>';
     }
-
+    if(strpos($str, 'not fully downloaded') !== false) {
+        $modid = str_replace(' not fully downloaded - retrying', null, $str);
+        $modid = str_replace("Mod ", null, $modid);
+        $mod = $steamapi->getmod_class($modid);
+        $str = '<b class="text-gray-800">Wurde nicht richtig Runtergeladen: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $mod->title .'</a> (neuer Versuch)</b>';
+    }
     if(strpos($str, 'Downloading mod ') !== false) {
         $modid = str_replace('Downloading mod ', null, $str);
         $modid = str_replace(" ", null, $modid);

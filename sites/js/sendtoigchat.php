@@ -1,5 +1,5 @@
 <?php
-require('./js_inz.inc.php');
+require('js_inz.inc.php');
 
 $serv = new server($_POST['cfg']);
 $json = file_get_contents('data/serv/'.$serv->show_name().'.json');

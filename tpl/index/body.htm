@@ -1,127 +1,122 @@
 
 
-<body id="page-top">
+<body id="page-top" class="class="sidebar-mini"">
 
-<div id="wrapper">
+<div class="wrapper">
 
-	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+	<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+		<!-- Left navbar links -->
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+			</li>
+			{btns}
+		</ul>
 
-		<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-			<div class="sidebar-brand-icon rotate-n-15">
-				<i class="fas fa-laugh-wink"></i>
-			</div>
-			<div class="sidebar-brand-text mx-3">Ark::Admin<sup>2</sup></div>
+		<!-- Right navbar links -->
+		<ul class="navbar-nav ml-auto">
+			<!-- Messages Dropdown Menu -->
+			<li class="nav-item dropdown">
+				<a class="nav-link" data-toggle="dropdown" href="#">
+					<i class="fa fa-server"></i>
+					<span class="badge badge-success navbar-badge" id="total_serv">Load..</span>
+				</a>
+				<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+					<span class="dropdown-item dropdown-footer bg-primary">ServerCenter</span>
+					<div class="dropdown-divider"></div>
+					{servers}
+					<a href="#" class="dropdown-item dropdown-footer bg-success">[SOON] Server Erstellen</a>
+				</div>
+			</li>
+		</ul>
+	</nav>
+
+
+
+
+
+	<aside class="main-sidebar sidebar-dark-primary elevation-4">
+		<!-- Brand Logo -->
+		<a href="/" class="brand-link">
+			<span class="brand-text font-weight-light">Arkadmin {aa_version}</span>
 		</a>
 
-		<hr class="sidebar-divider my-0">
+		<!-- Sidebar -->
+		<div class="sidebar">
+			<!-- Sidebar user (optional) -->
+			<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+				<div class="image">
+					<img src="https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png" class="img-circle elevation-2" alt="User Image">
+				</div>
+				<div class="info">
+					<a href="#" class="d-block">[{rank}] {user}</a>
+				</div>
+				<div class="right pos"><a href="javascript:void" data-toggle="modal" data-target="#logoutmodal"><i class="fas fa-sign-out-alt"></i></a></div>
+			</div>
 
-		<li class="nav-item {curr_home_css}">
-			<a class="nav-link" href="/home">
-				<i class="fas fa-fw fa-tachometer-alt"></i>
-				<span>Dashboard</span></a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link {curr_changelog_css}" href="/changelog">
-				<i class="far fa-fw fa-clipboard"></i>
-				<span>V.{aa_version} </span>{curr_changelog}</a>
-		</li>
-
-		<hr class="sidebar-divider">
-
-		<div class="sidebar-heading">
-			ArkAdmin
-		</div>
-
-		<br />
-		<div class="text-center d-none d-md-inline">
-			<button class="rounded-circle border-0" id="sidebarToggle"></button>
-		</div>
-
-	</ul>
-
-	<div id="content-wrapper" class="d-flex flex-column">
-
-		<div id="content">
-
-			<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-				<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-					<i class="fa fa-bars"></i>
-				</button>
-
-				<ul class="navbar-nav ml-auto">
-
-					<li class="nav-item dropdown no-arrow d-sm-none"></li>
-
-					<li class="nav-item dropdown no-arrow mx-1">
-						<a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fas fa-server fa-fw"></i>
-
-							<span class="badge badge-success badge-counter" id="total_serv"><span id="total_serv">Load..</span></span>
+			<!-- Sidebar Menu -->
+			<nav class="mt-2">
+				<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+					<!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+					<li class="nav-item has-treeview">
+						<a href="/" class="nav-link {curr_home_css}">
+							<i class="nav-icon fas fa-tachometer-alt"></i>
+							<p>
+								Dashboard
+							</p>
 						</a>
-
-						<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-							<h6 class="dropdown-header">
-								Server Center
-							</h6>
-							{servers}
-							<a class="dropdown-item text-center small text-gray-500" href="#">Neuen Server erstellen</a>
-						</div>
 					</li>
-
-					<div class="topbar-divider d-none d-sm-block"></div>
-
-					<li class="nav-item dropdown no-arrow">
-						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="mr-2 d-none d-lg-inline text-gray-600 small">[{rank}] {user}</span>
-							<img class="img-profile rounded-circle" src="https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png">
+					<li class="nav-item has-treeview">
+						<a href="/servercontrollcenter" class="nav-link {curr_servercontrollcenter_css}">
+							<i class="nav-icon fa fa-server"></i>
+							<p>
+								Server Controll Center
+							</p>
 						</a>
-
-						<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-							<a class="dropdown-item" href="#">
-								<i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-								Einstellungen
-							</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal">
-								<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-								Logout
-							</a>
-						</div>
+					</li>
+					<li class="nav-item has-treeview">
+						<a href="/changelog" class="nav-link {curr_changelog_css}">
+							<i class="nav-icon fa fa-book"></i>
+							<p>
+								Changelogs {curr_changelog}
+							</p>
+						</a>
 					</li>
 
 				</ul>
-
 			</nav>
+			<!-- /.sidebar-menu -->
+		</div>
+		<!-- /.sidebar -->
+	</aside>
 
-			<div class="container-fluid">
-				<nav aria-label="breadcrumb">
-					<ol class="breadcrumb">
+	<div class="content-wrapper d-flex flex-column" style="min-height: 1416.81px;">
+		<section class="content-header"style="padding-bottom: 0px;">
+			<div class="row mb-2">
+				<div class="col-sm-6" style="padding-left: 20px;">
+					<h1 class="text-dark">{pagename}</h1>
+				</div><!-- /.col -->
+				<div class="col-sm-6"style="padding-right: 20px;">
+					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="/">ArkAdmin 2</a></li>
 						{urltop}
 					</ol>
-				</nav>
+				</div><!-- /.col -->
+			</div>
+		</section>
 
-				<div class="d-sm-flex align-items-center justify-content-between mb-4">
-					<h1 class="h3 mb-0 text-gray-800">{pagename}</h1>
-					{btns}
-				</div>
-
+		<section class="content">
+			<div class="container-fluid">
 				{content}
-
-
-		</div>
-
+			</div>
+		</section>
 	</div>
 
 </div>
 
-<a class="scroll-to-top rounded" href="#page-top">
-	<i class="fas fa-angle-up"></i>
-</a>
-
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -139,15 +134,8 @@
 	</div>
 </div>
 
-<!-- Bootstrap core JavaScript-->
-<script src="/dist/jquery/jquery.min.js"></script>
-<script src="/dist/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="/dist/jquery-easing/jquery.easing.min.js"></script>
-
 <!-- Custom scripts for all pages-->
-<script src="/js/sb-admin-2.min.js"></script>
+<script src="/dist/js_old/sb-admin-2.min.js"></script>
 
 
 

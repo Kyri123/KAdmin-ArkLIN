@@ -1,8 +1,5 @@
 <?php
-include('../../inc/class/server.class.inc.php');
-include('../../inc/func/allg.func.inc.php');
-
-
+require('js_inz.inc.php');
 $errorMSG = "";
 
 

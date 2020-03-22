@@ -49,6 +49,7 @@ include('inc/class/aajobs.class.inc.php');
 
 $jobs = new jobs();
 $ckonfig = $helper->file_to_json('inc/custom_konfig.json', true);
+$servlocdir = $ckonfig['servlocdir'];
 
 if(file_exists('sites/'.$page.'.inc.php')) {
     include('sites/'.$page.'.inc.php');

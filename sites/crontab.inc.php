@@ -46,9 +46,12 @@ if($job == "status") {
             if(!file_exists('data/serv/'.$c_serv->show_name().'.json')) file_put_contents('data/serv/'.$c_serv->show_name().'.json', '{}');
             if(!file_exists('sh/serv/jobs_ID_'.$c_serv->show_name().'.sh')) file_put_contents('sh/serv/jobs_ID_'.$c_serv->show_name().'.sh', null);
             if(!file_exists('sh/serv/sub_jobs_ID_'.$c_serv->show_name().'.sh')) file_put_contents('sh/serv/sub_jobs_ID_'.$c_serv->show_name().'.sh', null);
+            if(!file_exists($c_serv->cfg_read("logdir"))) mkdir($c_serv->cfg_read("logdir"));
+            if(!file_exists($c_serv->cfg_read("arkserverroot"))) mkdir($c_serv->cfg_read("arkserverroot"));
+            if(!file_exists($c_serv->cfg_read("arkbackupdir"))) mkdir($c_serv->cfg_read("arkbackupdir"));
 
             if(!file_exists($shell_path)) file_put_contents($shell_path, null);
-            $file_time = filemtime($log_file);
+            $file_time = filemtime($shell_path);
             $diff = $time - $file_time;
             if($diff > $timediff['shell']) {
                 file_put_contents($shell_path, $shell_command);
@@ -81,50 +84,53 @@ elseif($job == "player") {
             $pl = 'data/saves/pl_'.$serv->show_name().'.players';
             if(!file_exists($pl)) file_put_contents($pl, " ");
 
-            $path = $serv->get_save_dir();
-            $container = null;
-            $container = new Container();
-            $container->LoadDirectory($path);
-            $container->LinkPlayersAndTribes();
+            if($serv->check_install() == "TRUE") {
 
-            $json_user = null;
-            $json_tribe = null;
+                $path = $serv->get_save_dir();
+                $container = null;
+                $container = new Container();
+                $container->LoadDirectory($path);
+                $container->LinkPlayersAndTribes();
 
-            $z = 0;
-            foreach($container->Tribes as $tribe)
-            {
-                $json_tribe[$z]['Id'] = $tribe->Id;
-                $json_tribe[$z]['Name'] = $tribe->Name;
-                $json_tribe[$z]['OwnerId'] = $tribe->OwnerId;
-                $json_tribe[$z]['FileCreated'] = $tribe->FileCreated;
-                $json_tribe[$z]['FileUpdated'] = $tribe->FileUpdated;
-                $z++;
+                $json_user = null;
+                $json_tribe = null;
+
+                $z = 0;
+                foreach($container->Tribes as $tribe)
+                {
+                    $json_tribe[$z]['Id'] = $tribe->Id;
+                    $json_tribe[$z]['Name'] = $tribe->Name;
+                    $json_tribe[$z]['OwnerId'] = $tribe->OwnerId;
+                    $json_tribe[$z]['FileCreated'] = $tribe->FileCreated;
+                    $json_tribe[$z]['FileUpdated'] = $tribe->FileUpdated;
+                    $z++;
+                }
+
+                $z = 0;
+                foreach($container->Players as $Players)
+                {
+                    #print_r($Players->Id);
+                    $json_user[$z]['Id'] = $Players->Id;
+                    $json_user[$z]['SteamId'] = $Players->SteamId;
+                    $json_user[$z]['SteamName'] = $Players->SteamName;
+                    $json_user[$z]['CharacterName'] = $Players->CharacterName;
+                    $json_user[$z]['Level'] = $Players->Level;
+                    $json_user[$z]['ExperiencePoints'] = $Players->ExperiencePoints;
+                    $json_user[$z]['TotalEngramPoints'] = $Players->TotalEngramPoints;
+                    $json_user[$z]['FirstSpawned'] = $Players->FirstSpawned;
+                    $json_user[$z]['FileCreated'] = $Players->FileCreated;
+                    $json_user[$z]['FileUpdated'] = $Players->FileUpdated;
+                    $json_user[$z]['TribeId'] = $Players->TribeId;
+                    $z++;
+                }
+
+                if(!$json_user_enc = json_encode($json_user, JSON_INVALID_UTF8_SUBSTITUTE)) echo '<br />false!<br />';
+                if(!$json_user_tribe = json_encode($json_tribe, JSON_INVALID_UTF8_SUBSTITUTE)) echo '<br />false!<br />';
+
+                file_put_contents('data/saves/tribes_'.$serv->show_name().'.json', $json_user_tribe);
+                file_put_contents('data/saves/player_'.$serv->show_name().'.json', $json_user_enc);
+
             }
-
-            $z = 0;
-            foreach($container->Players as $Players)
-            {
-                #print_r($Players->Id);
-                $json_user[$z]['Id'] = $Players->Id;
-                $json_user[$z]['SteamId'] = $Players->SteamId;
-                $json_user[$z]['SteamName'] = $Players->SteamName;
-                $json_user[$z]['CharacterName'] = $Players->CharacterName;
-                $json_user[$z]['Level'] = $Players->Level;
-                $json_user[$z]['ExperiencePoints'] = $Players->ExperiencePoints;
-                $json_user[$z]['TotalEngramPoints'] = $Players->TotalEngramPoints;
-                $json_user[$z]['FirstSpawned'] = $Players->FirstSpawned;
-                $json_user[$z]['FileCreated'] = $Players->FileCreated;
-                $json_user[$z]['FileUpdated'] = $Players->FileUpdated;
-                $json_user[$z]['TribeId'] = $Players->TribeId;
-                $z++;
-            }
-
-            if(!$json_user_enc = json_encode($json_user, JSON_INVALID_UTF8_SUBSTITUTE)) echo '<br />false!<br />';
-            if(!$json_user_tribe = json_encode($json_tribe, JSON_INVALID_UTF8_SUBSTITUTE)) echo '<br />false!<br />';
-
-            file_put_contents('data/saves/tribes_'.$serv->show_name().'.json', $json_user_tribe);
-            file_put_contents('data/saves/player_'.$serv->show_name().'.json', $json_user_enc);
-
             $container = null;
             $json_user = null;
             $json_tribe = null;
@@ -133,152 +139,118 @@ elseif($job == "player") {
             $log_file = 'sh/resp/'.$serv->show_name().'/status.log';
             $time = time();
             $file_time = filemtime($log_file);
+            if(!file_put_contents($log_file.'2', sh_crontab(file_get_contents($log_file)))) exit;
+            file_put_contents($serv->show_name().'.log', sh_crontab(file_get_contents($log_file)));
+            $log_file = 'sh/resp/'.$serv->show_name().'/status.log2';
+            $log_file = 'sh/resp/'.$serv->show_name().'/status.log';
             $diff = $time - $file_time;
             if($diff > $timediff['player']) {
-                echo 'jeah';
                 $checkit = true;
                 if($fn = fopen($log_file,"r")) {
-                    $re .= 'make JSON... '.$serv->show_name().'<br />';
-                    $json = file_get_contents('data/serv/'.$serv->show_name().'.json');
-                    $server = json_decode($json, true);
-                    $name = $serv->show_name();
-                    $ier = 0;
-                    $wer = 0;
+                    $jsonfile = 'data/serv/'.$serv->show_name().'.json';
+
+                    $search  = array(
+                        " ",
+                        'Serveronline',
+                        'ActivePlayers',
+                        'Players',
+                        'ServerPID',
+                        'Serverrunning',
+                        'Serverlistening',
+                        'Serverversion',
+                        'ServerbuildID'
+                    );
+                    $replace = array(
+                        null,
+                        'online',
+                        'aplayers',
+                        'players',
+                        'pid',
+                        'run',
+                        'listening',
+                        'version',
+                        'bid'
+                    );
+
                     $server['warning_count'] = 0;
                     $server['error_count'] = 0;
                     $server['error'] = null;
-                    $server['error'][0] = null;
+                    $server['error'][] = null;
                     $server['warning'] = null;
-                    $server['warning'][0] = null;
+                    $server['warning'][] = null;
                     $server['online'] = 'NO';
                     $server['aplayers'] = 0;
                     $server['players'] = 0;
                     $server['pid'] = 'NO';
                     $server['run'] = 'NO';
                     $server['listening'] = 'NO';
-
                     $server['installed'] = $serv->check_install();
+
+
+                    $ier = 0;
+                    $wer = 0;
 
                     while(!feof($fn))  {
                         $result = fgets($fn);
+                        $result = sh_crontab($result);
+                        if(!strpos($result, "'status'")) {
+                            if(strpos($result, 'http:') || strpos($result, 'steam:')) {
+                                $exp = explode("link:", $result);
+                                $exp[1] = str_replace("\n", null, $exp[1]);
+                                $key = "connect";
+                                if($exp[0] == "ARKServers") $key = "ARKServers";
+                                $server[$key] = sh_crontab($exp[1]);;
+                            }
+                            elseif(strpos($result, 'ERROR')) {
+                                $exp = explode("ERROR", $result);
+                                $exp[1] = str_replace("\n", null, $exp[1]);
+                                $server['error'][$ier] = sh_crontab($exp[1]);;
+                                $ier++;
+                            }
+                            elseif(strpos($result, 'WARN')) {
+                                $exp = explode("WARN", $result);
+                                $exp[1] = str_replace("\n", null, $exp[1]);
+                                $server['warning'][$ier] = sh_crontab($exp[1]);;
+                                $wer++;
+                            }
+                            else {
+                                $exp = explode(":", $result);
+                                $key = str_replace($search, $replace, $exp[0]);
+                                if($key != "ServerName") $exp[1] = str_replace(" ", null, $exp[1]);
+                                if($key == "ServerName") {
+                                    $str = $exp[1];
+                                    $expstr = explode(" - (", $str);
+                                    $server['version'] = str_replace(array(")", "v"), array(null, null), $expstr[1]);
+                                }
+                                $exp[1] = str_replace("\n", null, $exp[1]);
+                                if($key != null) $server[$key] = sh_crontab($exp[1]);
+                            }
+                        }
                         $server['cfg'] = $name;
-                        if(strpos($result, 'listening') !== false) {
-                            $str = filtersh($result);
-                            $str = explode(":", $str);
-                            $server['listening'] = filter_end($str[1]);
-                        }
-
-
-                        if(strpos($result, 'running') !== false) {
-                            $str = filtersh($result);
-                            $str = explode(":", $str);
-                            $server['run'] = filter_end($str[1]);
-                        }
-
-
-                        if(strpos($result, 'pid') !== false) {
-                            $str = filtersh($result);
-                            $str = explode(":", $str);
-                            $server['warning'][$wer] = $str[1];
-                            $server['pid'] = $str[1];
-                        }
-
-
-                        if(strpos($result, 'Players') !== false && strpos($result, 'Active') === false) {
-                            $str = filtersh($result);
-                            $str = explode(":", $str);
-                            $server['players'] = $str[1];
-                        }
-
-
-                        if(strpos($result, 'Active') !== false) {
-                            $str = filtersh($result);
-                            $str = explode(":", $str);
-                            $server['aplayers'] = $str[1];
-                        }
-
-
-                        if(strpos($result, 'version') !== false) {
-                            $str = filtersh($result);
-                            $str = explode(":", $str);
-                            $server['version'] = $str[1];
-                        }
-
-
-                        if(strpos($result, 'connect link') !== false) {
-                            $str = filtersh($result);
-                            $str = explode("link:", $str);
-                            $server['connect'] = $str[1];
-                        }
-
-
-                        if(strpos($result, 'ARKServers link') !== false) {
-                            $str = filtersh($result);
-                            $str = explode("link:", $str);
-                            $server['ARKServers'] = $str[1];
-                        }
-
-
-                        if(strpos($result, 'online') !== false) {
-                            $str = filtersh($result);
-                            $str = explode(":", $str);
-                            $server['online'] = filter_end($str[1]);
-                        }
-
-
-                        if(strpos($result, 'ERROR') !== false) {
-                            $str = filtersh($result);
-                            $str = explode("ERROR", $str);
-                            $server['error'][$ier] = $str[1];
-                            $ier++;
-                        }
-
-
-                        if(strpos($result, 'WARN') !== false) {
-                            $str = filtersh($result);
-                            $str = explode("WARN", $str);
-                            $server['warning'][$ier] = $str[1];
-                            $wer++;
-                        }
-
-
-                        if(strpos($result, 'PID') !== false) {
-                            $str = filtersh($result);
-                            $str = explode("WARN", $str);
-                            $server['pid'] = $str[1];
-                        }
-
-
-                        if(strpos($result, 'build ID') !== false) {
-                            $str = filtersh($result);
-                            $str = explode("WARN", $str);
-                            $server['bid'] = $str[1];
-                        }
-
                     }
                     if($ier > 0) $server['error_count'] = $ier;
                     if($wer > 0) $server['warning_count'] = $wer;
+                    $server['ARKServers'] = "https://arkservers.net/server/".$ip.":".$serv->cfg_read("ark_QueryPort");
                     fclose($fn);
 
                     $count_serv_max++;
 
                 }
-                if($checkit) {
-                    print_r($server);
-                    $helper->savejson_create($server, 'data/serv/'.$name.'.json');
-                }
 
                 $file = 'sh/serv/jobs_ID_'.$serv->show_name().'.sh';
                 $txt = file_get_contents($file);
-                if(!file_exists('sh/serv/jobs_ID_'.$serv->show_name().'.state')) file_put_contents('sh/serv/jobs_ID_'.$serv->show_name().'.state', 'FALSE');
+                if(!file_exists('sh/serv/jobs_ID_'.$serv->show_name().'.state')) file_put_contents('sh/serv/jobs_ID_'.$serv->show_name().'.state', 'True');
                 $serv_state = file_get_contents('sh/serv/jobs_ID_'.$serv->show_name().'.state');
                 $serv_state = str_replace("\n", null, $serv_state);
                 $serv_state = str_replace(" ", null, $serv_state);
-                if(strpos($serv_state, 'TRUE') !== false) {
+                if($serv_state== 'TRUE') {
                     $server['next'] = 'FALSE';
                 }
-                elseif(strpos($serv_state, 'FALSE') !== false) {
+                elseif($serv_state== 'FALSE') {
                     $server['next'] = 'TRUE';
+                }
+                if($checkit) {
+                    $helper->savejson_create($server, $jsonfile);
                 }
             }
 
@@ -347,7 +319,6 @@ elseif($job == "player") {
 
             $helper->savejson_create($server, 'data/serv/'.$name.'.json');
         }
-        echo $dir[$i];
     }
 }
 
@@ -395,7 +366,7 @@ elseif($job == "jobs") {
                                 $x = $json['option'][$key[$z]]['intervall'];
                             }
                             $nextrun = $json['option'][$key[$z]]['datetime'] + $x;
-                            $jobs->create('backup '.$json['option'][$key[$z]]['parameter']);
+                            $jobs->create($key[$z].' '.$json['option'][$key[$z]]['parameter']);
                             $json['option'][$key[$z]]['datetime'] = $nextrun;
                         }
                     }

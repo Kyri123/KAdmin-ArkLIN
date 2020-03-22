@@ -1,4 +1,5 @@
 <?php
+
 $n_home = null;
 $n_home_css = null;
 
@@ -7,7 +8,6 @@ if($page == 'home') {
     $n_home_css = 'active';
 }
 
-$tpl_b->repl('curr_home', $n_home);
 $tpl_b->repl('curr_home_css', $n_home_css);
 
 ###############################
@@ -18,9 +18,23 @@ $n_changelog = null;
 $n_changelog_css = null;
 
 if($page == 'changelog') {
-    $n_changelog = '<span class="sr-only">(current)</span>';
     $n_changelog_css = 'active';
 }
+
+$tpl_b->repl('curr_changelog_css', $n_changelog_css);
+
+###############################
+# next
+###############################
+
+$n_changelog = null;
+$n_changelog_css = null;
+
+if($page == 'servercontrollcenter') {
+    $n_servercontrollcenter = 'active';
+}
+
+$tpl_b->repl('curr_servercontrollcenter_css', $n_servercontrollcenter);
 
 ################################
 
@@ -62,7 +76,6 @@ for($i=count($json)-1;$i>-1;$i--) {
 
 
 $tpl_b->repl('curr_changelog', $n_changelog);
-$tpl_b->repl('curr_changelog_css', $n_changelog_css);
 
 
 

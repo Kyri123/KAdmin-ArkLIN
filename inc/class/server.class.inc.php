@@ -7,7 +7,7 @@ class server {
     private $ini = null;
     private $inipath = null;
 
-    function __construct($serv) {
+    public function __construct($serv) {
         $this->serv = $serv;
         if(file_exists('remote/arkmanager/instances/'.$serv.'.cfg')) {
             $this->cfg = parse_ini_file('remote/arkmanager/instances/'.$serv.'.cfg');
@@ -18,11 +18,11 @@ class server {
         }
     }
 
-    function show_name() {
+    public function show_name() {
         return $this->serv;
     }
 
-    function check_install() {
+    public function check_install() {
         $dir = $this->cfg_read('arkserverroot');
         $dir = str_replace('/data/ark_serv_dir/', 'remote/serv/', $dir);
         $dir = $dir.'/ShooterGame/Binaries/Linux/ShooterGameServer';
@@ -34,13 +34,13 @@ class server {
         }
     }
 
-    function get_dir() {
+    public function get_dir() {
 
         $dir = $this->cfg_read('arkserverroot');
         $exp = explode('/', $dir);
 
         for($i=0;$i<count($exp);$i++) {
-            if(strpos($exp[$i], $this->serv) !== false) {
+            if(strpos($exp[$i], $this->serv)) {
                 $path = 'remote/serv/'.$exp[$i];
                 break;
             }
@@ -49,7 +49,22 @@ class server {
         return $path;
     }
 
-    function get_save_dir() {
+    public function get_backup_dir() {
+
+        $dir = $this->cfg_read('arkbackupdir');
+        $exp = explode('/', $dir);
+
+        for($i=0;$i<count($exp);$i++) {
+            if(strpos($exp[$i], $this->serv)) {
+                $path = 'remote/serv/'.$exp[$i];
+                break;
+            }
+        }
+
+        return $path;
+    }
+
+    public function get_save_dir() {
 
         $path = $this->get_dir();
 
@@ -63,7 +78,7 @@ class server {
         return $path;
     }
 
-    function ini_load($ini, $group) {
+    public function ini_load($ini, $group) {
 
         $path = $this->get_dir();
         $dir = $path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini;
@@ -77,15 +92,15 @@ class server {
         }
     }
 
-    function ini_get_str() {
+    public function ini_get_str() {
         return file_get_contents($this->inipath);
     }
 
-    function ini_get_path() {
+    public function ini_get_path() {
         return $this->inipath;
     }
 
-    function cfg_get_str() {
+    public function cfg_get_str() {
         return file_get_contents('remote/arkmanager/instances/'.$this->serv.'.cfg');
     }
 
@@ -93,16 +108,16 @@ class server {
         return $this->cfg;
     }
 
-    function cfg_read($key) {
+    public function cfg_read($key) {
         return $this->cfg[$key];
     }
 
-    function cfg_write($key, $value) {
+    public function cfg_write($key, $value) {
         $this->cfg[$key] = $value;
         return $this->cfg;
     }
 
-    function cfg_save() {
+    public function cfg_save() {
 
         write_ini_file($this->cfg, 'remote/arkmanager/instances/'.$this->serv.'.cfg');
         return true;
@@ -136,20 +151,20 @@ class server {
         }
     }
 
-    function ini_get() {
+    public function ini_get() {
         return $this->ini;
     }
 
-    function get_job_path() {
+    public function get_job_path() {
         return 'sh/serv/sub_jobs_ID_' . $this->show_name() . '.sh';
     }
 
-    function get_job_file() {
+    public function get_job_file() {
         $str = file_get_contents('sh/serv/sub_jobs_ID_' . $this->show_name() . '.sh');
         return $str;
     }
 
-    function write_job_file($str) {
+    public function write_job_file($str) {
         if(file_put_contents('sh/serv/sub_jobs_ID_' . $this->show_name() . '.sh', $str)) {
             return true;
         }
@@ -158,16 +173,16 @@ class server {
         }
     }
 
-    function ini_read($key) {
+    public function ini_read($key) {
         return $this->ini[$key];
     }
 
-    function ini_write($key, $value) {
+    public function ini_write($key, $value) {
         $this->ini[$key] = $value;
         return $this->cfg;
     }
 
-    function ini_save() {
+    public function ini_save() {
         safefilerewrite($this->inipath, $this->ini);
         return true;
 

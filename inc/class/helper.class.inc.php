@@ -62,7 +62,9 @@ class helper {
     }
 
     public function savejson_create($json, $path) {
-        if(file_put_contents($path, json_encode($json, JSON_INVALID_UTF8_SUBSTITUTE))) {
+        $content = json_encode($json, JSON_INVALID_UTF8_SUBSTITUTE);
+        if(file_put_contents($path, $content)) {
+            return $content;
             return true;
         }
         else {

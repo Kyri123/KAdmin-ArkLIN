@@ -34,6 +34,10 @@ elseif($url[3] == 'jobs') {
     $pagename = 'ServerCenter - Aufgaben';
     include('sites/inc/serv/jobs.inc.php');
 }
+elseif($url[3] == 'backups') {
+    $pagename = 'ServerCenter - Backups';
+    include('sites/inc/serv/backups.inc.php');
+}
 else {
     $pagename = 'ServerCenter - Startseite';
     include('sites/inc/serv/home.inc.php');
@@ -158,7 +162,7 @@ if (is_array($player_json)) {
         $list_tpl->repl('TID', $pl->TribeId);
         $list_tpl->replif('empty', true);
 
-        $player .= $list_tpl->loadin();
+        if(converttime($pl->FileUpdated) != "01.01.1970 01:00")$player .= $list_tpl->loadin();
         $c_pl++;
         break;
     }

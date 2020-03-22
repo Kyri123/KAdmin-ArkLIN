@@ -99,10 +99,9 @@ $resp = null;
 $urls = 'http://dev.aa.chiraya.de/serverpage/'.$url[2].'/mods/';
 
 $serv->cfg_read('arkserverroot');
-
 $savedir = $serv->get_save_dir();
-$player_json = $helper->file_to_json('data/saves/player_'.$serv->show_name().'.json');
-$tribe_json = $helper->file_to_json('data/saves/tribes_'.$serv->show_name().'.json');
+$player_json = $helper->file_to_json('data/saves/player_'.$serv->show_name().'.json', false);
+$tribe_json = $helper->file_to_json('data/saves/tribes_'.$serv->show_name().'.json', false);
 if(!is_array($player_json)) $player_json = array();
 if(!is_array($tribe_json)) $tribe_json = array();
 
@@ -143,6 +142,8 @@ if(is_array($player_json)) {
         $list_tpl->repl('SpielerID', $pl->Id);
         $list_tpl->repl('TEP', $pl->TotalEngramPoints);
         $list_tpl->repl('TID', $pl->TribeId);
+        $file = $savedir.'/'.$pl->SteamId.'.arkprofile';
+        $list_tpl->repl('durl', "/".$file);
 
         $player .= $list_tpl->loadin();
         $c_pl++;
@@ -163,6 +164,8 @@ if(is_array($tribe_json)) {
         if(is_array($player_json)) {
             for ($z=0;$z<count($player_json); $z++) {
                 $p = $jhelper->player($player_json, $z);
+                //print_r($pl); echo "<br />";
+                //print_r($p); echo "<br />";
                 if ($pl->Id == $p->TribeId) {
 
                     $playerlist_tpl = new Template('list_tribes_user.htm', 'tpl/serv/sites/list/');
@@ -194,6 +197,8 @@ if(is_array($tribe_json)) {
         $list_tpl->repl('pl', $playerlist);
         $list_tpl->repl('count', $ct);
         $list_tpl->repl('id', $pl->Id);
+        $file = $savedir.'/'.$pl->Id.'.arktribe';
+        $list_tpl->repl('durl', "/".$file);
 
         $list_tpl->repl('rm_url', '/serverpage/'.$serv->show_name().'/saves/remove/'.$pl->Id.'.arktribe');
 
@@ -207,28 +212,23 @@ $world = null; $w_t = 0;
 $dirarr = dirToArray($savedir);
 // World
 for($i=0;$i<count($dirarr);$i++) {
-    if(strpos($dirarr[$i], '_AntiCorruptionBackup') !== false) {
-        //mache aus _NewLaunchBackup die eigentl. Ark datei (Kompliziert?)
-        $dirarr[$i] = str_replace('.bak', '.ark', $dirarr[$i]);
-        $dirarr[$i] = str_replace('_AntiCorruptionBackup', null, $dirarr[$i]);
-        if(in_array($dirarr[$i], $dirarr)) {
-            //erstelle Inhalt
-            $file = $savedir.'/'.$dirarr[$i];
-            if(file_exists($file)) {
-                $list_tpl = new Template('list_world.htm', 'tpl/serv/sites/list/');
-                $list_tpl->load();
-                $time = filemtime($file);
+    if(strpos($dirarr[$i], '.ark')) {
+        $file = $savedir.'/'.$dirarr[$i];
+        if(file_exists($file)) {
+            $list_tpl = new Template('list_world.htm', 'tpl/serv/sites/list/');
+            $list_tpl->load();
+            $time = filemtime($file);
 
-                $name = str_replace('.ark', null, $dirarr[$i]);
+            $name = str_replace('.ark', null, $dirarr[$i]);
 
-                $list_tpl->repl('name', $name);
-                $list_tpl->repl('update', converttime($time));
+            $list_tpl->repl('name', $name);
+            $list_tpl->repl('update', converttime($time));
+            $list_tpl->repl('durl', "/".$file);
 
-                $list_tpl->repl('rm_url', '/serverpage/'.$serv->show_name().'/saves/remove/'.$dirarr[$i]);
+            $list_tpl->repl('rm_url', '/serverpage/'.$serv->show_name().'/saves/remove/'.$dirarr[$i]);
 
-                $world .= $list_tpl->loadin();
-                $w_t++;
-            }
+            $world .= $list_tpl->loadin();
+            $w_t++;
         }
     }
 }

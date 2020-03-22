@@ -1,11 +1,7 @@
-
 <?php
+require('js_inz.inc.php');
 
 $cfg = $_GET['cfg'];
-
-chdir($_SERVER['DOCUMENT_ROOT']);
-include('sites/inc/js_inz.inc.php');
-$serv = new server($cfg);
 
 $resp = null;
 $site = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];

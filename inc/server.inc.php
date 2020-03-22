@@ -30,6 +30,10 @@ for($i=0;$i<count($dir);$i++) {
         else {
             $state = 'bg-warning';
         }
+        $l = strlen($servername); $lmax = 18;
+        if($l > $lmax) {
+            $servername = substr($servername, 0 , $lmax) . " ...";
+        }
 
         $tpl_serv->repl('map', $map);
         $tpl_serv->repl('state', $state);

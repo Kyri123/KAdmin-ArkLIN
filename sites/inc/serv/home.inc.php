@@ -3,7 +3,7 @@
 $page_tpl = new Template('home.htm', 'tpl/serv/sites/');
 $page_tpl->load();
 $urltop = '<li class="breadcrumb-item"><a href="/serverpage/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
-$urltop .= '<li class="breadcrumb-item">Startseite (Jobs)</li>';
+$urltop .= '<li class="breadcrumb-item">Startseite</li>';
 
 $user = new userclass();
 $user->setid($_SESSION['id']);

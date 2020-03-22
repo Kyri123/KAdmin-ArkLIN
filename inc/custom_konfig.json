@@ -1,4 +1,5 @@
 {
   "uninstall_mod": true,
-  "install_mod": true
+  "install_mod": true,
+  "servlocdir": "/data/ark_serv_dir/"
 }

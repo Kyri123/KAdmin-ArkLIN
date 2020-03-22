@@ -2,7 +2,7 @@
 
 
 // Vars
-$tpl_dir = 'tpl/404/'
+$tpl_dir = 'tpl/404/';
 $setsidebar = false;
 
 $urls = NULL;

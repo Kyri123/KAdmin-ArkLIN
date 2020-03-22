@@ -1,12 +1,5 @@
-
 <?php
-
-
-chdir($_SERVER['DOCUMENT_ROOT']);
-include('inc/class/server.class.inc.php');
-include('inc/class/steamAPI.class.inc.php');
-include('inc/class/Template.class.inc.php');
-include('inc/func/allg.func.inc.php');
+require('js_inz.inc.php');
 $cfg = $_GET['cfg'];
 $resp = null;
 $site = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];

@@ -42,9 +42,11 @@ class Template {
         $this->file = str_replace('{'.$from.'}', $to, $this->file);
         if($boolean === true) {
             $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", '\\1', $this->file);
+            $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", null, $this->file);
         }
         else {
             $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", null, $this->file);
+            $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", '\\1', $this->file);
         }
         return $this->file;
     }
