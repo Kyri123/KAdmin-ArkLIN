@@ -239,11 +239,11 @@ elseif($job == "player") {
 
                 $file = 'sh/serv/jobs_ID_'.$serv->show_name().'.sh';
                 $txt = file_get_contents($file);
-                if(!file_exists('sh/serv/jobs_ID_'.$serv->show_name().'.state')) file_put_contents('sh/serv/jobs_ID_'.$serv->show_name().'.state', 'True');
+                if(!file_exists('sh/serv/jobs_ID_'.$serv->show_name().'.state')) file_put_contents('sh/serv/jobs_ID_'.$serv->show_name().'.state', 'TRUE');
                 $serv_state = file_get_contents('sh/serv/jobs_ID_'.$serv->show_name().'.state');
                 $serv_state = str_replace("\n", null, $serv_state);
                 $serv_state = str_replace(" ", null, $serv_state);
-                if($serv_state== 'TRUE') {
+                if($serv_state == 'TRUE') {
                     $server['next'] = 'FALSE';
                 }
                 elseif($serv_state== 'FALSE') {

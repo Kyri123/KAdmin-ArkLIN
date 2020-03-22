@@ -51,11 +51,10 @@ if(isset($_POST["add"])) {
     }
 }
 
-if($_POST["del"]) {
+if(isset($_POST["del"])) {
     $serv = new server($_POST["cfg"]);
     $opt = array();
     if(isset($_POST["opt"])) $opt = $_POST["opt"];
-    $path_cfg = "remote/arkmanager/instances/".$serv->show_name().".cfg";
 
     $path = "data/serv/" . $serv->show_name() . ".json";
     $data = $helper->file_to_json($path);
@@ -82,7 +81,9 @@ if($_POST["del"]) {
     }
 
 
-    if(file_exsists($path_cfg) && ($serverstate == 0 || $serverstate == 3)) {
+    $path_cfg = "remote/arkmanager/instances/".$serv->show_name().".cfg";
+    $jobs->set($serv->show_name());
+    if(file_exists($path_cfg) && ($serverstate == 0 || $serverstate == 3)) {
         if(unlink($path_cfg)) {
             $resp = meld('success', 'Server Entfernt', 'Fehler!', null);
             if(in_array('deinstall', $opt)) {
