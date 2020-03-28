@@ -18,6 +18,25 @@ if(isset($_POST['savecfg'])) {
     if(file_put_contents($path, $cfg)) $resp = meld('success mb-4', 'Arkmanger.cfg wurde gespeichert!', 'Gespeichert', 'fas fa-check', 'fas fa-exclamation-circle');
 }
 
+// Game,GUS,Engine.ini Speichern
+if(isset($_POST['save'])) {
+    $type = $_POST["type"];
+    $text = $_POST["text"];
+    $path = $serv->get_konfig_dir().$type;
+    if(file_exists($path)) {
+        $text = ini_save_rdy($text);
+        if(file_put_contents($path, $text)) {
+            $resp = meld('success', 'Konfiguration wurde gespeichert', 'Erfolgreich!', null);
+        }
+        else {
+            $resp = meld('danger', 'Konfiguration wurde nicht gespeichert', 'Fehler!', null);
+        }
+    }
+    else {
+        $resp = meld('danger', 'Konfiguration wurde noch nicht vom Server erstellt', 'Fehler!', null);
+    }
+}
+
 
 $page_tpl = new Template('konfig.htm', 'tpl/serv/sites/');
 $page_tpl->load();

@@ -26,6 +26,7 @@ function filter_end ($str) {
 
 //Für Serverstatus
 if($job == "status") {
+    if(file_put_contents("data/checked", "checked"));
     $re .= "Lese Status...";
     $mainfile = null;
     $dir = dirToArray('remote/arkmanager/instances/');

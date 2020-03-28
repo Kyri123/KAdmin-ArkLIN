@@ -27,7 +27,7 @@ class jobs
         $file_jobs = $serv->get_job_file();
         $file_jobs = str_replace("\r", null, $file_jobs);
         $path_jobs = $serv->get_job_path();
-        $file_jobs .= "\necho \"\" > " . $_SERVER['DOCUMENT_ROOT'] . '/' . $path_jobs . ' ; ' . $shell . ' ;exit';
+        echo $file_jobs .= "\necho \"\" > " . $_SERVER['DOCUMENT_ROOT'] . '/' . $path_jobs . ' ; ' . $shell;
         return $serv->write_job_file($file_jobs);
     }
 }

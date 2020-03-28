@@ -41,7 +41,7 @@ if(isset($_POST['addmod'])) {
                         }
                     }
                     if($exsists === false) {
-                        if($ckonfig['install_mod']) {
+                        if($ckonfig['install_mod'] == 1) {
                             $jobs->set($serv->show_name());
                             $jobs->create('installmod ' . $modid);
                         }
@@ -108,7 +108,7 @@ if(isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' OR $url[4] == 'bot' 
     // builder
     for($i=0;$i<count($mods);$i++) {
         if($mods[$i] == 'removed') {
-            if($ckonfig['uninstall_mod']) {
+            if($ckonfig['uninstall_mod'] == 1) {
                 $jobs->set($serv->show_name());
                 $jobs->create('uninstallmod ' . $id);
             }

@@ -1,5 +1,10 @@
 <?php
 
+if(!file_exists("remote/arkmanager/instances/".$url[2].".cfg")) {
+   header("Location: /");
+   exit;
+}
+
 // Vars
 $tpl_dir = 'tpl/serv/';
 $tpl_dir_all = 'tpl/all/';

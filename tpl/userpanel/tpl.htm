@@ -1,0 +1,78 @@
+<div id="all_resp" class="mb-4">{resp}</div>
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-striped projects">
+                <thead>
+                <tr>
+                    <th>
+                        Benutzername
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Registrierungs Datum
+                    </th>
+                    <th>
+                        Letzter Login
+                    </th>
+                    <th class="text-center">
+                        Ban-Status
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {list}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+</section>
+{list_modal}
+
+<!-- Modal -->
+<form class="modal fade" id="addserver" tabindex="-1" method="post" action="/userpanel">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="modal-title">Reg-Codes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <table class="table table-striped projects mb-0">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Code
+                            </th>
+                            <th>
+                                Aktionen
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {list_codes}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                <button type="submit" class="btn btn-success" name="add">Neuen Code erstellen</button>
+            </div>
+        </div>
+    </div>
+</form>
+

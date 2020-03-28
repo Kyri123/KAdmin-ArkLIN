@@ -1,0 +1,74 @@
+{error}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-12">
+        <div class="card rounded-0">
+            <div class="card-header">
+                <h3 class="card-title">
+                    Benutzer Konfiguration
+                </h3>
+            </div>
+            <div class="card-body">
+                <dl>
+                    <dt>Einstellungen</dt>
+                    <dd>Stelle alles ein wie du willst</dd>
+                    <dd>Sorge bitte dafür dass der Webserver zugriff die die Ordner hat!</dd>
+                    <dd><a href="https://blog.ha-com.com/2011/07/11/open_basedir-php-apache-documentroot/" target="_blank">open_basedir Allgemein Apache</a> | <a href="https://support.plesk.com/hc/en-us/articles/360006170513-How-to-add-custom-or-additional-path-to-the-open-basedir-option-for-Plesk-domain-" target="_blank">open_basedir Plesk</a></dd>
+                    <dd>Den Steam API key bekommst du <a href="https://steamcommunity.com/dev/apikey" target="_blank">HIER!</a> </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-12">
+        <form role="form" method="post" action="#" class="card card-primary rounded-0">
+            <div class="card-header rounded-0">
+                <h3 class="card-title">Benutzer definierte Daten</h3>
+            </div>
+
+            <div>
+                <div class="card-body">
+                    <form action="#save" method="post" class="tab-pane fade show active" id="pills-Panel" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div id="form">
+                            <div class="form-group">
+                                <label>Deinstalliere Mods beim Entfernen</label>
+                                <input type="hidden" name="key[]" value="uninstall_mod">
+                                <select class="form-control rounded-0" name="value[]">
+                                    <option value="0">Nein</option>
+                                    <option value="1">Ja</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Installiere Mods beim Hinzufügen</label>
+                                <input type="hidden" name="key[]" value="install_mod">
+                                <select class="form-control rounded-0" name="value[]">
+                                    <option value="0">Nein</option>
+                                    <option value="1">Ja</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Server-verzeichnis</label>
+                                <input type="hidden" name="key[]" value="servlocdir">
+                                <input class="form-control rounded-0" type="text" name="value[]" placeholder="bsp.: /data/ark_serv_dir/">
+                            </div>
+                            <div class="form-group">
+                                <label>Arkmanager-verzeichnis</label>
+                                <input type="hidden" name="key[]" value="arklocdir">
+                                <input class="form-control rounded-0" type="text" name="value[]" value="/etc/arkmanager/">
+                            </div>
+                            <div class="form-group">
+                                <label>Steam API-Key</label>
+                                <input type="hidden" name="key[]" value="apikey">
+                                <input class="form-control rounded-0" type="text" name="value[]" placeholder="steam API-Key">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer rounded-0">
+                    <button type="submit" name="savepanel" class="btn btn-primary" style="width: 100%">Absenden</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

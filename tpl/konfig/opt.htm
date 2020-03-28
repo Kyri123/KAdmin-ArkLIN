@@ -1,0 +1,26 @@
+{ifbool}
+<div class="form-group">
+    <label>{keym}</label>
+    <input type="hidden" name="key[]" value="{key}">
+    <select class="form-control rounded-0" name="value[]">
+        <option value="0">Nein</option>
+        <option {true} value="1">Ja</option>
+    </select>
+</div>
+{/ifbool}
+
+{iftxt}
+<div class="form-group">
+    <label>{keym}</label>
+    <input type="hidden" name="key[]" value="{key}">
+    <input class="form-control rounded-0" type="text" name="value[]" value="{value}">
+</div>
+{/iftxt}
+
+{ifnum}
+<div class="form-group">
+    <label>{keym}</label>
+    <input type="hidden" name="key[]" value="{key}">
+    <input class="form-control rounded-0" type="number" name="value[]" value="{value}">
+</div>
+{/ifnum}

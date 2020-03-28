@@ -1,40 +1,62 @@
 <?php
 
-$n_home = null;
-$n_home_css = null;
+$n = null;
 
 if($page == 'home') {
-    $n_home = '<span class="sr-only">(current)</span>';
-    $n_home_css = 'active';
+    $n = 'active';
 }
 
-$tpl_b->repl('curr_home_css', $n_home_css);
+$tpl_b->repl('curr_home_css', $n);
 
 ###############################
 # next
 ###############################
 
 $n_changelog = null;
-$n_changelog_css = null;
+$n = null;
 
 if($page == 'changelog') {
-    $n_changelog_css = 'active';
+    $n = 'active';
 }
 
-$tpl_b->repl('curr_changelog_css', $n_changelog_css);
+$tpl_b->repl('curr_changelog_css', $n);
 
 ###############################
 # next
 ###############################
 
-$n_changelog = null;
-$n_changelog_css = null;
+$n = null;
 
 if($page == 'servercontrollcenter') {
-    $n_servercontrollcenter = 'active';
+    $n = 'active';
 }
 
-$tpl_b->repl('curr_servercontrollcenter_css', $n_servercontrollcenter);
+$tpl_b->repl('curr_servercontrollcenter_css', $n);
+
+###############################
+# next
+###############################
+
+$n = null;
+
+if($page == 'userpanel') {
+    $n = 'active';
+}
+
+$tpl_b->repl('curr_userpanel_css', $n);
+
+
+###############################
+# next
+###############################
+
+$n = null;
+
+if($page == 'config') {
+    $n = 'active';
+}
+
+$tpl_b->repl('curr_config_css', $n);
 
 ################################
 

@@ -1,4 +1,7 @@
-<li class="list-group-item" data-toggle="collapse" data-target="#lc{y}" style="cursor: pointer">{y} | {title} <span class="right badge badge-danger">{i}</span></li>
-<ul style="margin-bottom: -1px;" class="collapse" id="lc{y}">
+<li class="list-group-item rounded-0" data-toggle="collapse" data-target="#lc{y}" {!ifemtpy}style="cursor: pointer"{/!ifemtpy}>
+    {!ifemtpy}{y} | {title} <span class="right badge badge-danger">{i}</span>{/!ifemtpy}
+    {ifemtpy}Keine Backups vorhanden{/ifemtpy}
+</li>
+{!ifemtpy}<ul style="margin-bottom: -1px;" class="collapse" id="lc{y}">
     {list}
-</ul>
+</ul>{/!ifemtpy}

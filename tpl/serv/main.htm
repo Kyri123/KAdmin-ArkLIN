@@ -77,29 +77,86 @@
 
 
     <!-- Pending Requests Card Example -->
-    <div class="list-group col-xl-3 col-md-3 mb-4" style="padding-left: .75rem;">
-        <div class="row">
-            <ul class="list-group col-xl-12 col-md-12" style="padding-left: 0;">
-                <li class="list-group-item server_head" style="padding: 0px!important;">
-                    <img src="https://i.pinimg.com/originals/38/3b/d4/383bd47a5ea8211a038f5447110a8fea.jpg" style="width:100%">
-                    <span>{servername}</span>
-                </li>
-                <li class="list-group-item">Karte: {map_str}</li>
-                <li class="list-group-item">Total-Mod: {tmod}</li>
-                <li class="list-group-item">IP: <a href="{con_url}" target="_blank">{global_IP}:{QPort}</a></li>
-                <li class="list-group-item">ARKServers.net: <a href="{arkservers}" target="_blank">Öffnen</a></li>
-            </ul>
-            <ul class="list-group col-xl-12 col-md-12 " style="padding-left: 0;">
-                <li class="list-group-item-mod bg-green text-white p-3"><h3 class="p-0 m-0">Navigation</h3></li>
-                <a href="/serverpage/{cfg}/home" class="list-group-item text-gray-700 nav_customa p-2">Startseite</a>
-                <a href="/serverpage/{cfg}/konfig" class="list-group-item text-gray-700 nav_customa p-2">Konfiguration</a>
-                <a href="/serverpage/{cfg}/mods" class="list-group-item text-gray-700 nav_customa p-2">Modifikationen</a>
-                <a href="/serverpage/{cfg}/logs" class="list-group-item text-gray-700 nav_customa p-2">Logs</a>
-                <a href="/serverpage/{cfg}/backups" class="list-group-item text-gray-700 nav_customa p-2">Backups</a>
-                <a href="/serverpage/{cfg}/saves" class="list-group-item text-gray-700 nav_customa p-2">Savegames</a>
-                <a href="/serverpage/{cfg}/jobs" class="list-group-item text-gray-700 nav_customa p-2">Aufgaben</a>
-                <li class="bg-green" style="height: 5px!important;"></li>
-            </ul>
+    <div class="list-group col-xl-3 col-md-4 mb-4" style="padding-left: .75rem;">
+        <div class="card card-widget widget-user">
+            <div class="widget-user-header text-white" style="background: url('/dist/img/backgrounds/bg.jpg') center center;">
+                <h3 class="widget-user-username text-right text-gray-dark">{servername}</h3>
+                <h5 class="widget-user-desc text-right text-gray-dark">{map_str}</h5>
+            </div>
+            <div class="widget-user-image">
+                <img class="img-circle" src="/dist/img/logo/ark.png" alt="User Avatar" style="height: 90px;width: 90px;background-color: #001f3f">
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                            <div class="d-none" id="secretInfo">{global_IP}:{QPort}</div>
+                            <h5 class="description-header"><a href="javascript:void(0)" onclick="copyToClipboard('info')" id="btnCopy">Kopieren</a></h5>
+                            <span class="description-text">IP</span>
+                        </div>
+                    </div>
+                    <script>
+                    // von: https://gist.github.com/anazard/d42354f45e172519c0be3cead34fe869
+                    // {
+                    var $body = document.getElementsByTagName('body')[0];
+                    var $btnCopy = document.getElementById('btnCopy');
+                    var secretInfo = document.getElementById('secretInfo').innerHTML;
+
+                    var copyToClipboard = function(secretInfo) {
+                        var $tempInput = document.createElement('INPUT');
+                        $body.appendChild($tempInput);
+                        $tempInput.setAttribute('value', secretInfo)
+                        $tempInput.select();
+                        document.execCommand('copy');
+                        $body.removeChild($tempInput);
+                    }
+
+                    $btnCopy.addEventListener('click', function(ev) {
+                        copyToClipboard(secretInfo);
+                        alert("Kopiert: " + secretInfo);
+                    });
+                    // }
+                    </script>
+                    <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header">{tmod}</h5>
+                            <span class="description-text">T-MOD</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="description-block">
+                            <h5 class="description-header"><a href="{arkservers}" target="_blank">Öffnen</a></h5>
+                            <span class="description-text">ARKServers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                    <li class="nav-item"></li>
+                    <li class="nav-item">
+                        <a href="/serverpage/{cfg}/home" class="nav-link">Startseite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/serverpage/{cfg}/mods" class="nav-link">Modifikationen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/serverpage/{cfg}/konfig" class="nav-link">Konfiguration</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/serverpage/{cfg}/logs" class="nav-link">Logs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/serverpage/{cfg}/backups" class="nav-link">Backups</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/serverpage/{cfg}/saves" class="nav-link">Savegames</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/serverpage/{cfg}/jobs" class="nav-link">Aufgaben</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <!-- Pending Requests Card Example -->

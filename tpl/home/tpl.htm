@@ -1,1 +1,105 @@
-<h1>Comming Soon</h1>
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <!-- CPU -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-microchip"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">CPU Traffic</span>
+                        <span class="info-box-number">
+                            {cpu_perc}
+                            <small>%</small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- RAM -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-memory"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Arbeitsspeicher</span>
+                        <span class="info-box-number">
+                            {ram_perc} <small>%</small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix hidden-md-up"></div>
+            <!-- SPEICHER -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-hdd"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Freier Speicher (Server)</span>
+                        <span class="info-box-number">
+                            {free}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- SERV -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-server"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Server</span>
+                        <span class="info-box-number">
+                            {count_server}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <!-- CHANGELOGS -->
+            <div class="col-md-8">
+
+                <div class="card">
+                    <div class="card-header border-transparent">
+                        <h3 class="card-title">Arkadmin Versionen :: Aktuell: V.{version}</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table m-0">
+                                <thead>
+                                <tr>
+                                    <th>Versionsnummer</th>
+                                    <th>Datum</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {listchangelogs}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer clearfix">
+                        <a href="https://github.com/Kyri123/Arkadmin" target="_blank" class="btn btn-sm btn-secondary float-left rounded-0"><i class="fab fa-github"></i> Github</a>
+                        <a href="/changelog" class="btn btn-sm btn-primary float-right rounded-0">Alle Changelogs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <!-- SERV -->
+                {serv_list}
+            </div>
+        </div>
+    </div>
+</section>

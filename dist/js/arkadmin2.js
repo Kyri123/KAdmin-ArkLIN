@@ -1,5 +1,12 @@
 
 
+function copythis(id) {
+    var txt = document.getElementById(id);
+    txt.select();
+    txt.setSelectionRange(0, 99999)
+    document.execCommand("copy");
+}
+
 function server_glob_data(){
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {

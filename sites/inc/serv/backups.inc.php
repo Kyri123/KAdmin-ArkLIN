@@ -40,8 +40,8 @@ if(isset($_POST["playthisin"])) {
     if(isset($_POST["opt"])) $opt = $_POST["opt"];
     $path = $serv->get_backup_dir()."/".$key."/".$dir_array[$key][$i];
     $spath = $serv->get_save_dir();
+    $state = $serv->get_state();
     $cpath = $spath."/../Config/LinuxServer/";
-    if(in_array("pl", $opt)) echo 1;
     try {
         $phar = new PharData($path);
         $phar->extractTo('cache');
@@ -50,7 +50,7 @@ if(isset($_POST["playthisin"])) {
         $resp = meld('danger', 'Konnte das Backup nicht einspielen', 'Fataler Fehler!', null);
         $cont = false;
     }
-    if($cont) {
+    if($cont && $state == 0) {
         $find = array($serv->show_name().".", ".tar.bz2");
         $replace = array(null, null);
         $filename = str_replace($find, $replace, $dir_array[$key][$i]);
@@ -93,6 +93,9 @@ if(isset($_POST["playthisin"])) {
         rmdir($path);
         $resp = meld('success', $filename. " wurde Einspielt.", 'Erfolgreich!', null);
     }
+    else {
+        $resp = meld('danger', $filename. " konnte nicht eingespielt werden... Server Online (Status muss Offline sein) oder Datei konnte nicht entpackt werden.", 'Fehler!', null);
+    }
 }
 
 
@@ -124,8 +127,16 @@ foreach ($dir_array as $key => $value) {
         $list2 .= $list2tpl->loadin();
     }
     $listtpl->repl("list", $list2);
+    $listtpl->replif("ifemtpy", false);
+    if(count($dir_array[$key]) > 0) $list .= $listtpl->loadin();
+    if(count($dir_array[$key]) > 0) $y++;
+
+}
+if($list == null) {
+    $listtpl = new Template('list_backup.htm', 'tpl/serv/sites/list/');
+    $listtpl->load();
+    $listtpl->replif("ifemtpy", true);
     $list .= $listtpl->loadin();
-    $y++;
 }
 
 $page_tpl->repl("backups_liste", $list);

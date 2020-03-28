@@ -20,7 +20,7 @@ $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 
 
-$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json');
+$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 300);
 
 if(isset($json['file'])) {
     echo 'error 404';

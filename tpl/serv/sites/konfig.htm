@@ -1,6 +1,4 @@
-<div class="col-xl-9 col-md-9 mb-4">
-
-
+<div class="col-xl-9 col-md-8 mb-4">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,33 +21,33 @@
             </ul>
         </div>
     </nav>
-
+    <hr />
     <div class="card shadow p-4" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
         <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel" aria-labelledby="pills-home-tab">
+            <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel" aria-labelledby="pills-home-tab">
                 <div id="form">
-                    <input type="submit" class="btn btn-primary mb-3" id="sendini_gus" value="Speichern">
+                    <input type="submit" class="btn btn-primary mb-3" name="save" value="Speichern">
                     <textarea name="text" class="form-control" rows="3" style="min-height: 500px;max-height: 500px;" id="text_gus">{gus}</textarea>
                     <input type="hidden" name="type" id="type_gus" value="GameUserSettings.ini">
                     <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
                 </div>
-            </div>
-            <div class="tab-pane fade" id="pills-Game" role="tabpanel" aria-labelledby="pills-profile-tab">
+            </form>
+            <form action="#save" method="post" class="tab-pane fade" id="pills-Game" role="tabpanel" aria-labelledby="pills-profile-tab">
                 <div>
-                    <button type="submit" class="btn btn-primary mb-3" id="sendini_game">Speichern</button>
+                    <button type="submit" class="btn btn-primary mb-3" name="save">Speichern</button>
                     <textarea name="text" class="form-control" rows="3" style="min-height: 500px;max-height: 500px;" id="text_game">{game}</textarea>
                     <input type="hidden" name="type" id="type_game" value="Game.ini">
                     <input type="hidden" name="cfg" id="cfg_game" value="{cfg}">
                 </div>
-            </div>
-            <div class="tab-pane fade" id="pills-Engine" role="tabpanel" aria-labelledby="pills-contact-tab">
+            </form>
+            <form action="#save" method="post" class="tab-pane fade" id="pills-Engine" role="tabpanel" aria-labelledby="pills-contact-tab">
                 <div>
-                    <button type="submit" class="btn btn-primary mb-3" id="sendini_engine">Speichern</button>
+                    <button type="submit" class="btn btn-primary mb-3" name="save">Speichern</button>
                     <textarea name="text" class="form-control" rows="3" style="min-height: 500px;max-height: 500px;" id="text_engine">{engine}</textarea>
                     <input type="hidden" name="type" id="type_engine" value="Engine.ini">
                     <input type="hidden" name="cfg" id="cfg_engine" value="{cfg}">
                 </div>
-            </div>
+            </form>
             <div class="tab-pane fade" id="pills-Cfg2" role="tabpanel" aria-labelledby="pills-contact-tab">
                 <form action="#save" method="post">
                     <button type="submit" class="btn btn-primary mb-3" name="savecfg">Speichern</button>
@@ -72,73 +70,3 @@
         </div>
     </div>
 </div>
-
-<script>
-
-    $(document).ready(function() {
-        $('#sendini_gus').click(function(e){
-            e.preventDefault();
-            var cfg = $("#cfg_gus").val();
-            var type = $("#type_gus").val();
-            var text = $("#text_gus").val();
-            $.ajax({
-                type: "POST",
-                url: "/sites/js/sendini.php",
-                dataType: "json",
-                data: {cfg:cfg, type:type, text:text},
-                success : function(data){
-                    if (data.code == "200"){
-                        $("#all_resp").html(data.msg);
-                    } else {
-                        $("#all_resp").html(data.msg);
-                    }
-                }
-            });
-        });
-    });
-    $(document).ready(function() {
-        $('#sendini_game').click(function(e){
-            e.preventDefault();
-            var cfg = $("#cfg_game").val();
-            var type = $("#type_game").val();
-            var text = $("#text_game").val();
-
-            $.ajax({
-                type: "POST",
-                url: "/sites/js/sendini.php",
-                dataType: "json",
-                data: {cfg:cfg, type:type, text:text},
-                success : function(data){
-                    if (data.code == "200"){
-                        $("#all_resp").html(data.msg);
-                    } else {
-                        $("#all_resp").html(data.msg);
-                    }
-                }
-            });
-        });
-    });
-    $(document).ready(function() {
-        $('#sendini_engine').click(function(e){
-            e.preventDefault();
-            var cfg = $("#cfg_engine").val();
-            var type = $("#type_engine").val();
-            var text = $("#text_engine").val();
-
-            $.ajax({
-                type: "POST",
-                url: "/sites/js/sendini.php",
-                dataType: "json",
-                data: {cfg:cfg, type:type, text:text},
-                success : function(data){
-                    if (data.code == "200"){
-                        $("#all_resp").html(data.msg);
-                    } else {
-                        $("#all_resp").html(data.msg);
-                    }
-                }
-            });
-        });
-    });
-
-</script>

@@ -68,11 +68,23 @@ class server {
 
         $path = $this->get_dir();
 
-        if($this->cfg_read('ark_AltSaveDirectoryName') != "" AND $this->cfg_read('ark_AltSaveDirectoryName') != " ") {
+        if($this->cfg_read('ark_AltSaveDirectoryName') != "" && $this->cfg_read('ark_AltSaveDirectoryName') != " ") {
             $path = $path."/ShooterGame/Saved/".$this->cfg['ark_AltSaveDirectoryName'];
         }
         else {
             $path = $path."/ShooterGame/Saved";
+        }
+
+        return $path;
+    }
+
+    public function get_konfig_dir() {
+
+        if($this->cfg_read('ark_AltSaveDirectoryName') != "" && $this->cfg_read('ark_AltSaveDirectoryName') != " ") {
+            $path = $this->get_save_dir()."/../Config/LinuxServer/";
+        }
+        else {
+            $path = $this->get_save_dir()."/Config/LinuxServer/";
         }
 
         return $path;
@@ -136,13 +148,13 @@ class server {
         function safefilerewrite($fileName, $dataToSave) {
             if ($fp = fopen($fileName, 'w')) {
                 $startTime = microtime(TRUE);
-                do {            $canWrite = flock($fp, LOCK_EX);
-                    // If lock not obtained sleep for 0 - 100 milliseconds, to avoid collision and CPU load
+                do {
+                    $canWrite = flock($fp, LOCK_EX);
                     if(!$canWrite) usleep(round(rand(0, 100)*1000));
                 } while ((!$canWrite)and((microtime(TRUE)-$startTime) < 5));
 
-                //file was locked so now we can store information
-                if ($canWrite) {            fwrite($fp, $dataToSave);
+                if ($canWrite) {
+                    fwrite($fp, $dataToSave);
                     flock($fp, LOCK_UN);
                 }
                 fclose($fp);
@@ -173,6 +185,60 @@ class server {
         }
     }
 
+    public function get_state() {
+        global $helper;
+
+        $path = "data/serv/" . $this->show_name() . ".json";
+        $data = $helper->file_to_json($path);
+
+        $serverstate = 0;
+        if($this->check_install() == "FALSE") {
+            $serverstate = 3;
+        }
+        elseif($data["listening"] == "Yes" && $data["online"] == "Yes" && $data["run"] == "Yes") {
+            $serverstate = 2;
+        }
+        elseif($data["listening"] == "No" && $data["online"] == "NO" && $data["run"] == "Yes") {
+            $serverstate = 1;
+        }
+        elseif($data["listening"] == "Yes" && $data["online"] == "NO" && $data["run"] == "Yes") {
+            $serverstate = 1;
+        }
+        elseif($data["listening"] == "No" && $data["online"] == "Yes" && $data["run"] == "Yes") {
+            $serverstate = 1;
+        }
+        return $serverstate;
+    }
+
+    public function readdata() {
+    global $helper;
+
+    $path = "data/serv/" . $this->show_name() . ".json";
+    $data = $helper->file_to_json($path);
+    $class = new data_server();
+
+    $class->warning_count = $data["warning_count"];
+    $class->error_count = $data["error_count"];
+    $class->error = $data["error"];
+    $class->warning = $data["warning"];
+    $class->online = $data["online"];
+    $class->aplayers = $data["aplayers"];
+    $class->players = $data["players"];
+    $class->pid = $data["pid"];
+    $class->run = $data["run"];
+    $class->listening = $data["listening"];
+    $class->installed = $data["installed"];
+    $class->cfg = $data["cfg"];
+    $class->bid = $data["bid"];
+    $class->ARKServers = $data["ARKServers"];
+    $class->next = $data["next"];
+    $class->ServerName = $data["ServerName"];
+    $class->version = $data["version"];
+    $class->connect = $data["connect"];
+
+    return $class;
+}
+
     public function ini_read($key) {
         return $this->ini[$key];
     }
@@ -200,13 +266,13 @@ class server {
         function safefilerewrite($fileName, $dataToSave) {
             if ($fp = fopen($fileName, 'w')) {
                 $startTime = microtime(TRUE);
-                do {            $canWrite = flock($fp, LOCK_EX);
-                    // If lock not obtained sleep for 0 - 100 milliseconds, to avoid collision and CPU load
+                do {
+                    $canWrite = flock($fp, LOCK_EX);
                     if(!$canWrite) usleep(round(rand(0, 100)*1000));
                 } while ((!$canWrite)and((microtime(TRUE)-$startTime) < 5));
 
-                //file was locked so now we can store information
-                if ($canWrite) {            fwrite($fp, $dataToSave);
+                if ($canWrite) {
+                    fwrite($fp, $dataToSave);
                     flock($fp, LOCK_UN);
                 }
                 fclose($fp);
@@ -219,6 +285,28 @@ class server {
 
 
 
+}
+
+
+class data_server {
+    public $warning_count;
+    public $error_count;
+    public $error;
+    public $warning;
+    public $online;
+    public $aplayers;
+    public $players;
+    public $pid;
+    public $run;
+    public $listening;
+    public $installed;
+    public $cfg;
+    public $bid;
+    public $ARKServers;
+    public $next;
+    public $ServerName;
+    public $version;
+    public $connect;
 }
 
 ?>

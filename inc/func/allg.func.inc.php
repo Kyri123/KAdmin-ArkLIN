@@ -1,5 +1,23 @@
 <?php
+function mem_perc(){
 
+    $free = shell_exec('free');
+    $free = (string)trim($free);
+    $free_arr = explode("\n", $free);
+    $mem = explode(" ", $free_arr[1]);
+    $mem = array_filter($mem);
+    $mem = array_merge($mem);
+    $memory_usage = $mem[2]/$mem[1]*100;
+    $memory_usage = round($memory_usage, 2);
+    return $memory_usage;
+}
+
+function cpu_perc(){
+
+    $load = sys_getloadavg();
+    return $load[0];
+
+}
 
 #user allgmeine daten
 function getuserdata($data, $id) {
@@ -36,7 +54,7 @@ function del_dir( $dir )
                }
                else
                {
-                   delete_directory($dir.'/'.$file);
+                   unlink($dir.'/'.$file);
                }
 
            }
@@ -266,31 +284,71 @@ function sh_crontab($str) {
 function alog($str) {
     global $steamapi;
 
-    $str = str_replace('ERROR [0;39m ] 	', '<b class="text-danger">ERROR</b> ', $str);
-    $str = str_replace('WARNING [0;39m ] 	', '<b class="text-warning">WARNUNG</b> ', $str);
-    $str = str_replace('Retries exhausted', 'Neuer versuch wird gestartet', $str);
-    $str = str_replace('Your server is already up to date! The most recent version is', 'Der Server ist auf der aktuellen Version:', $str);
-    $str = str_replace('\033[0;39m ', null, $str);
-    $str = str_replace('\033[0;39m\e[68G[', null, $str);
-    $str = str_replace('\033[1;31mFAILED]', '<b class="text-danger">[Fehlgeschlagen]</b>', $str);
-    $str = str_replace('[0;39m[68G[   [1;32mOK[0;39m   ]', '<b class="text-success">[OK]</b>', $str);
-    $str = str_replace('', null, $str);
-    $str = str_replace('[K', null, $str);
-    $str = str_replace('Yes', '<b class="text-success"> Ja</b>', $str);
-    $str = str_replace('No', '<b class="danger"> Nein</b>', $str);
-    $str = str_replace('Created Backup: ', '<b class="text-gray-800">Erstelle Backup: </b>', $str);
-    $str = str_replace('Copying files to ', '<b class="text-gray-800">Kopiere Dateien nach: </b>', $str);
-    $str = str_replace('Copying ', '<b class="text-gray-800">Kopiere: </b>', $str);
-    $str = str_replace('Saved arks directory is ', '<b class="text-gray-800">Speicherverzeichnis ist: </b>', $str);
-    $str = str_replace('Compressing Backup ', 'Komprimiere Backup ... ', $str);
-    $str = str_replace('ARK tribute tribe files ', 'Stämme > Charaktere ... ', $str);
-    $str = str_replace('ARK tribe files ', 'Stämme ... ', $str);
-    $str = str_replace('ARK profile files', 'Charaktere (Profile) ... ', $str);
-    $str = str_replace('ARK world file ', 'ARK Welt / Karte ... ', $str);
-    $str = str_replace('Running command ', 'Führe Aktion ', $str);
-    $str = str_replace('for instance ', ' aus für die Instanz ', $str);
-    $str = str_replace('The server is starting', 'Der Server startet...', $str);
-    $str = str_replace('The server is now running, and should be up within 10 minutes', 'Der Server läuft und sollte in ca. <b>10 Minuten <span class="text-success">Online</span></b> sein.', $str);
+    $search  = array(
+        'The server is starting', // 1
+        'for instance ', // 2
+        'Running command ', // 3
+        'ARK world file ', // 4
+        'ARK profile files', // 5
+        'ARK tribe files ', // 6
+        'ARK tribute tribe files ', // 7
+        'Compressing Backup ', // 8
+        '', // 9
+        '[K', // 10
+        "\033[0;39m\e[68G[", // 11
+        "\033[0;39m ", // 12
+        'Your server is already up to date! The most recent version is', // 13
+        'Retries exhausted', // 14
+        'The server is now running, and should be up within 10 minutes', // 15
+        'Saved arks directory is ', // 16
+        'Copying ', // 17
+        'Copying files to ', // 18
+        'Created Backup: ', // 19
+        ' Yes ', // 20
+        '[0;39m[68G[   [1;32mOK[0;39m   ]', // 21
+        '\033[0;39m\e[68G[ \033[1;31mFAILED\033[0;39m ]', // 22
+        'WARNING [0;39m ] 	', // 23
+        'ERROR [0;39m ] 	', // 24
+        "[ \e[0;33m WARN ]", // 25
+        " No ", // 26
+        "Installing ARK server ...", // 27
+        '\033[0;39m ', // 28
+        ' ]' // 289
+    );
+
+    $replace = array(
+        'Der Server startet...', // 1
+        ' aus für die Instanz ', // 2
+        'Führe Aktion ', // 3
+        'ARK Welt / Karte ... ', // 4
+        'Charaktere (Profile) ... ', // 5
+        'Stämme ... ', // 6
+        'Stämme > Charaktere ... ', // 7
+        'Komprimiere Backup ... ', // 8
+        null, // 9
+        null, // 10
+        null, // 11
+        null, // 12
+        'Der Server ist auf der aktuellen Version:', // 13
+        'Neuer versuch wird gestartet', // 14
+        'Der Server läuft und sollte in ca. <b>10 Minuten <span class="text-success">Online</span></b> sein.', // 15
+        '<b class="text-gray-800">Speicherverzeichnis ist: </b>', // 16
+        '<b class="text-gray-800">Kopiere: </b>', // 17
+        '<b class="text-gray-800">Kopiere Dateien nach: </b>', // 18
+        '<b class="text-gray-800">Erstelle Backup: </b>', // 19
+        '<b class="text-success"> Ja</b>', // 20
+        '<b class="text-success">[OK]</b>', // 21
+        '<b class="text-danger">[Fehlgeschlagen]</b>', // 22
+        '<b class="text-warning">WARNUNG</b> ', // 23
+        '<b class="text-danger">ERROR</b> ', // 24
+        '<b class="text-warning">WARNUNG:</b> ', // 25
+        "<b class=\"text-danger\"> Nein</b>", // 26
+        "Installiere Server...   ", // 27
+        null, // 28
+        null // 29
+    );
+    $str = str_replace($search, $replace, $str);
+
     if(strpos($str, '] Updating mod') !== false) {
         $time = explode('[', $str);
         $time = $time[0];

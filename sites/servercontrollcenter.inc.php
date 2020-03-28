@@ -17,8 +17,8 @@ if(isset($_POST["add"])) {
     $logdir = $servlocdir."server_ID_".$name."_logs";
     $arkbackupdir = $servlocdir."server_ID_".$name."_backups";
     $ark_QueryPort = $_POST["port"];
-    $ark_Port = $qport+2;
-    $ark_RCONPort = $qport+4;
+    $ark_Port = $ark_QueryPort+2;
+    $ark_RCONPort = $ark_QueryPort+4;
 
     $cfg = file_get_contents('data/template.cfg');
     $find = array(
@@ -85,7 +85,7 @@ if(isset($_POST["del"])) {
     $jobs->set($serv->show_name());
     if(file_exists($path_cfg) && ($serverstate == 0 || $serverstate == 3)) {
         if(unlink($path_cfg)) {
-            $resp = meld('success', 'Server Entfernt', 'Fehler!', null);
+            $resp = meld('success', 'Server Entfernt', 'Erfolgreich!', null);
             if(in_array('deinstall', $opt)) {
                 $jobs->create_shell("rm -R ".$arkservdir);
                 $jobs->create_shell("rm -R ".$arklogdir);
@@ -147,15 +147,16 @@ for($i=0;$i<count($dir);$i++) {
             $serv_state = "Nicht Installiert";
             $serv_color = "warning";
         }
-
-        $list->repl("map", "dist/img/igmap/".$serv->cfg_read("serverMap").".jpg");
+        $map_path = "dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
+        if(!file_exists($map_path)) $map_path = "dist/img/igmap/ark.png";
+        $list->repl("map", $map_path);
         $list->repl("cfg", $serv->show_name());
         $list->repl("servername", $serv->cfg_read("ark_SessionName"));
         $list->repl("map_str", $serv->cfg_read("serverMap"));
         $list->repl("state_str", $serv_state);
         $list->repl("state_color", $serv_color);
         $list->repl('servadress', $ip.":".$serv->cfg_read("ark_QueryPort"));
-        $list->repl('con_url', $connect = $data["connect"]);
+        $list->repl('con_url', $data["connect"]);
         $list->repl('ARKSERV', $data["ARKServers"]);
 
         $list->replif("ifmodal", false);
@@ -172,7 +173,7 @@ for($i=0;$i<count($dir);$i++) {
         $list->repl("state_str", $serv_state);
         $list->repl("state_color", $serv_color);
         $list->repl('servadress', $ip.":".$serv->cfg_read("ark_QueryPort"));
-        $list->repl('con_url', $connect = $data["connect"]);
+        $list->repl('con_url', $data["connect"]);
         $list->repl('ARKSERV', $data["ARKServers"]);
 
         $list->replif("ifmodal", true);
@@ -184,6 +185,7 @@ for($i=0;$i<count($dir);$i++) {
 // lade in TPL
 $tpl->repl("list", $cfglist);
 $tpl->repl("list_modal", $cfgmlist);
+$tpl->repl("resp", $resp);
 $content = $tpl->loadin();
 $btns = '<a href="#" class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#addserver">
             <span class="icon text-white-50">

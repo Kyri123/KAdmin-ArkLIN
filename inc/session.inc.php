@@ -57,11 +57,16 @@ if(isset($_POST["login"]) && !isset($_SESSION["id"])) {
         }
         $row = $mycon->query($query)->fetchArray();
         if($row["password"] == md5(pw)) {
-            $_SESSION["id"] = $row['id'];
-            $_SESSION["rank"] = $row['rang'];
-            
-            header('Location: /home');
-            exit;
+            if($row["ban"] < 1) {
+                $_SESSION["id"] = $row['id'];
+                $_SESSION["rank"] = $row['rang'];
+
+                header('Location: /home');
+                exit;
+            }
+            else {
+                $resp = alert('danger', 'Account gebannt!', '15px 15px 0px 5px', 'Fehler!');
+            }
         }
         else {
             $resp = alert('danger', 'Falsches Passwort!', '15px 15px 0px 5px', 'Fehler!');
@@ -108,7 +113,7 @@ if(isset($_POST["register"]) && !isset($_SESSION["id"])) {
                     $q_code = 'SELECT * FROM `ArkAdmin_reg_code` WHERE `used` = \'0\' AND `code` = \''.code.'\'';
                     if($mycon->query($q_code)->numRows() > 0) {
                         $row_code = $mycon->query($q_code)->fetchArray();
-                        $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `rang`, `char`, `registerdate`) VALUES (\''.username.'\', \''.email.'\', \''.md5(pw1).'\', \'1\', \''.char.'\', \''.time().'\')';
+                        $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `rang`, `registerdate`) VALUES (\''.username.'\', \''.email.'\', \''.md5(pw1).'\', \'1\', \''.time().'\')';
                         $mycon->query($query);
                         $query = 'SELECT * FROM `ArkAdmin_users` WHERE `email` = \''.email.'\'';
                         $row = $mycon->query($query)->fetchArray();
@@ -153,14 +158,14 @@ $tpl_login = new Template("login.htm", "tpl/session/");
 $tpl_register->load();
 $tpl_login->load();
 
-$tpl_register->repl('bg', '/img/backgrounds/side.jpg');
+$tpl_register->repl('bg', '/dist/img/backgrounds/side.jpg');
 $tpl_register->repl('meld', $resp);
 $tpl_register->repl('1', $a1);
 $tpl_register->repl('2', $a2);
 $tpl_register->repl('3', $a3);
 $tpl_register->repl('4', $a4);
 
-$tpl_login->repl('bg', '/img/backgrounds/side.jpg');
+$tpl_login->repl('bg', '/dist/img/backgrounds/side.jpg');
 $tpl_login->repl('meld', $resp);
 
 

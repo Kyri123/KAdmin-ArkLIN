@@ -1,0 +1,37 @@
+{error}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-12">
+        <div class="card rounded-0">
+            <div class="card-header">
+                <h3 class="card-title">
+                    Crontab & Regestrierung
+                </h3>
+            </div>
+            <div class="card-body">
+                <dl>
+                    <dt>Crontab</dt>
+                    <dd>Stelle die Konfiguration ein und Starte die Datei mit "start.sh" (Empfehlung: Verschiebe den Ordner nach /home oder /root)</dd>
+                    <dd>Wenn der Crontab abgerufen wird wird der Abschluss der Installation freigeben</dd>
+                    <hr>
+                    <dt>Regestrierung</dt>
+                    <dd>Erstelle nun ein Account: <a href="/register" target="_blank">Klick mich </a> </dd>
+                    <dd>Dein Code lautet: <b>7c90c6595f7cb4d2aa0e</b></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-12" id="btn">
+
+    </div>
+</div>
+</div>
+
+<script>
+    getphp('/install/sites/step3js.inc.php', 'btn');
+    setInterval(function(){
+        getphp('/install/sites/step3js.inc.php', 'btn');
+    }, 1000);
+</script>
+<script src="/dist/js/arkadmin2.js"></script>

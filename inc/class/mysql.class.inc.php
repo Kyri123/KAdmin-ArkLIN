@@ -5,11 +5,15 @@ class mysql {
     protected $connection;
     protected $query;
     public $query_count = 0;
+    public $is;
     
     public function __construct($dbhost = 'localhost', $dbuser = 'root', $dbpass = '', $dbname = '', $charset = 'utf8') {
         $this->connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
         if ($this->connection->connect_error) {
-            die('Fehler beim verbinden zu MySQL: ' . $this->connection->connect_error);
+            $this->is = false;
+        }
+        else {
+            $this->is = true;
         }
         $this->connection->set_charset($charset);
     }

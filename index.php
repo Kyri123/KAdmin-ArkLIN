@@ -34,6 +34,11 @@ $helper = new helper();
 $user = new userclass();
 $user->setid($_SESSION['id']);
 
+//prüfe immer ob der User gebannt wurde
+if($user->ban() > 0) {
+    session_destroy();
+}
+
 if(isset($_SESSION["id"])) {
     $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE (`id`=\''.$_SESSION["id"].'\')';
     $mycon->query($query);
@@ -49,6 +54,7 @@ include('inc/class/aajobs.class.inc.php');
 
 $jobs = new jobs();
 $ckonfig = $helper->file_to_json('inc/custom_konfig.json', true);
+$API_Key = $ckonfig['apikey'];
 $servlocdir = $ckonfig['servlocdir'];
 
 if(file_exists('sites/'.$page.'.inc.php')) {
@@ -91,13 +97,13 @@ $tpl_h->rplSession();
 $tpl_b->rplSession();
 $tpl_f->rplSession();
 
-if($page != "login" && $page != "register" && $page != "crontab" && isset($_SESSION['id'])) {
+if($page != "login" && $page != "register" && $page != "crontab" && isset($_SESSION['id']) && file_exists("data/done")) {
     $tpl_h->display();
     $tpl_b->display();
     $tpl_f->display();
 }
 else {
-    if($page == "login") {
+    if($page == "login" && file_exists("data/done")) {
         if(isset($_SESSION["id"])) {
             header('Location: /home');
             exit;
@@ -106,7 +112,7 @@ else {
         $tpl_h->display();
         $tpl_login->display();
     }
-    elseif($page == "register") {
+    elseif($page == "register" && file_exists("data/subdone")) {
         if(isset($_SESSION["id"])) {
             header('Location: /home');
             exit;
@@ -115,13 +121,17 @@ else {
         $tpl_h->display();
         $tpl_register->display();
     }
-    elseif($page == "crontab") {
+    elseif($page == "crontab" && file_exists("data/done")) {
         $tpl_crontab->rplSession();
         $tpl_h->display();
         $tpl_crontab->display();
     }
+    elseif(!file_exists("data/subdone") || !file_exists("data/done")) {
+        header('Location: /install.php');
+        exit;
+    }
     else {
-        header('Location: /login');
+        header('Location: /register');
         exit;
     }
 }
