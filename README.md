@@ -8,6 +8,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 # Wichtig
 
 - Nur auf Deutsch & kein Sprach support!
+- Es ist eine Alpha bitte verzeiht Schreibfehler & Bugs!
 
 # Benötigt
 - [x] mod_rewrite
