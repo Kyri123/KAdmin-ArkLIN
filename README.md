@@ -13,4 +13,5 @@ Webbasiertes Admin Panel für Ark-Gameserver
 - [x] mod_rewrite
 - [x] cURL
 - [x] Linux
+- [x] Java
 - [x] Arkmanager (https://github.com/FezVrasta/ark-server-tools)
