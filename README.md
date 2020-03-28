@@ -5,6 +5,10 @@ Webbasiertes Admin Panel für Ark-Gameserver
 - Lade alle Dateien auf den Webserver hoch (ACHTUNG: Der Webserver MUSS auf dem gleichen Server wie die Arkserver liegen)
 - Rufe <url>/install.php auf und folge die Schritte
 
+# Wichtig
+
+- Nur auf Deutsch & kein Sprach support!
+
 # Benötigt
 - [x] mod_rewrite
 - [x] cURL
