@@ -6,7 +6,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 - Rufe <url>/install.php auf und folge die Schritte
 
 # Benötigt
-- mod_rewrite
-- cURL
-- Linux
-- Arkmanager (https://github.com/FezVrasta/ark-server-tools)
+- [x] mod_rewrite
+- [x] cURL
+- [x] Linux
+- [x] Arkmanager (https://github.com/FezVrasta/ark-server-tools)
