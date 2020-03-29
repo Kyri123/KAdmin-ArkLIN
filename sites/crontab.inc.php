@@ -141,7 +141,6 @@ elseif($job == "player") {
             $time = time();
             $file_time = filemtime($log_file);
             if(!file_put_contents($log_file.'2', sh_crontab(file_get_contents($log_file)))) exit;
-            file_put_contents($serv->show_name().'.log', sh_crontab(file_get_contents($log_file)));
             $log_file = 'sh/resp/'.$serv->show_name().'/status.log2';
             $log_file = 'sh/resp/'.$serv->show_name().'/status.log';
             $diff = $time - $file_time;
@@ -238,8 +237,6 @@ elseif($job == "player") {
 
                 }
 
-                $file = 'sh/serv/jobs_ID_'.$serv->show_name().'.sh';
-                $txt = file_get_contents($file);
                 if(!file_exists('sh/serv/jobs_ID_'.$serv->show_name().'.state')) file_put_contents('sh/serv/jobs_ID_'.$serv->show_name().'.state', 'TRUE');
                 $serv_state = file_get_contents('sh/serv/jobs_ID_'.$serv->show_name().'.state');
                 $serv_state = str_replace("\n", null, $serv_state);

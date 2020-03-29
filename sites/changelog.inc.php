@@ -37,6 +37,7 @@ else {
         if(!$now) $color = 'bg-danger';
         if($version == $json[$i]['version']) $color = 'bg-primary';
         if($version == $json[$i]['version']) $now = true;
+        if($json[$i]['datestring'] == "--.--.----") $color = 'bg-warning';
         $listtpl->repl('color', $color);
 
         // fix
@@ -99,7 +100,16 @@ else {
             }
             $listtpl->repl('java', $newstring);
         }
-
+        $git = false;
+        if($json[$i]['git'] != " " && $json[$i]['git'] != null) $git = true;
+        $download = false;
+        if($json[$i]['download'] != " " && $json[$i]['download'] != null) $download = true;
+        $listtpl->repl('git', $json[$i]['git']);
+        $listtpl->repl('download', $json[$i]['download']);
+        $listtpl->replif('ifgit', $git);
+        $listtpl->replif('ifdownload', $download);
+        $listtpl->repl('datestring', $json[$i]['datestring']);
+        $listtpl->repl('datestring', $json[$i]['datestring']);
         $listtpl->repl('datestring', $json[$i]['datestring']);
         $listtpl->repl('version', $json[$i]['version']);
         $list .= $listtpl->loadin();

@@ -7,6 +7,7 @@ $errorMSG = "";
 
 /* cfg */
 $cfg = $_POST["cfg"];
+$serv = new server($cfg);
 $para = $_POST["para"];
 if($para == null) $para[0] = null;
 $paraend = null;
@@ -36,14 +37,7 @@ if($json->next == 'TRUE') {
     $errorMSG = meld('danger', 'Server ist derzeit für Aktionen gesperrt!', 'Error', 'fas fa-exclamation-circle');
 }
 else {
-    $doc = $_SERVER['DOCUMENT_ROOT'];
-    $log = $doc.'/sh/resp/'.$cfg.'/last.log';
-    $doc_state = $doc.'/sh/serv/jobs_ID_'.$cfg.'.state';
-    file_put_contents('sh/serv/jobs_ID_'.$cfg.'.state', 'FALSE');
-    $doc = $doc.'/sh/serv/jobs_ID_'.$cfg.'.sh';
-    $command = 'echo "" > '.$doc.' ; arkmanager '.$action.$paraend.'@'.$cfg.' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Freigabe für neue Befehle erteilt...</b>" >> '.$log.' ; exit';
-    $command = str_replace("\r", null, $command);
-    file_put_contents('sh/serv/jobs_ID_'.$cfg.'.sh', $command);
+    if(!$serv->set_action($action.$paraend)) $errorMSG = meld('danger', 'Etwas ist Schief gelaufen!', 'Error', 'fas fa-exclamation-circle');
 }
 
 

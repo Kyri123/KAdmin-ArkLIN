@@ -94,10 +94,18 @@ else {
             $color = 'primary';
             $colortxt = 'Aktuell';
         }
-        if($json[$i]['datestring'] == "--.--.---") {
-            $color = 'danger';
+        if($json[$i]['datestring'] == "--.--.----") {
+            $color = 'warning';
             $colortxt = 'Neuer (WIP)';
         }
+        $git = false;
+        if($json[$i]['git'] != " " && $json[$i]['git'] != null) $git = true;
+        $download = false;
+        if($json[$i]['download'] != " " && $json[$i]['download'] != null) $download = true;
+        $listtpl->repl('git', $json[$i]['git']);
+        $listtpl->repl('download', $json[$i]['download']);
+        $listtpl->replif('ifgit', $git);
+        $listtpl->replif('ifdownload', $download);
         $listtpl->repl('state_css', $color);
         $listtpl->repl('state', $colortxt);
         $listtpl->repl('date', $json[$i]['datestring']);

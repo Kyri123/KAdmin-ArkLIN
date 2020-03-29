@@ -3,7 +3,7 @@
 <div class="row" id="server-stats" style="padding-top: 0px;">
 
     <div class="col-xl-4 col-md-0 mb-0">
-        <div class="small-box bg-danger">
+        <div class="small-box bg-danger rounded-0">
             <div class="overlay dark">
                 <i class="fas fa-3x fa-sync-alt"></i>
             </div>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="col-xl-4 col-md-0 mb-0">
-        <div class="info-box bg-info" style="height: 142px;">
+        <div class="info-box bg-info rounded-0" style="height: 142px;">
             <div class="overlay dark">
                 <i class="fas fa-3x fa-sync-alt"></i>
             </div>
@@ -44,7 +44,7 @@
 
     <div class="col-xl-4 col-md-0 mb-0">
         <div class="small-box bg-danger">
-            <div class="overlay dark">
+            <div class="overlay dark rounded-0">
                 <i class="fas fa-3x fa-sync-alt"></i>
             </div>
             <div class="inner">
@@ -81,7 +81,7 @@
         <div class="card card-widget widget-user">
             <div class="widget-user-header text-white" style="background: url('/dist/img/backgrounds/bg.jpg') center center;">
                 <h3 class="widget-user-username text-right text-gray-dark">{servername}</h3>
-                <h5 class="widget-user-desc text-right text-gray-dark">{map_str}</h5>
+                <h5 class="widget-user-desc text-right"><a href="javascript:void(0)" onclick="copyToClipboard('info')" id="btnCopy" class="text-gray-dark">{global_IP}:{QPort}</a></h5>
             </div>
             <div class="widget-user-image">
                 <img class="img-circle" src="/dist/img/logo/ark.png" alt="User Avatar" style="height: 90px;width: 90px;background-color: #001f3f">
@@ -91,8 +91,8 @@
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
                             <div class="d-none" id="secretInfo">{global_IP}:{QPort}</div>
-                            <h5 class="description-header"><a href="javascript:void(0)" onclick="copyToClipboard('info')" id="btnCopy">Kopieren</a></h5>
-                            <span class="description-text">IP</span>
+                            <h5 class="description-header">{map_str}</h5>
+                            <span class="description-text">Karte</span>
                         </div>
                     </div>
                     <script>

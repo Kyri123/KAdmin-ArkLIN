@@ -18,6 +18,8 @@ $z = 1;
     echo '<li class="list-group-item list-group-item-mod text-primary">Logzeit: '.date ("d.m.Y H:i:s", filemtime($file)).' | Zeigt maximal: <b>'.$max.'</b> | Verstecken: <b>'.$type.'</b></li>';
     while ($i--) {
         $array[$i] = str_replace("\"", null, $array[$i]);
+        $array[$i] = str_replace("\n", null, $array[$i]);
+        $array[$i] = str_replace("\r", null, $array[$i]);
         if($array[$i] != "" && $array[$i] != ' ') {
             $laenge = strlen($array[$i]);
             $z++;

@@ -313,7 +313,18 @@ function alog($str) {
         " No ", // 26
         "Installing ARK server ...", // 27
         '\033[0;39m ', // 28
-        ' ]' // 289
+        ' ]', // 29
+        "Checking for update;", // 30
+        "Checking for updates before starting", // 31
+        "The server is already stopped", // 32
+        "All mods are up to date", // 33
+        "Querying Steam database for latest version...", // 34
+        "Current version", // 35
+        "Available version", // 36
+        "Your server is up to date!", // 37
+        "The server has been stopped", // 38
+        "Stopping server; reason: shutdown", // 39
+        "World Saved" // 40
     );
 
     $replace = array(
@@ -345,7 +356,18 @@ function alog($str) {
         "<b class=\"text-danger\"> Nein</b>", // 26
         "Installiere Server...   ", // 27
         null, // 28
-        null // 29
+        null, // 29
+        "Prüfe auf Updates", // 30
+        "Prüfe auf Updates bevor der Server startet.", // 31
+        "Der Server ist schon gestoppt!", // 32
+        "Alle Mods sind auf dem neusten Stand!", // 33
+        "Hole Daten von Steam...", // 34
+        "Aktuelle Version", // 35
+        "Verfügbare Version", // 36
+        "Dein Server ist auf dem neusten Stand!", // 37
+        "Der Server wurde Angehalten", // 38
+        "Stoppe Server; Grund: <b>Shutdown</b>", // 39
+        "Server Gespeichert" // 40
     );
     $str = str_replace($search, $replace, $str);
 

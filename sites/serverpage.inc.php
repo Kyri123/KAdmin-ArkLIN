@@ -203,13 +203,13 @@ $tpl->repl('playerlist', $player);
 $content = $tpl->loadin();
 $btns .= '
 <div class="d-sm-inline-block ">
-    <a href="#" class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#warning_modal">
+    <a href="#" class="btn btn-warning btn-icon-split rounded-0" data-toggle="modal" data-target="#warning_modal">
         <span class="icon text-white-50">
             <i class="fas fa-exclamation-circle"></i>
         </span>
         <span class="text">'.$globa_json->warning_count.'</span>
     </a>
-    <a href="#" class="btn btn-danger btn-icon-split" data-toggle="modal" data-target="#danger_modal">
+    <a href="#" class="btn btn-danger btn-icon-split rounded-0" data-toggle="modal" data-target="#danger_modal">
         <span class="icon text-white-50">
             <i class="fas fa-exclamation-triangle"></i>
         </span>

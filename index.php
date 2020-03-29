@@ -1,4 +1,5 @@
 <?php
+
 date_default_timezone_set('Europe/Amsterdam');
 $pagename = null;
 $pageimg = null;
@@ -26,11 +27,14 @@ require_once 'inc/class/savefile_reader.class.inc.php';
 #verbinde zur DB
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 include('inc/class/helper.class.inc.php');
+$helper = new helper();
+$ckonfig = $helper->file_to_json('inc/custom_konfig.json', true);
+$API_Key = $ckonfig['apikey'];
+$servlocdir = $ckonfig['servlocdir'];
 include('inc/class/user.class.inc.php');
 include('inc/class/steamAPI.class.inc.php');
 include('inc/func/allg.func.inc.php');
 $steamapi = new steamapi();
-$helper = new helper();
 $user = new userclass();
 $user->setid($_SESSION['id']);
 
@@ -53,9 +57,6 @@ include('inc/class/server.class.inc.php');
 include('inc/class/aajobs.class.inc.php');
 
 $jobs = new jobs();
-$ckonfig = $helper->file_to_json('inc/custom_konfig.json', true);
-$API_Key = $ckonfig['apikey'];
-$servlocdir = $ckonfig['servlocdir'];
 
 if(file_exists('sites/'.$page.'.inc.php')) {
     include('sites/'.$page.'.inc.php');
@@ -131,8 +132,18 @@ else {
         exit;
     }
     else {
-        header('Location: /register');
-        exit;
+        if(file_exists("data/subdone") && !file_exists("data/done")) {
+            header('Location: /register');
+            exit;
+        }
+        elseif(file_exists("data/done")) {
+            header('Location: /login');
+            exit;
+        }
+        else {
+            header('Location: /install.php');
+            exit;
+        }
     }
 }
 $mycon->close();

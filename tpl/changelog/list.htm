@@ -1,8 +1,12 @@
 
-<div class="time-label">
+<div class="time-label" id="{version}">
                   <span class="{color} text-white">
                     Version {version} | {datestring}
                   </span>
+                {ifgit}<a href="{git}" target="_blank" class="btn btn-sm btn-dark" style="height: 34px; margin-bottom: 4px;"><i class="nav-icon fab fa-github" aria-hidden="true"></i> GitHub</a>{/ifgit}
+                {ifdownload}<a href="{download}" download="" class="btn btn-sm btn-dark" style="height: 34px; margin-bottom: 4px;"><i class="nav-icon fa fa-download" aria-hidden="true"></i> Runterladen</a>{/ifdownload}
+</div>
+<div class="time-label" id="{version}">
 </div>
 
 <div style="margin-right: 0px;">

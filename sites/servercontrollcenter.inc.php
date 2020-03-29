@@ -187,7 +187,7 @@ $tpl->repl("list", $cfglist);
 $tpl->repl("list_modal", $cfgmlist);
 $tpl->repl("resp", $resp);
 $content = $tpl->loadin();
-$btns = '<a href="#" class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#addserver">
+$btns = '<a href="#" class="btn btn-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
             <span class="icon text-white-50">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>

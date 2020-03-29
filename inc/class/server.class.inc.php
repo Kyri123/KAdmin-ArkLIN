@@ -78,6 +78,21 @@ class server {
         return $path;
     }
 
+    public function set_action($shell) {
+        if($this->readdata()->next == 'TRUE') {
+            return false;
+        }
+        $doc = $_SERVER['DOCUMENT_ROOT'];
+        $log = $doc.'/sh/resp/'.$this->show_name().'/last.log';
+        $doc_state_file = 'sh/serv/jobs_ID_'.$this->show_name().'.state';
+        $doc_state = $doc.'/'.$doc_state_file;
+        $doc = $doc.'/sh/serv/sub_jobs_ID_'.$this->show_name().'.sh';
+        $command = 'echo "" > '.$doc.' ; arkmanager '.$shell.' @'.$this->show_name().' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Freigabe für neue Befehle erteilt...</b>" >> '.$log.' ; exit';
+        $command = str_replace("\r", null, $command);
+        if(file_put_contents($doc_state_file, 'FALSE') && file_put_contents('sh/serv/sub_jobs_ID_'.$this->show_name().'.sh', $command)) return true;
+        return false;
+    }
+
     public function get_konfig_dir() {
 
         if($this->cfg_read('ark_AltSaveDirectoryName') != "" && $this->cfg_read('ark_AltSaveDirectoryName') != " ") {
