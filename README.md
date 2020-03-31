@@ -7,6 +7,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 
 # Wichtig
 
+- [Dev-Tree] Benutztung auf eigene GEFAHR (Debugs, Tests usw.)
 - Nur auf Deutsch & kein Sprach support!
 - Es ist eine Alpha bitte verzeiht Schreibfehler & Bugs!
 
