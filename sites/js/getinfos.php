@@ -89,7 +89,9 @@ $tpl->repl("action_state", $action_state);
 $tpl->repl("action_btntxt", $action_btntxt);
 $tpl->repl("action_modal", $action_modal);
 
-$string = $tpl->loadin();
+if($_GET["type"] == "cards") $string = $tpl->loadin();
+if($_GET["type"] == "img") $string = '<img src="/dist/img/logo/ark.png" style="border-radius: 25rem!important;height: 90px;width: 90px;background-color: #001f3f" class="border-'.$serv_color.'">';
+
 echo $string;
 
 

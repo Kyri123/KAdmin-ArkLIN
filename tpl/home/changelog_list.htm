@@ -1,7 +1,8 @@
 <tr>
     <td>Version {version}</td>
     <td>{date}</td>
-    <td><span class="badge badge-{state_css}">{state}</span></td>
+    <td>{lastupdate}</td>
+    <td><span class="badge badge-{state_css} rounded-0">{state}</span></td>
     <td>
         <a href="/changelog#{version}" class="btn btn-xs btn-primary rounded-0"><i class="nav-icon fa fa-book" aria-hidden="true"></i> Changelog</a>
         {ifgit}<a href="{git}" target="_blank" class="btn btn-xs btn-dark rounded-0"><i class="nav-icon fab fa-github" aria-hidden="true"></i> GitHub</a>{/ifgit}

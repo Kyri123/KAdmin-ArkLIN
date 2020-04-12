@@ -96,30 +96,50 @@ function bitrechner( $size, $sourceUnit = 'bit', $targetUnit = 'MB' ) {
     return round( $size, 2 ) . ' ' . array_keys($units)[$i];
 }
 
-function meld($type, $txt = '{ALERT_TXT}', $title = '{ALERT_TITLE}', $icon = null) {
+function meld($type, $txt = '{ALERT_TXT}', $title = '{ALERT_TITLE}', $setcicon = null, $rounded = "rounded-0") {
     $rnd = bin2hex(random_bytes(50));
-    return '<div class="card card-'.$type.'" id="'.$rnd.'">
-              <div class="card-header">
-                <h3 class="card-title">'.$title.'</h3>
+    $icon = "fas fa-question";
+    if($type == "info") $icon = "fas fa-info";
+    if($type == "danger") $icon = "fas fa-exclamation-triangle";
+    if($type == "warning") $icon = "fas fa-exclamation-circle";
+    if($type == "success") $icon = "fas fa-check";
+    if($setcicon != null) $icon = $setcicon;
+    return '<div class="card card-'.$type.' '.$rounded.'" id="'.$rnd.'">
+              <div class="card-header '.$rounded.'">
+                <h3 class="card-title"><i class="icon '.$icon.'"></i> '.$title.'</h3>
 
                 <div class="card-tools">
                       <button type="button" class="btn btn-tool" onclick="remove(\''.$rnd.'\')">
                             <i class="fas fa-times"></i>
                       </button>
                 </div>
-                <!-- /.card-tools -->
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
+              <div class="card-body '.$rounded.'">
                     '.$txt.'
               </div>
-              <!-- /.card-body -->
             </div>';
 }
+function meld_full($type, $txt = '{ALERT_TXT}', $title = '{ALERT_TITLE}', $setcicon = null, $rounded = "rounded-0") {
+    $rnd = bin2hex(random_bytes(50));
+    $icon = "fas fa-question";
+    if($type == "info") $icon = "fas fa-info";
+    if($type == "danger") $icon = "fas fa-exclamation-triangle";
+    if($type == "warning") $icon = "fas fa-exclamation-circle";
+    if($type == "success") $icon = "fas fa-check";
+    if($setcicon != null) $icon = $setcicon;
+    return '<div class="alert alert-'.$type.' alert-dismissible '.$rounded.'">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h5><i class="icon '.$icon.'"></i> '.$title.'</h5>
+                  '.$txt.'
+                </div>';
+}
+
 
 # Time
-function converttime($stamp) {
-    return date("d.m.Y H:i", $stamp); ;
+function converttime($stamp, $withsec = false, $onlydate = false) {
+    if($withsec) return date("d.m.Y H:i:s", $stamp);
+    if($onlydate) return date("d.m.Y", $stamp);
+    return date("d.m.Y H:i", $stamp);
 }
 
 # Alerts
@@ -144,7 +164,6 @@ function alert($type, $text = '{ALERT_TXT}', $css = null, $title = '{ALERT_TITLE
             </div>';
 }
 
-#
 function write_ini_file($array, $file)
 {
     $res = array();
@@ -178,7 +197,7 @@ function safefilerewrite($fileName, $dataToSave)
 }
 
 }
-#
+
 function dirToArray($dir) {
 
     $result = array();
@@ -201,8 +220,6 @@ function dirToArray($dir) {
 
     return $result;
 }
-
-#
 
 function filtersh($str) {
     $search  = array(

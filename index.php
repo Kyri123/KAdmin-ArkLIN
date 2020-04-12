@@ -8,6 +8,8 @@ $sidebar = null;
 $setsidebar = false;
 $btns = null;
 $urltop = null;
+$g_alert = null;
+$g_alert_bool = false;
 
 session_start();
 #lese URL und schneide sie auf
@@ -34,12 +36,15 @@ $servlocdir = $ckonfig['servlocdir'];
 include('inc/class/user.class.inc.php');
 include('inc/class/steamAPI.class.inc.php');
 include('inc/func/allg.func.inc.php');
+include('inc/func/check.func.inc.php');
 $steamapi = new steamapi();
 $user = new userclass();
 $user->setid($_SESSION['id']);
 
 //prüfe immer ob der User gebannt wurde
 if($user->ban() > 0) {
+    $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
+    $mycon->query($query);
     session_destroy();
 }
 
@@ -47,6 +52,7 @@ if(isset($_SESSION["id"])) {
     $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE (`id`=\''.$_SESSION["id"].'\')';
     $mycon->query($query);
 }
+
 #Include
 
 include('inc/session.inc.php');
@@ -55,6 +61,7 @@ include('inc/session.inc.php');
 $page = $url[1];
 include('inc/class/server.class.inc.php');
 include('inc/class/aajobs.class.inc.php');
+include('inc/auto_update_sql_DB.inc.php');
 
 $jobs = new jobs();
 
@@ -62,8 +69,8 @@ if(file_exists('sites/'.$page.'.inc.php')) {
     include('sites/'.$page.'.inc.php');
 }
 else {
-    $page = '404';
-    include('sites/'.$page.'.inc.php');
+    header("Location: /404");
+    exit;
 }
 
 # Webseite Laden
@@ -80,10 +87,28 @@ include('inc/server.inc.php');
 
 include('inc/nav_curr.inc.php');
 
+
+//prüfe ob Webhelper Aktiv ist
+if($helper->gethelperdiff() > 60) {
+    $g_alert .= meld_full('danger', 'Der Webhelper hat länger als <b>60 Sekunden</b> nicht mehr das Panel abgerufen! (Letzte Prüfung: '.converttime($helper->gethelpertime(), true).')', 'ACHTUNG!', null);
+    $g_alert_bool = true;
+}
+
+//prüfe ob IE
+if(isie()) {
+    $g_alert .= meld_full('danger', 'Internet Explorer wird nicht 100%ig Untersützt!', 'ACHTUNG!', null);
+    $g_alert_bool = true;
+}
+
+
 $tpl_f->repl('jahr', date('Y', time()));
 $tpl_h->repl('time', time());
 $tpl_b->repl('aa_version', $version);
 
+if($page == "login" || $page == "register") {
+    $pagename = 'Account erstellen';
+    if($page == "login") $pagename = 'Einloggen';
+}
 $tpl_b->repl('pagename', $pagename);
 $tpl_h->repl('pagename', $pagename);
 // replace
@@ -93,6 +118,19 @@ $tpl_b->repl('content', $content);
 $tpl_b->repl('site_name', $site_name);
 $tpl_b->repl('btns', $btns);
 $tpl_b->repl('urltop', $urltop);
+$tpl_b->repl('g_alert', $g_alert);
+$tpl_b->replif('if_g_alert', $g_alert_bool);
+
+// Server
+$all = $helper->file_to_json("data/serv/all.json");
+$tpl_b->repl('count_server', count($all["cfgs"]));
+$tpl_b->repl('cpu_perc', cpu_perc());
+$tpl_b->repl('free', bitrechner(disk_free_space ( "remote/serv/" )));
+$tpl_b->repl('ram_perc', mem_perc());
+$ifnot_traffic = false;
+$check = array("changelog", "404");
+if(in_array($page, $check)) $ifnot_traffic = true;
+$tpl_b->replif("ifchangelog", $ifnot_traffic);
 
 $tpl_h->rplSession();
 $tpl_b->rplSession();

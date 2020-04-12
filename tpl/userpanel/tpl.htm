@@ -1,35 +1,37 @@
-<div id="all_resp" class="mb-4">{resp}</div>
+<div id="all_resp">{resp}</div>
 <section class="content">
 
     <!-- Default box -->
     <div class="card">
         <div class="card-body p-0">
-            <table class="table table-striped projects">
-                <thead>
-                <tr>
-                    <th>
-                        Benutzername
-                    </th>
-                    <th>
-                        Email
-                    </th>
-                    <th>
-                        Registrierungs Datum
-                    </th>
-                    <th>
-                        Letzter Login
-                    </th>
-                    <th class="text-center">
-                        Ban-Status
-                    </th>
-                    <th>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {list}
-                </tbody>
-            </table>
+            <div class=" table-responsive">
+                <table class="table table-striped projects mb-0">
+                    <thead>
+                    <tr>
+                        <th>
+                            Benutzername
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Registrierungs Datum
+                        </th>
+                        <th>
+                            Letzter Login
+                        </th>
+                        <th class="text-center">
+                            Ban-Status
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {list}
+                    </tbody>
+                </table>
+            </div>
         </div>
         <!-- /.card-body -->
     </div>

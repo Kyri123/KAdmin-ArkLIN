@@ -1,7 +1,7 @@
 <?php
 
 if(!file_exists("remote/arkmanager/instances/".$url[2].".cfg")) {
-   header("Location: /");
+   header("Location: /404");
    exit;
 }
 
@@ -121,22 +121,32 @@ if($globa_json->warning_count > 0) {
 }
 
 $savedir = $serv->get_save_dir();
-$player_json = $helper->file_to_json('data/saves/player_' . $serv->show_name() . '.json');
-$tribe_json = $helper->file_to_json('data/saves/tribes_' . $serv->show_name() . '.json');
+$pl_json = $helper->file_to_json('data/saves/pl_' . $serv->show_name() . '.players');
+$player_json = $helper->file_to_json('data/saves/player_' . $serv->show_name() . '.json', false);
+$player_json_ar = $helper->file_to_json('data/saves/player_' . $serv->show_name() . '.json', true);
+$tribe_json = $helper->file_to_json('data/saves/tribes_' . $serv->show_name() . '.json', false);
+$tribe_json_ar = $helper->file_to_json('data/saves/tribes_' . $serv->show_name() . '.json', true);
 if (!is_array($player_json)) $player_json = array();
 if (!is_array($tribe_json)) $tribe_json = array();
 $jhelper = new player_json_helper();
 
-
 $player = null;
 $c_pl = 0;
+
 // Spieler
-if (is_array($player_json)) {
-    for ($i = 0; $i < count($player_json); $i++) {
+if (is_array($pl_json)) {
+    for ($i = 0; $i < count($pl_json); $i++) {
         $list_tpl = new Template('list_user.htm', 'tpl/serv/sites/list/');
         $list_tpl->load();
 
-        $pl = $jhelper->player($player_json, $i);
+        for($y=0;$y<count($player_json);$y++) {
+            if($pl_json[$i]["steamID"] == $player_json_ar[$y]["SteamId"]) {
+                $z = $y;
+                break;
+            }
+        }
+
+        $pl = $jhelper->player($player_json, $z);
 
         if (is_array($tribe_json)) {
             for ($z = 0; $z < count($tribe_json); $z++) {
@@ -167,9 +177,7 @@ if (is_array($player_json)) {
         $list_tpl->repl('TID', $pl->TribeId);
         $list_tpl->replif('empty', true);
 
-        if(converttime($pl->FileUpdated) != "01.01.1970 01:00")$player .= $list_tpl->loadin();
-        $c_pl++;
-        break;
+        $player .= $list_tpl->loadin();
     }
 }
 if ($player == null) {
@@ -182,8 +190,64 @@ if ($player == null) {
 }
 
 
+// JS if & array
+
+$opt = array("install","start","update","restart","stop","backup","checkupdate","checkmodupdate","installmods","uninstallmods","saveworld","status");
+$opt_str = array();
+$name = array("Installieren","Starten","Update","Neustarten","Stoppen","Backup","Checkupdate","Checkmodupdate","Installmods","Uninstallmods","Speichern","Status");
+
+$action_list = "<option value=\"\">Aktion wählen...</option>"; $i = 0;
+foreach ($opt as $key) {
+    $array[$key] = array();
+    $action_list .= "<option value=\"$key\">".$name[$i]."</option>";
+    $i++;
+}
+
+$json_para = $helper->file_to_json("data/panel/parameter.json");
+$para_list = null;
+for ($i=0;$i<count($json_para);$i++) {
+    $opt_str[count($opt_str)] = "'".$json_para[$i]["sc_id"]."'";
+    $name = str_replace("--", null, $json_para[$i]["parameter"]);
+    $para_list .= '
+    <div class="icheck-primary mb-3 col-md-6">
+              <input type="checkbox" name="para[]" value="'.$json_para[$i]["parameter"].'" id="'.$name.'" disabled>
+              <label for="'.$name.'">
+                    '.$json_para[$i]["parameter"].' <!--{_lang_servercenter_'.$name.'}-->
+              </label>
+            </div>';
+    if(count($json_para[$i]["for"]) > 0) {
+        foreach ($json_para[$i]["for"] as $key) {
+            $array[$key][count($array[$key])] = $json_para[$i]["sc_id"];
+        }
+    }
+}
+
+$jsfi = null;
+foreach ($array as $key => $value) {
+    if(is_countable($array[$key])) {
+        if(count($array[$key]) > 0) {
+            $jsfi .= "if(action === '$key') {\n";
+            for($i=0;$i<count($array[$key]);$i++) {
+                $jsfi .= "  $('".$array[$key][$i]."').attr('disabled', false);\n";
+            }
+            $jsfi .= "}\n";
+        }
+    }
+}
+
+$l = strlen($servername); $lmax = 25;
+if($l > $lmax) {
+    $servername = substr($servername, 0 , $lmax) . " ...";
+}
+
+
 $tpl->repl('danger_resp', $danger_listitem);
 $tpl->repl('warning_resp', $warning_listitem);
+
+$tpl->repl('jsif', $jsfi);
+$tpl->repl('js_array', implode(",", $opt_str));
+$tpl->repl('action_list', $action_list);
+$tpl->repl('para_list', $para_list);
 
 $tpl->repl('cfg', $url[2]);
 $tpl->repl('servername', $servername);
@@ -199,6 +263,12 @@ $tpl->repl('url_site', 'http://'.$_SERVER['SERVER_NAME']);
 $tpl->repl('panel', $panel);
 $tpl->repl('resp', $resp);
 $tpl->repl('playerlist', $player);
+
+//teste state
+$onlinestate = false;
+if($serv->get_state() == 2) $onlinestate = true;
+$tpl->replif("ifonline", $onlinestate);
+$tpl->repl('joinurl', $serv->readdata()->connect);
 // lade in TPL
 $content = $tpl->loadin();
 $btns .= '

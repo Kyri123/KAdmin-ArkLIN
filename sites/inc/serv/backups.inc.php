@@ -14,6 +14,21 @@ $page_tpl->repl('SESSION_USERNAME' ,$user->name());
 $dir_array = dirToArray($serv->get_backup_dir());
 $y = 0; $list = null;
 
+if(isset($url[4]) && isset($url[5]) && $url[4] == "removemain") {
+    $key = $url[5];
+    $path = $serv->get_backup_dir()."/".$key;
+    if(file_exists($path)) {
+        if(del_dir($path)) {
+            $resp = meld('success', $filename. " & alles darin wurde entfernt.", 'Erfolgreich!', null);
+        }
+        else {
+            $resp = meld('danger', 'Konnte Ordner nicht entfernen.', 'Fehler!', null);
+        }
+    }
+    else {
+        $resp = meld('danger', 'Konnte Ordner nicht finden.', 'Fehler!', null);
+    }
+}
 
 if(isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove") {
     $key = $url[5];
@@ -118,7 +133,6 @@ foreach ($dir_array as $key => $value) {
         $durl = $serv->get_backup_dir()."/".$key."/".$dir_array[$key][$i];
 
         $list2tpl->repl("i", $i);
-        $list2tpl->repl("cfg", $serv->show_name());
         $list2tpl->repl("key", $key);
         $list2tpl->repl("durl", $durl);
         $list2tpl->repl("title", $dir_array[$key][$i]);
@@ -127,6 +141,8 @@ foreach ($dir_array as $key => $value) {
         $list2 .= $list2tpl->loadin();
     }
     $listtpl->repl("list", $list2);
+    $listtpl->repl("cfg", $serv->show_name());
+    $listtpl->repl("key", $key);
     $listtpl->replif("ifemtpy", false);
     if(count($dir_array[$key]) > 0) $list .= $listtpl->loadin();
     if(count($dir_array[$key]) > 0) $y++;

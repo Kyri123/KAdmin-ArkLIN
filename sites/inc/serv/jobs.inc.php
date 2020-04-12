@@ -38,7 +38,8 @@ if(!file_exists($cpath)) {
 if(isset($_POST['set'])) {
     $key = $_POST['key'];
     $intervall = $_POST['intervall'];
-    $datetime = strtotime($_POST['datetime']);
+    $datetime = $_POST['time'][2]."-".$_POST['time'][1]."-".$_POST['time'][0]." ".$_POST['time'][3].":".$_POST['time'][4].":00";
+    $datetime = strtotime($datetime);
     $json = $helper->file_to_json($cpath, true);
     if($intervall != null && is_numeric($intervall) && $intervall > 0) {
         if($datetime != null && $datetime > time()) {
@@ -54,7 +55,7 @@ if(isset($_POST['set'])) {
             }
         }
         else {
-            $resp = meld('danger', 'Intervall hat kein gültiges Format oder ist Leer.', 'Fehler!', null);
+            $resp = meld('danger', 'Zeit muss gößer der aktuellen Zeit sein & das Format muss eingehalten werden', 'Fehler!', null);
         }
     }
     else {
@@ -65,12 +66,16 @@ if(isset($_POST['set'])) {
 
 if(isset($_POST['addjob'])) {
     $json = $helper->file_to_json($cpath, true);
-    $i = count($json['jobs']);
+    $i = 0;
+    while(true) {
+        if(!isset($json['jobs'][$i])) break; $i++;
+    }
+    $i = intval($i);
     $name = $_POST['name'];
     $action = $_POST['action'];
     $parameter = $_POST['parameter'];
     $intervall = $_POST['intervall'];
-    $datetime = $_POST['datetime'];
+    $datetime = $_POST['time'][2]."-".$_POST['time'][1]."-".$_POST['time'][0]." ".$_POST['time'][3].":".$_POST['time'][4].":00";
     $datetime = strtotime($datetime);
     if($name != null) {
         if($action != null) {
@@ -99,14 +104,16 @@ if(isset($_POST['addjob'])) {
     else {
         $resp = meld('danger', 'Bezeichnung ist leer', 'Fehler!', null);
     }
-    // $resp = meld('success mb-4', 'Arkmanger.cfg wurde gespeichert!', 'Gespeichert', 'fas fa-check', 'fas fa-exclamation-circle');
 }
+
+//Remove Jobs
 if(isset($url[4]) && isset($url[5]) && $url[4] == "delete") {
     $i = $url[5];
-    $json = $helper->file_to_json($cpath, true);
-    if(isset($json['jobs'][$i])) {
-        unset($json['jobs'][$i]);
-        if($helper->savejson_exsists($json, $cpath)) {
+    $i = intval($i);
+    $json = $helper->file_to_json($cpath);
+    if(isset($json["jobs"][$i])) {
+        unset($json["jobs"][$i]);
+        if($helper->savejson_create($json, $cpath)) {
             $resp = meld('success', 'Aufgabe entfernt.', 'Erfolgreich!', null);
         }
         else {
@@ -120,6 +127,7 @@ if(isset($url[4]) && isset($url[5]) && $url[4] == "delete") {
 
 if(isset($url[4]) && isset($url[5]) && $url[4] == "toggle") {
     $i = $url[5];
+    $i = intval($i);
     $json = $helper->file_to_json($cpath, true);
     if(isset($json['jobs'][$i])) {
         if($json['jobs'][$i]['active'] == "true") {
@@ -145,46 +153,65 @@ if(isset($url[4]) && isset($url[5]) && $url[4] == "toggle") {
 
 $json = null; $jobs = null;
 $json = $helper->file_to_json($cpath, true);
-if(count($json['jobs']) > 0) {
-    for($z=0;$z<count($json['jobs']);$z++) {
-        $list = new Template('list_jobs.htm', 'tpl/serv/sites/list/');
-        $list->load();
-        $list->replif('empty', true);
-        if($json['jobs'][$z]['active'] == "true") {
-            $toggle_icon = 'fa fa-check';
-            $toggle_btn_color = 'btn-success';
-            $toggle_tooltip = 'Deaktivieren';
-        }
-        else {
-            $toggle_icon = 'fa fa-times';
-            $toggle_btn_color = 'btn-danger';
-            $toggle_tooltip = 'Aktivieren';
-        }
-        $list->repl('toggle_tooltip', $toggle_tooltip);
-        $list->repl('toggle_icon', $toggle_icon);
-        $list->repl('toggle_btn_color', $toggle_btn_color);
-        $list->repl('title', $json['jobs'][$z]['name']);
-        $list->repl('action', $json['jobs'][$z]['action']);
-        $list->repl('parameter', $json['jobs'][$z]['parameter']);
-        $list->repl('intervall', $json['jobs'][$z]['intervall']);
-        $list->repl('cfg', $serv->show_name());
-        $list->repl('i', $z);
-        $list->repl('datetime', date('d.m.Y - H:i', $json['jobs'][$z]['datetime']));
-        $jobs .= $list->loadin();
+
+foreach($json['jobs'] as $key => $value) {
+    $list = new Template('list_jobs.htm', 'tpl/serv/sites/list/');
+    $list->load();
+    $list->replif('empty', true);
+    if($json['jobs'][$key]['active'] == "true") {
+        $toggle_icon = 'fa fa-check';
+        $toggle_btn_color = 'btn-success';
+        $toggle_tooltip = 'Deaktivieren';
     }
+    else {
+        $toggle_icon = 'fa fa-times';
+        $toggle_btn_color = 'btn-danger';
+        $toggle_tooltip = 'Aktivieren';
+    }
+    $list->repl('toggle_tooltip', $toggle_tooltip);
+    $list->repl('toggle_icon', $toggle_icon);
+    $list->repl('toggle_btn_color', $toggle_btn_color);
+    $list->repl('title', $json['jobs'][$key]['name']);
+    $list->repl('action', $json['jobs'][$key]['action']);
+    $list->repl('parameter', $json['jobs'][$key]['parameter']);
+    $list->repl('intervall', $json['jobs'][$key]['intervall']);
+    $list->repl('cfg', $serv->show_name());
+    $list->repl('i', $key);
+    $list->repl('datetime', date('d.m.Y - H:i', $json['jobs'][$key]['datetime']));
+    $jobs .= $list->loadin();
 }
-else {
+
+if($jobs == null) {
     $list = new Template('list_jobs.htm', 'tpl/serv/sites/list/');
     $list->load();
     $list->replif('empty', false);
     $list->repl('title', 'Keine Jobs gefunden!');
     $jobs .= $list->loadin();
 }
-
+$stamp = $json['option']['backup']['datetime'];
+$t[0] = date("Y", $stamp);
+$t[1] = date("m", $stamp);
+$t[2] = date("d", $stamp);
+$t[3] = date("H", $stamp);
+$t[4] = date("i", $stamp);
+for($i=0;$i<6;$i++) {
+    $page_tpl->repl("datetime_backup[$i]", $t[$i]);
+}
 if($json['option']['backup']['active'] == "true") $page_tpl->repl('true_backup', 'Selected'); $page_tpl->repl('true_backup', null);
 $page_tpl->repl('para_backup', $json['option']['backup']['para']);
 $page_tpl->repl('datetime_backup', date('Y-m-d\TH:i', $json['option']['backup']['datetime']));
 $page_tpl->repl('intervall_backup', $json['option']['backup']['intervall']);
+
+
+$stamp = $json['option']['update']['datetime'];
+$t[0] = date("Y", $stamp);
+$t[1] = date("m", $stamp);
+$t[2] = date("d", $stamp);
+$t[3] = date("H", $stamp);
+$t[4] = date("i", $stamp);
+for($i=0;$i<6;$i++) {
+    $page_tpl->repl("datetime_update[$i]", $t[$i]);
+}
 if($json['option']['update']['active'] == "true") $page_tpl->repl('true_update', 'Selected'); $page_tpl->repl('true_update', null);
 $page_tpl->repl('para_update', $json['option']['update']['para']);
 $page_tpl->repl('datetime_update', date('Y-m-d\TH:i', $json['option']['update']['datetime']));

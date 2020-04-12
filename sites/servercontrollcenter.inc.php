@@ -7,6 +7,7 @@ $setsidebar = false;
 $cfglist = null;
 $pagename = "Server Controll Center";
 $urltop = '<li class="breadcrumb-item">Server Controll Center</li>';
+$serv = new server("tiamat");
 
 //tpl
 $tpl = new Template('tpl.htm', $tpl_dir);

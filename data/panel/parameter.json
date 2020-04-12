@@ -1,0 +1,104 @@
+
+[
+  {
+    "parameter": "--alwaysrestart",
+    "sc_id": "#alwaysrestart",
+    "for": [
+      "start"
+    ]
+  },
+  {
+    "parameter": "--noautoupdate",
+    "sc_id": "#noautoupdate",
+    "for": [
+      "start",
+      "restart"
+    ]
+  },
+  {
+    "parameter": "--warn",
+    "sc_id": "#warn",
+    "for": [
+      "update",
+      "restart",
+      "stop"
+    ]
+  },
+  {
+    "parameter": "--saveworld",
+    "sc_id": "#saveworld",
+    "for": [
+      "update",
+      "stop"
+    ]
+  },
+  {
+    "parameter": "--safe",
+    "sc_id": "#safe",
+    "for": [
+      "update"
+    ]
+  },
+  {
+    "parameter": "--force",
+    "sc_id": "#force",
+    "for": [
+      "update"
+    ]
+  },
+  {
+    "parameter": "--downloadonly",
+    "sc_id": "#downloadonly",
+    "for": [
+      "update"
+    ]
+  },
+  {
+    "parameter": "--backup",
+    "sc_id": "#backup",
+    "for": [
+      "update",
+      "restart",
+      "stop"
+    ]
+  },
+  {
+    "parameter": "--update-mods",
+    "sc_id": "#update-mods",
+    "for": [
+      "update"
+    ]
+  },
+  {
+    "parameter": "--ifempty",
+    "sc_id": "#ifempty",
+    "for": [
+      "update",
+      "stop"
+    ]
+  },
+  {
+    "parameter": "--allmaps",
+    "sc_id": "#allmaps",
+    "for": [
+      "backup"
+    ]
+  },
+  {
+    "parameter": "--revstatus",
+    "sc_id": "#revstatus",
+    "for": [
+      "checkmodupdate",
+      "checkupdate"
+    ]
+  },
+  {
+    "parameter": "--validate",
+    "sc_id": "#validate",
+    "for": [
+      "update",
+      "restart",
+      "start"
+    ]
+  }
+]

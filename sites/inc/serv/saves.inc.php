@@ -164,8 +164,6 @@ if(is_array($tribe_json)) {
         if(is_array($player_json)) {
             for ($z=0;$z<count($player_json); $z++) {
                 $p = $jhelper->player($player_json, $z);
-                //print_r($pl); echo "<br />";
-                //print_r($p); echo "<br />";
                 if ($pl->Id == $p->TribeId) {
 
                     $playerlist_tpl = new Template('list_tribes_user.htm', 'tpl/serv/sites/list/');
@@ -220,6 +218,7 @@ for($i=0;$i<count($dirarr);$i++) {
             $time = filemtime($file);
 
             $name = str_replace('.ark', null, $dirarr[$i]);
+            $date_array = date_parse($name);
 
             $list_tpl->repl('name', $name);
             $list_tpl->repl('update', converttime($time));
@@ -227,8 +226,10 @@ for($i=0;$i<count($dirarr);$i++) {
 
             $list_tpl->repl('rm_url', '/serverpage/'.$serv->show_name().'/saves/remove/'.$dirarr[$i]);
 
-            $world .= $list_tpl->loadin();
-            $w_t++;
+            if(!strpos($name, 'profile') && $date_array["year"] == null) {
+                $world .= $list_tpl->loadin();
+                $w_t++;
+            }
         }
     }
 }

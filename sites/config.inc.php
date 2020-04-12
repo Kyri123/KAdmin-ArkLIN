@@ -76,13 +76,15 @@ foreach($panelconfig as $key => $value) {
         "uninstall_mod",
         "install_mod",
         "servlocdir",
-        "arklocdir"
+        "arklocdir",
+        "apikey"
     );
     $repl = array(
         "Deinstalliere Mods beim Entfernen",
         "Installiere Mods beim Hinzufügen",
         "Server-verzeichnis",
-        "Arkmanager-verzeichnis"
+        "Arkmanager-verzeichnis",
+        "Steam-API Key <a href='https://steamcommunity.com/dev/apikey' target='_blank'>(finde ich Hier)</a>"
     );
 
     $bool = array("uninstall_mod", "install_mod");

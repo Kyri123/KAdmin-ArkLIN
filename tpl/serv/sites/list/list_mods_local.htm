@@ -2,18 +2,8 @@
     <div class="row p-0">
         <div class="col-12">
             <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50">
-            {empty}<div class="ml-auto float-right">
-            {ifup}<a href="/serverpage/{cfg}/mods/top/{modid}" class="btn btn-info btn-sm">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-arrow-up"></i>
-                                        </span>
-        </a>{/ifup}
-            {ifdown}<a href="/serverpage/{cfg}/mods/bot/{modid}" class="btn btn-info btn-sm">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-arrow-down"></i>
-                                        </span>
-        </a>{/ifdown}
-            <a href="javascript:void();" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{modid}" class="btn btn-danger">
+            <div class="ml-auto float-right">
+            <a href="javascript:void();" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{rnd}" class="btn btn-danger">
                                         <span class="icon text-white">
                                             <i class="fas fa-times"></i>
                                         </span>
@@ -23,15 +13,24 @@
                                             <i class="fab fa-steam-symbol"></i>
                                         </span>
             </a>
-        </div>{/empty}
-            <div style="margin-left: 60px;">{title}<br />{empty}<span class="font-weight-light" style="font-size: 11px;"> {modid} | Updated: {lastupdate}</span>&nbsp;{/empty}&nbsp;</div>
+        </div>
+            <div style="margin-left: 60px;">
+                {active}
+                    <span class="text-success">Aktiv: {title}</span>
+                {/active}
+                {!active}
+                <span class="text-danger">Inaktiv: {title}</span>
+                {/!active}
+                <br />
+                <span class="font-weight-light" style="font-size: 11px;"> {modid} | Updated: {lastupdate}</span>&nbsp;
+                </div>
         </div>
     </div>
 </li>
 
 <!-- Modal -->
 
-<form class="modal fade" id="del{modid}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
+<form class="modal fade" id="del{rnd}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
             <div class="modal-header ">
@@ -48,7 +47,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                <a href="/serverpage/{cfg}/mods/remove/{modid}"  type="submit" class="btn btn-danger" name="del">Löschen</a>
+                <a href="/serverpage/{cfg}/mods/removelocal/{modid}"  type="submit" class="btn btn-danger" name="del">Löschen</a>
             </div>
         </div>
     </div>

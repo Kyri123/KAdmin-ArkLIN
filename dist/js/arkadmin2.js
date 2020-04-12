@@ -54,7 +54,6 @@ function server_item(cfg, id){
                 document.getElementById(id).classList.add('text-danger');
                 document.getElementById(id).classList.add('fas');
                 document.getElementById(id).classList.add('fa-star');
-                fas
             }
 
             // PLAYER

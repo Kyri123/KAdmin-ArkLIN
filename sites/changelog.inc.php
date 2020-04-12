@@ -14,6 +14,7 @@ $tpl_dir = 'tpl/changelog/';
 $tpl_dir_all = 'tpl/all/';
 $setsidebar = false;
 $pagename = 'Changelogs';
+$urltop = '<li class="breadcrumb-item">Changelogs</li>';
 
 //tpl
 $tpl = new Template('tpl.htm', $tpl_dir);
@@ -23,7 +24,7 @@ $tpl->load();
 $json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 300);
 
 if(isset($json['file'])) {
-    echo 'error 404';
+    echo 'error error';
 }
 else {
     $list = null;
@@ -104,12 +105,11 @@ else {
         if($json[$i]['git'] != " " && $json[$i]['git'] != null) $git = true;
         $download = false;
         if($json[$i]['download'] != " " && $json[$i]['download'] != null) $download = true;
+        $listtpl->repl('lastupdate', converttime($json[$i]['updated'], false, true));
         $listtpl->repl('git', $json[$i]['git']);
         $listtpl->repl('download', $json[$i]['download']);
         $listtpl->replif('ifgit', $git);
         $listtpl->replif('ifdownload', $download);
-        $listtpl->repl('datestring', $json[$i]['datestring']);
-        $listtpl->repl('datestring', $json[$i]['datestring']);
         $listtpl->repl('datestring', $json[$i]['datestring']);
         $listtpl->repl('version', $json[$i]['version']);
         $list .= $listtpl->loadin();

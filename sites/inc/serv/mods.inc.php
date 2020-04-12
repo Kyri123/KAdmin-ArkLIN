@@ -75,7 +75,21 @@ if(isset($_POST['addmod'])) {
     }
 }
 
-if(isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' OR $url[4] == 'bot' OR $url[4] == 'top')) {
+if(isset($url[4]) && isset($url[5]) && $url[4] == 'removelocal') {
+    $path = $serv->get_dir()."/ShooterGame/Content/Mods/".$url[5];
+
+    $resp = meld('danger', 'Verzeichnis nicht Entfernt', 'Fehler!', null);
+
+    if(file_exists($path)) {
+        $jobs = new jobs();
+        $jobs->set($serv->show_name());
+        $jobs->create("uninstallmod ".$url[5]);
+        $mod = $steamapi->getmod_class($url[5]);
+        $resp = meld('success', 'Verzeichnis der mod <b>'.$mod->title.'</b> wird Entfernt (dauert höhsten eine Minute)', 'Erfolgreich!', null);
+    }
+}
+
+if(isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot' || $url[4] == 'top')) {
     $action = $url[4];
     $modid = $url[5];
     // change order
@@ -113,6 +127,7 @@ if(isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' OR $url[4] == 'bot' 
                 $jobs->create('uninstallmod ' . $id);
             }
             unset($mods[$i]);
+            $resp = meld('success', 'Mod <b>'.$steamapi->getmod_class($id)->title.'</b> Entfernt', 'Erfolgreich!', null);
             break;
         }
     }
@@ -121,7 +136,6 @@ if(isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' OR $url[4] == 'bot' 
     $serv->cfg_write('ark_GameModIds', $mod_builder);
     $serv->cfg_save();
 }
-
 
 $page_tpl = new Template('mods.htm', 'tpl/serv/sites/');
 $urltop = '<li class="breadcrumb-item"><a href="/serverpage/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';

@@ -5,7 +5,6 @@
 <div class="wrapper">
 
 	<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-		<!-- Left navbar links -->
 		<ul class="navbar-nav">
 			<li class="nav-item">
 				<a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
@@ -13,9 +12,7 @@
 			{btns}
 		</ul>
 
-		<!-- Right navbar links -->
 		<ul class="navbar-nav ml-auto">
-			<!-- Messages Dropdown Menu -->
 			<li class="nav-item dropdown">
 				<a class="nav-link" data-toggle="dropdown" href="#">
 					<i class="fa fa-server"></i>
@@ -36,29 +33,24 @@
 
 
 	<aside class="main-sidebar sidebar-dark-primary elevation-4">
-		<!-- Brand Logo -->
 		<a href="/" class="brand-link">
 			<span class="brand-text font-weight-light">Arkadmin {aa_version}</span>
 		</a>
 
-		<!-- Sidebar -->
 		<div class="sidebar">
-			<!-- Sidebar user (optional) -->
 			<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 				<div class="image">
-					<img src="https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png" class="img-circle elevation-2" alt="User Image">
+					<img src="https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png" class="img-circle">
 				</div>
 				<div class="info">
 					<a href="#" class="d-block">[{rank}] {user}</a>
+					<a href="javascript:void" class="mr-1"><i class="fas fa-cogs" data-toggle="tooltip" data-placement="top" title="" data-original-title="Benutzer Einstellung (Soon)"></i></a>
+					<a href="javascript:void" data-toggle="modal" data-target="#logoutmodal"><i class="fas fa-sign-out-alt" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ausloggen"></i></a>
 				</div>
-				<div class="right pos"><a href="javascript:void" data-toggle="modal" data-target="#logoutmodal"><i class="fas fa-sign-out-alt"></i></a></div>
 			</div>
 
-			<!-- Sidebar Menu -->
 			<nav class="mt-2">
 				<ul class="nav nav-pills nav-sidebar flex-column nav-compact" data-widget="treeview" role="menu" data-accordion="false">
-					<!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
 					<li class="nav-item has-treeview">
 						<a href="/" class="nav-link {curr_home_css}">
 							<i class="nav-icon fas fa-tachometer-alt"></i>
@@ -117,9 +109,7 @@
 					</li>
 				</ul>
 			</nav>
-			<!-- /.sidebar-menu -->
 		</div>
-		<!-- /.sidebar -->
 	</aside>
 
 	<div class="content-wrapper d-flex flex-column" style="min-height: 1416.81px;">
@@ -127,19 +117,80 @@
 			<div class="row mb-2">
 				<div class="col-sm-6" style="padding-left: 20px;">
 					<h1 class="text-dark">{pagename}</h1>
-				</div><!-- /.col -->
+				</div>
 				<div class="col-sm-6"style="padding-right: 20px;">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="/">ArkAdmin 2</a></li>
 						{urltop}
 					</ol>
-				</div><!-- /.col -->
+				</div>
 			</div>
 		</section>
 
 		<section class="content">
 			<div class="container-fluid">
-				{content}
+				{if_g_alert}
+					<section class="content">
+						<div class="container-fluid">{g_alert}</div>
+					</section>
+				{/if_g_alert}
+				<section class="content">
+					<div class="container-fluid">
+						{!ifchangelog}<div class="row">
+							<!-- CPU -->
+							<div class="col-12 col-sm-6 col-md-3">
+								<div class="info-box">
+									<span class="info-box-icon bg-info elevation-1"><i class="fas fa-microchip"></i></span>
+									<div class="info-box-content">
+										<span class="info-box-text">CPU Traffic</span>
+										<span class="info-box-number">
+                    {cpu_perc}
+                    <small>%</small>
+                </span>
+									</div>
+								</div>
+							</div>
+							<!-- RAM -->
+							<div class="col-12 col-sm-6 col-md-3">
+								<div class="info-box">
+									<span class="info-box-icon bg-primary elevation-1"><i class="fas fa-memory"></i></span>
+									<div class="info-box-content">
+										<span class="info-box-text">Arbeitsspeicher</span>
+										<span class="info-box-number">
+                    {ram_perc} <small>%</small>
+                </span>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix hidden-md-up"></div>
+							<!-- SPEICHER -->
+							<div class="col-12 col-sm-6 col-md-3">
+								<div class="info-box">
+									<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-hdd"></i></span>
+									<div class="info-box-content">
+										<span class="info-box-text">Freier Speicher (Server)</span>
+										<span class="info-box-number">
+                    {free}
+                </span>
+									</div>
+								</div>
+							</div>
+							<!-- SERV -->
+							<div class="col-12 col-sm-6 col-md-3">
+								<div class="info-box">
+									<span class="info-box-icon bg-warning elevation-1"><i class="fas fa-server"></i></span>
+									<div class="info-box-content">
+										<span class="info-box-text">Server</span>
+										<span class="info-box-number">
+                    {count_server}
+                </span>
+									</div>
+								</div>
+							</div>
+						</div>{/!ifchangelog}
+						{content}
+					</div>
+				</section>
 			</div>
 		</section>
 	</div>
@@ -165,7 +216,6 @@
 	</div>
 </div>
 
-<!-- Custom scripts for all pages-->
 <script src="/dist/js_old/sb-admin-2.min.js"></script>
 
 

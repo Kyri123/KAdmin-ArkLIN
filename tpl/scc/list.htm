@@ -47,11 +47,11 @@
             <div class="modal-body">
                 <p><span class="text-danger">Bitte Sicherstellen dass der Server offline ist! (Sonst wird diese Aktion nicht durchgeführt)</span></p>
                 <input name="cfg" value="{cfg}" type="hidden">
-                <div class="form-row" style="padding-left: 25px">
-                    <div class="custom-control custom-checkbox mb-3 col-md-12">
-                        <input name="opt[]" value="deinstall" id="rm{cfg}" type="checkbox" class="custom-control-input" checked>
-                        <label class="custom-control-label" for="rm{cfg}">Server Deinstallieren</label>
-                    </div>
+                <div class="icheck-primary mb-3">
+                    <input type="checkbox" name="opt[]" value="deinstall" id="rm{cfg}">
+                    <label for="rm{cfg}">
+                        Server Deinstallieren
+                    </label>
                 </div>
             </div>
 

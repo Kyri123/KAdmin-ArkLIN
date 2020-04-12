@@ -1,5 +1,6 @@
 <?php
 
+if(!file_exists("data/read/")) mkdir("data/read/"); file_put_contents("data/read/webhelper", time());
 
 $tpl_crontab = new Template('crontab.htm', 'tpl/system/');
 $tpl_crontab->load();
@@ -332,20 +333,20 @@ elseif($job == "jobs") {
             if(file_exists($cpath)) {
                 $json = $helper->file_to_json($cpath, true);
                 if(count($json['jobs']) > 0) {
-                    for($z=0;$z<count($json['jobs']);$z++) {
-                        $diff =  time() - $json['jobs'][$z]['datetime'];
-                        if($diff >= 0 && $json['jobs'][$z]['active'] == "true") {
-                            if($diff > $json['jobs'][$z]['intervall']) {
-                                $x = $diff / $json['jobs'][$z]['intervall'];
+                    foreach($json['jobs'] as $key => $value) {
+                        $diff =  time() - $json['jobs'][$key]['datetime'];
+                        if($diff >= 0 && $json['jobs'][$key]['active'] == "true") {
+                            if($diff > $json['jobs'][$key]['intervall']) {
+                                $x = $diff / $json['jobs'][$key]['intervall'];
                                 $x = floor($x);
-                                $x = $x * $json['jobs'][$z]['intervall'];
+                                $x = $x * $json['jobs'][$key]['intervall'];
                             }
                             else {
-                                $x = $json['jobs'][$z]['intervall'];
+                                $x = $json['jobs'][$key]['intervall'];
                             }
-                            $nextrun = $json['jobs'][$z]['datetime'] + $x;
-                            $jobs->create($json['jobs'][$z]['action'].' '.$json['jobs'][$z]['parameter']);
-                            $json['jobs'][$z]['datetime'] = $nextrun;
+                            $nextrun = $json['jobs'][$key]['datetime'] + $x;
+                            $jobs->create($json['jobs'][$key]['action'].' '.$json['jobs'][$key]['parameter']);
+                            $json['jobs'][$key]['datetime'] = $nextrun;
                         }
                     }
                 }

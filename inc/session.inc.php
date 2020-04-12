@@ -36,6 +36,7 @@ else {
 
 // Einloggen
 if(isset($_POST["login"]) && !isset($_SESSION["id"])) {
+    $loggedin = filter_var($_POST["loggedin"], FILTER_VALIDATE_BOOLEAN);
     define('pw', $_POST["pw"]);
     
     // Count Username
@@ -58,8 +59,17 @@ if(isset($_POST["login"]) && !isset($_SESSION["id"])) {
         $row = $mycon->query($query)->fetchArray();
         if($row["password"] == md5(pw)) {
             if($row["ban"] < 1) {
+                $userid = $row['id'];
                 $_SESSION["id"] = $row['id'];
-                $_SESSION["rank"] = $row['rang'];
+
+                if($loggedin) {
+                    $md5_id = md5($userid);
+                    $md5_rnd = md5(rndbit(100));
+                    setcookie("id", $md5_id, time()+(525600*60*100));
+                    setcookie("validate", $md5_rnd, time()+(525600*60*100));
+                    $query = "INSERT INTO `ArkAdmin_user_cookies` (`md5id`, `validate`, `userid`) VALUES ('".$md5_id."', '".$md5_rnd."', '".$userid."')";
+                    $mycon->query($query);
+                }
 
                 header('Location: /home');
                 exit;
@@ -74,6 +84,22 @@ if(isset($_POST["login"]) && !isset($_SESSION["id"])) {
     }
     else {
         $resp = alert('danger', 'Benutzername oder E-Mail nicht vorhanden', '15px 15px 0px 5px', 'Fehler!');
+    }
+}
+
+// Prüfe Cookies & logge ggf ein
+if(isset($_COOKIE["id"]) && isset($_COOKIE["validate"]) && !isset($_SESSION["id"])) {
+    $query = 'SELECT * FROM `ArkAdmin_user_cookies`';
+    $mycon->query($query);
+    if($mycon->numRows() > 0) {
+        $array_vali = $mycon->fetchAll();
+        for($i=0;$i<count($array_vali);$i++) {
+            if($array_vali[$i]["md5id"] == $_COOKIE["id"] && $array_vali[$i]["validate"] == $_COOKIE["validate"]) {
+                $_SESSION["id"] = $array_vali[$i]['userid'];
+                header('Location: /home');
+                exit;
+            }
+        }
     }
 }
 
@@ -167,6 +193,5 @@ $tpl_register->repl('4', $a4);
 
 $tpl_login->repl('bg', '/dist/img/backgrounds/side.jpg');
 $tpl_login->repl('meld', $resp);
-
 
 ?>

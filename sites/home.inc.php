@@ -72,7 +72,7 @@ foreach ($a_cfg as $key => $value) {
 $json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 300);
 
 if(isset($json['file'])) {
-    echo 'error 404';
+    echo 'error error';
 }
 else {
     $c = 0;
@@ -102,6 +102,7 @@ else {
         if($json[$i]['git'] != " " && $json[$i]['git'] != null) $git = true;
         $download = false;
         if($json[$i]['download'] != " " && $json[$i]['download'] != null) $download = true;
+        $listtpl->repl('lastupdate', converttime($json[$i]['updated'], false, true));
         $listtpl->repl('git', $json[$i]['git']);
         $listtpl->repl('download', $json[$i]['download']);
         $listtpl->replif('ifgit', $git);
@@ -119,11 +120,7 @@ else {
 // lade in TPL
 $tpl->repl('listchangelogs', $list);
 $tpl->repl('version', $version);
-$tpl->repl('count_server', $count_server);
 $tpl->repl('serv_list', $serv_list);
-$tpl->repl('cpu_perc', cpu_perc());
-$tpl->repl('free', bitrechner(disk_free_space ( "remote/serv/" )));
-$tpl->repl('ram_perc', mem_perc());
 
 $content = $tpl->loadin();
 $H_btn_group = null;

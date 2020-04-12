@@ -1,94 +1,101 @@
 <?php
 
-class userclass {
+
+class userclass
+{
 
     private $id;
     private $mycon;
+    private $myconisset;
+    private $frech;
 
     function __construct()
     {
         global $mycon;
         $this->mycon = $mycon;
+        $this->myconisset = false;
     }
 
-    function setid($id) {
+    function setid($id)
+    {
         $this->id = $id;
+        $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \'' . $this->id . '\'';
+        if ($this->mycon->query($query)->numRows() > 0) {
+            $this->myconisset = true;
+            $this->frech = $this->mycon->query($query)->fetchArray();
+            return true;
+        }
+        $this->myconisset = false;
+        return false;
     }
 
-    function name() {
-        $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \''.$this->id.'\'';
-        if($this->mycon->query($query)->numRows() > 0) {
-            $row = $this->mycon->query($query)->fetchArray();
-            return $row['username'];
-        }
-        else {
-            return 'Account nicht gefunden!';
-        }
-    }
-
-    function lasttime() {
-        $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \''.$this->id.'\'';
-        if($this->mycon->query($query)->numRows() > 0) {
-            $row = $this->mycon->query($query)->fetchArray();
-            return $row['lastlogin'];
-        }
-        else {
-            return 'Account nicht gefunden!';
+    function name()
+    {
+        if ($this->myconisset) {
+            $frech = $this->frech;
+            return $frech['username'];
+        } else {
+            return 'Account nicht gefunden oder gesetzt!';
         }
     }
 
-    function regtime() {
-        $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \''.$this->id.'\'';
-        if($this->mycon->query($query)->numRows() > 0) {
-            $row = $this->mycon->query($query)->fetchArray();
-            return $row['registerdate'];
-        }
-        else {
-            return 'Account nicht gefunden!';
-        }
-    }
-
-    function rang() {
-        $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \''.$this->id.'\'';
-        if($this->mycon->query($query)->numRows() > 0) {
-            $row = $this->mycon->query($query)->fetchArray();
-            return $row['rang'];
-        }
-        else {
-            return 'Account nicht gefunden!';
+    function lasttime()
+    {
+        if ($this->myconisset) {
+            $frech = $this->frech;
+            return $frech['lastlogin'];
+        } else {
+            return 'Account nicht gefunden oder gesetzt!';
         }
     }
 
-    function ban() {
-        $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \''.$this->id.'\'';
-        if($this->mycon->query($query)->numRows() > 0) {
-            $row = $this->mycon->query($query)->fetchArray();
-            return $row['ban'];
-        }
-        else {
-            return 'Account nicht gefunden!';
-        }
-    }
-
-    function email() {
-        $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \''.$this->id.'\'';
-        if($this->mycon->query($query)->numRows() > 0) {
-            $row = $this->mycon->query($query)->fetchArray();
-            return $row['email'];
-        }
-        else {
-            return 'Account nicht gefunden!';
+    function regtime()
+    {
+        if ($this->myconisset) {
+            $frech = $this->frech;
+            return $frech['registerdate'];
+        } else {
+            return 'Account nicht gefunden oder gesetzt!';
         }
     }
 
-    function pw() {
-        $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \''.$this->id.'\'';
-        if($this->mycon->query($query)->numRows() > 0) {
-            $row = $this->mycon->query($query)->fetchArray();
-            return $row['password'];
+    function rang()
+    {
+        if ($this->myconisset) {
+            $frech = $this->frech;
+            return $frech['rang'];
+        } else {
+            return 'Account nicht gefunden oder gesetzt!';
         }
-        else {
-            return 'Account nicht gefunden!';
+    }
+
+    function ban()
+    {
+        if ($this->myconisset) {
+            $frech = $this->frech;
+            return $frech['ban'];
+        } else {
+            return 'Account nicht gefunden oder gesetzt!';
+        }
+    }
+
+    function email()
+    {
+        if ($this->myconisset) {
+            $frech = $this->frech;
+            return $frech['email'];
+        } else {
+            return 'Account nicht gefunden oder gesetzt!';
+        }
+    }
+
+    function pw()
+    {
+        if ($this->myconisset) {
+            $frech = $this->frech;
+            return $frech['password'];
+        } else {
+            return 'Account nicht gefunden oder gesetzt!';
         }
     }
 }

@@ -64,11 +64,13 @@ class server {
         return $path;
     }
 
-    public function get_save_dir() {
+    public function get_save_dir($getmaindir = false) {
 
         $path = $this->get_dir();
-
-        if($this->cfg_read('ark_AltSaveDirectoryName') != "" && $this->cfg_read('ark_AltSaveDirectoryName') != " ") {
+        if($getmaindir) {
+            $path = $path."/ShooterGame/Saved";
+        }
+        elseif($this->cfg_read('ark_AltSaveDirectoryName') != "" && $this->cfg_read('ark_AltSaveDirectoryName') != " ") {
             $path = $path."/ShooterGame/Saved/".$this->cfg['ark_AltSaveDirectoryName'];
         }
         else {

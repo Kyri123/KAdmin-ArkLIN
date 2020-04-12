@@ -1,17 +1,21 @@
 
-<div class="time-label" id="{version}">
-                  <span class="{color} text-white">
+<div class="time-label mb-2" id="{version}">
+                  <span class="{color} text-white  rounded-0">
                     Version {version} | {datestring}
                   </span>
-                {ifgit}<a href="{git}" target="_blank" class="btn btn-sm btn-dark" style="height: 34px; margin-bottom: 4px;"><i class="nav-icon fab fa-github" aria-hidden="true"></i> GitHub</a>{/ifgit}
-                {ifdownload}<a href="{download}" download="" class="btn btn-sm btn-dark" style="height: 34px; margin-bottom: 4px;"><i class="nav-icon fa fa-download" aria-hidden="true"></i> Runterladen</a>{/ifdownload}
+                <p class="d-xl-none d-lg-none mb-0" style="margin-top: 3px;"></p>
+                {ifgit}<a href="{git}" target="_blank" class="btn btn-sm btn-dark rounded-0" style="height: 34px; margin-bottom: 4px;"><i class="nav-icon fab fa-github" aria-hidden="true"></i> GitHub</a>{/ifgit}
+                {ifdownload}<a href="{download}" download="" class="btn btn-sm btn-dark rounded-0" style="height: 34px; margin-bottom: 4px;"><i class="nav-icon fa fa-download" aria-hidden="true"></i> Runterladen</a>{/ifdownload}
 </div>
-<div class="time-label" id="{version}">
+<div class="time-label m-0" id="{version}">
 </div>
 
 <div style="margin-right: 0px;">
-    <i class="fa fa-server {color} text-white"></i>
-    {ifnew}<div class="timeline-item" style="margin-bottom: 5px;">
+    <i class="fa fa-server {color} text-white rounded-0"></i><div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
+
+    <div class="timeline-header"><h6 class="m-0">Letztes Update: <b>{lastupdate}</b></h6></div>
+</div>
+    {ifnew}<div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
 
         <div class="timeline-header"><h4>Neuerungen</h4></div>
 
@@ -20,7 +24,7 @@
         </div>
     </div>{/ifnew}
 
-    {ifchange}<div class="timeline-item" style="margin-bottom: 5px;margin-right: 0px;">
+    {ifchange}<div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
 
         <div class="timeline-header"><h4>Änderungen</h4></div>
 
@@ -29,7 +33,7 @@
         </div>
     </div>{/ifchange}
 
-    {iffix}<div class="timeline-item" style="margin-bottom: 5px;margin-right: 0px;">
+    {iffix}<div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
 
         <div class="timeline-header"><h4>Bugfixes</h4></div>
 
@@ -38,7 +42,7 @@
         </div>
     </div>{/iffix}
 
-    {ifjava}<div class="timeline-item" style="margin-bottom: 5px;margin-right: 0px;">
+    {ifjava}<div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
 
         <div class="timeline-header"><h4>Java (WebHelper)</h4></div>
 

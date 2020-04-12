@@ -1,59 +1,84 @@
 <style>
-.bg-register-image {
+  .bg-image {
     background: url('{bg}');
     background-size: cover;
-}
-body {
-  background: rgba(11, 19, 26, 1) url('/dist/img/backgrounds/bg.jpg') no-repeat scroll center top;
-}
+  }
+  body {
+    background: rgba(11, 19, 26, 1) url('/dist/img/backgrounds/bg.jpg') no-repeat scroll center top;
+  }
 </style>
 
-<body>
+<body class="register-page bg-image" style="min-height: 586.391px;">
 
-  <div class="container">
+<div class="register-box">
+  <div class="register-logo bg-white border">
+      <span class="text-black-50"><b>Ark</b>Admin</span>
+  </div>
 
-    <div class="card o-hidden border-0 shadow-lg my-5">
-      <div class="card-body p-0">
-        <div class="row">
-          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-          <div class="col-lg-7 p-4" style="height:550px; overflow-y: scroll">
-                	{meld}
-            <div class="p-5">
-              <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Erstelle ein Account</h1>
+    {meld}
+
+  <div class="card">
+      <div class="card-body register-card-body">
+      <p class="login-box-msg">Erstelle ein neuen Account</p>
+
+      <form action="#" method="post">
+          <div class="input-group mb-3">
+              <input type="text" name="username" type="text" class="form-control" placeholder="Benutzername">
+              <div class="input-group-append">
+                  <div class="input-group-text">
+                      <span class="fas fa-user"></span>
+                  </div>
               </div>
-              <form class="user" action="#" method="post">
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" name="username" class="form-control form-control-user" id="" placeholder="Benutzername" value="{1}">
+          </div>
+
+          <div class="input-group mb-3">
+              <input type="email" name="email" type="email" class="form-control" placeholder="Email">
+              <div class="input-group-append">
+                  <div class="input-group-text">
+                      <span class="fas fa-envelope"></span>
                   </div>
-                  <div class="col-sm-6">
-                    <input type="text" name="code" class="form-control form-control-user" id="" placeholder="Register Code" value="{4}">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <input type="email" name="email" class="form-control form-control-user" id="" placeholder="Email" value="{3}">
-                </div>
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" name="pw1" class="form-control form-control-user" id="" placeholder="Passwort"">
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="password" name="pw2" class="form-control form-control-user" id="" placeholder="Passwort wiederholen">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <input type="submit" name="register" class="btn btn-primary btn-user btn-block" id="" value="Account Erstellen">
-                </div>
-              </form>
-              <hr>
-              <div class="text-center">
-                <a class="small" href="/login">Bereits ein Account? Login!</a>
               </div>
+          </div>
+
+          <div class="input-group mb-3">
+              <input type="password" name="pw1" type="password" class="form-control" placeholder="Passwort">
+              <div class="input-group-append">
+                  <div class="input-group-text">
+                      <span class="fas fa-lock"></span>
+                  </div>
+              </div>
+          </div>
+
+          <div class="input-group mb-3">
+              <input type="password" name="pw2" type="password" class="form-control" placeholder="Passwort wiederholen">
+              <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+              </div>
+          </div>
+
+        <div class="input-group mb-3">
+          <input type="text" name="code" type="password" class="form-control" placeholder="Account Code">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-key"></span>
             </div>
           </div>
         </div>
-      </div>
+
+          <div class="row">
+              <div class="col-12">
+                <button type="submit" name="register" class="btn btn-primary btn-block">Erstellen</button>
+              </div>
+          </div>
+        </form>
+
+      <p class="mt-3 mb-0"><a href="/login" class="text-center">Ich besitze bereits einen Account</a></p>
     </div>
 
-  </div>
+    </div>
+</div>
+
+
+</body>

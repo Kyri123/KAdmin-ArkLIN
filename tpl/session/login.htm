@@ -1,5 +1,5 @@
 <style>
-.bg-login-image {
+.bg-image {
     background: url('{bg}');
     background-size: cover;
 }
@@ -8,50 +8,58 @@ body {
 }
 </style>
 
-<body>
+<body class="register-page bg-image" style="min-height: 586.391px;">
 
-  <div class="container">
+<div class="register-box">
+  <div class="register-logo bg-white border">
+    <span class="text-black-50"><b>Ark</b>Admin</span>
+  </div>
+  {meld}
 
-    <div class="row justify-content-center">
+  <div class="card">
+    <div class="card-body register-card-body">
+      <p class="login-box-msg">Willkommen bei ArkAdmin!</p>
 
-      <div class="col-xl-10 col-lg-12 col-md-9">
-
-        <div class="card o-hidden border-0 shadow-lg my-5">
-          <div class="card-body p-0">
-            <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-              <div class="col-lg-6 p-4" style="height:550px; overflow-y: scroll">
-                	
-               		
-                	{meld}
-                <div class="p-5">
-                  	
-                  <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Willkommen Zurück!</h1>
-                  </div>
-                  <form class="user" action="#" method="post">
-                    <div class="form-group">
-                      <input type="text" name="logger" class="form-control form-control-user" id="" aria-describedby="emailHelp" placeholder="E-Mail oder Benutzername">
-                    </div>
-                    <div class="form-group">
-                      <input type="password" name="pw" class="form-control form-control-user" id="" placeholder="Passwort">
-                    </div>
-                    <div class="form-group">
-                      <input type="submit" name="login" class="btn btn-primary btn-user btn-block" id="" value="Einloggen">
-                    </div>
-                  </form>
-                  <hr>
-                  <div class="text-center">
-                    <a class="small" href="/register">Erstelle einen Account!</a>
-                  </div>
-                </div>
-              </div>
+      <form action="#" method="post">
+        <div class="input-group mb-3">
+          <input name="logger" type="text" class="form-control" placeholder="Benutzername / E-Mail">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
             </div>
           </div>
         </div>
 
-      </div>
+        <div class="input-group mb-3">
+          <input type="password" name="pw" type="password" class="form-control" placeholder="Passwort">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
 
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input type="checkbox" id="remember" name="loggedin">
+              <label for="remember">
+                Eingeloggt bleiben
+              </label>
+            </div>
+          </div>
+          <div class="col-4">
+            <button type="submit" name="login" class="btn btn-primary btn-block">Einloggen</button>
+          </div>
+        </div>
+      </div>
+      </form>
+
+      <p class="pl-4"><a href="/register" class="text-center">Account erstellen</a></p>
     </div>
 
   </div>
+</div>
+
+
+</body>

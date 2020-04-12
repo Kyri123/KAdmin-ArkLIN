@@ -72,6 +72,18 @@ class helper {
         }
     }
 
+    public function gethelpertime() {
+        $path = "data/read/webhelper";
+        if(file_exists($path)) return file_get_contents($path);
+        return 0;
+    }
+
+    public function gethelperdiff() {
+        $lastcheck = $this->gethelpertime();
+        $diff = time() - $lastcheck;
+        return $diff;
+    }
+
 }
 
 ?>
