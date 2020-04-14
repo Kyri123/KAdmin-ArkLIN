@@ -7,13 +7,16 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
                 <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')">Live-Log</a>
+                    <a class="nav-link active" id="pills-llog-tab" data-toggle="pill" href="#pills-llog" role="tab" aria-controls="pills-llog" aria-selected="true" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')">Live-Log</a>
                 </li>
                 <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">Live-Chat</a>
+                    <a class="nav-link" id="pills-lchat-tab" data-toggle="pill" href="#pills-lchat" role="tab" aria-controls="pills-lchat" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">Live-Chat</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">Rcon-Konsole</a>
+                    <a class="nav-link" id="pills-rcon-tab" data-toggle="pill" href="#pills-rcon" role="tab" aria-controls="pills-rcon" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">Rcon-Konsole</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-admins-tab" data-toggle="pill" href="#pills-admins" role="tab" aria-controls="pills-admins" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">Administratoren</a>
                 </li>
             </ul>
             <div class="form-inline">
@@ -25,7 +28,8 @@
     <hr />
     <div class="card shadow">
         <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+            <div class="tab-pane fade show active" id="pills-llog" role="tabpanel" aria-labelledby="pills-llog-tab">
                 <div>
                     <ul class="list-group" id="livelog">
                         <li class="list-group-item">
@@ -40,9 +44,7 @@
                 </div>
             </div>
 
-
-
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="tab-pane fade" id="pills-lchat" role="tabpanel" aria-labelledby="pills-lchat-tab">
                 <div class="pl-4 pr-4 pt-4 pb-0" id="livechatresp"></div>
                 <div class="pl-4 pr-4 pt-0 pb-0">
                     <div class="form-group row">
@@ -68,7 +70,8 @@
                     </li>
                 </ul>
             </div>
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+
+            <div class="tab-pane fade" id="pills-rcon" role="tabpanel" aria-labelledby="pills-rcon-tab">
                 <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
                 <div class="pl-4 pr-4 pt-0 pb-0">
                     <div class="form-group row">
@@ -94,6 +97,29 @@
                     </li>
                 </ul>
             </div>
+
+            <div class="tab-pane fade" id="pills-admins" role="tabpanel" aria-labelledby="pills-admins-tab">
+                <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
+                <div class="pl-4 pr-4 pt-0 pb-0">
+                    <form action="#add_admin" method="post" class="form-group row">
+                        <label class="col-sm-2 col-form-label">Benutzer:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" name="id" required>
+                                <option value="">Bitte Wählen</option>
+                                {userlist_admin}
+                            </select>
+                            <span class="text-sm">Der User muss zuerst auf dem Server gewesen sein! (Änderungen werden erst nach einem Neustart wirksam)</span>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" name="addadmin">Hinzufügen</button>
+                        </div>
+                    </form>
+                </div>
+                <ul class="list-group">
+                    {adminlist_admin}
+                </ul>
+            </div>
+
         </div>
     </div>
 </div>
