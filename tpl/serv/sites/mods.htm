@@ -10,11 +10,11 @@
                     <a class="nav-link active" id="pills-modactive-tab" data-toggle="pill" href="#pills-modactive" role="tab" aria-controls="pills-modactive" aria-selected="true">Aktive Mods</a>
                 </li>
                 <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link" id="pills-modinstall-tab" data-toggle="pill" href="#pills-modinstall" role="tab" aria-controls="pills-modinstall" aria-selected="true">Installiere Mods</a>
+                    <a class="nav-link" id="pills-modinstall-tab" data-toggle="pill" href="#pills-modinstall" role="tab" aria-controls="pills-modinstall" aria-selected="true">Installierte Mods</a>
                 </li>
-                <li class="nav-item">
+                {ifckonfig}<li class="nav-item">
                     <a class="nav-link" id="pills-add-tab" data-toggle="pill" href="#pills-add" role="tab" aria-controls="pills-add" aria-selected="false">Mods Hinzufügen</a>
-                </li>
+                </li>{/ifckonfig}
             </ul>
         </div>
     </nav>
@@ -45,7 +45,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="tab-pane fade" id="pills-add" role="tabpanel" aria-labelledby="pills-add-tab">
+            {ifckonfig}<div class="tab-pane fade" id="pills-add" role="tabpanel" aria-labelledby="pills-add-tab">
                 <form action="{urls}" method="post" class="p-3 pt-4">
                     <div class="form-group row m-0">
                         <label class="col-sm-2 col-form-label">Workshop URL</label>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                 </form>
-            </div>
+            </div>{/ifckonfig}
         </div>
     </div>
 </div>

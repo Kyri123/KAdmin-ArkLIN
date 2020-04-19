@@ -1,4 +1,26 @@
 <?php
+
+
+function convertstate($serverstate) {
+    if($serverstate == 0) {
+        $serv_state = "Offline";
+        $serv_color = "danger";
+    }
+    elseif ($serverstate == 1) {
+        $serv_state = "Startet";
+        $serv_color = "info";
+    }
+    elseif ($serverstate == 2) {
+        $serv_state = "Online";
+        $serv_color = "success";
+    }
+    elseif ($serverstate == 3) {
+        $serv_state = "Nicht Installiert";
+        $serv_color = "warning";
+    }
+    return array("color" => $serv_color,"str" => $serv_state);
+}
+
 function mem_perc(){
 
     $free = shell_exec('free');
@@ -9,6 +31,18 @@ function mem_perc(){
     $mem = array_merge($mem);
     $memory_usage = $mem[2]/$mem[1]*100;
     $memory_usage = round($memory_usage, 2);
+    return $memory_usage;
+}
+
+function mem_array(){
+    $free = shell_exec('free');
+    $free = (string)trim($free);
+    $free_arr = explode("\n", $free);
+    $mem = explode(" ", $free_arr[1]);
+    $mem = array_filter($mem);
+    $mem = array_merge($mem);
+    $memory_usage[0] = $mem[1];
+    $memory_usage[1] = $mem[2];
     return $memory_usage;
 }
 

@@ -93,6 +93,7 @@ if($serv->check_install()) {
 
 
 
+if(!$ifcadmin) $resp .= meld_full('info', "Funktion Konfiguration wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.", 'Konfiguration: Sync Mode', null);
 $page_tpl->repl('ark_opt', $ark_opt);
 $page_tpl->repl('ark_flag', $ark_flag);
 $page_tpl->repl('form', $form);

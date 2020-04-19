@@ -10,6 +10,13 @@ $tpl_dir = 'tpl/serv/';
 $tpl_dir_all = 'tpl/all/';
 $setsidebar = false;
 $serv = new server($url[2]);
+$serv->load_cluster();
+
+$ifslave = false; if($serv->cluster_type() == 1 && $serv->cluster_in()) $ifslave = true;
+$ifcadmin = false; if($serv->cluster_admin() && $ifslave && $serv->cluster_in()) $ifcadmin = true;
+$ifckonfig = false; if($serv->cluster_konfig() && $ifslave && $serv->cluster_in()) $ifckonfig = true;
+$ifcmods = false; if($serv->cluster_mods() && $ifslave && $serv->cluster_in()) $ifcmods = true;
+
 $servername = $serv->cfg_read('ark_SessionName');
 $qport = $serv->cfg_read('ark_QueryPort');
 
@@ -52,13 +59,14 @@ if($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>Keine</b>' ?? $t
 
 //danger list
 $danger_listitem = '<li class="list-group-item list-group-item-mod">
-                        <div class="row p-0">
-                            <div class="col-12">
-                                <i class="text-danger fas fa-exclamation-triangle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
-                                <div style="margin-left: 60px;">Keine Fehler gefunden!<br><span class="font-weight-light" style="font-size: 11px;">Alles ist OK!</span></div>
-                            </div>
-                        </div>
-                    </li>';
+        <div class="row p-0">
+            <div class="col-12">
+                <i class="text-danger fas fa-exclamation-triangle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
+                <div style="margin-left: 60px;">Keine Fehler gefunden!<br><span class="font-weight-light" style="font-size: 11px;">Alles ist OK!</span></div>
+            </div>
+        </div>
+    </li>
+';
 if($globa_json->error_count > 0) {
     $danger_listitem = null;
     for($i=0;$i<count($globa_json->error);$i++) {
@@ -79,24 +87,26 @@ if($globa_json->error_count > 0) {
         $globa_json->error[$i] = str_replace('] ', null, $globa_json->error[0]);
 
         $danger_listitem .= '<li class="list-group-item list-group-item-mod">
-                        <div class="row p-0">
-                            <div class="col-12">
-                                <i class="text-danger fas fa-exclamation-triangle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
-                                <div style="margin-left: 60px;">'.$type.'<br><span class="font-weight-light" style="font-size: 11px;">'.$globa_json->error[$i].'</span></div>
-                            </div>
-                        </div>
-                    </li>';
+                <div class="row p-0">
+                    <div class="col-12">
+                        <i class="text-danger fas fa-exclamation-triangle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
+                        <div style="margin-left: 60px;">'.$type.'<br><span class="font-weight-light" style="font-size: 11px;">'.$globa_json->error[$i].'</span></div>
+                    </div>
+                </div>
+            </li>
+        ';
     }
 }
 //warning list
 $warning_listitem = '<li class="list-group-item list-group-item-mod">
-                        <div class="row p-0">
-                            <div class="col-12">
-                                <i class="text-warning fas fa-exclamation-circle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
-                                <div style="margin-left: 60px;">Keine Warnung gefunden<br><span class="font-weight-light" style="font-size: 11px;">Alles ist OK!</span></div>
-                            </div>
-                        </div>
-                    </li>';
+        <div class="row p-0">
+            <div class="col-12">
+                <i class="text-warning fas fa-exclamation-circle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
+                <div style="margin-left: 60px;">Keine Warnung gefunden<br><span class="font-weight-light" style="font-size: 11px;">Alles ist OK!</span></div>
+            </div>
+        </div>
+    </li>
+';
 if($globa_json->warning_count > 0) {
     $warning_listitem = null;
     for($i=0;$i<count($globa_json->warning);$i++) {
@@ -110,13 +120,14 @@ if($globa_json->warning_count > 0) {
         $globa_json->warning[$i] = str_replace('] ', null, $globa_json->warning[$i]);
 
         $warning_listitem .= '<li class="list-group-item list-group-item-mod">
-                        <div class="row p-0">
-                            <div class="col-12">
-                                <i class="text-warning fas fa-exclamation-circle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
-                                <div style="margin-left: 60px;">'.$type.'<br><span class="font-weight-light" style="font-size: 11px;">'.$globa_json->warning[$i].'</span></div>
-                            </div>
-                        </div>
-                    </li>';
+                <div class="row p-0">
+                    <div class="col-12">
+                        <i class="text-warning fas fa-exclamation-circle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
+                        <div style="margin-left: 60px;">'.$type.'<br><span class="font-weight-light" style="font-size: 11px;">'.$globa_json->warning[$i].'</span></div>
+                    </div>
+                </div>
+            </li>
+        ';
     }
 }
 
@@ -134,7 +145,7 @@ $player = null;
 $c_pl = 0;
 
 // Spieler
-if (is_array($pl_json)) {
+if (is_array($pl_json) && $pl_json[0]["name"] != "NO") {
     for ($i = 0; $i < count($pl_json); $i++) {
         $list_tpl = new Template('list_user.htm', 'tpl/serv/sites/list/');
         $list_tpl->load();
@@ -191,33 +202,31 @@ if ($player == null) {
 
 
 // JS if & array
-
-$opt = array("install","start","update","restart","stop","backup","checkupdate","checkmodupdate","installmods","uninstallmods","saveworld","status");
 $opt_str = array();
-$name = array("Installieren","Starten","Update","Neustarten","Stoppen","Backup","Checkupdate","Checkmodupdate","Installmods","Uninstallmods","Speichern","Status");
 
 $action_list = "<option value=\"\">Aktion wählen...</option>"; $i = 0;
-foreach ($opt as $key) {
+foreach ($action_opt as $key) {
     $array[$key] = array();
-    $action_list .= "<option value=\"$key\">".$name[$i]."</option>";
+    $action_list .= "<option value=\"$key\">".$action_str[$i]."</option>";
     $i++;
 }
 
 $json_para = $helper->file_to_json("data/panel/parameter.json");
 $para_list = null;
 for ($i=0;$i<count($json_para);$i++) {
-    $opt_str[count($opt_str)] = "'".$json_para[$i]["sc_id"]."'";
+    $opt_str[count($opt_str)] = "'".$json_para[$i]["id_js"]."'";
     $name = str_replace("--", null, $json_para[$i]["parameter"]);
     $para_list .= '
-    <div class="icheck-primary mb-3 col-md-6">
+        <div class="icheck-primary mb-3 col-md-6">
               <input type="checkbox" name="para[]" value="'.$json_para[$i]["parameter"].'" id="'.$name.'" disabled>
               <label for="'.$name.'">
                     '.$json_para[$i]["parameter"].' <!--{_lang_servercenter_'.$name.'}-->
               </label>
-            </div>';
+        </div>
+    ';
     if(count($json_para[$i]["for"]) > 0) {
         foreach ($json_para[$i]["for"] as $key) {
-            $array[$key][count($array[$key])] = $json_para[$i]["sc_id"];
+            $array[$key][count($array[$key])] = $json_para[$i]["id_js"];
         }
     }
 }
@@ -240,6 +249,8 @@ if($l > $lmax) {
     $servername = substr($servername, 0 , $lmax) . " ...";
 }
 
+// TODO: remove
+$resp .= meld_full('info', nl2br($txt_alert), 'Cluster: Alpha Version', null);
 
 $tpl->repl('danger_resp', $danger_listitem);
 $tpl->repl('warning_resp', $warning_listitem);
@@ -248,7 +259,7 @@ $tpl->repl('jsif', $jsfi);
 $tpl->repl('js_array', implode(",", $opt_str));
 $tpl->repl('action_list', $action_list);
 $tpl->repl('para_list', $para_list);
-
+$tpl->repl('clustername', $serv->cluster_name());
 $tpl->repl('cfg', $url[2]);
 $tpl->repl('servername', $servername);
 $tpl->repl('global_IP', $ip);
@@ -263,6 +274,12 @@ $tpl->repl('url_site', 'http://'.$_SERVER['SERVER_NAME']);
 $tpl->repl('panel', $panel);
 $tpl->repl('resp', $resp);
 $tpl->repl('playerlist', $player);
+$tpl->replif('ifin', $serv->cluster_in());
+$tpl->replif('ifcadmin', $ifcadmin);
+$tpl->replif('ifckonfig', $ifckonfig);
+$tpl->replif('ifcmods', $ifcmods);
+$tpl->replif('ifslave', $ifslave);
+$tpl->repl("typestr", $clustertype[$serv->cluster_type()]);
 
 //teste state
 $onlinestate = false;
@@ -270,22 +287,23 @@ if($serv->get_state() == 2) $onlinestate = true;
 $tpl->replif("ifonline", $onlinestate);
 $tpl->repl('joinurl', $serv->readdata()->connect);
 // lade in TPL
+$pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
 $content = $tpl->loadin();
 $btns .= '
-<div class="d-sm-inline-block ">
-    <a href="#" class="btn btn-warning btn-icon-split rounded-0" data-toggle="modal" data-target="#warning_modal">
-        <span class="icon text-white-50">
-            <i class="fas fa-exclamation-circle"></i>
-        </span>
-        <span class="text">'.$globa_json->warning_count.'</span>
-    </a>
-    <a href="#" class="btn btn-danger btn-icon-split rounded-0" data-toggle="modal" data-target="#danger_modal">
-        <span class="icon text-white-50">
-            <i class="fas fa-exclamation-triangle"></i>
-        </span>
-        <span class="text">'.$globa_json->error_count.'</span>
-    </a>
-</div>
+    <div class="d-sm-inline-block ">
+        <a href="#" class="btn btn-warning btn-icon-split rounded-0" data-toggle="modal" data-target="#warning_modal">
+            <span class="icon text-white-50">
+                <i class="fas fa-exclamation-circle"></i>
+            </span>
+            <span class="text">'.$globa_json->warning_count.'</span>
+        </a>
+        <a href="#" class="btn btn-danger btn-icon-split rounded-0" data-toggle="modal" data-target="#danger_modal">
+            <span class="icon text-white-50">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            <span class="text">'.$globa_json->error_count.'</span>
+        </a>
+    </div>
 ';
 
 

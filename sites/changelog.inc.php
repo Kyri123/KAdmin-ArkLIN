@@ -121,7 +121,6 @@ else {
 // lade in TPL
 $tpl->repl('list', $list);
 $content = $tpl->loadin();
-$H_btn_group = null;
-$H_btn_extra = null;
+$pageicon = "<i class=\"fa fa-book\" aria-hidden=\"true\"></i>";
 $site_name = 'Changelogs';
 ?>

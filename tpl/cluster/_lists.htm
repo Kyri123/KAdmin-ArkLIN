@@ -1,0 +1,13 @@
+{ifserver}
+<tr>
+    <td>{servername}</td>
+    <td><b>{curr}</b>/{max}</td>
+    <td class="text-{color}">{state}</td>
+    <td class="text-{color_type}"><b>{type}</b></td>
+    <td>
+        {!ifmaster}<a data-toggle="tooltip" data-original-title="zum Master machen - Löscht anderen Master" href="/cluster/settype/{key}/{cfgkey}/1" class="btn btn-primary btn-sm"><i class="fas fa-angle-double-up"></i></a>{/!ifmaster}
+        {ifmaster}<a data-toggle="tooltip" data-original-title="zum Slave machen" href="/cluster/settype/{key}/{cfgkey}/0" class="btn btn-primary btn-sm"><i class="fas fa-angle-double-down"></i></a>{/ifmaster}
+        <a data-toggle="tooltip" data-original-title="Löschen" href="/cluster/remove/{key}/{cfg}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+    </td>
+</tr>
+{/ifserver}

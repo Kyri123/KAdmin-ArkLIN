@@ -1,26 +1,27 @@
 <li class="list-group-item">
     <div class="row p-0">
         <div class="col-12">
-            <img class="rounded -align-left position-absolute" src="https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png" height="50" width="50">
+            <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50">
             <div class="ml-auto float-right">
-                <a data-toggle="modal" data-target="#delw{rnd}" class="btn btn-danger btn-sm">
+                <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deladmin{rndb}">
                     <span class="icon text-white">
                         <i class="fas fa-times"></i>
                     </span>
                 </a>
-                <a href="{durl}" class="btn btn-dark btn-sm" target="_blank" download>
+                <a href="{url}" class="btn btn-dark btn-sm" target="_blank">
                     <span class="icon text-white">
-                        <i class="fas fa-download"></i>
+                        <i class="fab fa-steam-symbol"></i>
                     </span>
                 </a>
             </div>
-            <div style="margin-left: 60px;">{name}<br><span class="font-weight-light" style="font-size: 11px;">Letztes Update: {update}</span></div>
+            <div style="margin-left: 60px;">{igname}<br><span class="font-weight-light" style="font-size: 11px;">Steam: <b>{stname}</b> | Steamid: <b>{stid}</b></span></div>
         </div>
     </div>
 </li>
+
 <!-- Modal -->
 
-<form class="modal fade" id="delw{rnd}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
+<form class="modal fade" id="deladmin{rndb}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
             <div class="modal-header ">
@@ -31,13 +32,13 @@
             </div>
 
             <div class="modal-body">
-                <p>Bist du dir sicher dass du diesesn Savegame entfernen möchtest?</p>
-                <p><b>{name}</b></p>
+                <p>Bist du dir sicher dass du dieses Benutzer von der Adminliste entfernen möchtest?</p>
+                <p><b>{stname} | {igname}</b></p>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                <a href="{rm_url}" type="submit" class="btn btn-danger" name="del">Löschen</a>
+                <a href="/serverpage/{cfg}/home/rm/{stid}" type="submit" class="btn btn-danger" name="del">Löschen</a>
             </div>
         </div>
     </div>

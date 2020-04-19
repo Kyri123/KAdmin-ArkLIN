@@ -7,6 +7,8 @@ $count_serv_max = 0;
 $dir = dirToArray('remote/arkmanager/instances/');
 for($i=0;$i<count($dir);$i++) {
     if($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
+        $serv = new server($dir[$i]);
+        $serv->load_cluster();
         $count_serv_max++;
         $tpl_serv = new Template("item_list.htm", "tpl/serv/");
         $tpl_serv->load();
@@ -37,6 +39,9 @@ for($i=0;$i<count($dir);$i++) {
 
         $tpl_serv->repl('map', $map);
         $tpl_serv->repl('state', $state);
+        $tpl_serv->replif('ifin', $serv->cluster_in());
+        $tpl_serv->repl('clustername', $serv->cluster_name());
+        $tpl_serv->repl("typestr", $clustertype[$serv->cluster_type()]);
         $tpl_serv->repl('subline', $subline);
         $tpl_serv->repl('servername', $servername);
         $tpl_serv->repl('cfg', $dir[$i]);

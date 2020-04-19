@@ -56,8 +56,9 @@ if(isset($_POST["del"])) {
     $serv = new server($_POST["cfg"]);
     $opt = array();
     if(isset($_POST["opt"])) $opt = $_POST["opt"];
+    $server = $serv->show_name();
 
-    $path = "data/serv/" . $serv->show_name() . ".json";
+    $path = "data/serv/$server.json";
     $data = $helper->file_to_json($path);
     $arkservdir = $serv->cfg_read("arkserverroot");
     $arklogdir = $serv->cfg_read("logdir");
@@ -81,11 +82,16 @@ if(isset($_POST["del"])) {
         $serverstate = 1;
     }
 
-
-    $path_cfg = "remote/arkmanager/instances/".$serv->show_name().".cfg";
+    $path_cfg = "remote/arkmanager/instances/$server.cfg";
     $jobs->set($serv->show_name());
     if(file_exists($path_cfg) && ($serverstate == 0 || $serverstate == 3)) {
         if(unlink($path_cfg)) {
+            if(file_exists("data/serv/$server.json")) unlink("data/serv/$server.json");
+            if(file_exists("data/saves/tribes_$server.json")) unlink("data/saves/tribes_$server.json");
+            if(file_exists("data/serv/pl_$server.players")) unlink("data/serv/pl_$server.players");
+            if(file_exists("data/serv/chat_$server.log")) unlink("data/serv/chat_$server.log");
+            if(file_exists("data/serv/player_$server.json")) unlink("data/serv/player_$server.json");
+            if(file_exists("data/config/jobs_$server.json")) unlink("data/config/jobs_$server.json");
             $resp = meld('success', 'Server Entfernt', 'Erfolgreich!', null);
             if(in_array('deinstall', $opt)) {
                 $jobs->create_shell("rm -R ".$arkservdir);
@@ -188,6 +194,7 @@ $tpl->repl("list", $cfglist);
 $tpl->repl("list_modal", $cfgmlist);
 $tpl->repl("resp", $resp);
 $content = $tpl->loadin();
+$pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
 $btns = '<a href="#" class="btn btn-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
             <span class="icon text-white-50">
                 <i class="fas fa-plus" aria-hidden="true"></i>

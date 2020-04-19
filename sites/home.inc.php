@@ -123,7 +123,6 @@ $tpl->repl('version', $version);
 $tpl->repl('serv_list', $serv_list);
 
 $content = $tpl->loadin();
-$H_btn_group = null;
-$H_btn_extra = null;
+$pageicon = "<i class=\"fas fa-tachometer-alt\" aria-hidden=\"true\"></i>";
 $site_name = 'Startseite / Willkommen';
 ?>

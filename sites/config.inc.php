@@ -10,6 +10,14 @@ $urltop = '<li class="breadcrumb-item">Konfiguration</li>';
 
 $ppath = "inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
+$array = $helper->file_to_json($ppath, true);
+if(!isset($array["clusterestart"])) $array["clusterestart"] = 0;
+if(!isset($array["uninstall_mod"])) $array["clusterestart"] = 0;
+if(!isset($array["install_mod"])) $array["clusterestart"] = 0;
+if(!isset($array["servlocdir"])) $array["clusterestart"] = 0;
+if(!isset($array["arklocdir"])) $array["arklocdir"] = null;
+if(!isset($array["apikey"])) $array["apikey"] = null;
+$helper->savejson_exsists($array, $ppath);
 
 //tpl
 $tpl = new Template('tpl.htm', $tpl_dir);
@@ -75,6 +83,7 @@ foreach($panelconfig as $key => $value) {
     $find = array(
         "uninstall_mod",
         "install_mod",
+        "clusterestart",
         "servlocdir",
         "arklocdir",
         "apikey"
@@ -82,12 +91,13 @@ foreach($panelconfig as $key => $value) {
     $repl = array(
         "Deinstalliere Mods beim Entfernen",
         "Installiere Mods beim Hinzufügen",
+        "Starte Clusterserver neu wenn Optionen geändert werden",
         "Server-verzeichnis",
         "Arkmanager-verzeichnis",
         "Steam-API Key <a href='https://steamcommunity.com/dev/apikey' target='_blank'>(finde ich Hier)</a>"
     );
 
-    $bool = array("uninstall_mod", "install_mod");
+    $bool = array("uninstall_mod", "install_mod", "clusterestart");
     if(in_array($key, $bool)) {
         $list->replif("ifbool", true);
         $list->replif("ifnum", false);
@@ -129,5 +139,6 @@ $tpl->repl("option_panel", $option_panel);
 $tpl->repl("resp", $resp);
 
 $content = $tpl->loadin();
+$pageicon = "<i class=\"fa fa-edit\" aria-hidden=\"true\"></i>";
 $btns = null;
 ?>

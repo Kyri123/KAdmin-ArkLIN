@@ -105,105 +105,98 @@ $tribe_json = $helper->file_to_json('data/saves/tribes_'.$serv->show_name().'.js
 if(!is_array($player_json)) $player_json = array();
 if(!is_array($tribe_json)) $tribe_json = array();
 
-
 $player = null; $c_pl = 0;
 // Spieler
-if(is_array($player_json)) {
-    for($i=0;$i<count($player_json);$i++) {
-        $list_tpl = new Template('list_saves.htm', 'tpl/serv/sites/list/');
-        $list_tpl->load();
+for($i=0;$i<count($player_json);$i++) {
+    $list_tpl = new Template('list_saves.htm', 'tpl/serv/sites/list/');
+    $list_tpl->load();
 
-        $pl = $jhelper->player($player_json, $i);
+    $pl = $jhelper->player($player_json, $i);
 
-        if(is_array($tribe_json)) {
-            for ($z = 0; $z < count($tribe_json); $z++) {
-                $tribe = $jhelper->tribe($tribe_json, $z);
-                if ($tribe->Id == $pl->TribeId) {
-                    $list_tpl->repl('tribe', $tribe->Name);
-                }
-            }
+    for ($z = 0; $z < count($tribe_json); $z++) {
+        $member = $tribe_json[$z]->Members;
+
+        if(in_array($pl->CharacterName, $member)) {
+            $tribe = $jhelper->tribe($tribe_json, $z);
+            $list_tpl->repl('tribe', $tribe->Name);
+            break;
         }
-        $list_tpl->repl('tribe', '[Kein Stamm]');
-
-        if($pl->Level > 1000) $pl->Level = 0;
-        if($pl->TribeId == 7) $pl->TribeId = null;
-
-        $list_tpl->repl('IG:name', $pl->CharacterName);
-        $list_tpl->repl('IG:Level', $pl->Level);
-        $list_tpl->repl('lastupdate', converttime($pl->FileUpdated));
-        $list_tpl->repl('rnd', rndbit(10));
-        $list_tpl->repl('url', $steamapi->getsteamprofile_class($pl->SteamId)->profileurl);
-        $list_tpl->repl('img', $steamapi->getsteamprofile_class($pl->SteamId)->avatar);
-        $list_tpl->repl('steamname', $steamapi->getsteamprofile_class($pl->SteamId)->personaname);
-
-        $list_tpl->repl('rm_url', '/serverpage/'.$serv->show_name().'/saves/remove/'.$pl->SteamId.'.arkprofile');
-
-        $list_tpl->repl('EP', round($pl->ExperiencePoints, '2'));
-        $list_tpl->repl('SpielerID', $pl->Id);
-        $list_tpl->repl('TEP', $pl->TotalEngramPoints);
-        $list_tpl->repl('TID', $pl->TribeId);
-        $file = $savedir.'/'.$pl->SteamId.'.arkprofile';
-        $list_tpl->repl('durl', "/".$file);
-
-        $player .= $list_tpl->loadin();
-        $c_pl++;
     }
+
+    $list_tpl->repl('tribe', '[Kein Stamm]');
+
+    if($pl->Level > 1000) $pl->Level = 0;
+    if($pl->TribeId == 7) $pl->TribeId = null;
+
+    $list_tpl->repl('IG:name', $pl->CharacterName);
+    $list_tpl->repl('IG:Level', $pl->Level);
+    $list_tpl->repl('lastupdate', converttime($pl->FileUpdated));
+    $list_tpl->repl('rnd', rndbit(10));
+    $list_tpl->repl('url', $steamapi->getsteamprofile_class($pl->SteamId)->profileurl);
+    $list_tpl->repl('img', $steamapi->getsteamprofile_class($pl->SteamId)->avatar);
+    $list_tpl->repl('steamname', $steamapi->getsteamprofile_class($pl->SteamId)->personaname);
+
+    $list_tpl->repl('rm_url', '/serverpage/'.$serv->show_name().'/saves/remove/'.$pl->SteamId.'.arkprofile');
+
+    $list_tpl->repl('EP', round($pl->ExperiencePoints, '2'));
+    $list_tpl->repl('SpielerID', $pl->Id);
+    $list_tpl->repl('TEP', $pl->TotalEngramPoints);
+    $list_tpl->repl('TID', $pl->TribeId);
+    $file = $savedir.'/'.$pl->SteamId.'.arkprofile';
+    $list_tpl->repl('durl', "/".$file);
+
+    $player .= $list_tpl->loadin();
+    $c_pl++;
 }
 
 $tribe = null; $c_t = 0;
 // Stämme
-if(is_array($tribe_json)) {
-    for ($i = 0; $i < count($tribe_json); $i++) {
-        $list_tpl = new Template('list_tribes.htm', 'tpl/serv/sites/list/');
-        $list_tpl->load();
 
-        $pl = $jhelper->tribe($tribe_json, $i);
-        $playerlist = null;
-        $ct=0;
+for ($i = 0; $i < count($tribe_json); $i++) {
+    $list_tpl = new Template('list_tribes.htm', 'tpl/serv/sites/list/');
+    $list_tpl->load();
 
-        if(is_array($player_json)) {
-            for ($z=0;$z<count($player_json); $z++) {
-                $p = $jhelper->player($player_json, $z);
-                if ($pl->Id == $p->TribeId) {
+    $pl = $jhelper->tribe($tribe_json, $i);
+    $playerlist = null;
+    $ct=0;
 
-                    $playerlist_tpl = new Template('list_tribes_user.htm', 'tpl/serv/sites/list/');
-                    $playerlist_tpl->load();
+    $member = $tribe_json[$i]->Members;
 
-                    $playerlist_tpl->repl('IG:name', $p->CharacterName);
-                    $playerlist_tpl->repl('lastupdate', converttime($p->FileUpdated));
-                    $playerlist_tpl->repl('url', $steamapi->getsteamprofile_class($p->SteamId)->profileurl);
-                    $playerlist_tpl->repl('img', $steamapi->getsteamprofile_class($p->SteamId)->avatar);
-                    $playerlist_tpl->repl('steamname', $steamapi->getsteamprofile_class($p->SteamId)->personaname);
+    foreach ($member as $key) {
+        for ($z=0;$z<count($player_json); $z++) {
+            $p = $jhelper->player($player_json, $z);
+            if($p->CharacterName == $key) {
+                $playerlist_tpl = new Template('list_tribes_user.htm', 'tpl/serv/sites/list/');
+                $playerlist_tpl->load();
 
-                    if($pl->OwnerId == $p->Id) {
-                        $rank = '<b>Besitzer:</b>';
-                    }
-                    else {
-                        $rank = '<b>Member:</b>';
-                    }
+                $playerlist_tpl->repl('IG:name', $p->CharacterName);
+                $playerlist_tpl->repl('lastupdate', converttime($p->FileUpdated));
+                $playerlist_tpl->repl('url', $steamapi->getsteamprofile_class($p->SteamId)->profileurl);
+                $playerlist_tpl->repl('img', $steamapi->getsteamprofile_class($p->SteamId)->avatar);
+                $playerlist_tpl->repl('steamname', $steamapi->getsteamprofile_class($p->SteamId)->personaname);
+                $rank = '<b>Member:</b>';
 
-                    $playerlist .= $playerlist_tpl->loadin();
-                    $ct++;
-                }
+                $playerlist .= $playerlist_tpl->loadin();
+                $ct++;
             }
         }
-
-        $list_tpl->repl('steamname', $steamapi->getsteamprofile_class($pl->SteamId)->personaname);
-        $list_tpl->repl('rnd', rndbit(10));
-        $list_tpl->repl('name', $pl->Name);
-        $list_tpl->repl('update', converttime($pl->FileUpdated));
-        $list_tpl->repl('pl', $playerlist);
-        $list_tpl->repl('count', $ct);
-        $list_tpl->repl('id', $pl->Id);
-        $file = $savedir.'/'.$pl->Id.'.arktribe';
-        $list_tpl->repl('durl', "/".$file);
-
-        $list_tpl->repl('rm_url', '/serverpage/'.$serv->show_name().'/saves/remove/'.$pl->Id.'.arktribe');
-
-        $tribe .= $list_tpl->loadin();
-        $list_tpl = null;
-        $c_t++;
     }
+
+    $list_tpl->repl('steamname', $steamapi->getsteamprofile_class($pl->SteamId)->personaname);
+    $list_tpl->repl('rnd', rndbit(10));
+    $list_tpl->repl('name', $pl->Name);
+    $list_tpl->repl('update', converttime($pl->FileUpdated));
+    $list_tpl->repl('pl', $playerlist);
+    $list_tpl->repl('count', $ct);
+    $list_tpl->repl('id', $pl->Id);
+    $file = $savedir.'/'.$pl->Id.'.arktribe';
+    $list_tpl->repl('durl', "/".$file);
+
+    $list_tpl->repl('rm_url', '/serverpage/'.$serv->show_name().'/saves/remove/'.$pl->Id.'.arktribe');
+
+    $tribe .= $list_tpl->loadin();
+    $list_tpl = null;
+    $c_t++;
 }
 
 $world = null; $w_t = 0;
@@ -223,6 +216,7 @@ for($i=0;$i<count($dirarr);$i++) {
             $list_tpl->repl('name', $name);
             $list_tpl->repl('update', converttime($time));
             $list_tpl->repl('durl', "/".$file);
+            $list_tpl->repl('rnd', rndbit(10));
 
             $list_tpl->repl('rm_url', '/serverpage/'.$serv->show_name().'/saves/remove/'.$dirarr[$i]);
 

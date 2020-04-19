@@ -9,6 +9,7 @@ $setsidebar = false;
 $btns = null;
 $urltop = null;
 $g_alert = null;
+$pageicon = null;
 $g_alert_bool = false;
 
 session_start();
@@ -18,6 +19,10 @@ $url = explode("/", $url);
 if($url[1] == "") {
     header('Location: /home');
     exit;
+}
+if($url[1] == "servercontrollcenter") {
+    error_reporting(0);
+    ini_set('display_errors', 0);
 }
 $tpl = null;
 #Wichtige PHP daten
@@ -110,6 +115,7 @@ if($page == "login" || $page == "register") {
     if($page == "login") $pagename = 'Einloggen';
 }
 $tpl_b->repl('pagename', $pagename);
+$tpl_b->repl('pageicon', $pageicon);
 $tpl_h->repl('pagename', $pagename);
 // replace
 $tpl_b->repl('user', $user->name());
@@ -125,7 +131,9 @@ $tpl_b->replif('if_g_alert', $g_alert_bool);
 $all = $helper->file_to_json("data/serv/all.json");
 $tpl_b->repl('count_server', count($all["cfgs"]));
 $tpl_b->repl('cpu_perc', cpu_perc());
-$tpl_b->repl('free', bitrechner(disk_free_space ( "remote/serv/" )));
+$tpl_b->repl('free', bitrechner(disk_free_space ( $ckonfig["servlocdir"] ), "B", "GB"));
+$tpl_b->repl('ram_used', str_replace("MB", "GB", bitrechner(mem_array()[1], "B", "GB")));
+$tpl_b->repl('ram_max', str_replace("MB", "GB", bitrechner(mem_array()[0], "B", "GB")));
 $tpl_b->repl('ram_perc', mem_perc());
 $ifnot_traffic = false;
 $check = array("changelog", "404");

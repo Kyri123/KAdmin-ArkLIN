@@ -3,22 +3,22 @@
         <div class="col-12">
             <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50">
             <div class="ml-auto float-right">
-                <a href="javascript:void();" class="btn btn-info" data-toggle="modal" data-target="#p_{rnd}">
+                <a href="javascript:void();" class="btn btn-info btn-sm" data-toggle="modal" data-target="#p_{rnd}">
                     <span class="icon text-white">
                         <i class="fas fa-info"></i>
                     </span>
                 </a>
-                <a href="{rm_url}" class="btn btn-danger">
+                <a data-toggle="modal" data-target="#dels{rnd}" class="btn btn-danger btn-sm">
                     <span class="icon text-white">
                         <i class="fas fa-times"></i>
                     </span>
                 </a>
-                <a href="{url}" class="btn btn-dark" target="_blank">
+                <a href="{url}" class="btn btn-dark btn-sm" target="_blank">
                     <span class="icon text-white">
                         <i class="fab fa-steam-symbol"></i>
                     </span>
                 </a>
-                <a href="{durl}" class="btn btn-dark" download>
+                <a href="{durl}" class="btn btn-dark btn-sm" download>
                     <span class="icon text-white">
                         <i class="fas fa-download"></i>
                     </span>
@@ -75,10 +75,6 @@
                             <td>{TEP}</td>
                         </tr>
                         <tr>
-                            <td>StammID</td>
-                            <td>{TID}</td>
-                        </tr>
-                        <tr>
                             <td>Stammesname</td>
                             <td>{tribe}</td>
                         </tr>
@@ -99,3 +95,27 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+
+<form class="modal fade" id="dels{rnd}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title text-danger">Löschen Bestätigen!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>Bist du dir sicher dass du diesesn Savegame entfernen möchtest?</p>
+                <p><b>{IG:name}</b></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                <a href="{rm_url}" type="submit" class="btn btn-danger" name="del">Löschen</a>
+            </div>
+        </div>
+    </div>
+</form>

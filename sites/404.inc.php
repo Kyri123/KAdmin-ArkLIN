@@ -11,4 +11,5 @@ $tpl->load();
 
 $content = $tpl->loadin();
 $pagename = "Error 404";
+$pageicon = "<i class=\"fas fa-exclamation-triangle text-danger\" aria-hidden=\"true\"></i>";
 ?>

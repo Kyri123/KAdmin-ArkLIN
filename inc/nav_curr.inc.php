@@ -25,6 +25,19 @@ $tpl_b->repl('curr_changelog_css', $n);
 # next
 ###############################
 
+$n_changelog = null;
+$n = null;
+
+if($page == 'cluster') {
+    $n = 'active';
+}
+
+$tpl_b->repl('curr_cluster_css', $n);
+
+###############################
+# next
+###############################
+
 $n = null;
 
 if($page == 'servercontrollcenter') {

@@ -19,6 +19,8 @@ if(!is_array($player_json)) $player_json = array();
 if(!is_array($tribe_json)) $tribe_json = array();
 
 $player = null; $c_pl = 0;
+print_r($player_json);
+
 // Spieler
 if(is_array($player_json)) {
     for($i=0;$i<count($player_json);$i++) {

@@ -2,10 +2,12 @@
 
 class server {
 
-    private $serv = null;
-    private $cfg = null;
-    private $ini = null;
-    private $inipath = null;
+    private $serv;
+    private $cfg;
+    private $ini;
+    private $inipath;
+    private $loadedcluster = false;
+    private $cluster_data;
 
     public function __construct($serv) {
         $this->serv = $serv;
@@ -18,10 +20,13 @@ class server {
         }
     }
 
+    // Gibt cfg namen wieder
+    // TODO: Ändern zu get_cfgname
     public function show_name() {
         return $this->serv;
     }
 
+    // Prüfe ob der Server installiert ist
     public function check_install() {
         $dir = $this->cfg_read('arkserverroot');
         $dir = str_replace('/data/ark_serv_dir/', 'remote/serv/', $dir);
@@ -34,6 +39,7 @@ class server {
         }
     }
 
+    // Bekomme Main Dir
     public function get_dir() {
 
         $dir = $this->cfg_read('arkserverroot');
@@ -49,6 +55,7 @@ class server {
         return $path;
     }
 
+    // Bekomme Backup dir
     public function get_backup_dir() {
 
         $dir = $this->cfg_read('arkbackupdir');
@@ -64,6 +71,7 @@ class server {
         return $path;
     }
 
+    // Bekomme Save Dir
     public function get_save_dir($getmaindir = false) {
 
         $path = $this->get_dir();
@@ -80,8 +88,9 @@ class server {
         return $path;
     }
 
-    public function set_action($shell) {
-        if($this->readdata()->next == 'TRUE') {
+    // Erstelle Shell mit Log
+    public function set_action($shell, $force = false) {
+        if($this->readdata()->next == 'TRUE' && !$force) {
             return false;
         }
         $doc = $_SERVER['DOCUMENT_ROOT'];
@@ -95,6 +104,7 @@ class server {
         return false;
     }
 
+    // Bekomme Konfig Dir
     public function get_konfig_dir() {
 
         if($this->cfg_read('ark_AltSaveDirectoryName') != "" && $this->cfg_read('ark_AltSaveDirectoryName') != " ") {
@@ -107,34 +117,20 @@ class server {
         return $path;
     }
 
-    public function ini_load($ini, $group) {
-
-        $path = $this->get_dir();
-        $dir = $path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini;
-        if(file_exists($dir)) {
-            $this->ini = parse_ini_file($dir, $group);
-            $this->inipath = $dir;
-            return TRUE;
-        }
-        else {
-            return FALSE;
-        }
-    }
-
-    public function ini_get_str() {
-        return file_get_contents($this->inipath);
-    }
-
-    public function ini_get_path() {
-        return $this->inipath;
-    }
-
+    // Arkmanager.cfg
     public function cfg_get_str() {
         return file_get_contents('remote/arkmanager/instances/'.$this->serv.'.cfg');
     }
 
     function cfg_get() {
         return $this->cfg;
+    }
+
+    public function cfg_check($key) {
+        if(isset($this->cfg[$key])) {
+            return true;
+        }
+        return false;
     }
 
     public function cfg_read($key) {
@@ -146,10 +142,19 @@ class server {
         return $this->cfg;
     }
 
+    public function cfg_remove($key) {
+        if(isset($this->cfg[$key])) unset($this->cfg[$key]);
+        return $this->cfg;
+    }
+
     public function cfg_save() {
 
-        write_ini_file($this->cfg, 'remote/arkmanager/instances/'.$this->serv.'.cfg');
-        return true;
+        if($this->cfg_check("arkserverroot") && $this->cfg_check("logdir") && $this->cfg_check("arkbackupdir")) {
+            write_ini_file($this->cfg, 'remote/arkmanager/instances/'.$this->serv.'.cfg');
+        }
+        else {
+            return false;
+        }
 
         function write_ini_file($array, $file) {
             $res = array();
@@ -180,10 +185,8 @@ class server {
         }
     }
 
-    public function ini_get() {
-        return $this->ini;
-    }
 
+    // Job funktionen
     public function get_job_path() {
         return 'sh/serv/sub_jobs_ID_' . $this->show_name() . '.sh';
     }
@@ -202,6 +205,7 @@ class server {
         }
     }
 
+    // Bekomme Statuscode
     public function get_state() {
         global $helper;
 
@@ -227,34 +231,63 @@ class server {
         return $serverstate;
     }
 
+    // Daten aus dem Arkmanager
     public function readdata() {
-    global $helper;
+        global $helper;
 
-    $path = "data/serv/" . $this->show_name() . ".json";
-    $data = $helper->file_to_json($path);
-    $class = new data_server();
+        $path = "data/serv/" . $this->show_name() . ".json";
+        $data = $helper->file_to_json($path);
+        $class = new data_server();
 
-    $class->warning_count = $data["warning_count"];
-    $class->error_count = $data["error_count"];
-    $class->error = $data["error"];
-    $class->warning = $data["warning"];
-    $class->online = $data["online"];
-    $class->aplayers = $data["aplayers"];
-    $class->players = $data["players"];
-    $class->pid = $data["pid"];
-    $class->run = $data["run"];
-    $class->listening = $data["listening"];
-    $class->installed = $data["installed"];
-    $class->cfg = $data["cfg"];
-    $class->bid = $data["bid"];
-    $class->ARKServers = $data["ARKServers"];
-    $class->next = $data["next"];
-    $class->ServerName = $data["ServerName"];
-    $class->version = $data["version"];
-    $class->connect = $data["connect"];
+        $class->warning_count = $data["warning_count"];
+        $class->error_count = $data["error_count"];
+        $class->error = $data["error"];
+        $class->warning = $data["warning"];
+        $class->online = $data["online"];
+        $class->aplayers = $data["aplayers"];
+        $class->players = $data["players"];
+        $class->pid = $data["pid"];
+        $class->run = $data["run"];
+        $class->listening = $data["listening"];
+        $class->installed = $data["installed"];
+        $class->cfg = $data["cfg"];
+        $class->bid = $data["bid"];
+        $class->ARKServers = $data["ARKServers"];
+        $class->next = $data["next"];
+        $class->ServerName = $data["ServerName"];
+        $class->version = $data["version"];
+        $class->connect = $data["connect"];
 
-    return $class;
-}
+        return $class;
+    }
+
+    // Inis
+
+    public function ini_load($ini, $group) {
+
+        $path = $this->get_dir();
+        $dir = $path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini;
+        if(file_exists($dir)) {
+            $this->ini = parse_ini_file($dir, $group);
+            $this->inipath = $dir;
+            return TRUE;
+        }
+        else {
+            return FALSE;
+        }
+    }
+
+    public function ini_get_str() {
+        return file_get_contents($this->inipath);
+    }
+
+    public function ini_get_path() {
+        return $this->inipath;
+    }
+
+    public function ini_get() {
+        return $this->ini;
+    }
 
     public function ini_read($key) {
         return $this->ini[$key];
@@ -265,28 +298,31 @@ class server {
         return $this->cfg;
     }
 
-    public function ini_save() {
+    public function ini_save()
+    {
         safefilerewrite($this->inipath, $this->ini);
         return true;
 
-        function write_ini_file($array, $file) {
+        function write_ini_file($array, $file)
+        {
             $res = array();
-            foreach($array as $key => $val) {
-                if(is_array($val)) {
+            foreach ($array as $key => $val) {
+                if (is_array($val)) {
                     $res[] = "[$key]";
-                    foreach($val as $skey => $sval) $res[] = $skey."=".(is_numeric($sval) ? $sval : '"'.$sval.'"');
-                }
-                else $res[] = $key."=".(is_numeric($val) ? $val : '"'.$val.'"');
+                    foreach ($val as $skey => $sval) $res[] = $skey . "=" . (is_numeric($sval) ? $sval : '"' . $sval . '"');
+                } else $res[] = $key . "=" . (is_numeric($val) ? $val : '"' . $val . '"');
             }
             safefilerewrite($file, implode("\n", $res));
         }
-        function safefilerewrite($fileName, $dataToSave) {
+
+        function safefilerewrite($fileName, $dataToSave)
+        {
             if ($fp = fopen($fileName, 'w')) {
                 $startTime = microtime(TRUE);
                 do {
                     $canWrite = flock($fp, LOCK_EX);
-                    if(!$canWrite) usleep(round(rand(0, 100)*1000));
-                } while ((!$canWrite)and((microtime(TRUE)-$startTime) < 5));
+                    if (!$canWrite) usleep(round(rand(0, 100) * 1000));
+                } while ((!$canWrite) and ((microtime(TRUE) - $startTime) < 5));
 
                 if ($canWrite) {
                     fwrite($fp, $dataToSave);
@@ -298,9 +334,87 @@ class server {
         }
     }
 
+    //Cluster
+    public function load_cluster() {
+        global $helper;
+        $clusterjson_path = "data/panel/cluster_data.json";
+        $infos["in"] = false;
+        if(file_exists($clusterjson_path)) {
+            $json = $helper->file_to_json($clusterjson_path);
+            $infos["mods"] = false;
+            $infos["konfig"] = false;
+            $infos["admin"] = false;
+            $infos["type"] = 0;
+            foreach ($json as $mk => $mv) {
+                if(array_search($this->show_name(), array_column($mv["servers"], 'server')) !== FALSE) {
+                   //var_dump($mv);
+                    $infos["in"] = true;
+                    $infos["clusterid"] = $mv["clusterid"];
+                    $infos["name"] = $mv["name"];
+                    $infos["key"] = $mk;
+                    $i = array_search($this->show_name(), array_column($mv["servers"], 'server'));
+                    $infos["type"] =$mv["servers"][$i]["type"];
+                    $infos["mods"] = $mv["sync"]["mods"];
+                    $infos["konfig"] = $mv["sync"]["konfig"];
+                    $infos["admin"] = $mv["sync"]["admin"];
+                }
+            }
+        }
+        $this->loadedcluster = true;
+        $this->cluster_data = $infos;
+    }
 
+    public function cluster_array() {
+        if($this->loadedcluster) return $this->cluster_data;
+        if(!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+    }
 
+    public function cluster_in() {
+        if($this->loadedcluster) return $this->cluster_data["in"];
+        if(!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+    }
 
+    public function cluster_clusterid() {
+        if($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["clusterid"];
+        if(!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+        if(!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+    }
+
+    public function cluster_name() {
+        if($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["name"];
+        if(!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+        if(!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+    }
+
+    public function cluster_key() {
+        if($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["key"];
+        if(!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+        if(!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+    }
+
+    public function cluster_mods() {
+        if($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["mods"];
+        if(!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+        if(!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+    }
+
+    public function cluster_konfig() {
+        if($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["konfig"];
+        if(!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+        if(!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+    }
+
+    public function cluster_admin() {
+        if($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["admin"];
+        if(!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+        if(!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+    }
+
+    public function cluster_type() {
+        if($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["type"];
+        if(!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+        if(!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+    }
 
 }
 

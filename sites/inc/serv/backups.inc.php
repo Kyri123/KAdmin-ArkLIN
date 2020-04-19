@@ -56,7 +56,7 @@ if(isset($_POST["playthisin"])) {
     $path = $serv->get_backup_dir()."/".$key."/".$dir_array[$key][$i];
     $spath = $serv->get_save_dir();
     $state = $serv->get_state();
-    $cpath = $spath."/../Config/LinuxServer/";
+    $cpath = $serv->get_save_dir(true)."/Config/LinuxServer/";
     try {
         $phar = new PharData($path);
         $phar->extractTo('cache');

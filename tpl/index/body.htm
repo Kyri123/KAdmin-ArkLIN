@@ -68,6 +68,14 @@
 						</a>
 					</li>
 					<li class="nav-item has-treeview">
+						<a href="/cluster" class="nav-link {curr_cluster_css}">
+							<i class="nav-icon fas fa-random"></i>
+							<p>
+								Cluster System
+							</p>
+						</a>
+					</li>
+					<li class="nav-item has-treeview">
 						<a href="/userpanel" class="nav-link {curr_userpanel_css}">
 							<i class="nav-icon fa fa-users"></i>
 							<p>
@@ -113,27 +121,33 @@
 	</aside>
 
 	<div class="content-wrapper d-flex flex-column" style="min-height: 1416.81px;">
-		<section class="content-header"style="padding-bottom: 0px;">
-			<div class="row mb-2">
-				<div class="col-sm-6" style="padding-left: 20px;">
-					<h1 class="text-dark">{pagename}</h1>
-				</div>
-				<div class="col-sm-6"style="padding-right: 20px;">
-					<ol class="breadcrumb float-sm-right">
-						<li class="breadcrumb-item"><a href="/">ArkAdmin 2</a></li>
-						{urltop}
-					</ol>
-				</div>
-			</div>
-		</section>
 
 		<section class="content">
 			<div class="container-fluid">
+				<section class="content-header"style="padding-bottom: 0px;">
+					<div class="row mb-2">
+						<div class="col-sm-6" style="padding-left: 20px;">
+							<h1 class="text-dark">{pageicon} {pagename}</h1>
+						</div>
+						<div class="col-sm-6"style="padding-right: 20px;">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item"><a href="/">ArkAdmin 2</a></li>
+								{urltop}
+							</ol>
+						</div>
+					</div>
+				</section>
 				{if_g_alert}
 					<section class="content">
 						<div class="container-fluid">{g_alert}</div>
 					</section>
 				{/if_g_alert}
+				<!-- TODO: Dataserver Messages -->
+				<!--{if_g_data_alert}
+				<section class="content">
+					<div class="container-fluid">{g_data_alert}</div>
+				</section>
+				{/if_g_data_alert}-->
 				<section class="content">
 					<div class="container-fluid">
 						{!ifchangelog}<div class="row">
@@ -157,7 +171,7 @@
 									<div class="info-box-content">
 										<span class="info-box-text">Arbeitsspeicher</span>
 										<span class="info-box-number">
-                    {ram_perc} <small>%</small>
+                    {ram_used} / {ram_max} ({ram_perc} <small>%</small>)
                 </span>
 									</div>
 								</div>

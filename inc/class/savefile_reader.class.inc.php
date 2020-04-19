@@ -1,9 +1,9 @@
 <?php
 //from: https://gist.github.com/Sp1rit/d8776427620d01a61f3c6c453541febd
+//Modifiziert: Oliver
 class Container
 {
     public $Players = array();
-
     public $Tribes = array();
 
     function LoadDirectory($path, $linkPlayerTribes = true)
@@ -102,6 +102,9 @@ class TribeFileParser
         $tribe->Id = BinaryHelper::GetInt($data, 'TribeID');
         $tribe->Name = BinaryHelper::GetString($data, 'TribeName');
         $tribe->OwnerId = TribeFileParser::GetOwnerId($data);
+        // Experimentell! {
+        $tribe->Members = TribeFileParser::GetMemberOfTribe($path);
+        // }
 
         $tribe->FileCreated = filectime($path);
         $tribe->FileUpdated = filemtime($path);
@@ -110,6 +113,32 @@ class TribeFileParser
 
         return $tribe;
     }
+
+    // Experimentell! {
+    private function GetMemberOfTribe($path) {
+        $cont = file_get_contents($path);
+        $cont = preg_replace('/[\x01-\x09\x0B\x0C\x0E-\x1F\x7F]/', null, $cont);
+        $cont = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', ' ', $cont);
+        $cont = trim(preg_replace('/\s+/', ' ', $cont));
+        $cont = str_replace(" ", "---", $cont);
+        $exp = explode("---", $cont);
+
+        $found = false; $player = array();
+        for($i=0;$i<count($exp);$i++) {
+            if($exp[$i] == "MembersPlayerName") {
+                $i += 3;
+                $found = true;
+            }
+            elseif($exp[$i] == "MembersPlayerDataID") {
+                $found = false;
+            }
+
+            if($found) $player[count($player)] = $exp[$i];
+        }
+
+        return $player;
+    }
+    // }
 
     private static function GetOwnerId($data)
     {
@@ -199,6 +228,7 @@ class Tribe
     public $OwnerId;
     public $FileCreated;
     public $FileUpdated;
+    public $Members;
 }
 
 //--------------
@@ -234,4 +264,6 @@ class player_json_helper {
         return $re;
     }
 }
+
+
 ?>

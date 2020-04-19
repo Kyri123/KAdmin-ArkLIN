@@ -2,14 +2,14 @@
 [
   {
     "parameter": "--alwaysrestart",
-    "sc_id": "#alwaysrestart",
+    "id_js": "#alwaysrestart",
     "for": [
       "start"
     ]
   },
   {
     "parameter": "--noautoupdate",
-    "sc_id": "#noautoupdate",
+    "id_js": "#noautoupdate",
     "for": [
       "start",
       "restart"
@@ -17,7 +17,7 @@
   },
   {
     "parameter": "--warn",
-    "sc_id": "#warn",
+    "id_js": "#warn",
     "for": [
       "update",
       "restart",
@@ -26,7 +26,7 @@
   },
   {
     "parameter": "--saveworld",
-    "sc_id": "#saveworld",
+    "id_js": "#saveworld",
     "for": [
       "update",
       "stop"
@@ -34,28 +34,28 @@
   },
   {
     "parameter": "--safe",
-    "sc_id": "#safe",
+    "id_js": "#safe",
     "for": [
       "update"
     ]
   },
   {
     "parameter": "--force",
-    "sc_id": "#force",
+    "id_js": "#force",
     "for": [
       "update"
     ]
   },
   {
     "parameter": "--downloadonly",
-    "sc_id": "#downloadonly",
+    "id_js": "#downloadonly",
     "for": [
       "update"
     ]
   },
   {
     "parameter": "--backup",
-    "sc_id": "#backup",
+    "id_js": "#backup",
     "for": [
       "update",
       "restart",
@@ -64,14 +64,14 @@
   },
   {
     "parameter": "--update-mods",
-    "sc_id": "#update-mods",
+    "id_js": "#update-mods",
     "for": [
       "update"
     ]
   },
   {
     "parameter": "--ifempty",
-    "sc_id": "#ifempty",
+    "id_js": "#ifempty",
     "for": [
       "update",
       "stop"
@@ -79,14 +79,14 @@
   },
   {
     "parameter": "--allmaps",
-    "sc_id": "#allmaps",
+    "id_js": "#allmaps",
     "for": [
       "backup"
     ]
   },
   {
     "parameter": "--revstatus",
-    "sc_id": "#revstatus",
+    "id_js": "#revstatus",
     "for": [
       "checkmodupdate",
       "checkupdate"
@@ -94,7 +94,7 @@
   },
   {
     "parameter": "--validate",
-    "sc_id": "#validate",
+    "id_js": "#validate",
     "for": [
       "update",
       "restart",
