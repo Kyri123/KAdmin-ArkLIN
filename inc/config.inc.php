@@ -6,7 +6,7 @@ include('pconfig.inc.php');
 #allgmeine
 $sitename = "ArkAdmin";
 $sitename_short = "AA";
-$version = '0.6.1';
+$version = '0.6.2';
 $ip = $_SERVER['SERVER_ADDR'];
 
 #Webserver

@@ -118,7 +118,7 @@ if($bool_install) {
 }
 
 
-if(!$ifcadmin) $resp .= meld_full('info', "Funktion Administrator wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.", 'Administratoren: Sync Mode', null);
+if($ifcadmin) $resp .= meld_full('info', "Funktion Administrator wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.", 'Administratoren: Sync Mode', null);
 
 $page_tpl->replif("installed", $bool_install);
 $page_tpl->repl("userlist_admin", $userlist_admin);

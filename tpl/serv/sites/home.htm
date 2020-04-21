@@ -15,9 +15,9 @@
                 <li class="nav-item">
                     <a class="nav-link" id="pills-rcon-tab" data-toggle="pill" href="#pills-rcon" role="tab" aria-controls="pills-rcon" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">Rcon-Konsole</a>
                 </li>
-                {installed}{ifcadmin}<li class="nav-item">
+                {installed}{!ifcadmin}<li class="nav-item">
                     <a class="nav-link" id="pills-admins-tab" data-toggle="pill" href="#pills-admins" role="tab" aria-controls="pills-admins" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">Administratoren</a>
-                </li>{/ifcadmin}{/installed}
+                </li>{/!ifcadmin}{/installed}
             </ul>
             <div class="form-inline">
                 <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex" id="logbar"></div>
@@ -98,7 +98,7 @@
                 </ul>
             </div>
 
-            {installed}{ifcadmin}<div class="tab-pane fade" id="pills-admins" role="tabpanel" aria-labelledby="pills-admins-tab">
+            {installed}{!ifcadmin}<div class="tab-pane fade" id="pills-admins" role="tabpanel" aria-labelledby="pills-admins-tab">
                 <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
                 <div class="pl-4 pr-4 pt-0 pb-0">
                     <form action="#add_admin" method="post" class="form-group row">
@@ -118,7 +118,7 @@
                 <ul class="list-group">
                     {adminlist_admin}
                 </ul>
-            </div>{/ifcadmin}{/installed}
+            </div>{/!ifcadmin}{/installed}
 
         </div>
     </div>

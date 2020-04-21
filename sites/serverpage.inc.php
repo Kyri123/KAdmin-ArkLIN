@@ -12,10 +12,16 @@ $setsidebar = false;
 $serv = new server($url[2]);
 $serv->load_cluster();
 
-$ifslave = false; if($serv->cluster_type() == 1 && $serv->cluster_in()) $ifslave = true;
+$ifslave = false; if($serv->cluster_type() == 0 && $serv->cluster_in()) $ifslave = true;
 $ifcadmin = false; if($serv->cluster_admin() && $ifslave && $serv->cluster_in()) $ifcadmin = true;
 $ifckonfig = false; if($serv->cluster_konfig() && $ifslave && $serv->cluster_in()) $ifckonfig = true;
 $ifcmods = false; if($serv->cluster_mods() && $ifslave && $serv->cluster_in()) $ifcmods = true;
+
+if(!$serv->cluster_in()) {
+    $ifcadmin = false;
+    $ifckonfig = false;
+    $ifcmods = false;
+}
 
 $servername = $serv->cfg_read('ark_SessionName');
 $qport = $serv->cfg_read('ark_QueryPort');

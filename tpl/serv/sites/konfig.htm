@@ -6,7 +6,7 @@
 
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
-                {ifckonfig}<li class="nav-item" style="margin-right: 5px">
+                {!ifckonfig}<li class="nav-item" style="margin-right: 5px">
                     <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-GameUserStetting" role="tab" aria-controls="pills-home" aria-selected="true">GameUserSettings.ini</a>
                 </li>
                 <li class="nav-item" style="margin-right: 5px">
@@ -14,9 +14,9 @@
                 </li>
                 <li class="nav-item" style="margin-right: 5px">
                     <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-Engine" role="tab" aria-controls="pills-contact" aria-selected="false">Engine.ini</a>
-                </li>{/ifckonfig}
+                </li>{/!ifckonfig}
                 <li class="nav-item">
-                    <a class="nav-link {!ifckonfig} active {/!ifckonfig}" id="pills-contact-tab" data-toggle="pill" href="#pills-Cfg2" role="tab" aria-controls="pills-contact" aria-selected="false">Arkmanager</a>
+                    <a class="nav-link {ifckonfig} active {/ifckonfig}" id="pills-contact-tab" data-toggle="pill" href="#pills-Cfg2" role="tab" aria-controls="pills-contact" aria-selected="false">Arkmanager</a>
                 </li>
             </ul>
         </div>
@@ -24,7 +24,7 @@
     <hr />
     <div class="card shadow p-4" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
         <div class="tab-content" id="pills-tabContent">
-            {ifckonfig} <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel" aria-labelledby="pills-home-tab">
+            {!ifckonfig} <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel" aria-labelledby="pills-home-tab">
                 <div id="form">
                     <input type="submit" class="btn btn-primary mb-3" name="save" value="Speichern">
                     <textarea name="text" class="form-control" rows="3" style="min-height: 500px;max-height: 500px;" id="text_gus">{gus}</textarea>
@@ -47,8 +47,8 @@
                     <input type="hidden" name="type" id="type_engine" value="Engine.ini">
                     <input type="hidden" name="cfg" id="cfg_engine" value="{cfg}">
                 </div>
-            </form>{/ifckonfig}
-            <div class="tab-pane fade {!ifckonfig}show active{/!ifckonfig}" id="pills-Cfg2" role="tabpanel" aria-labelledby="pills-contact-tab">
+            </form>{/!ifckonfig}
+            <div class="tab-pane fade {ifckonfig}show active{/ifckonfig}" id="pills-Cfg2" role="tabpanel" aria-labelledby="pills-contact-tab">
                 <form action="#save" method="post">
                     <button type="submit" class="btn btn-primary mb-3" name="savecfg">Speichern</button>
                     {form}

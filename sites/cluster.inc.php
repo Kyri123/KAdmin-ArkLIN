@@ -286,9 +286,9 @@ foreach ($json as $mk => $mv) {
         $alert = meld_full('danger', nl2br($txt), 'Kein Master oder Server gesetzt!', null, "mb-0");
     }
 
-    if($serverlist == null) $serverlist = "<tr><td colspan='5'>Kein Server wurde gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#addservtocluster".$json[$mk]["name"]."\">Server Hinzufügen</a> </td></tr>";
-    if($list_sync == null) $list_sync = "<tr><td colspan='5'>Synchronisation wurde nicht gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#options".$json[$mk]["name"]."\">Einstellungen</a> </td></tr>";
-    if($list_opt == null) $list_opt = "<tr><td colspan='5'>Keine Optionen wurde gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#options".$json[$mk]["name"]."\">Einstellungen</a> </td></tr>";
+    if($serverlist == null) $serverlist = "<tr><td colspan='5'>Kein Server wurde gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#addservtocluster".$json[$mk]["clusterid"]."\">Server Hinzufügen</a> </td></tr>";
+    if($list_sync == null) $list_sync = "<tr><td colspan='5'>Synchronisation wurde nicht gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#options".$json[$mk]["clusterid"]."\">Einstellungen</a> </td></tr>";
+    if($list_opt == null) $list_opt = "<tr><td colspan='5'>Keine Optionen wurde gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#options".$json[$mk]["clusterid"]."\">Einstellungen</a> </td></tr>";
 
     $listtpl->repl("alert", $alert);
     $listtpl->repl("key", $mk);

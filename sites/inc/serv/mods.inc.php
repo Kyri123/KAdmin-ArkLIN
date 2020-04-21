@@ -137,7 +137,7 @@ if(isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot' 
     $serv->cfg_save();
 }
 
-if(!$ifcadmin) $resp .= meld_full('info', "Funktion Mods wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.", 'Mods: Sync Mode', null);
+if($ifcadmin) $resp .= meld_full('info', "Funktion Mods wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.", 'Mods: Sync Mode', null);
 $page_tpl = new Template('mods.htm', 'tpl/serv/sites/');
 $urltop = '<li class="breadcrumb-item"><a href="/serverpage/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">Modifikationen</li>';
