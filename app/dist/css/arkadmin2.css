@@ -1,0 +1,41 @@
+* {
+    border-radius: 0!important;
+}
+
+.aa_nav_hover {
+    border-color: #343a40;
+    border-left: 3px solid transparent;
+}
+
+.aa_nav_hover:hover {
+    background-color: rgba(255,255,255,.1) !important;
+    color: #fff;
+    border-color: #a7a7a7;
+}
+
+.aa_active {
+    border-color: #3c8dbc!important;
+    color: #3c8dbc!important;
+    border-left: 3px solid transparent;
+    box-shadow: none;
+}
+
+.aa_main_active:hover {
+    border-color: #3c8dbc!important;
+}
+
+.aa_main_active {
+    border-color: #3c8dbc!important;
+    color: #3c8dbc!important;
+    border-left: 3px solid transparent;
+    box-shadow: none;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    display: inline-block;
+    padding-right: .5rem;
+    color: #6c757d;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f0da";
+}

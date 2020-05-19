@@ -1,0 +1,27 @@
+{style1}
+<div class="card card-{color} rounded-0" id="{rnd}">
+    <div class="card-header rounded-0">
+        <h3 class="card-title"><i class="icon {icon}" aria-hidden="true"></i> {title}</h3>
+
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" onclick="remove('{rnd}')">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+        </div>
+    </div>
+    <div class="card-body rounded-0">
+        {text}
+    </div>
+</div>
+{/style1} {style2}
+<div class="alert alert-{color} alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h5><i class="icon {icon}"></i> {title}</h5>
+    {text}
+</div>
+{/style2} {style3}
+<div class="callout callout-{color}">
+    <h5 class="text-{color}"><i class="{icon}"></i> {title}</h5>
+    {text}
+</div>
+{/style3}

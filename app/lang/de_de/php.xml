@@ -1,0 +1,234 @@
+<lang>
+    <!--
+    ++++++++++++++++++++++++++++++++++++++++++++
+    @author:  Oliver Kaufmann (Kyri123)
+    @copyright Copyright (c) 2019-2020, Oliver Kaufmann
+    @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
+    Github: https://github.com/Kyri123/Arkadmin
+    ++++++++++++++++++++++++++++++++++++++++++++
+     -->
+    <php>
+        <!-- session.inc.php -->
+        <session>
+            <logout>Ausloggen</logout>
+            <settings>Einstellungen</settings>
+            <login>Login</login>
+            <register>Registrieren</register>
+        </session>
+
+        <!-- server.inc.php -->
+        <server>
+            <subline>{aplayers} / {ark_MaxPlayers} Spieler | V.{serv_version}</subline>
+        </server>
+
+        <!-- config.inc.php -->
+        <nav_curr>
+            <newchangelog>Neu!</newchangelog>
+        </nav_curr>
+
+        <!-- config.inc.php -->
+        <cfg>
+            <action>
+                <_0>Installieren</_0>
+                <_1>Starten</_1>
+                <_2>Update</_2>
+                <_3>Neustarten</_3>
+                <_4>Stoppen</_4>
+                <_5>Backup</_5>
+                <_6>Checkupdate</_6>
+                <_7>Checkmodupdate</_7>
+                <_8>Installmods</_8>
+                <_9>Uninstallmods</_9>
+                <_10>Speichern</_10>
+                <_11>Status</_11>
+            </action>
+        </cfg>
+        
+        <!-- allg.func.inc.php -->
+        <function_allg>
+            <state_off>Offline</state_off>
+            <state_start>Startet</state_start>
+            <state_on>Online</state_on>
+            <state_notinstalled>Nicht Installiert</state_notinstalled>
+            <acc_notfound>Account nicht gefunden!</acc_notfound>
+        </function_allg>
+
+        <!-- Index.php -->
+        <index>
+            <pagename_login>Einloggen</pagename_login>
+            <pagename_reg>Account erstellen</pagename_reg>
+        </index>
+
+        <!-- Error 404 -->
+        <err404>
+            <maintitle>Error </maintitle>
+        </err404>
+
+        <!-- userpanel -->
+        <userpanel>
+            <pagename>Benutzer</pagename>
+            <btn-regcode>Codes</btn-regcode>
+            <nocodefound>Kein Code gefunden</nocodefound>
+            <banned>Gebannt</banned>
+            <notbanned>Frei</notbanned>
+            <removed_code>Code Gelöscht</removed_code>
+            <removed_user>Benutzer {del_username} Gelöscht</removed_user>
+            <changed_ban>Benutzer [{ban_uid}] {ban_username} -> {ban_to}</changed_ban>
+        </userpanel>
+
+        <!-- servercontrollcenter -->
+        <scc>
+            <pagename>Server Controll Center</pagename>
+            <serverremoved>Server entfernt</serverremoved>
+            <btn_addserver>Server erstellen</btn_addserver>
+        </scc>
+
+        <!-- ClusterSystem -->
+        <cluster>
+            <pagename>Cluster System</pagename>
+            <btn_addcluster>Cluster erstellen</btn_addcluster>
+            <overwrite>
+                <addedserver>Server [b]{servername}[/b] zum Cluster [b]{cluster}[/b] hinzufüget</addedserver>
+                <createdcluster>Cluster [b]{cluster}[/b] erstellt! ClusterID: [b]{clustermd5}[/b]</createdcluster>
+                <changedcluster>Cluster [b]{cluster}[/b] Bearbeitet! ClusterID: [b]{clustermd5}[/b]</changedcluster>
+            </overwrite>
+        </cluster>
+
+        <!-- Config -->
+        <config>
+            <pagename>Konfiguration</pagename>
+            <key>
+                <uninstallmod>Deinstalliere Mods beim Entfernen</uninstallmod>
+                <installmod>Installiere Mods beim Hinzufügen</installmod>
+                <clusterestart>Starte Clusterserver neu wenn Optionen geändert werden</clusterestart>
+                <servlocdir>Server-verzeichnis</servlocdir>
+                <arklocdir>Arkmanager-verzeichnis</arklocdir>
+                <apikey_found_here>finde ich Hier</apikey_found_here>
+            </key>
+        </config>
+
+        <!-- Dashboard -->
+        <home>
+            <pagename>Dashboard</pagename>
+            <old>Veraltet</old>
+            <curr>Aktuell</curr>
+            <new>Neue</new>
+            <newWIP>In progress</newWIP>
+        </home>
+
+        <!-- Async -->
+        <async>
+            <!-- Async Get -->
+            <get>
+                <all>
+                    <getlog>
+                        <no_log_found>[b][c=info]Info:[/c][/b] Kein log gefunden!</no_log_found>
+                        <toolarge>Zulang wird verborgen...</toolarge>
+                    </getlog>
+                </all>
+                <servercenter>
+                    <main>
+                        <action_closed>Gesperrt</action_closed>
+                        <action_closed_need_open>Server muss Frei sein!</action_closed_need_open>
+                        <action_open>Frei</action_open>
+                        <showplayer>Spieler Zeigen</showplayer>
+                        <server_need_online>Server muss Online sein!</server_need_online>
+                    </main>
+                    <mods>
+                        <no_mods_found>Es wurden keine Mods gefunden</no_mods_found>
+                    </mods>
+                </servercenter>
+            </get>
+
+            <!-- Async Post -->
+            <post>
+                <servercenter>
+                    <home>
+                        <serveroffline>Server ist offline, RCON ist deaktiviert oder kein Admin Passwort gesetzt!</serveroffline>
+
+                    </home>
+                </servercenter>
+            </post>
+        </async>
+
+        <!-- ServerCenter -->
+        <sc>
+            <no_player_online>Niemand ist Online!</no_player_online>
+            <notribe>[Kein Stamm]</notribe>
+
+            <danger>
+                <nodanger_found>Keine Fehler gefunden!</nodanger_found>
+                <all_ok>Alles ist OK!</all_ok>
+                <notinstalled>Nicht Installiert:</notinstalled>
+                <err_notdef>Fehler nicht Definiert</err_notdef>
+            </danger>
+
+            <warn>
+                <nowarn_found>Keine Fehler gefunden!</nowarn_found>
+                <all_ok>Alles ist OK!</all_ok>
+                <serv_notinstalled>Server ist nicht Installiert (Exe konnte nicht gefunden werden)</serv_notinstalled>
+                <err_notdef>Fehler nicht Definiert</err_notdef>
+            </warn>
+
+            <page> 
+                <!-- Backups.inc.php -->
+                <backup>
+                    <pagename>ServerCenter - Backups</pagename>
+                    <urltop>Backups</urltop>
+                </backup>
+
+                <!-- Konfig.inc.php -->
+                <konfig>
+                    <pagename>ServerCenter - Konfiguration</pagename>
+                    <urltop>Konfiguration</urltop>
+                    <ini_notfound>Wird nicht Gespeichert da die Ini noch nicht Exsistiert!
+                    Bitte starte den Server bevor du weiter machst!</ini_notfound>
+                </konfig>
+
+                <!-- Logs.inc.php -->
+                <logs>
+                    <pagename>ServerCenter - Logs</pagename>
+                    <urltop>Logs</urltop>
+                </logs>
+
+                <!-- Mods.inc.php -->
+                <mods> 
+                    <pagename>ServerCenter - Modifikationen</pagename>
+                    <urltop>Modifikationen</urltop>
+                    <mod_removed>Mod [b]{name}[b] Entfernt</mod_removed>
+                    <mod_removed_dir>Verzeichnis der mod [b]{name}[b] wird Entfernt (dauert höhsten eine Minute)</mod_removed_dir>
+                    <mod_added>Mod [b]{name}[b] Entfernt</mod_added>
+                </mods>
+
+                <!-- Saves.inc.php -->
+                <saves>
+                    <pagename>ServerCenter - Savegames</pagename>
+                    <urltop>Savegames</urltop>
+                    <no_tribe>[Kein Stamm]</no_tribe>
+                    <member>Member:</member>
+                </saves>
+
+                <!-- Home.inc.php -->
+                <home>
+                    <pagename>ServerCenter - Startseite</pagename>
+                    <urltop>Startseite</urltop>
+                    <add_admin>Admin [b]{name}[/b] wurde hinzugefügt!</add_admin>
+                    <remove_admin>Admin [b]{name}[/b] wurde entfernt!</remove_admin>
+                    <unknown_name>Ingamename Unbekannt (Savegame exsistiert nicht)</unknown_name>
+                </home>
+
+                <!-- Jobs.inc.php -->
+                <jobs>
+                    <pagename>ServerCenter - Aufgaben</pagename>
+                    <urltop>Jobs (Aufgaben)</urltop>
+                    <job_active>Aufgabe wurde Aktiviert</job_active>
+                    <job_disturb>Aufgabe wurde Deaktiviert</job_disturb>
+                    <tool_active>Aktivieren</tool_active>
+                    <tool_disturb>Deaktivieren</tool_disturb>
+                    <nothing>Keine Jobs gefunden!</nothing>
+                </jobs>
+            </page>
+        </sc>
+
+    </php>
+</lang>

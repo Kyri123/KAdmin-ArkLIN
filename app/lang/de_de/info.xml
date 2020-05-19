@@ -1,0 +1,14 @@
+<lang>
+    <!--
+    ++++++++++++++++++++++++++++++++++++++++++++
+    @author:  Oliver Kaufmann (Kyri123)
+    @copyright Copyright (c) 2019-2020, Oliver Kaufmann
+    @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
+    Github: https://github.com/Kyri123/Arkadmin
+    ++++++++++++++++++++++++++++++++++++++++++++
+     -->
+    <lang_name>Deutsch</lang_name>
+    <version>0.0.2</version>
+    <author>Kyri123</author>
+    <icon_path>/app/dist/img/flags/de_de.png</icon_path>
+</lang>

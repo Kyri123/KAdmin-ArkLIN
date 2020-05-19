@@ -1,5 +1,8 @@
-inc/pconfig.inc.php
+
 inc/pconfig.inc.php
 inc/custom_konfig.json
+.vscode-upload.json
+workspace.code-workspace
 .idea/*
 .vscode/*
+sh/.editorconfig

@@ -1,6 +1,5 @@
-
-
 <!DOCTYPE html>
+
 <html lang="de">
 
 <head>
@@ -15,7 +14,7 @@
     <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <script src="/dist/jquery/jquery-3.4.1.min.js"></script>
+    <script src="/app/dist/jquery/jquery-3.4.1.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js?time={time}"></script>
 
     <meta charset="utf-8">
@@ -29,50 +28,63 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="/dist/css_old/arkadmin2.css?time={time}">
-    <script src="/dist/js/arkadmin2.js?time={time}"></script>
-    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
-    <script src="/dist/js/adminlte.min.js"></script>
+    <link rel="stylesheet" href="/app/dist/css_old/arkadmin2.css?time={time}">
+    <script src="/app/dist/js/arkadmin2.js?time={time}"></script>
+    <link rel="stylesheet" href="/app/dist/css/adminlte.min.css">
+    <script src="/app/dist/js/adminlte.min.js"></script>
 
-    <style>.right{position: absolute;right: 1rem;top: .7rem;}</style>
+    <style>
+        .right {
+            position: absolute;
+            right: 1rem;
+            top: .7rem;
+        }
+    </style>
 
     </script>
-    </head>
+</head>
 
 <body class="layout-top-nav" style="height: auto;">
-<div class="wrapper">
-    <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
-        <div class="container">
-            <a href="/install.php" class="navbar-brand">
-                <span class="brand-text font-weight-light">ArkAdmin :: INSTALLER</span>
-            </a>
-        </div>
-    </nav>
-
-    <div class="content-wrapper" style="min-height: 823px;">
-        <div class="content-header">
+    <div class="wrapper">
+        <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
             <div class="container">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">{title}</h1>
+                <a href="/install.php" class="navbar-brand">
+                    <span class="brand-text font-weight-light">ArkAdmin :: {::lang::install::installer}</span>
+                </a>
+                <div class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
+                        <i class="fas fa-language text-lg"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+                        {langlist}
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item">installer</li>
-                            <li class="breadcrumb-item active">Schritt {stepid}</li>
-                        </ol>
+                </div>
+        </nav>
+
+        <div class="content-wrapper" style="min-height: 823px;">
+            <div class="content-header">
+                <div class="container">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">{title}</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item">{::lang::install::installer}</li>
+                                <li class="breadcrumb-item active">{::lang::install::step} {stepid}</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="content">
-            <div class="container">
-                {content}
+            <div class="content">
+                <div class="container">
+                    {content}
+                </div>
             </div>
         </div>
-    </div>
-</div>
+        </div>
 
 
 </body>

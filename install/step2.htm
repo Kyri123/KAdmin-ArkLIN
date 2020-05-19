@@ -4,17 +4,11 @@
         <div class="card rounded-0">
             <div class="card-header">
                 <h3 class="card-title">
-                    Benutzer Konfiguration
+                    {::lang::install::step2::main::title}
                 </h3>
             </div>
             <div class="card-body">
-                <dl>
-                    <dt>Einstellungen</dt>
-                    <dd>Stelle alles ein wie du willst</dd>
-                    <dd>Sorge bitte dafür dass der Webserver zugriff die die Ordner hat!</dd>
-                    <dd><a href="https://blog.ha-com.com/2011/07/11/open_basedir-php-apache-documentroot/" target="_blank">open_basedir Allgemein Apache</a> | <a href="https://support.plesk.com/hc/en-us/articles/360006170513-How-to-add-custom-or-additional-path-to-the-open-basedir-option-for-Plesk-domain-" target="_blank">open_basedir Plesk</a></dd>
-                    <dd>Den Steam API key bekommst du <a href="https://steamcommunity.com/dev/apikey" target="_blank">HIER!</a> </dd>
-                </dl>
+                {::lang::install::step2::main::text}
             </div>
         </div>
     </div>
@@ -23,7 +17,7 @@
     <div class="col-md-12 col-sm-12 col-12">
         <form role="form" method="post" action="#" class="card card-primary rounded-0">
             <div class="card-header rounded-0">
-                <h3 class="card-title">Benutzer definierte Daten</h3>
+                <h3 class="card-title">{::lang::install::step2::form::title}</h3>
             </div>
 
             <div>
@@ -31,42 +25,42 @@
                     <form action="#save" method="post" class="tab-pane fade show active" id="pills-Panel" role="tabpanel" aria-labelledby="pills-home-tab">
                         <div id="form">
                             <div class="form-group">
-                                <label>Deinstalliere Mods beim Entfernen</label>
+                                <label>{::lang::install::step2::form::uninstallmods}</label>
                                 <input type="hidden" name="key[]" value="uninstall_mod">
                                 <select class="form-control rounded-0" name="value[]">
-                                    <option value="0">Nein</option>
-                                    <option value="1">Ja</option>
+                                    <option value="0">{::lang::install::step2::false}</option>
+                                    <option value="1">{::lang::install::step2::true}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Installiere Mods beim Hinzufügen</label>
+                                <label>{::lang::install::step2::form::installmods}</label>
                                 <input type="hidden" name="key[]" value="install_mod">
                                 <select class="form-control rounded-0" name="value[]">
-                                    <option value="0">Nein</option>
-                                    <option value="1">Ja</option>
+                                    <option value="0">{::lang::install::step2::false}</option>
+                                    <option value="1">{::lang::install::step2::true}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Server-verzeichnis</label>
+                                <label>{::lang::install::step2::form::sdir}</label>
                                 <input type="hidden" name="key[]" value="servlocdir">
-                                <input class="form-control rounded-0" type="text" name="value[]" placeholder="bsp.: /data/ark_serv_dir/">
+                                <input class="form-control rounded-0" type="text" name="value[]" placeholder="/data/ark_serv_dir/">
                             </div>
                             <div class="form-group">
-                                <label>Arkmanager-verzeichnis</label>
+                                <label>{::lang::install::step2::form::adir}</label>
                                 <input type="hidden" name="key[]" value="arklocdir">
                                 <input class="form-control rounded-0" type="text" name="value[]" value="/etc/arkmanager/">
                             </div>
                             <div class="form-group">
-                                <label>Steam API-Key</label>
+                                <label>{::lang::install::step2::form::api}</label>
                                 <input type="hidden" name="key[]" value="apikey">
-                                <input class="form-control rounded-0" type="text" name="value[]" placeholder="steam API-Key">
+                                <input class="form-control rounded-0" type="text" name="value[]" placeholder="{::lang::install::step2::form::api}">
                             </div>
                             <div class="form-group">
-                                <label>Starte Clusterserver neu wenn Optionen geändert werden</label>
+                                <label>{::lang::install::step2::form::restartoncchange}</label>
                                 <input type="hidden" name="key[]" value="clusterestart">
                                 <select class="form-control rounded-0" name="value[]">
-                                    <option value="0">Nein</option>
-                                    <option null="" value="1">Ja</option>
+                                    <option value="0">{::lang::install::step2::false}</option>
+                                    <option value="1">{::lang::install::step2::true}</option>
                                 </select>
                             </div>
                         </div>
@@ -74,9 +68,9 @@
                 </div>
 
                 <div class="card-footer rounded-0">
-                    <button type="submit" name="savepanel" class="btn btn-primary" style="width: 100%">Absenden</button>
+                    <button type="submit" name="savepanel" class="btn btn-primary" style="width: 100%">{::lang::install::step2::form::btn_send}</button>
                 </div>
             </div>
-        </div>
     </div>
+</div>
 </div>

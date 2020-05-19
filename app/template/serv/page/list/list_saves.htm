@@ -1,0 +1,121 @@
+<li class="list-group-item">
+    <div class="row p-0">
+        <div class="col-12">
+            <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50">
+            <div class="ml-auto float-right">
+                <a href="javascript:void();" class="btn btn-info btn-sm" data-toggle="modal" data-target="#p_{rnd}">
+                    <span class="icon text-white">
+                        <i class="fas fa-info"></i>
+                    </span>
+                </a>
+                <a data-toggle="modal" data-target="#dels{rnd}" class="btn btn-danger btn-sm">
+                    <span class="icon text-white">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </a>
+                <a href="{url}" class="btn btn-dark btn-sm" target="_blank">
+                    <span class="icon text-white">
+                        <i class="fab fa-steam-symbol"></i>
+                    </span>
+                </a>
+                <a href="{durl}" class="btn btn-dark btn-sm" download>
+                    <span class="icon text-white">
+                        <i class="fas fa-download"></i>
+                    </span>
+                </a>
+            </div>
+            <div style="margin-left: 60px;">{IG:name}<br><span class="font-weight-light" style="font-size: 11px;"> {::lang::servercenter::list::saves::tribe} | {::lang::servercenter::list::saves::lastupdate}</span></div>
+        </div>
+    </div>
+</li>
+
+<!-- Modal -->
+<div class="modal fade" id="p_{rnd}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{::lang::servercenter::list::saves::modal::player::title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <li class="list-group-item">
+                    <div class="row p-0">
+                        <div class="col-12">
+                            <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50">
+                            <div class="ml-auto float-right  btn-group">
+                                <a href="{url}" class="btn btn-dark" target="_blank">
+                                        <span class="icon text-white">
+                                            <i class="fab fa-steam-symbol"></i>
+                                        </span>
+                                </a>
+                            </div>
+                            <div style="margin-left: 60px;">{IG:name}<br><span class="font-weight-light" style="font-size: 11px;"><b>{tribe}</b> | <b>{update}</b></span></div>
+                        </div>
+                    </div>
+                </li>
+
+                <table class="table table-bordered m-0">
+                    <tbody>
+                        <tr>
+                            <td>{::lang::servercenter::list::saves::modal::player::ep}</td>
+                            <td>{EP}</td>
+                        </tr>
+                        <tr>
+                            <td>{::lang::servercenter::list::saves::modal::player::lvl}</td>
+                            <td>{IG:Level}</td>
+                        </tr>
+                        <tr>
+                            <td>{::lang::servercenter::list::saves::modal::player::id}</td>
+                            <td>{SpielerID}</td>
+                        </tr>
+                        <tr>
+                            <td>{::lang::servercenter::list::saves::modal::player::engrammpoints}</td>
+                            <td>{TEP}</td>
+                        </tr>
+                        <tr>
+                            <td>{::lang::servercenter::list::saves::modal::player::tribename}</td>
+                            <td>{tribe}</td>
+                        </tr>
+                        <tr>
+                            <td>Steam</td>
+                            <td>{steamname}</td>
+                        </tr>
+                        <tr>
+                            <td>{::lang::servercenter::list::saves::modal::player::lastsave}</td>
+                            <td>{update}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::saves::btn_close}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
+<form class="modal fade" id="dels{rnd}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title text-danger">{::lang::servercenter::list::saves::modal::remove::title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p> {::lang::servercenter::list::saves::modal::remove::txt}</p>
+                <p><b>{IG:name}</b></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::saves::modal::remove::btn_cancel}</button>
+                <a href="{rm_url}" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::saves::modal::remove::btn_close}</a>
+            </div>
+        </div>
+    </div>
+</form>

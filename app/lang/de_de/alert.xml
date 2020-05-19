@@ -1,0 +1,283 @@
+<lang>
+    <!--
+    ++++++++++++++++++++++++++++++++++++++++++++
+    @author:  Oliver Kaufmann (Kyri123)
+    @copyright Copyright (c) 2019-2020, Oliver Kaufmann
+    @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
+    Github: https://github.com/Kyri123/Arkadmin
+    ++++++++++++++++++++++++++++++++++++++++++++
+    c_X Types:
+    0-99 = Danger
+    100-199 = Success
+    200-299 = Warning
+    >300 = Info
+    ++++++++++++++++++++++++++++++++++++++++++++
+    TODO: (Langfile auch über Webserver beziehen)
+    ++++++++++++++++++++++++++++++++++++++++++++
+    -->
+
+    <alert>
+        <!-- DANGER -->
+        <!-- DANGER | Cannot write FILE -->
+        <c_1>
+            <title>Datei Error</title>
+            <text>Datei konnte nicht gespeichert, gefunden oder gelesen werden.</text>
+        </c_1>
+
+        <!-- DANGER | empty input -->
+        <c_2>
+            <title>Input Error</title>
+            <text>Format falsch oder Fehlender Input</text>
+        </c_2>
+
+        <!-- DANGER | Mysql Error & Array Error -->
+        <c_3>
+            <title>Mysql Error</title>
+            <title_array>Array Error</title_array>
+            <text>Konnte Datensatz nicht lesen oder schreiben</text>
+        </c_3>
+
+        <!-- DANGER | Webhelper -->
+        <c_4>
+            <title>Webhelper Warnung</title>
+            <text>Der Webhelper hat länger als 60 Sekunden nicht mehr das Panel abgerufen! (Letzte Prüfung: {lastcheck_webhelper})</text>
+        </c_4>
+
+        <!-- DANGER | allready exsists -->
+        <c_5>
+            <title>Error</title>
+            <text>Es kann nur einmal Existieren</text>
+        </c_5>
+
+        <!-- DANGER | server musst be online -->
+        <c_6>
+            <title>Server status Error</title>
+            <text>Der Server muss [c=success]Online[/c] sein</text>
+        </c_6>
+
+        <!-- DANGER | server musst be offline -->
+        <c_7>
+            <title>Server status Error</title>
+            <text>Der Server muss [c=danger]Offline[/c] sein</text>
+        </c_7>
+
+        <!-- DANGER | cannot find server -->
+        <c_8>
+            <title>Server Error</title>
+            <text>Server Existiert nicht</text>
+        </c_8>
+
+        <!-- DANGER | no server sel -->
+        <c_9>
+            <title>Server Error</title>
+            <text>Keinen Server ausgewählt</text>
+        </c_9>
+
+        <!-- DANGER | server is in Cluster -->
+        <c_10>
+            <title>Cluster Error</title>
+            <text>Server ist bereits in einem Cluster</text>
+        </c_10>
+
+        <!-- DANGER | allready exsists 2 -->
+        <c_11>
+            <title>Input Error</title>
+            <text>[b]{input}[/b] existiert bereits</text>
+            <ornoinput>oder das Namensfeld ist leer</ornoinput>
+        </c_11>
+
+        <!-- DANGER | connections error -->
+        <c_12>
+            <title>Verbindungsfehler</title>
+            <text>konnte keine Verbindung zum Server aufbauen</text>
+        </c_12>
+
+        <!-- DANGER | actions closed -->
+        <c_13>
+            <title>Aktionsfehler</title>
+            <text>Der Server lässt derzeit keine weiten Aktionen zu</text>
+        </c_13>
+
+        <!-- DANGER | time format (Jobs-Intervall) -->
+        <c_14>
+            <title>Format Fehler</title>
+            <text>Intervall hat kein gültiges Format, Ist kleiner als 0 oder ist Leer.</text>
+        </c_14>
+
+        <!-- DANGER | time < currTime -->
+        <c_15>
+            <title>Zeit Fehler</title>
+            <text>Zeit muss gößer der aktuellen Zeit sein und das Format muss eingehalten werden</text>
+        </c_15>
+
+        <!-- DANGER | cannot find server -->
+        <c_16>
+            <title>Werte Error</title>
+            <text>Wert existiert nicht</text>
+        </c_16>
+
+        <!-- DANGER | cannot extract file -->
+        <c_17>
+            <title>Aktions Fehler</title>
+            <text>Konnte Datei nicht enpacken.</text>
+        </c_17>
+
+        <!-- DANGER | cannot extract file -->
+        <c_18>
+            <title>Steam Fehler</title>
+            <text>kein Gültiger Workshop link</text>
+        </c_18>
+
+        <!-- DANGER | cannot extract file -->
+        <c_19>
+            <title>URL Fehler</title>
+            <text>keine ID im Link</text>
+        </c_19>
+
+        <!-- DANGER | cannot extract file -->
+        <c_20>
+            <title>Steam Fehler</title>
+            <text>ID ist kein Gültiger Workshop inhalt</text>
+        </c_20>
+
+        <!-- DANGER | session::banned -->
+        <c_21>
+            <title>Account Fehler</title>
+            <text>Account gebannt!</text>
+        </c_21>
+
+        <!-- DANGER | session::wrong password -->
+        <c_22>
+            <title>Account Fehler</title>
+            <text>Falsches Passwort!</text>
+        </c_22>
+
+        <!-- DANGER | session::wrong email/username -->
+        <c_23>
+            <title>Account Fehler</title>
+            <text>Benutzername oder E-Mail nicht vorhanden</text>
+        </c_23>
+
+        <!-- DANGER | session_createacc::wrong email/username -->
+        <c_24>
+            <title>Account Fehler</title>
+            <text>Falscher Code oder dieser wurde schon Benutzt!</text>
+        </c_24>
+
+        <!-- DANGER | session_createacc::wrong email/username -->
+        <c_25>
+            <title>Account Fehler</title>
+            <text>E-Mail ist bereits Verwendet!</text>
+        </c_25>
+
+        <!-- DANGER | session_createacc::wrong email/username -->
+        <c_26>
+            <title>Account Fehler</title>
+            <text>Benutzername ist bereits Verwendet!</text>
+        </c_26>
+
+        <!-- DANGER | session_createacc::wrong email/username -->
+        <c_27>
+            <title>Account Fehler</title>
+            <text>Passwörter stimmen nicht überein!</text>
+        </c_27>
+
+        <!-- DANGER | session_createacc::wrong email/username -->
+        <c_28>
+            <title>Account Fehler</title>
+            <text>Bitte fülle alle Felder aus!</text>
+        </c_28>
+
+        <!-- DANGER | Mysql Error -->
+        <c_29>
+            <title>Mysql Error</title>
+            <text>Konnte keine Verbindung zur Datenbank aufbauen</text>
+        </c_29>
+
+        <!-- DANGER | Mysql Error -->
+        <c_30>
+            <title>System Error</title>
+            <text>Syslink funktioniert nicht</text>
+        </c_30>
+
+
+
+
+
+        <!-- Success -->
+        <!-- Success | created -->
+        <c_100>
+            <title>Erfolgreich erstellt!</title>
+            <text>wurde erstellt.</text>
+        </c_100>
+
+        <!-- Success | Removed -->
+        <c_101>
+            <title>Erfolgreich gelöscht!</title>
+            <text>wurde gelöscht.</text>
+        </c_101>
+
+        <!-- Success | Changed -->
+        <c_102>
+            <title>Erfolgreich geändert!</title>
+            <text>wurde geändert.</text>
+        </c_102>
+
+        <!-- Success | Changed state -->
+        <c_103>
+            <title>Erfolgreich geändert!</title>
+            <text>Status wurde geändert.</text>
+        </c_103>
+
+        <!-- Success | added -->
+        <c_104>
+            <title>Erfolgreich hinzugefügt!</title>
+            <text>wurde {} hinzufügt.</text>
+        </c_104>
+
+        <!-- Success | executed [rcon] -->
+        <c_105>
+            <title>Erfolgreich ausgeführt!</title>
+            <text>Rcon Gesendet: [/b][c=success]{command}[/c][/b]
+
+            {response}
+            </text>
+        </c_105>
+
+        <!-- Success | playin -->
+        <c_106>
+            <title>Erfolgreich eingespielt!</title>
+            <text>Das backup wurde eingespielt.</text>
+        </c_106>
+
+
+
+        <!-- Warning -->
+        <!-- Warning | IE -->
+        <c_200>
+            <title>Browser Warnung</title>
+            <text>Internet Explorer wird nicht 100%ig Untersützt!</text>
+        </c_200>
+ 
+
+
+        <!-- INFO -->
+        <!-- INFO | syncmode - admin -->
+        <c_300>
+            <title>Sync Mode : Administratoren</title>
+            <text>Funktion Administrator wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.</text>
+        </c_300>
+
+        <!-- INFO | syncmode - konfig -->
+        <c_301>
+            <title>Sync Mode : Konfiguration</title>
+            <text>Funktion Konfiguration wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.</text>
+        </c_301>
+
+        <!-- INFO | syncmode - konfig -->
+        <c_302>
+            <title>Sync Mode : Modifikationen</title>
+            <text>Funktion Modifikationen wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.</text>
+        </c_302>
+    </alert>
+</lang>

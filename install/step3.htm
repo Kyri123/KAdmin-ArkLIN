@@ -4,19 +4,11 @@
         <div class="card rounded-0">
             <div class="card-header">
                 <h3 class="card-title">
-                    Crontab & Regestrierung
+                    {::lang::install::step3::main::title}
                 </h3>
             </div>
             <div class="card-body">
-                <dl>
-                    <dt>Crontab</dt>
-                    <dd>Stelle die Konfiguration ein und Starte die Datei mit "start.sh" (Empfehlung: Verschiebe den Ordner nach /home oder /root)</dd>
-                    <dd>Wenn der Crontab abgerufen wird wird der Abschluss der Installation freigeben</dd>
-                    <hr>
-                    <dt>Regestrierung</dt>
-                    <dd>Erstelle nun ein Account: <a href="/register" target="_blank">Klick mich </a> </dd>
-                    <dd>Dein Code lautet: <b>7c90c6595f7cb4d2aa0e</b></dd>
-                </dl>
+                {::lang::install::step3::main::text}
             </div>
         </div>
     </div>
@@ -29,9 +21,9 @@
 </div>
 
 <script>
-    getphp('/install/sites/step3js.inc.php', 'btn');
-    setInterval(function(){
-        getphp('/install/sites/step3js.inc.php', 'btn');
+    getphp('/install/page/step3js.inc.php', 'btn');
+    setInterval(function() {
+        getphp('/install/page/step3js.inc.php', 'btn');
     }, 1000);
 </script>
-<script src="/dist/js/arkadmin2.js"></script>
+<script src="/app/dist/js/arkadmin2.js"></script>

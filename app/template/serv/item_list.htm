@@ -1,0 +1,25 @@
+
+<a href="/servercenter/{cfg}/home" class="dropdown-item">
+	<div class="media">
+		<img src="{map}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+		<div class="media-body">
+			<h3 class="dropdown-item-title">
+				{servername}
+				<span class="float-right text-sm text-danger"><i class="fas fa-circle text-{color}"></i></span>
+			</h3>
+			<p class="text-sm">
+			{subline}
+            {ifin}<br /><span class="info-box-text"><i class="fas fa-random" aria-hidden="true"></i> {typestr} {clustername}</span>{/ifin}
+			</p>
+		</div>
+	</div>
+</a>
+<div class="dropdown-divider"></div>
+
+<!-- TODO: auf getphp() umstellen funktioniert derzeit nicht mehr -->
+<script>
+	server_item("{cfg}", "sitem_{cfg}");
+	setInterval(function(){
+		server_item("{cfg}", "sitem_{cfg}");
+	}, 1000);
+</script>

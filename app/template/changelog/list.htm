@@ -1,0 +1,53 @@
+
+<div class="time-label mb-2" id="{version}">
+                  <span class="{color} text-white  rounded-0">
+                    Version {version} | {datestring}
+                  </span>
+                <p class="d-xl-none d-lg-none mb-0" style="margin-top: 3px;"></p>
+                {ifgit}<a href="{git}" target="_blank" class="btn btn-sm btn-dark rounded-0" style="height: 34px; margin-bottom: 4px;"><i class="nav-icon fab fa-github" aria-hidden="true"></i> GitHub</a>{/ifgit}
+                {ifdownload}<a href="{download}" download="" class="btn btn-sm btn-dark rounded-0" style="height: 34px; margin-bottom: 4px;"><i class="nav-icon fa fa-download" aria-hidden="true"></i> Runterladen</a>{/ifdownload}
+</div>
+<div class="time-label m-0" id="{version}">
+</div>
+
+<div style="margin-right: 0px;">
+    <i class="fa fa-server {color} text-white rounded-0"></i><div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
+
+    <div class="timeline-header"><h6 class="m-0">Letztes Update: <b>{lastupdate}</b></h6></div>
+</div>
+    {ifnew}<div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
+
+        <div class="timeline-header border-bottom-0 bg-dark"><h4 class="mb-0">{::lang::changelog::new}</h4></div>
+
+        <div class="timeline-body p-0">
+                {new}
+        </div>
+    </div>{/ifnew}
+
+    {ifchange}<div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
+
+        <div class="timeline-header border-bottom-0 bg-dark"><h4 class="mb-0">{::lang::changelog::change}</h4></div>
+
+        <div class="timeline-body p-0">
+                {change}
+        </div>
+    </div>{/ifchange}
+
+    {iffix}<div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
+
+        <div class="timeline-header border-bottom-0 bg-dark"><h4 class="mb-0">{::lang::changelog::bug}</h4></div>
+
+        <div class="timeline-body p-0">
+                {fix}
+        </div>
+    </div>{/iffix}
+
+    {ifjava}<div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
+
+        <div class="timeline-header border-bottom-0 bg-dark"><h4 class="mb-0">{::lang::changelog::java}</h4></div>
+
+        <div class="timeline-body p-0">
+                {java}
+        </div>
+    </div>{/ifjava}
+</div>

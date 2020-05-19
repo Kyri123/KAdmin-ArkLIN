@@ -1,0 +1,227 @@
+<div class="col-xl-9 col-md-8 mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
+                <li class="nav-item" style="margin-right: 5px">
+                    <a class="nav-link active" id="pills-llog-tab" data-toggle="pill" href="#pills-llog" role="tab" aria-controls="pills-llog" aria-selected="true" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')">{::lang::servercenter::home::nav::llog}</a>
+                </li>
+                <li class="nav-item" style="margin-right: 5px">
+                    <a class="nav-link" id="pills-lchat-tab" data-toggle="pill" href="#pills-lchat" role="tab" aria-controls="pills-lchat" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::lchat}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-rcon-tab" data-toggle="pill" href="#pills-rcon" role="tab" aria-controls="pills-rcon" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::rcon}</a>
+                </li>
+                {installed}{!ifcadmin}
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-admins-tab" data-toggle="pill" href="#pills-admins" role="tab" aria-controls="pills-admins" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::admin}</a>
+                </li>{/!ifcadmin}{/installed}
+            </ul>
+            <div class="form-inline">
+                <div class="form-inline">
+                    <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" type="button">
+                            <b id="max">25</b>
+                        </button>
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:void();" onclick="set(25, 'max')">25</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set(50, 'max')">50</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set(150, 'max')">150</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set(250, 'max')">250</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set(500, 'max')">500</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set('∞', 'max')">∞</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-1 float-right btn-group" style="display: inline-flex;" id="hidebar">
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" type="button">
+                            <b>
+                                <i id="iconhide" class="null fas fa-check" aria-hidden="true"></i>
+                            </b>
+                            <span class="d-none" id="hide">Ja</span>
+                        </button>
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:void();" onclick="set('Ja', 'hide');set_icon('fas', 'fa-check', 'iconhide')">
+                                    <i class="fas fa-check" aria-hidden="true"></i> {::lang::allg::logs::show}</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set('Nein', 'hide');set_icon('fa', 'fa-times', 'iconhide')">
+                                    <i class="fa fa-times" aria-hidden="true"></i> {::lang::allg::logs::hide}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </nav>
+    <hr />
+    <div class="card shadow">
+        <div class="tab-content" id="pills-tabContent">
+
+            <div class="tab-pane fade show active" id="pills-llog" role="tabpanel" aria-labelledby="pills-llog-tab">
+                <div>
+                    <ul class="list-group" id="livelog">
+                        <li class="list-group-item">
+                            <div class="row p-0">
+                                <div class="col-12">
+                                    <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                    <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-lchat" role="tabpanel" aria-labelledby="pills-lchat-tab">
+                <div class="pl-4 pr-4 pt-4 pb-0" id="livechatresp"></div>
+                <div class="pl-4 pr-4 pt-0 pb-0">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">{::lang::servercenter::home::section::lchat::msg}</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="livechat_text" class="form-control" placeholder="{::lang::servercenter::home::section::lchat::msg_placeholder}">
+                            <input type="hidden" id="livechat_user" value="{SESSION_USERNAME}">
+                            <input type="hidden" id="livechat_cfg" value="{cfg}">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" id="sendchat">{::lang::servercenter::home::section::lchat::btn_send}</button>
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-group" id="livechat">
+                    <li class="list-group-item">
+                        <div class="row p-0">
+                            <div class="col-12">
+                                <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-pane fade" id="pills-rcon" role="tabpanel" aria-labelledby="pills-rcon-tab">
+                <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
+                <div class="pl-4 pr-4 pt-0 pb-0">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">{::lang::servercenter::home::section::rcon::command}</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="rcon_text" class="form-control" placeholder="{::lang::servercenter::home::section::rcon::command_placeholder}">
+                            <input type="hidden" id="rcon_user" value="{SESSION_USERNAME}">
+                            <input type="hidden" id="rcon_cfg" value="{cfg}">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" id="send_rcon">{::lang::servercenter::home::section::rcon::btn_send}Senden</button>
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-group" id="rconlog">
+                    <li class="list-group-item">
+                        <div class="row p-0">
+                            <div class="col-12">
+                                <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            {installed}{!ifcadmin}
+            <div class="tab-pane fade" id="pills-admins" role="tabpanel" aria-labelledby="pills-admins-tab">
+                <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
+                <div class="pl-4 pr-4 pt-0 pb-0">
+                    <form action="#add_admin" method="post" class="form-group row">
+                        <label class="col-sm-2 col-form-label">{::lang::servercenter::home::section::admin::player}</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" name="id" required>
+                                <option value="">{::lang::servercenter::home::section::admin::default}</option>
+                                {userlist_admin}
+                            </select>
+                            <span class="text-sm">{::lang::servercenter::home::section::admin::info}</span>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" name="addadmin">{::lang::servercenter::home::section::admin::btn_add}</button>
+                        </div>
+                    </form>
+                </div>
+                <ul class="list-group">
+                    {adminlist_admin}
+                </ul>
+            </div>{/!ifcadmin}{/installed}
+
+        </div>
+    </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#send_rcon').click(function(e) {
+                e.preventDefault();
+                var cfg = $("#rcon_cfg").val();
+                var user = $("#rcon_user").val();
+                var text = $("#rcon_text").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/php/async/post/servercenter.home.async.php?case=rconsend",
+                    dataType: "json",
+                    data: {
+                        cfg: cfg,
+                        user: user,
+                        text: text
+                    },
+                    success: function(data) {
+                        if (data.code == "200") {
+                            $("#rconresp").html(data.msg);
+                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
+                        } else {
+                            $("#rconresp").html(data.msg);
+                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
+                        }
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            $('#sendchat').click(function(e) {
+                e.preventDefault();
+                var cfg = $("#livechat_cfg").val();
+                var user = $("#livechat_user").val();
+                var text = $("#livechat_text").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/php/async/post/servercenter.home.async.php?case=igchatsend",
+                    dataType: "json",
+                    data: {
+                        cfg: cfg,
+                        user: user,
+                        text: text
+                    },
+                    success: function(data) {
+                        if (data.code == "200") {
+                            $("#livechatresp").html(data.msg);
+                        } else {
+                            $("#livechatresp").html(data.msg);
+                        }
+                    }
+                });
+            });
+        });
+
+        setInterval(function() {
+            getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide');
+            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
+            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
+        }, 1000);
+    </script>

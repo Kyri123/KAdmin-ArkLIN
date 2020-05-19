@@ -1,0 +1,79 @@
+<style>
+    .bg-image {
+        background: url('{bg}');
+        background-size: cover;
+    }
+    
+    body {
+        background: rgba(11, 19, 26, 1) url('/app/dist/img/backgrounds/bg.jpg') no-repeat scroll center top;
+    }
+</style>
+
+<body class="register-page bg-image" style="min-height: 586.391px;">
+
+    <div class="register-box">
+        <div class="card register-logo bg-white border" style="height: 60px!important;">
+            <span class="text-black-50 pt-1"><b>Ark</b>Admin</span>
+            <div class="ribbon-wrapper">
+                <div class="ribbon bg-danger">
+                    Alpha
+                </div>
+            </div>
+        </div>
+        {meld}
+
+        <div class="card">
+            <div class="card-body register-card-body">
+                <p class="login-box-msg">{::lang::login::title}</p>
+                <div class="nav-item dropdown d-inline right">
+                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
+                        <i class="fas fa-language text-lg" aria-hidden="true"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+                        {langlist}
+                    </div>
+                </div>
+
+                <form action="#" method="post">
+                    <div class="input-group mb-3">
+                        <input name="logger" type="text" class="form-control" placeholder="{::lang::login::placeholder::login}">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="password" name="pw" type="password" class="form-control" placeholder="{::lang::login::placeholder::password}">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="remember" name="loggedin">
+                                <label for="remember">
+                {::lang::login::savelogin}
+              </label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" name="login" class="btn btn-primary btn-block">{::lang::login::btn_login}</button>
+                        </div>
+                    </div>
+            </div>
+            </form>
+
+            <p class="pl-4"><a href="/registration" class="text-center">{::lang::login::createacc}</a></p>
+        </div>
+
+    </div>
+    </div>
+
+
+</body>

@@ -1,196 +1,221 @@
 <?php
+/*
+ * *******************************************************************************************
+ * @author:  Oliver Kaufmann (Kyri123)
+ * @copyright Copyright (c) 2019-2020, Oliver Kaufmann
+ * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
+ * Github: https://github.com/Kyri123/Arkadmin
+ * *******************************************************************************************
+*/
 
+// hide errors
+error_reporting(0);
+ini_set('display_errors', 0);
+
+// Define vars
 date_default_timezone_set('Europe/Amsterdam');
-$pagename = null;
-$pageimg = null;
-$titlename = null;
-$sidebar = null;
-$setsidebar = false;
-$btns = null;
-$urltop = null;
-$g_alert = null;
-$pageicon = null;
-$g_alert_bool = false;
+$pagename = $pageimg = $titlename = $sidebar = $btns = $urltop = $g_alert = $pageicon = $tpl = null;
+$setsidebar = $g_alert_bool = false;
 
+//start Session
 session_start();
-#lese URL und schneide sie auf
+
+// read URL
 $url = $_SERVER["REQUEST_URI"];
 $url = explode("/", $url);
-if($url[1] == "") {
+if ($url[1] == "") {
     header('Location: /home');
     exit;
 }
-if($url[1] == "servercontrollcenter") {
-    error_reporting(0);
-    ini_set('display_errors', 0);
-}
-$tpl = null;
-#Wichtige PHP daten
-require_once 'inc/class/Template.class.inc.php';
-require_once 'inc/config.inc.php';
-require_once 'inc/class/mysql.class.inc.php';
-require_once 'inc/class/rcon.class.inc.php';
-require_once 'inc/class/savefile_reader.class.inc.php';
-#verbinde zur DB
+
+// Connent to MYSQL
+include('php/inc/config.inc.php');
+include('php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
-include('inc/class/helper.class.inc.php');
+
+// Include functions
+include('php/functions/allg.func.inc.php');
+include('php/functions/check.func.inc.php');
+
+// include classes
+include('php/class/helper.class.inc.php');
+include('php/class/xml_helper.class.php');
+include('php/class/Template.class.inc.php'); 
+include('php/class/alert.class.inc.php'); 
+include('php/class/rcon.class.inc.php');
+include('php/class/savefile_reader.class.inc.php');
+include('php/class/user.class.inc.php');
+include('php/class/steamAPI.class.inc.php');
+include('php/class/server.class.inc.php');
+include('php/class/jobs.class.inc.php');
+
+//create class_var
 $helper = new helper();
-$ckonfig = $helper->file_to_json('inc/custom_konfig.json', true);
-$API_Key = $ckonfig['apikey'];
-$servlocdir = $ckonfig['servlocdir'];
-include('inc/class/user.class.inc.php');
-include('inc/class/steamAPI.class.inc.php');
-include('inc/func/allg.func.inc.php');
-include('inc/func/check.func.inc.php');
+$alert = new alert();
 $steamapi = new steamapi();
 $user = new userclass();
 $user->setid($_SESSION['id']);
 
-//prüfe immer ob der User gebannt wurde
-if($user->ban() > 0) {
+// include util
+include('php/inc/session.inc.php');
+include('php/inc/auto_update_sql_DB.inc.php');
+
+//create globals vars
+$API_Key = $ckonfig['apikey'];
+$servlocdir = $ckonfig['servlocdir'];
+$ckonfig = $helper->file_to_json('inc/custom_konfig.json', true);
+$jobs = new jobs();
+
+//check is user banned
+if ($user->ban() > 0) {
     $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
     $mycon->query($query);
     session_destroy();
 }
 
-if(isset($_SESSION["id"])) {
+if (isset($_SESSION["id"])) {
     $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE (`id`=\''.$_SESSION["id"].'\')';
     $mycon->query($query);
 }
 
-#Include
-
-include('inc/session.inc.php');
-
-#definiere defaultsite
+// Define default page
 $page = $url[1];
-include('inc/class/server.class.inc.php');
-include('inc/class/aajobs.class.inc.php');
-include('inc/auto_update_sql_DB.inc.php');
 
-$jobs = new jobs();
-
-if(file_exists('sites/'.$page.'.inc.php')) {
-    include('sites/'.$page.'.inc.php');
-}
-else {
+if (file_exists('php/page/'.$page.'.inc.php')) {
+    include('php/page/'.$page.'.inc.php');
+} else {
     header("Location: /404");
     exit;
 }
 
-# Webseite Laden
-# Das Template laden
-$tpl_h = new Template("head.htm", "tpl/index/");
+// check is Webhelper active
+if ($helper->gethelperdiff() > 60) {
+    $alert->code = 4;
+    $alert->overwrite_style = 3;
+    $g_alert .= $alert->re();
+    $g_alert_bool = true;
+}
+
+// Website
+// Load template
+$tpl_h = new Template("head.htm", "app/template/index/");
 $tpl_h->load();
 
-$tpl_b = new Template("body.htm", "tpl/index/");
+$tpl_b = new Template("body.htm", "app/template/index/");
 $tpl_b->load();
 
-$tpl_f = new Template("foother.htm", "tpl/index/");
+$tpl_f = new Template("foother.htm", "app/template/index/");
 $tpl_f->load();
-include('inc/server.inc.php');
 
-include('inc/nav_curr.inc.php');
-
-
-//prüfe ob Webhelper Aktiv ist
-if($helper->gethelperdiff() > 60) {
-    $g_alert .= meld_full('danger', 'Der Webhelper hat länger als <b>60 Sekunden</b> nicht mehr das Panel abgerufen! (Letzte Prüfung: '.converttime($helper->gethelpertime(), true).')', 'ACHTUNG!', null);
-    $g_alert_bool = true;
-}
+// Include
+include('php/inc/server.inc.php');
+include('php/inc/nav_curr.inc.php');
 
 //prüfe ob IE
-if(isie()) {
-    $g_alert .= meld_full('danger', 'Internet Explorer wird nicht 100%ig Untersützt!', 'ACHTUNG!', null);
+if (isie()) {
+    $alert->code = 200;
+    $alert->overwrite_style = 3;
+    $g_alert .= $alert->re();
     $g_alert_bool = true;
 }
 
-
-$tpl_f->repl('jahr', date('Y', time()));
-$tpl_h->repl('time', time());
-$tpl_b->repl('aa_version', $version);
-
-if($page == "login" || $page == "register") {
-    $pagename = 'Account erstellen';
-    if($page == "login") $pagename = 'Einloggen';
+// Define pagename for login & registration
+if ($page == "login" || $page == "registration") {
+    $pagename = '{::lang::php::index::pagename_reg}';
+    if ($page == "login") $pagename = '{::lang::php::index::pagename_login}';
 }
-$tpl_b->repl('pagename', $pagename);
-$tpl_b->repl('pageicon', $pageicon);
-$tpl_h->repl('pagename', $pagename);
-// replace
-$tpl_b->repl('user', $user->name());
-$tpl_b->repl('rank', $user->rang());
-$tpl_b->repl('content', $content);
-$tpl_b->repl('site_name', $site_name);
-$tpl_b->repl('btns', $btns);
-$tpl_b->repl('urltop', $urltop);
-$tpl_b->repl('g_alert', $g_alert);
-$tpl_b->replif('if_g_alert', $g_alert_bool);
 
-// Server
-$all = $helper->file_to_json("data/serv/all.json");
-$tpl_b->repl('count_server', count($all["cfgs"]));
-$tpl_b->repl('cpu_perc', cpu_perc());
-$tpl_b->repl('free', bitrechner(disk_free_space ( $ckonfig["servlocdir"] ), "B", "GB"));
-$tpl_b->repl('ram_used', str_replace("MB", "GB", bitrechner(mem_array()[1], "B", "GB")));
-$tpl_b->repl('ram_max', str_replace("MB", "GB", bitrechner(mem_array()[0], "B", "GB")));
-$tpl_b->repl('ram_perc', mem_perc());
+// replace
+$tpl_h->r('time', time());
+
+$tpl_b->r('pagename', $pagename);
+$tpl_b->r('pageicon', $pageicon);
+$tpl_h->r('pagename', $pagename);
+$tpl_b->r('aa_version', $version);
+$tpl_b->r('lastcheck_webhelper', converttime($helper->gethelpertime(), true));
+$tpl_b->r('user', $user->name());
+$tpl_b->r('rank', $user->rang());
+$tpl_b->r('content', $content);
+$tpl_b->r('site_name', $site_name);
+$tpl_b->r('btns', $btns);
+$tpl_b->r('urltop', $urltop);
+$tpl_b->r('g_alert', $g_alert);
+$tpl_b->rif ('if_g_alert', $g_alert_bool);
+$tpl_b->r("langlist", get_lang_list());
+
+// Server Traffics
+$all = $helper->file_to_json("app/json/serverinfo/all.json");
+$tpl_b->r('count_server', count($all["cfgs"]));
+$tpl_b->r('cpu_perc', cpu_perc());
+$tpl_b->r('free', bitrechner(disk_free_space("remote/serv"), "B", "GB"));
+$tpl_b->r('ram_used', str_replace("MB", "GB", bitrechner(mem_array()[1], "B", "GB")));
+$tpl_b->r('ram_max', str_replace("MB", "GB", bitrechner(mem_array()[0], "B", "GB")));
+$tpl_b->r('ram_perc', mem_perc());
 $ifnot_traffic = false;
 $check = array("changelog", "404");
-if(in_array($page, $check)) $ifnot_traffic = true;
-$tpl_b->replif("ifchangelog", $ifnot_traffic);
+if (in_array($page, $check)) $ifnot_traffic = true;
+$tpl_b->rif ("ifchangelog", $ifnot_traffic);
 
-$tpl_h->rplSession();
-$tpl_b->rplSession();
-$tpl_f->rplSession();
+// Site Builder
+if ($page != "login" && $page != "registration" && $page != "crontab" && isset($_SESSION['id']) && file_exists("app/check/done")) {
+    $tpl_h->echo();
+    $tpl_b->echo();
+    $tpl_f->echo();
+} else {
 
-if($page != "login" && $page != "register" && $page != "crontab" && isset($_SESSION['id']) && file_exists("data/done")) {
-    $tpl_h->display();
-    $tpl_b->display();
-    $tpl_f->display();
-}
-else {
-    if($page == "login" && file_exists("data/done")) {
-        if(isset($_SESSION["id"])) {
+    // Login
+    if ($page == "login" && file_exists("app/check/done")) {
+        if (isset($_SESSION["id"])) {
             header('Location: /home');
             exit;
         }
-        $tpl_login->rplSession();
-        $tpl_h->display();
-        $tpl_login->display();
+        $tpl_h->echo();
+        $tpl_login->r("langlist", get_lang_list());
+        $tpl_login->echo();
     }
-    elseif($page == "register" && file_exists("data/subdone")) {
-        if(isset($_SESSION["id"])) {
+
+    // Registration
+    elseif ($page == "registration" && file_exists("app/check/subdone")) {
+        if (isset($_SESSION["id"])) {
             header('Location: /home');
             exit;
         }
-        $tpl_register->rplSession();
-        $tpl_h->display();
-        $tpl_register->display();
+        $tpl_h->echo();
+        $tpl_register->r("langlist", get_lang_list());
+        $tpl_register->echo();
     }
-    elseif($page == "crontab" && file_exists("data/done")) {
-        $tpl_crontab->rplSession();
-        $tpl_h->display();
-        $tpl_crontab->display();
+
+    // Crontab
+    elseif ($page == "crontab" && file_exists("app/check/done")) {
+        $tpl_h->echo();
+        $tpl_crontab->echo();
     }
-    elseif(!file_exists("data/subdone") || !file_exists("data/done")) {
+
+    // Forward installer
+    elseif (!file_exists("app/check/subdone") || !file_exists("app/check/subdone")) {
         header('Location: /install.php');
         exit;
-    }
-    else {
-        if(file_exists("data/subdone") && !file_exists("data/done")) {
-            header('Location: /register');
+    } else {
+        // Forward installer (registration)
+        if (file_exists("app/check/subdone") && !file_exists("app/check/done")) {
+            header('Location: /registration');
             exit;
         }
-        elseif(file_exists("data/done")) {
+
+        // Forward not loggedin
+        elseif (file_exists("app/check/done")) {
             header('Location: /login');
             exit;
         }
+
+        // Forward not installed
         else {
             header('Location: /install.php');
             exit;
         }
     }
 }
+
+//close mysql
 $mycon->close();
 ?>

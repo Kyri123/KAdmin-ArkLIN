@@ -1,0 +1,153 @@
+<div id="all_resp">{resp}</div>
+
+{list}
+
+<!-- Modal -->
+<form class="modal fade" id="addcluster" tabindex="-1" method="post" action="#">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="modal-title">{::lang::cluster::modal::add::title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::cluster}</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="name" class="form-control" placeholder="z.b. Cluster 2x-!2051">
+                        <span class="text-sm">{::lang::cluster::list::clusters::modal::settings::cluster_sec_line}</span>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::sync}</label>
+                    <div class="col-sm-8">
+                        <!-- -ROW -->
+                        <div class="row">
+                            <div class="icheck-primary mb-3 col-md-12">
+                                <input type="checkbox" name="admin" value="true" id="admin">
+                                <label for="admin">
+                                    {::lang::cluster::list::clusters::modal::settings::admin}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- -ROW -->
+                        <!-- -ROW -->
+                        <div class="row">
+                            <div class="icheck-primary mb-3 col-md-12">
+                                <input type="checkbox" name="mods" value="true" id="mods">
+                                <label for="mods">
+                                    {::lang::cluster::list::clusters::modal::settings::mods}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- -ROW -->
+                        <!-- /-ROW -->
+                        <div class="row">
+                            <div class="icheck-primary mb-3 col-md-12">
+                                <input type="checkbox" name="konfig" value="true" id="konfig">
+                                <label for="konfig">
+                                    {::lang::cluster::list::clusters::modal::settings::config}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /-ROW -->
+                    </div>
+                </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::option}</label>
+                <div class="col-sm-8">
+                    <!-- /-ROW -->
+                    <div class="row">
+                        <div class="icheck-primary mb-3 col-md-12">
+                            <input type="checkbox" name="NoTransferFromFiltering" value="true" id="NoTransferFromFiltering">
+                            <label for="NoTransferFromFiltering">
+                                NoTransferFromFiltering
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /-ROW -->
+                    <!-- /-ROW -->
+                    <div class="row">
+                        <div class="icheck-primary mb-3 col-md-12">
+                            <input type="checkbox" name="NoTributeDownloads" value="true" id="NoTributeDownloads">
+                            <label for="NoTributeDownloads">
+                                NoTributeDownloads
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /-ROW -->
+                </div>
+                <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::surv} <br><span class="text-sm">{::lang::cluster::list::clusters::modal::settings::surv_sec_line}</span></label>
+                <div class="col-sm-8">
+                    <!-- -ROW -->
+                    <div class="row">
+                        <div class="icheck-primary mb-3 col-md-6">
+                            <input type="checkbox" name="PreventDownloadSurvivors" value="true" id="PreventDownloadSurvivors">
+                            <label for="PreventDownloadSurvivors">
+                                {::lang::cluster::list::clusters::modal::settings::download}
+                            </label>
+                        </div>
+                        <div class="icheck-primary mb-3 col-md-6">
+                            <input type="checkbox" name="PreventUploadSurvivors" value="true" id="PreventUploadSurvivors">
+                            <label for="PreventUploadSurvivors">
+                                {::lang::cluster::list::clusters::modal::settings::upload}
+                            </label>
+                        </div>
+                    </div>
+                    <!-- -ROW -->
+                </div>
+                <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::items}</label>
+                <div class="col-sm-8">
+                    <!-- -ROW -->
+                    <div class="row">
+                        <div class="icheck-primary mb-3 col-md-6">
+                            <input type="checkbox" name="PreventDownloadItems" value="true" id="PreventDownloadItems">
+                            <label for="PreventDownloadItems">
+                                {::lang::cluster::list::clusters::modal::settings::download}
+                            </label>
+                        </div>
+                        <div class="icheck-primary mb-3 col-md-6">
+                            <input type="checkbox" name="PreventUploadItems" value="true" id="PreventUploadItems">
+                            <label for="PreventUploadItems">
+                                {::lang::cluster::list::clusters::modal::settings::upload}
+                            </label>
+                        </div>
+                    </div>
+                    <!-- -ROW -->
+                </div>
+                <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::creature}</label>
+                <div class="col-sm-8">
+                    <!-- -ROW -->
+                    <div class="row">
+                        <div class="icheck-primary mb-3 col-md-6">
+                            <input type="checkbox" name="PreventDownloadDinos" value="true" id="PreventDownloadDinos">
+                            <label for="PreventDownloadDinos">
+                                {::lang::cluster::list::clusters::modal::settings::download}
+                            </label>
+                        </div>
+                        <div class="icheck-primary mb-3 col-md-6">
+                            <input type="checkbox" name="PreventUploadDinos" value="true" id="PreventUploadDinos">
+                            <label for="PreventUploadDinos">
+                                {::lang::cluster::list::clusters::modal::settings::upload}
+                            </label>
+                        </div>
+                    </div>
+                    <!-- -ROW -->
+                </div>
+            </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::cluster::modal::add::btn_close}</button>
+                <button type="submit" class="btn btn-primary" name="add">{::lang::cluster::modal::add::btn_add}</button>
+            </div>
+        </div>
+    </div>
+</form>

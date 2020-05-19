@@ -1,0 +1,528 @@
+<lang>
+    <!--
+    ++++++++++++++++++++++++++++++++++++++++++++
+    @author:  Oliver Kaufmann (Kyri123)
+    @copyright Copyright (c) 2019-2020, Oliver Kaufmann
+    @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
+    Github: https://github.com/Kyri123/Arkadmin
+    ++++++++++++++++++++++++++++++++++++++++++++
+     -->
+
+    <allg>
+        <pick_lang>Sprache wählen</pick_lang>
+
+        <traffic>
+            <cpu>CPU Traffic</cpu>
+            <ram>Arbeitsspeicher</ram>
+            <mem>Freier Speicher (Server)</mem>
+            <serv>Server</serv>
+        </traffic>
+
+        <nav>
+            <home>Dashboard</home>
+            <scc>ServerControllCenter</scc>
+            <cluster>Cluster System</cluster>
+            <userpanel>Benutzer</userpanel>
+            <config>Konfiguration</config>
+            <changelog>Changelogs</changelog>
+            <btn_createserver>Server Erstellen</btn_createserver>
+
+            <tooltip>
+                <usersettings>Benutzer Einstellung - SOON</usersettings>
+                <logout>Ausloggen</logout>
+            </tooltip>
+
+            <modal>
+                <logout>
+                    <title>Willst du dich wirklich Ausloggen?</title>
+                    <body>Klicke auf "Ausloggen" um dich wirklich auszuloggen!</body>
+                    <btn_cancel>Abbrechen</btn_cancel>
+                    <btn_logout>Ausloggen</btn_logout>
+                </logout>
+            </modal>
+        </nav>
+
+        <logs>
+            <show>Zeige alles</show>
+            <hide>verstecke Überfluss</hide>
+        </logs>
+    </allg>
+
+    <!-- Dashboard -->
+    <home>
+        <cards>
+            <changelog>
+                <title>Arkadmin Versionen :: Aktuell: V.{version}</title>
+                <btn_allchangelogs>Alle Lesen</btn_allchangelogs>
+
+                <table>
+                    <version_number>Versionsnummer</version_number>
+                    <date>Datum</date>
+                    <lastupdate>Letztes Update</lastupdate>
+                    <state>Status</state>
+                </table>
+            </changelog>
+
+            <server>
+                <title>Server Übersicht</title>
+            </server>
+        </cards>
+
+        <list>
+            <changelog>
+                <version>Version {version}</version>
+                <read>Lesen</read>
+                <download>Runterladen</download>
+            </changelog>
+            <server>
+                <player>Spieler: {aplayer} / {mplayer}</player> <!-- aplayer = active player | mplayer = max player -->
+            </server>
+        </list>
+    </home>
+
+    <!-- Cluster System -->
+    <cluster>
+        <modal>
+            <add>
+                <title>Cluster Erstellen</title>
+                <btn_close>Schließen</btn_close>
+                <btn_add>Erstellen</btn_add>
+            </add>
+        </modal>
+
+        <list>
+            <serv>
+                <tooltip>
+                    <promote>zum Master machen - Löscht anderen Master</promote>
+                    <depromote>zum Slave machen</depromote>
+                    <remove>Löschen</remove>
+                </tooltip>
+            </serv>
+            <clusters>
+                <clusterid>ID: {clusterid}</clusterid>
+                <sync>Synchronisierungen</sync>
+                <options>Optionen</options>
+
+                <dropdown>
+                    <settings>Einstellungen</settings>
+                    <add>Server Hinzufügen</add>
+                    <remove>Cluster Löschen</remove>
+                </dropdown>
+
+                <table>
+                    <server>Server</server>
+                    <player>Spieler</player>
+                    <state>Status</state>
+                    <rank>Rang</rank>
+                </table>
+
+                <modal>
+                    <addserver>
+                        <title>Server Hinzufügen: {clustername}</title>
+                        <pick_server>Server wählen</pick_server>
+                        <option_default>Bitte Wählen</option_default>
+                        <btn_close>Schließen</btn_close>
+                        <btn_add>Server hinzufügen</btn_add>
+                    </addserver>
+
+                    <settings>
+                        <title>Einstellungen: {clustername}</title>
+                        <cluster>Bezeichnung</cluster>
+                        <cluster_sec_line>Alle Zeichen erlaubt, Clusterid wird aus diesem Namen erzeugt.</cluster_sec_line>
+                        <sync>Synchronisiere</sync>
+                        <admin>Administratoren</admin>
+                        <mods>Mods</mods>
+                        <config>Konfigurationen</config>
+                        <option>Optionen</option>
+                        <surv>Verbiete Überlebender</surv>
+                        <surv_sec_line>Erlaubt (False) oder Verbietet (True)</surv_sec_line>
+                        <items>Verbiete Items</items>
+                        <creature>Verbiete Dinos</creature>
+                        <upload>Upload</upload>
+                        <download>Download</download>
+                        <btn_close>Schließen</btn_close>
+                        <btn_save>Ändern</btn_save>
+                    </settings>
+
+                    <remove>
+                        <title>Löschen Bestätigen!</title>
+                        <text>Bist du dir sicher dass du diesen Cluster entfernen möchtest?</text>
+                        <btn_close>Abbrechen</btn_close>
+                        <btn_del>Löschen</btn_del>
+                    </remove>
+                </modal>
+            </clusters>
+        </list>
+    </cluster>
+
+    <!-- Panel Konfig -->
+    <config>
+        <btn_save>Speichern</btn_save>
+
+        <opt>
+            <true>Ja</true>
+            <false>Nein</false>
+        </opt>
+    </config>
+
+    <!-- ServerControllCenter -->
+    <scc>
+        <table>
+            <servername>Servername</servername>
+            <map>Karte</map>
+            <ip>Addresse</ip>
+            <cluster>Cluster System</cluster>
+        </table>
+
+        <modal>
+            <title>Server Erstellen</title>
+            <file_name>Dateiname (keine Leerzeichen)</file_name>
+            <port>Port</port>
+            <btn_cancel>Schließen</btn_cancel>
+            <btn_add>Hinzufügen</btn_add>
+        </modal>
+
+        <list>
+            <map>Map: {map_str}</map>
+            <remove>Löschen</remove>
+            <modal>
+                <title>Löschen: {servername}</title>
+                <danger_serveroffline>Bitte Sicherstellen dass der Server offline ist! (Sonst wird diese Aktion nicht durchgeführt)</danger_serveroffline>
+                <uninstall>Server Deinstallieren</uninstall>
+                <btn_cancel>Abbrechen</btn_cancel>
+                <btn_delete>Löschen</btn_delete>
+            </modal>
+        </list>
+    </scc>
+
+    <!-- login -->
+    <login>
+        <title>Willkommen bei ArkAdmin!</title>
+        <savelogin>Eingeloggt bleiben</savelogin>
+        <createacc>Account erstellen</createacc>
+        <btn_login>Einloggen</btn_login>
+
+        <placeholder>
+            <login>Benutzername / E-Mail</login>
+            <password>Passwort</password>
+        </placeholder>
+    </login>
+
+    <!-- register -->
+    <reg>
+        <title>Erstelle ein neuen Account</title>
+        <tologin>Ich besitze bereits einen Account</tologin>
+        <btn_create>Erstellen</btn_create>
+
+        <placeholder>
+            <username>Benutzername</username>
+            <email>E-mail</email>
+            <pw>Passwort</pw>
+            <rpw>Passwort wiederholen</rpw>
+            <code>Account Code</code>
+        </placeholder>
+    </reg>
+
+    <!-- userpanel -->
+    <userpanel>
+        <title>Benutzer</title>
+        <btn-regcode>Codes</btn-regcode>
+
+        <tableheader>
+            <username>Benutzername</username>
+            <mail>Email</mail>
+            <regdate>Registrierungs Datum</regdate>
+            <lastlogin>Letzter Login</lastlogin>
+            <banstate>Ban-Status</banstate>
+        </tableheader>
+
+        <list>
+            <banned>Gebannt</banned>
+            <notbanned>Frei</notbanned>
+            <ban>Bannen</ban>
+            <unban>Freigeben</unban>
+            <remove>Löschen</remove>
+            <modal>
+                <remove>
+                    <remove>Löschen: {username}</remove>
+                    <body>Möchtest du wirklich den Benutzer {username} entfernen?</body>
+                    <btn-cancel>Abbrechen</btn-cancel>
+                    <btn-remove>Löschen</btn-remove>
+                </remove>
+            </modal>
+        </list>
+
+        <modal>
+            <codes>
+                <title>Codes zum Regestrieren</title>
+                <tableheader>
+                    <code>Code</code>
+                    <action>Aktionen</action>
+                </tableheader>
+                <btn-create>Code erstellen</btn-create>
+                <btn-cancel>Schließen</btn-cancel>
+            </codes>
+        </modal>
+    </userpanel>
+
+    <!-- changelog -->
+    <changelog>
+        <new>Neuerungen</new>
+        <change>Änderungen</change>
+        <bug>Bugfixes</bug>
+        <java>Java (WebHelper)</java>
+    </changelog>
+
+    <!-- Error404 Seite -->
+    <err404>
+        <maintitle>Error </maintitle>
+        <title>Ohnein! Seite nicht gefunden...</title>
+        <line1>Die Seite du du Aufrufen wolltest wurde nicht gefunden!</line1>
+        <line2>Vielleicht wurde sie von einem Dino gefressen!?</line2>
+        <btn-back>Zurück zum Dashboard</btn-back>
+    </err404>
+
+    <!-- servercenter -->
+    <servercenter>
+        <load>Lade...</load>
+        <wait>Bitte warten</wait>
+
+        <topline>
+            <state>Server Status</state>
+            <player>Spieler</player>
+            <action>Aktion Status</action>
+        </topline>
+
+        <main>
+            <map>Karte</map>
+
+            <nav>
+                <backup>Backups</backup>
+                <home>Startseite</home>
+                <jobs>Aufgaben</jobs>
+                <config>Konfiguration</config>
+                <logs>Logs</logs>
+                <mods>Modifikationen</mods>
+                <saves>Savegames</saves>
+                <files>[platzhalter] Filebrowser</files>
+            </nav>
+
+            <modal>
+                <send_command>
+                    <title>Befehl an den Server senden</title>
+                    <btn_close>Schließen</btn_close>
+                    <btn_send>Senden</btn_send>
+                </send_command>
+
+                <danger>
+                    <title></title>
+                    <btn_close>Schließen</btn_close>
+                </danger>
+
+                <warning>
+                    <title>Lister aller Fehler</title>
+                    <btn_close>Schließen</btn_close>
+                </warning>
+
+                <err>
+                    <title>Lister aller Warnungen</title>
+                    <btn_close>Schließen</btn_close>
+                </err>
+
+                <player_list>
+                    <title>Spieler (Online)</title>
+                    <btn_close>Schließen</btn_close>
+                </player_list>
+            </modal>
+        </main>
+
+        <list>
+            <home>
+                <steam>Steam: [b]{stname}[/b] | Steamid: [b]{stid}[/b]</steam>
+                <modal>
+                    <steam>Steam: [b]{stname}[/b] | Steamid: [b]{stid}[/b]</steam>
+                    <remove>
+                        <title>Löschen Bestätigen!</title>
+                        <txt>Bist du dir sicher dass du dieses Benutzer von der Adminliste entfernen möchtest?</txt>
+                        <btn_cancel>Abbrechen</btn_cancel>
+                        <btn_close>Löschen</btn_close>
+                    </remove>
+                </modal>
+            </home>
+
+            <jobs>
+                <intervall>aller [b]{intervall} Sekunden[/b]</intervall>
+                <next>Nächste ausführung: {datetime}</next>
+                <tooltip>
+                    <remove>Löschen</remove>
+                </tooltip>
+            </jobs>
+
+            <mods>
+                <lastupdate>Letztes Update: {lastupdate}</lastupdate>
+                <active>Aktiv: {title}</active>
+                <inactive>Inaktiv: {title}</inactive>
+                <modal>
+                    <remove>
+                        <title>Löschen Bestätigen!</title>
+                        <txt>Bist du sicher dass du den Mod entfernen möchtest?</txt>
+                        <btn_cancel>Abbrechen</btn_cancel>
+                        <btn_del>Löschen</btn_del>
+                    </remove>
+                </modal>
+            </mods>
+
+            <saves>
+                <tribe>Stamm: [b]{tribe}[/b]</tribe>
+                <lastupdate>Letztes Update: [b]{update}[/b]</lastupdate>
+                <lastupdate_type_2>Letztes Update: [b]{lastupdate}[/b]</lastupdate_type_2>
+                <btn_close>Schließen</btn_close>
+
+                <modal>
+                    <player>
+                        <title>Informationen von: [b]{IG:name}[/b]</title>
+                        <ep>Spieler EP</ep>
+                        <lvl>Spieler Level</lvl>
+                        <id>Spieler ID</id>
+                        <engrammpoints>Engrammpunkte</engrammpoints>
+                        <tribename>Stammesname</tribename>
+                        <lastsave>Letzter Speicher</lastsave>
+                    </player>
+
+                    <tribe>
+                        <title>Informationen von: [b]{name}[/b]</title>
+                    </tribe>
+
+                    <remove>
+                        <title>Löschen Bestätigen!</title>
+                        <txt>Bist du dir sicher dass du diesen Speicherstand entfernen möchtest?</txt>
+                        <btn_cancel>Abbrechen</btn_cancel>
+                        <btn_close>Löschen</btn_close>
+                    </remove>
+                </modal>
+            </saves>
+
+            <backup>
+                <_2_>
+                    <filesize>Dateigröße: {filesize}</filesize>
+                    <modal>
+                        <remove>
+                            <title>Löschen Bestätigen!</title>
+                            <txt>Bist du dir sicher dass du dieses Backup entfernen möchtest?</txt>
+                            <btn_cancel>Abbrechen</btn_cancel>
+                            <btn_del>Löschen</btn_del>
+                        </remove>
+
+                        <playin>
+                            <title>Einspielen: {title} ({filesize})</title>
+                            <txt>[b][c=danger]Bitte Sicherstellen dass der Server offline ist! (Sonst wird der Eingespielte Spielstand überschreiben)[/c][/b]
+                                Bitte Wähle Optionen</txt>
+                            <data_map>Karten Dateien</data_map>
+                            <data_config>Konfigurationen (Game.ini usw)</data_config>
+                            <data_player_tribe>Spieler und Stämme</data_player_tribe>
+                            <remove_exsists>Alle vorhandenen Dateien entfernen - [c=danger]ACHTUNG: Alle Karten und Spieler Dateien werden hier unabhängig von der vorher gewählten Optionen gelöscht![/c] (Nicht gewählt werden alle Überschreiben)</remove_exsists>
+                            <btn_playin>Einspielen</btn_playin>
+                        </playin>
+                    </modal>
+                </_2_>
+            </backup>
+        </list>
+
+        <backup>
+            <nav>
+                <backup>Backups</backup>
+            </nav>
+        </backup>
+
+        <home>
+            <nav>
+                <llog>Live-Log</llog>
+                <lchat>Live-Chat</lchat>
+                <rcon>Rcon-Konsole</rcon>
+                <admin>Administratoren</admin>
+            </nav>
+            <section>
+                <lchat>
+                    <msg>Nachricht:</msg>
+                    <msg_placeholder>Nachricht (Es dauert kurz bevor es im Live-Chat zu sehen ist)</msg_placeholder>
+                    <btn_send>Senden</btn_send>
+                </lchat>
+
+                <rcon>
+                    <command>Befehl:</command>
+                    <command_placeholder>Befehl</command_placeholder>
+                    <btn_send>Senden</btn_send>
+                </rcon>
+
+                <admin>
+                    <player>Benutzer:</player>
+                    <default>Bitte Wählen</default>
+                    <info>Der User muss zuerst auf dem Server gewesen sein! (Änderungen werden erst nach einem Neustart wirksam)</info>
+                    <btn_add>Hinzufügen</btn_add>
+                </admin>
+            </section>
+        </home>
+
+        <jobs>
+            <nav>
+                <jobs>Jobs</jobs>
+                <abackup>Auto Backup</abackup>
+                <aupdate>Auto Update</aupdate>
+            </nav>
+
+            <section>
+                <allg>
+                    <name>Bezeichnung</name>
+                    <name_placeholder>Bsp.: Neustart</name_placeholder>
+                    <para>Parameter</para>
+                    <time>Datum und Zeit</time>
+                    <intervall>Intervall (in Sekunden)</intervall>
+                    <intervall_placeholder>3600 = 1h, 86400 = 1 Tag</intervall_placeholder>
+                    <btn_save>Speichern</btn_save>
+                    <active>
+                        <true>Aktiviert</true>
+                        <false>Deaktivert</false>
+                    </active>
+                </allg>
+
+                <jobs>
+                    <task>
+                        <name>Aufgabe</name>
+                        <option>
+                            <default>Aktion wählen...</default>
+                            <start>Starte</start>
+                            <restart>Neustarten</restart>
+                            <stop>Stoppen</stop>
+                            <installmods>Installiere alle Mods</installmods>
+                            <uninstallmods>Deinstalliere alle Mods</uninstallmods>
+                            <save>Speichern</save>
+                        </option>
+                    </task>
+                </jobs>
+            </section>
+        </jobs>
+
+        <config>
+            <btn_save>Speichern</btn_save>
+        </config>
+
+        <mods>
+            <nav>
+                <active>Aktive Mods</active>
+                <installed>Installierte Mods</installed>
+                <add>Mods Hinzufügen</add>
+            </nav>
+            <workshop_url>Workshop URL</workshop_url>
+            <mod_id>Mod ID</mod_id>
+            <btn_add>Hinzufügen</btn_add>
+        </mods>
+
+        <saves>
+            <nav>
+                <player>Spieler</player>
+                <tribe>Stämme</tribe>
+                <map>Karten</map>
+            </nav>
+        </saves>
+    </servercenter>
+</lang>

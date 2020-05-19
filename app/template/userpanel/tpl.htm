@@ -1,0 +1,80 @@
+<div id="all_resp">{resp}</div>
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-body p-0">
+            <div class=" table-responsive">
+                <table class="table table-striped projects mb-0">
+                    <thead>
+                    <tr>
+                        <th>
+                            {::lang::userpanel::tableheader::username}
+                        </th>
+                        <th>
+                            {::lang::userpanel::tableheader::mail}
+                        </th>
+                        <th>
+                            {::lang::userpanel::tableheader::regdate}
+                        </th>
+                        <th>
+                            {::lang::userpanel::tableheader::lastlogin}
+                        </th>
+                        <th class="text-center">
+                            {::lang::userpanel::tableheader::banstate}
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {list}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+</section>
+{list_modal}
+
+<!-- Modal -->
+<form class="modal fade" id="addserver" tabindex="-1" method="post" action="/userpanel">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="modal-title">{::lang::userpanel::modal::codes::title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <table class="table table-striped projects mb-0">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                {::lang::userpanel::modal::codes::tableheader::code}
+                            </th>
+                            <th>
+                                {::lang::userpanel::modal::codes::tableheader::action}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {list_codes}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::userpanel::modal::codes::btn-cancel}</button>
+                <button type="submit" class="btn btn-success" name="add">{::lang::userpanel::modal::codes::btn-create}</button>
+            </div>
+        </div>
+    </div>
+</form>
+

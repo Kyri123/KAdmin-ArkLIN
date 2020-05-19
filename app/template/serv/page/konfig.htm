@@ -1,0 +1,72 @@
+<div class="col-xl-9 col-md-8 mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
+                {!ifckonfig}<li class="nav-item" style="margin-right: 5px">
+                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-GameUserStetting" role="tab" aria-controls="pills-home" aria-selected="true">GameUserSettings.ini</a>
+                </li>
+                <li class="nav-item" style="margin-right: 5px">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-Game" role="tab" aria-controls="pills-profile" aria-selected="false">Game.ini</a>
+                </li>
+                <li class="nav-item" style="margin-right: 5px">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-Engine" role="tab" aria-controls="pills-contact" aria-selected="false">Engine.ini</a>
+                </li>{/!ifckonfig}
+                <li class="nav-item">
+                    <a class="nav-link {ifckonfig} active {/ifckonfig}" id="pills-contact-tab" data-toggle="pill" href="#pills-Cfg2" role="tab" aria-controls="pills-contact" aria-selected="false">Arkmanager</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <hr />
+    <div class="card shadow p-4" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+        <div class="tab-content" id="pills-tabContent">
+            {!ifckonfig} <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div id="form">
+                    <button type="submit" class="btn btn-primary mb-3" name="save">{::lang::servercenter::config::btn_save}</button>
+                    <textarea name="text" class="form-control" rows="3" style="min-height: 500px;max-height: 500px;" id="text_gus">{gus}</textarea>
+                    <input type="hidden" name="type" id="type_gus" value="GameUserSettings.ini">
+                    <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
+                </div>
+            </form>
+            <form action="#save" method="post" class="tab-pane fade" id="pills-Game" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div>
+                    <button type="submit" class="btn btn-primary mb-3" name="save">{::lang::servercenter::config::btn_save}</button>
+                    <textarea name="text" class="form-control" rows="3" style="min-height: 500px;max-height: 500px;" id="text_game">{game}</textarea>
+                    <input type="hidden" name="type" id="type_game" value="Game.ini">
+                    <input type="hidden" name="cfg" id="cfg_game" value="{cfg}">
+                </div>
+            </form>
+            <form action="#save" method="post" class="tab-pane fade" id="pills-Engine" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <div>
+                    <button type="submit" class="btn btn-primary mb-3" name="save">{::lang::servercenter::config::btn_save}</button>
+                    <textarea name="text" class="form-control" rows="3" style="min-height: 500px;max-height: 500px;" id="text_engine">{engine}</textarea>
+                    <input type="hidden" name="type" id="type_engine" value="Engine.ini">
+                    <input type="hidden" name="cfg" id="cfg_engine" value="{cfg}">
+                </div>
+            </form>{/!ifckonfig}
+            <div class="tab-pane fade {ifckonfig}show active{/ifckonfig}" id="pills-Cfg2" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <form action="#save" method="post">
+                    <button type="submit" class="btn btn-primary mb-3" name="savecfg">{::lang::servercenter::config::btn_save}</button>
+                    {form}
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Ark Opt</label>
+                        <div class="col-sm-10">
+                            <textarea name="opt" class="form-control" rows="3" style="min-height: 200px;max-height: 200px;">{ark_opt}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Ark Flag</label>
+                        <div class="col-sm-10">
+                            <textarea name="flag" class="form-control" rows="3" style="min-height: 200px;max-height: 200px;">{ark_flag}</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

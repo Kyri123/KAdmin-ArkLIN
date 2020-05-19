@@ -1,0 +1,85 @@
+<?php
+/*
+ * *******************************************************************************************
+ * @author:  Oliver Kaufmann (Kyri123)
+ * @copyright Copyright (c) 2019-2020, Oliver Kaufmann
+ * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
+ * Github: https://github.com/Kyri123/Arkadmin
+ * *******************************************************************************************
+*/
+
+require('../main.inc.php');
+$cfg = $_GET['cfg'];
+$case = $_GET['case'];
+
+switch ($case) {
+    // CASE: Info
+    case "info":
+        $serv = new server($cfg);
+        $tpl = new Template("server.htm", "app/template/serv/");
+        $tpl->load();
+        $i = false;
+        $path = "app/json/serverinfo/" . $serv->name() . ".json";
+        $data = $helper->file_to_json($path);
+
+        // Status
+        $serverstate = $serv->statecode();
+        $serv_state = convertstate($serverstate)["str"];
+        $serv_color = convertstate($serverstate)["color"];
+
+        // Spieler Card
+        $pl_pla = $data["aplayers"];
+        $pl_plmax = $serv->cfg_read("ark_MaxPlayers");
+        $pl_plpro = $pl_pla / $pl_plmax * 100;
+        if ($serverstate < 2) {
+            $pl_modal = null;
+            $pl_disabled = 'disabled';
+            $pl_btntxt = "{::lang::php::async::get::servercenter::main::server_need_online}";
+        } else {
+            $pl_modal = 'data-toggle="modal" data-target="#playerlist_modal"';
+            $pl_disabled = null;
+            $pl_btntxt = "{::lang::php::async::get::servercenter::main::showplayer}";
+        }
+
+        // Action Card
+        if ($data["next"] == "TRUE") {
+            $action_state = "{::lang::php::async::get::servercenter::main::action_closed}";
+            $action_btntxt = "{::lang::php::async::get::servercenter::main::action_closed_need_open}";
+            $action_modal = null;
+            $action_color = "danger";
+        }
+        elseif ($data["next"] == "FALSE") {
+            $action_state = "{::lang::php::async::get::servercenter::main::action_open}";
+            $action_btntxt = "Aktion auswählen <i class=\"fas fa-arrow-circle-right\"></i>";
+            $action_modal = 'data-toggle="modal" data-target="#action"';
+            $action_color = "success";
+        }
+
+        $tpl->r("serv_state", $serv_state);
+        $tpl->r("serv_color", $serv_color);
+        $tpl->r("serv_pid", $serv_pid);
+
+        $tpl->r("pl_plpro", $pl_plpro);
+        $tpl->r("pl_disabled", $pl_disabled);
+        $tpl->r("pl_plmax", $pl_plmax);
+        $tpl->r("pl_pla", $pl_pla);
+        $tpl->r("pl_modal", $pl_modal);
+        $tpl->r("pl_btntxt", $pl_btntxt);
+
+        $tpl->r("action_color", $action_color);
+        $tpl->r("action_state", $action_state);
+        $tpl->r("action_btntxt", $action_btntxt);
+        $tpl->r("action_modal", $action_modal);
+
+        if ($_GET["type"] == "cards") $string = $tpl->load_var();
+        if ($_GET["type"] == "img") $string = '<img src="/app/dist/img/logo/ark.png" style="border-radius: 25rem!important;height: 90px;width: 90px;background-color: #001f3f" class="border-'.$serv_color.'">';
+
+        echo $string;
+        break;
+
+
+    default:
+        echo "Case not found";
+        break;
+}
+?>

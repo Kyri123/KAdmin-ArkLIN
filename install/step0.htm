@@ -50,109 +50,80 @@
         <div class="card rounded-0">
             <div class="card-header">
                 <h3 class="card-title">
-                    Willkommen beim Arkadmin-Installer
+                    {::lang::install::step0::section::main::title}
                 </h3>
             </div>
             <div class="card-body">
-                <dl>
-                    <dt>Kostet die Benutzung etwas?</dt>
-                    <dd>Natürlich ist dies 100% kostenlos & open Source!</dd>
-                    <dt>Kann ich das Panel auch für andere Spiele wie Atlas verwenden?</dt>
-                    <dd>Nein</dd>
-                    <hr />
-                    <dt>So aber nun zum Panel!</dt>
-                    <dd>Zu aller erst Prüfen wir ob das System für das Panel bereit ist</dd>
-                    <dd>Sollte der Button "Weiter zu Schritt 2" auftauchen so Wählt diesen aus. Sollte dies nicht der Fall sein so Folge den Beschreibungen!</dd>
-                    <dd>Beachte: das Panel wurde auf der <b>PHP-Version 7.3+</b> gebaut & getestet Versionen darunter werden daher nicht Supportet!</dd>
-                </dl>
+                {::lang::install::step0::section::main::text}
             </div>
         </div>
     </div>
 </div>
 
 
-{!ifcurl}<div class="row">
+{!ifcurl}
+<div class="row">
     <div class="col-md-12 col-sm-12 col-12">
         <div class="card rounded-0">
             <div class="card-header">
                 <h3 class="card-title text-danger">
-                    Modul cURL fehlt...
+                    {::lang::install::step0::section::curl::title}
                 </h3>
             </div>
             <div class="card-body">
-                <dl>
-                    <dt>Für Ubuntu Linux</dt>
-                    <dd>Folge diesen Link: <a href="https://linuxconfig.org/how-to-enable-and-disable-php-curl-module-with-apache-on-ubuntu-linux" target="_blank">Klick Mich!</a></dd>
-                    <dt>Für Debian</dt>
-                    <dd>Folge diesen Link: <a href="https://stackoverflow.com/questions/20073676/how-do-i-install-php-curl-on-linux-debian/20073810" target="_blank">Klick Mich!</a></dd>
-                    <dt>Für Plesk Benutzer</dt>
-                    <dd>Folge diesen Link: <a href="https://support.plesk.com/hc/en-us/articles/360002194613-PHP-application-in-Plesk-cannot-use-cURL-CURL-is-not-available-on-your-web-server" target="_blank">Klick Mich!</a></dd>
-                </dl>
+                {::lang::install::step0::section::curl::text}
             </div>
         </div>
     </div>
-</div>{/!ifcurl}
+</div>{/!ifcurl} {!ifrewrite}
 
-{!ifrewrite}<div class="row">
+<div class="row">
     <div class="col-md-12 col-sm-12 col-12">
         <div class="card rounded-0">
             <div class="card-header">
                 <h3 class="card-title text-danger">
-                    Modul mod_rewrite fehlt...
+                    {::lang::install::step0::section::mod::title}
                 </h3>
             </div>
             <div class="card-body">
-                <dl>
-                    <dt>Für Ubuntu Linux</dt>
-                    <dd>Folge diesen Link: <a href="http://www.iasptk.com/enable-apache-mod_rewrite-ubuntu-14-04-lts/" target="_blank">Klick Mich!</a></dd>
-                    <dt>Für Debian</dt>
-                    <dd>Folge diesen Link: <a href="https://www.digitalocean.com/community/tutorials/how-to-rewrite-urls-with-mod-rewrite-for-apache-on-debian-9" target="_blank">Klick Mich!</a></dd>
-                </dl>
+                {::lang::install::step0::section::mod::text}
             </div>
         </div>
     </div>
-</div>{/!ifrewrite}
+</div>{/!ifrewrite} {!ifos}
 
-{!ifos}<div class="row">
+<div class="row">
     <div class="col-md-12 col-sm-12 col-12">
         <div class="card rounded-0">
             <div class="card-header">
                 <h3 class="card-title text-danger">
-                    Falsches OS
+                    {::lang::install::step0::section::os::title}
                 </h3>
             </div>
             <div class="card-body">
-                <dl>
-                    <dt>Ohje...</dt>
-                    <dd>Da du Windows benutzt muss ich dich leider Enttäuschen. Das Panel ist für Linux Benutzer gebaut...</dd>
-                </dl>
+                {::lang::install::step0::section::os::text}
             </div>
         </div>
     </div>
-</div>{/!ifos}
+</div>{/!ifos} {!ifam}
 
-{!ifam}<div class="row">
+<div class="row">
     <div class="col-md-12 col-sm-12 col-12">
         <div class="card rounded-0">
             <div class="card-header">
                 <h3 class="card-title text-danger">
-                    Arkmanager Fehlt...
+                    {::lang::install::step0::section::am::title}
                 </h3>
             </div>
-            <!-- /.card-header -->
             <div class="card-body">
-                <dl>
-                    <dt>Für Linux Allgemein</dt>
-                    <dd>Folge diesen Link: <a href="https://github.com/FezVrasta/ark-server-tools" target="_blank">Klick Mich!</a></dd>
-                </dl>
+                {::lang::install::step0::section::am::text}
             </div>
-            <!-- /.card-body -->
         </div>
     </div>
-</div>{/!ifam}
+</div>{/!ifam} {ifallok}
 
-{ifallok}<div class="row">
+<div class="row">
     <div class="col-md-12 col-sm-12 col-12">
-        <a href="/install.php/1" class="btn-success btn rounded-0" style="width: 100%">Weiter zu Schritt 2</a>
+        <a href="/install.php/1" class="btn-success btn rounded-0" style="width: 100%">{::lang::install::step0::next}</a>
     </div>
 </div>{/ifallok}

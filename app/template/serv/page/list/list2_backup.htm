@@ -1,0 +1,110 @@
+<li class="list-group-item rounded-0">
+    <table>
+        <tr>
+            <td rowspan="2" class="pr-3"><i class="fas fa-file-archive text-lg"></i></td>
+            <td class="pl-2">{title}</td>
+        </tr>
+        <tr>
+            <td class="pl-2 text-sm">{::lang::servercenter::list::backup::_2_::filesize}</td>
+        </tr>
+    </table>
+    <div class="right">
+            <a href="javascript:void();" class="btn btn-info btn-sm" data-toggle="modal" data-target="#{rndb}">
+                    <span class="icon text-white">
+                        <i class="fas fa-play"></i>
+                    </span>
+            </a>
+
+            <a href="javascript:void();" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{rndb}">
+                    <span class="icon text-white">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </span>
+            </a>
+
+            <a href="{durl}" class="btn btn-dark btn-sm" download="">
+                    <span class="icon text-white">
+                        <i class="fas fa-download" aria-hidden="true"></i>
+                    </span>
+            </a>
+    </div>
+</li>
+<!-- Modal -->
+
+<form class="modal fade" id="del{rndb}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title text-danger">{::lang::servercenter::list::backup::_2_::modal::remove::title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>{::lang::servercenter::list::backup::_2_::modal::remove::txt}</p>
+                <p><b>{title}</b></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::backup::_2_::modal::remove::btn_cancel}</button>
+                <a href="/servercenter/{cfg}/backups/remove/{key}/{i}" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::backup::_2_::modal::remove::btn_del}</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form class="modal fade" id="{rndb}" tabindex="-1" method="post" action="/servercenter/{cfg}/backups">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{::lang::servercenter::list::backup::_2_::modal::playin::title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    {::lang::servercenter::list::backup::_2_::modal::playin::txt}
+                </p>
+                <input name="key" value="{key}" type="hidden">
+                <input name="i" value="{i}" type="hidden">
+
+
+                <div class="icheck-primary mb-3">
+                    <input type="checkbox" name="opt[]" value="world" id="world{rndb}">
+                    <label for="world{rndb}">
+                        {::lang::servercenter::list::backup::_2_::modal::playin::data_map}
+                    </label>
+                </div>
+
+                <div class="icheck-primary mb-3">
+                    <input type="checkbox" name="opt[]" value="ini" id="ini{rndb}">
+                    <label for="ini{rndb}">
+                        {::lang::servercenter::list::backup::_2_::modal::playin::data_config}
+                    </label>
+                </div>
+
+                <div class="icheck-primary mb-3">
+                    <input type="checkbox" name="opt[]" value="playerandtribes" id="playerandtribes{rndb}">
+                    <label for="playerandtribes{rndb}">
+                        {::lang::servercenter::list::backup::_2_::modal::playin::data_player_tribe}
+                    </label>
+                </div>
+
+                <div class="icheck-primary mb-3">
+                    <input type="checkbox" name="opt[]" value="remall" id="remall{rndb}">
+                    <label for="remall{rndb}">
+                        {::lang::servercenter::list::backup::_2_::modal::playin::remove_exsists}
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::backup::_2_::modal::remove::btn_cancel}</button>
+                <button type="submit" class="btn btn-primary" name="playthisin">{::lang::servercenter::list::backup::_2_::modal::playin::btn_playin}</button>
+            </div>
+        </div>
+    </div>
+</form>
