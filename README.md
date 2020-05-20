@@ -1,9 +1,6 @@
 # Arkadmin 
-Webbasiertes Admin Panel für Ark-Gameserver
 
-- Lade die aktuelle Version runter: https://github.com/Kyri123/Arkadmin/releases
-- Lade alle Dateien auf den Webserver hoch (ACHTUNG: Der Webserver MUSS auf dem gleichen Server wie die Arkserver liegen)
-- Rufe deine Webseite auf und folge die Schritte (Du wirst automatisch weitergeleitet zur Install.php)
+Webbasiertes Admin Panel für Ark-Gameserver
 
 # Wichtig
 
