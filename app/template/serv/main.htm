@@ -192,11 +192,8 @@
     }, 1000);
 
     $(document).ready(function() {
-
-
         $('#sendaction').click(function(e) {
             e.preventDefault();
-
 
             var cfg = $("#cfg").val();
             var action = $("#action_sel").val();
@@ -228,28 +225,24 @@
 
 
         });
-    });
 
-    $(document).ready(function() {
+        console.log("loaded");
         $('#action_sel').change(function(e) {
             var action = $("#action_sel").val();
-            // uncheck_all
-            ids = [{
-                js_array
-            }];
-
-            for (i = 0; i < ids.length; i++) {
-                $(ids[i]).prop('checked', false);
-                $(ids[i]).attr('disabled', true);
-            }
-
-            {
-                jsif
-            }
+            $.getJSON("/app/json/panel/parameter.json", function(data) {
+                $.each(data, function(i, item) {
+                    $(item.id_js).prop('checked', false);
+                    $(item.id_js).attr("disabled", true);
+                    $.each(item.for, function(il, iteml) {
+                        if (iteml == action) {
+                            $(item.id_js).attr("disabled", false);
+                        }
+                    });
+                });
+            });
         });
     });
 </script>
-
 
 
 <div class="modal fade" id="action" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -307,7 +300,7 @@
     <div class="modal-dialog modal-lg" role="document" id="form" style="max-width: 700px">
         <div class="modal-content">
             <div class="modal-header bg-warning text-white">
-                <h5 class="modal-title" id="exampleModalLabel">{::lang::servercenter::main::modal::warning::btn_close}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{::lang::servercenter::main::modal::warning::title}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -337,7 +330,7 @@
                 <ul class="list-group" style="border:0; border-radius: 0">{playerlist}</ul>
             </div>
             <div class="modal-footer bg-gray-200">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::main::modal::player_list::btn_close}Schließen</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::main::modal::player_list::btn_close}</button>
             </div>
         </div>
     </div>

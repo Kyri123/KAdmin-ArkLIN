@@ -6,3 +6,4 @@ workspace.code-workspace
 .idea/*
 .vscode/*
 sh/.editorconfig
+.jshintrc

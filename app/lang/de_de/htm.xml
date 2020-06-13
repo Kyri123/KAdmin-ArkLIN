@@ -9,6 +9,8 @@
      -->
 
     <allg>
+        <send_done>Gesendet</send_done>
+        <send_fail>Fehler</send_fail>
         <pick_lang>Sprache wählen</pick_lang>
 
         <traffic>
@@ -320,12 +322,12 @@
                 </danger>
 
                 <warning>
-                    <title>Lister aller Fehler</title>
+                    <title>Lister aller Warnungen</title>
                     <btn_close>Schließen</btn_close>
                 </warning>
 
                 <err>
-                    <title>Lister aller Warnungen</title>
+                    <title>Lister aller Fehler</title>
                     <btn_close>Schließen</btn_close>
                 </err>
 

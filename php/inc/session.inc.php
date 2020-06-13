@@ -10,38 +10,6 @@
 
 $resp = null; $a1 = null; $a2 = null; $a3 = null; $a4 = null;
 
-if (isset($_SESSION["id"])) {
-    $session_dropdownmenue = '
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  {::lang::php::session::logout}
-                </a>';
-    $user_ui = '<div class="dropdown">
-  <span class="ropdown-toggle" data-toggle="dropdown" style="color: rgba(255,255,255,.5);cursor:pointer;">
-     '.$user->username.' <i class="fa fa-caret-down" aria-hidden="true"></i>
-  </span>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="/de/user/einstellungen">{::lang::php::session::settings}</a>
-    <a class="dropdown-item" href="/de/logout">{::lang::php::session::logout}</a>
-  </div>
-</div>';
-} else {
-    $session_username = "Gast";
-    $session_dropdownmenue = '
-                <a class="dropdown-item" href="/de/login">
-                  <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  {::lang::php::session::login}
-                </a>
-                <a class="dropdown-item" href="/de/register">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  {::lang::php::session::register}
-                </a>';
-    $user_ui = '<div class="btn-group">
-                  <a class="btn btn-info" style="color: #fff;" href="/de/login">{::lang::php::session::login}</a>
-                  <a class="btn btn-info" style="color: #fff;" href="/de/register">{::lang::php::session::register}</a>
-                </div>';
-}
-
 // Einloggen
 if (isset($_POST["login"]) && !isset($_SESSION["id"])) {
     $loggedin = filter_var($_POST["loggedin"], FILTER_VALIDATE_BOOLEAN);
@@ -180,6 +148,25 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
     $a4 = code;
 }
 
+// Speicher Sprache in einer user.json
+if(isset($_SESSION["id"]) && isset($_COOKIE["lang"])) {
+    $uid = md5($_SESSION["id"]);
+    $path = "app/json/user/$uid.json";
+    // speichern wenn die json existiert
+    if(file_exists($path)) {
+        $json = $helper->file_to_json($path);
+        // prüfe ob die json gleich dem Cookies entspricht
+        if($json["lang"] != $_COOKIE["lang"]) {
+            $json["lang"] = $_COOKIE["lang"];
+            $helper->savejson_exsists($json, $path);
+        }
+    // speichern wenn die json NICHT existiert
+    } else {
+    // speichern wenn die json existiert
+        $json["lang"] = $_COOKIE["lang"];
+        $helper->savejson_exsists($json, $path);
+    }
+}
 
 $tpl_register = new Template("register.htm", "app/template/session/");
 $tpl_login = new Template("login.htm", "app/template/session/");

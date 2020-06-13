@@ -335,7 +335,7 @@ elseif ($job == "jobs") {
             $serv = new server($dir[$i]);
             $jobs = new jobs();
             $jobs->set($serv->name());
-            $cpath = "app/data/config/jobs_" . $serv->name() . ".json";
+            $cpath = "app/json/servercfg/jobs_" . $serv->name() . ".json";
             if (file_exists($cpath)) {
                 $json = $helper->file_to_json($cpath, true);
                 if (count($json['jobs']) > 0) {
@@ -515,7 +515,7 @@ foreach ($json as $k => $v) {
             $serv->cfg_write($key, $val);
         }
 
-        $key = "arkopt_ClusterDirOverride"; $val = $ckonfig["servlocdir"]."cluster/";
+        $key = "arkopt_ClusterDirOverride"; $val = $serv->dir_cluster();
         if ((!$serv->cfg_check($key)) || $serv->cfg_read($key) != $val) {
             $changes = true;
             $serv->cfg_write($key, $val);

@@ -153,6 +153,8 @@
 
         <!-- ServerCenter -->
         <sc>
+            <notmod>Keine</notmod>
+            <arkservers>Öffnen</arkservers>
             <no_player_online>Niemand ist Online!</no_player_online>
             <notribe>[Kein Stamm]</notribe>
 

@@ -1,25 +1,40 @@
-
 <a href="/servercenter/{cfg}/home" class="dropdown-item">
-	<div class="media">
-		<img src="{map}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-		<div class="media-body">
-			<h3 class="dropdown-item-title">
-				{servername}
-				<span class="float-right text-sm text-danger"><i class="fas fa-circle text-{color}"></i></span>
-			</h3>
-			<p class="text-sm">
-			{subline}
-            {ifin}<br /><span class="info-box-text"><i class="fas fa-random" aria-hidden="true"></i> {typestr} {clustername}</span>{/ifin}
-			</p>
-		</div>
-	</div>
+    <div class="media">
+        <img src="{map}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+        <div class="media-body">
+            <h3 class="dropdown-item-title">
+                {servername}
+                <span class="float-right text-sm text-danger"><i class="fas fa-circle text-{color}" id="state{cfg}"></i></span>
+            </h3>
+            <p class="text-sm">
+                {subline} {ifin}
+                <br /><span class="info-box-text"><i class="fas fa-random" aria-hidden="true"></i> {typestr} {clustername}</span>{/ifin}
+            </p>
+        </div>
+    </div>
 </a>
 <div class="dropdown-divider"></div>
 
-<!-- TODO: auf getphp() umstellen funktioniert derzeit nicht mehr -->
 <script>
-	server_item("{cfg}", "sitem_{cfg}");
-	setInterval(function(){
-		server_item("{cfg}", "sitem_{cfg}");
-	}, 1000);
+    setInterval(function() {
+        $.getJSON("/app/json/serverinfo/{cfg}.json", function(data) {
+            on = data.online;
+            run = data.run;
+            listening = data.listening;
+            if (data.installed != "TRUE") {
+                var color = "text-warning";
+            } else if (data.online == "Yes") {
+                var color = "text-success";
+            } else if (data.online == "NO" && data.run == "Yes" && data.listening == "No") {
+                var color = "text-info";
+            } else if (data.online == "NO" && data.run == "No" && data.listening == "No") {
+                var color = "text-danger";
+            } else {
+                var color = "text-danger";
+            }
+            var oldClassList = $("#state{cfg}").attr("class");
+            var newClassList = "fas fa-circle " + color;
+            if (oldClassList != newClassList) $("#state{cfg}").attr("class", "").addClass(newClassList);
+        });
+    }, 1000);
 </script>

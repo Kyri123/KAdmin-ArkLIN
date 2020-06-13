@@ -65,6 +65,23 @@ class server {
         return $path;
     }
 
+    // Bekomme Cluster Dir
+    public function dir_cluster() {
+
+        $dir = $this->cfg_read('arkserverroot');
+        $exp = explode('/', $dir);
+        $dirp = null;
+
+        for ($i=0;$i<count($exp);$i++) {
+            if (strpos($exp[$i], $this->serv)) {
+                break;
+            }
+            $dirp .= $exp[$i]."/";
+        }
+
+        return $dirp.'cluster/';
+    }
+
     // Bekomme Backup dir
     public function dir_backup() {
 

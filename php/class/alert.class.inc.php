@@ -18,13 +18,13 @@ class alert extends helper {
     public $overwrite_style = 1;
 
     private $tpl;
-    private $json;
-    private $from = array();
-    private $to = array();
+    private $from;
+    private $to;
 
     public function __construct()
     {
-        #empty
+        $this->from = array();
+        $this->to = array();
     }
 
     private function check_code() {

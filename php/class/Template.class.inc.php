@@ -56,6 +56,8 @@ class Template {
         }
         array_push($this->rfrom, '{'.$from.'}');
         array_push($this->rto, $to);
+        array_push($this->rfrom, '__'.$from.'__');
+        array_push($this->rto, $to);
         return true;
     }
 
@@ -142,6 +144,7 @@ class Template {
             $this->load_xml("app/lang/de_de/install.xml");
             $this->load_xml("app/lang/de_de/alert.xml");
         }
+        
         $this->rlang(); $this->rintern(); // doppelt um {xxx} aus der XML zu verwenden
         $this->rlang(); $this->rintern(); // doppelt um {xxx} aus der XML zu verwenden
 

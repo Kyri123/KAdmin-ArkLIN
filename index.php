@@ -40,8 +40,8 @@ include('php/functions/check.func.inc.php');
 // include classes
 include('php/class/helper.class.inc.php');
 include('php/class/xml_helper.class.php');
-include('php/class/Template.class.inc.php'); 
-include('php/class/alert.class.inc.php'); 
+include('php/class/Template.class.inc.php');
+include('php/class/alert.class.inc.php');
 include('php/class/rcon.class.inc.php');
 include('php/class/savefile_reader.class.inc.php');
 include('php/class/user.class.inc.php');
@@ -63,7 +63,7 @@ include('php/inc/auto_update_sql_DB.inc.php');
 //create globals vars
 $API_Key = $ckonfig['apikey'];
 $servlocdir = $ckonfig['servlocdir'];
-$ckonfig = $helper->file_to_json('inc/custom_konfig.json', true);
+$ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
 $jobs = new jobs();
 
 //check is user banned

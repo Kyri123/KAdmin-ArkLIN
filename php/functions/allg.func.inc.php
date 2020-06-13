@@ -529,18 +529,19 @@ function get_lang_list() {
     $dir = "app/lang";
     $dir = dirToArray("app/lang");
     foreach($dir as $k => $v) {
-        $list = new Template("lang.htm", "app/template/default/");
-        $list->load();
+        $ftpl = new Template("lang.htm", "app/template/default/");
+        $ftpl->load();
 
         $xml = new xml_helper("app/lang/$k/info.xml");
         $arr = $xml->array();
 
-        $list->r("lang_icon", $arr["icon_path"]);
-        $list->r("lang_short", $k);
-        $list->r("lang_name", $arr["lang_name"]);
-        $list->r("author", $arr["author"]);
+        $ftpl->r("lang_icon", $arr["icon_path"]);
+        $ftpl->r("lang_short", $k);
+        $ftpl->r("lang_name", $arr["lang_name"]);
+        $ftpl->r("author", $arr["author"]);
+        $ftpl->rif("noimg", ($arr["icon_path"] == "null") ? false : true);
 
-        $re .= $list->load_var();
+        $re .= $ftpl->load_var();
     }
     return $re;
 }

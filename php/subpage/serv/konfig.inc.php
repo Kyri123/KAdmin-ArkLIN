@@ -24,8 +24,7 @@ if (isset($_POST['savecfg'])) {
     $cfg = null;
 
     for ($i=0;$i<count($key);$i++) {
-        $cfg .= $key[$i].'="'.$value[$i].'"
-';
+        $cfg .= $key[$i].'="'.$value[$i]."\"\n";
     }
 
     $cfg .= $flag.$opt;

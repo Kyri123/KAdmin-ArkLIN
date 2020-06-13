@@ -15,6 +15,7 @@ if (!file_exists("remote/arkmanager/instances/".$url[2].".cfg")) {
 
 // Vars
 $tpl_dir = 'app/template/serv/';
+$tpl_dir_lists = 'app/template/serv/page/list/';
 $tpl_dir_all = 'app/template/all/';
 $setsidebar = false;
 $serv = new server($url[2]);
@@ -62,20 +63,13 @@ if (!$exsists) {
 }
 $tpl->r("__home", null);
 
-if ($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>Keine</b>' ?? $tmod = '<b>'.$serv->cfg_read('ark_TotalConversionMod').'</b>';
+if ($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>{::lang::php::sc::notmod}</b>' ?? $tmod = '<b>'.$serv->cfg_read('ark_TotalConversionMod').'</b>';
 
 //danger list
-$danger_listitem = '<li class="list-group-item list-group-item-mod">
-        <div class="row p-0">
-            <div class="col-12">
-                <i class="text-danger fas fa-exclamation-triangle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
-                <div style="margin-left: 60px;">{::lang::php::sc::danger::nodanger_found}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::php::sc::danger::all_ok}</span></div>
-            </div>
-        </div>
-    </li>
-';
+$danger_listitem = new Template('list_warn_err.htm', $tpl_dir_lists);
+$danger_listitem->load();
+
 if ($globa_json->error_count > 0) {
-    $danger_listitem = null;
     for ($i=0;$i<count($globa_json->error);$i++) {
 
         if (strpos($globa_json->error[$i], 'is requested but not installed') !== false) {
@@ -92,29 +86,27 @@ if ($globa_json->error_count > 0) {
         }
         $globa_json->error[$i] = str_replace('] ', null, $globa_json->error[0]);
 
-        $danger_listitem .= '<li class="list-group-item list-group-item-mod">
-                <div class="row p-0">
-                    <div class="col-12">
-                        <i class="text-danger fas fa-exclamation-triangle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
-                        <div style="margin-left: 60px;">'.$type.'<br><span class="font-weight-light" style="font-size: 11px;">'.$globa_json->error[$i].'</span></div>
-                    </div>
-                </div>
-            </li>
-        ';
+        $danger_listitem->rif("default_warn", false);
+        $danger_listitem->rif("default_err", false);
+        $danger_listitem->rif("list", true);
+        $danger_listitem->r("type", $type);
+        $danger_listitem->r("txt", $globa_json->error[$i]);
+        $danger_list .= $danger_listitem->load_var();
     }
 }
+else {
+    // erstelle standart meldung wenn keine "error_count" == 0 ... < 1
+    $danger_listitem->rif("default_warn", false);
+    $danger_listitem->rif("default_err", true);
+    $danger_listitem->rif("list", false);
+    $danger_list = $danger_listitem->load_var();
+}
+
 //warning list
-$warning_listitem = '<li class="list-group-item list-group-item-mod">
-        <div class="row p-0">
-            <div class="col-12">
-                <i class="text-warning fas fa-exclamation-circle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
-                <div style="margin-left: 60px;">{::lang::php::sc::warn::nowarn_found}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::php::sc::warn::all_ok}</span></div>
-            </div>
-        </div>
-    </li>
-';
+$warning_listitem = new Template('list_warn_err.htm', $tpl_dir_lists);
+$warning_listitem->load();
+
 if ($globa_json->warning_count > 0) {
-    $warning_listitem = null;
     for ($i=0;$i<count($globa_json->warning);$i++) {
 
         if (strpos($globa_json->warning[$i], 'Your ARK server exec could not be found.') !== false) {
@@ -124,16 +116,20 @@ if ($globa_json->warning_count > 0) {
         }
         $globa_json->warning[$i] = str_replace('] ', null, $globa_json->warning[$i]);
 
-        $warning_listitem .= '<li class="list-group-item list-group-item-mod">
-                <div class="row p-0">
-                    <div class="col-12">
-                        <i class="text-warning fas fa-exclamation-circle rounded -align-left position-absolute" style="font-size: 45px"  height="50" width="50"></i>
-                        <div style="margin-left: 60px;">'.$type.'<br><span class="font-weight-light" style="font-size: 11px;">'.$globa_json->warning[$i].'</span></div>
-                    </div>
-                </div>
-            </li>
-        ';
+        $warning_listitem->rif("default_warn", false);
+        $warning_listitem->rif("default_err", false);
+        $warning_listitem->rif("list", true);
+        $warning_listitem->r("type", $type);
+        $warning_listitem->r("txt", $globa_json->warning[$i]);
+        $warning_list = $warning_listitem->load_var();
     }
+}
+else {
+    // erstelle standart meldung wenn keine "warning_count" == 0 ... < 1
+    $warning_listitem->rif("default_warn", true);
+    $warning_listitem->rif("default_err", false);
+    $warning_listitem->rif("list", false);
+    $warning_list = $warning_listitem->load_var();
 }
 
 $savedir = $serv->dir_save();
@@ -166,12 +162,16 @@ if (is_array($pl_json) && $pl_json[0]["name"] != "NO") {
 
         if (is_array($tribe_json)) {
             for ($z = 0; $z < count($tribe_json); $z++) {
-                $tribe = $jhelper->tribe($tribe_json, $z);
-                if ($tribe->Id == $pl->TribeId) {
+                $member = $tribe_json[$z]->Members;
+
+                if (in_array($pl->CharacterName, $member)) {
+                    $tribe = $jhelper->tribe($tribe_json, $z);
                     $list_tpl->r('tribe', $tribe->Name);
+                    break;
                 }
             }
         }
+
         $list_tpl->r('tribe', '{::lang::php::sc::notribe}');
 
         if ($pl->Level > 1000) $pl->Level = 0;
@@ -206,8 +206,6 @@ if ($player == null) {
 }
 
 
-// JS if & array
-$opt_str = array();
 
 $action_list = "<option value=\"\">Aktion wählen...</option>"; $i = 0;
 foreach ($action_opt as $key) {
@@ -216,10 +214,10 @@ foreach ($action_opt as $key) {
     $i++;
 }
 
+// JS if & array
 $json_para = $helper->file_to_json("app/json/panel/parameter.json");
 $para_list = null;
 for ($i=0;$i<count($json_para);$i++) {
-    $opt_str[count($opt_str)] = "'".$json_para[$i]["id_js"]."'";
     $name = str_replace("--", null, $json_para[$i]["parameter"]);
     $para_list .= '
         <div class="icheck-primary mb-3 col-md-6">
@@ -236,19 +234,6 @@ for ($i=0;$i<count($json_para);$i++) {
     }
 }
 
-$jsfi = null;
-foreach ($array as $key => $value) {
-    if (is_countable($array[$key])) {
-        if (count($array[$key]) > 0) {
-            $jsfi .= "if (action === '$key') {\n";
-            for ($i=0;$i<count($array[$key]);$i++) {
-                $jsfi .= "  $('".$array[$key][$i]."').attr('disabled', false);\n";
-            }
-            $jsfi .= "}\n";
-        }
-    }
-}
-
 $l = strlen($servername); $lmax = 25;
 if ($l > $lmax) {
     $servername = substr($servername, 0 , $lmax) . " ...";
@@ -257,11 +242,9 @@ if ($l > $lmax) {
 if ($txt_alert != null) $resp .= meld_full('info', nl2br($txt_alert), 'Cluster: Alpha Version', null);
 
 
-$tpl->r('danger_resp', $danger_listitem);
-$tpl->r('warning_resp', $warning_listitem);
+$tpl->r('danger_resp', $danger_list);
+$tpl->r('warning_resp', $warning_list);
 
-$tpl->r('jsif', $jsfi);
-$tpl->r('js_array', implode(",", $opt_str));
 $tpl->r('action_list', $action_list);
 $tpl->r('para_list', $para_list);
 $tpl->r('clustername', $serv->cluster_name());

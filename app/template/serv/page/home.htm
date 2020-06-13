@@ -31,12 +31,12 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="javascript:void();" onclick="set(25, 'max')">25</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set(50, 'max')">50</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set(150, 'max')">150</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set(250, 'max')">250</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set(500, 'max')">500</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set('∞', 'max')">∞</a>
+                                <a class="dropdown-item" href="javascript:void;" onclick="set(25, 'max')">25</a>
+                                <a class="dropdown-item" href="javascript:void;" onclick="set(50, 'max')">50</a>
+                                <a class="dropdown-item" href="javascript:void;" onclick="set(150, 'max')">150</a>
+                                <a class="dropdown-item" href="javascript:void;" onclick="set(250, 'max')">250</a>
+                                <a class="dropdown-item" href="javascript:void;" onclick="set(500, 'max')">500</a>
+                                <a class="dropdown-item" href="javascript:void;" onclick="set('∞', 'max')">∞</a>
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                             <input type="hidden" id="rcon_cfg" value="{cfg}">
                         </div>
                         <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" id="send_rcon">{::lang::servercenter::home::section::rcon::btn_send}Senden</button>
+                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" id="send_rcon">{::lang::servercenter::home::section::rcon::btn_send}</button>
                         </div>
                     </div>
                 </div>
@@ -164,59 +164,65 @@
 
     <script>
         $(document).ready(function() {
+
+            // R-Con
             $('#send_rcon').click(function(e) {
                 e.preventDefault();
                 var cfg = $("#rcon_cfg").val();
                 var user = $("#rcon_user").val();
-                var text = $("#rcon_text").val();
+                tx = $("#rcon_text");
+                var text = tx.val();
 
-                $.ajax({
-                    type: "POST",
-                    url: "/php/async/post/servercenter.home.async.php?case=rconsend",
-                    dataType: "json",
-                    data: {
+                $.post("/php/async/post/servercenter.home.async.php?case=rconsend", {
                         cfg: cfg,
                         user: user,
                         text: text
-                    },
-                    success: function(data) {
-                        if (data.code == "200") {
-                            $("#rconresp").html(data.msg);
+                    })
+                    .done(function(data) {
+                        console.log(data);
+                        json = $.parseJSON(data);
+                        if (json.code == 1) {
+                            $("#rconresp").html(json.msg);
+                            tx.val("");
+                            tx.attr("placeholder", "{::lang::allg::send_done}");
                             getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
                         } else {
-                            $("#rconresp").html(data.msg);
+                            $("#rconresp").html(json.msg);
+                            tx.val("");
+                            tx.attr("placeholder", "{::lang::allg::send_fail}");
                             getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
                         }
-                    }
-                });
+                    });
             });
         });
 
-        $(document).ready(function() {
-            $('#sendchat').click(function(e) {
-                e.preventDefault();
-                var cfg = $("#livechat_cfg").val();
-                var user = $("#livechat_user").val();
-                var text = $("#livechat_text").val();
+        // livechat
+        $('#sendchat').click(function(e) {
+            e.preventDefault();
+            var cfg = $("#livechat_cfg").val();
+            var user = $("#livechat_user").val();
+            tx = $("#livechat_text");
+            var text = tx.val();
 
-                $.ajax({
-                    type: "POST",
-                    url: "/php/async/post/servercenter.home.async.php?case=igchatsend",
-                    dataType: "json",
-                    data: {
-                        cfg: cfg,
-                        user: user,
-                        text: text
-                    },
-                    success: function(data) {
-                        if (data.code == "200") {
-                            $("#livechatresp").html(data.msg);
-                        } else {
-                            $("#livechatresp").html(data.msg);
-                        }
+            $.post("/php/async/post/servercenter.home.async.php?case=igchatsend", {
+                    cfg: cfg,
+                    user: user,
+                    text: text
+                })
+                .done(function(data) {
+                    json = $.parseJSON(data);
+                    if (json.code == 1) {
+                        $("#livechatresp").html(json.msg);
+                        tx.val("");
+                        tx.attr("placeholder", "{::lang::allg::send_done}");
+                        getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
+                    } else {
+                        $("#livechatresp").html(json.msg);
+                        tx.val("");
+                        tx.attr("placeholder", "{::lang::allg::send_fail}");
+                        getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
                     }
-                });
-            });
+                }, "JSON");
         });
 
         setInterval(function() {

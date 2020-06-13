@@ -36,7 +36,7 @@ switch ($case) {
             if ($rcon->connect()) {
                 $code = '1';
                 $command = $_POST['text'];
-                $isnull = false; if ($command == null) $isnull = true;
+                $isnull = false; if ($command == "") $isnull = true;
                 $user = $_POST['user'];
 
 
@@ -49,9 +49,9 @@ switch ($case) {
                     $msg = $alert->re();
                 } else {
                     $resp = $rcon->get_response();
-                    $alert->code = 105;
-                    $alert->r("command", $command);
-                    $alert->r("response", $resp);
+                    $alert->code = 107;
+                    //$alert->r("command", $command); TODO: rausfinden wieso hier kein $alert geht...
+                    //$alert->r("response", trim($resp)); TODO: rausfinden wieso hier kein $alert geht...
                     $msg = $alert->re();
                     $log = 'app/json/saves/rconlog_'.$serv->name().'.txt';
                     if (file_exists($log)) {
@@ -71,7 +71,6 @@ switch ($case) {
             $alert->overwrite_text = "{::lang::php::async::post::servercenter::home::serveroffline}";
             $msg = $alert->re();
         }
-
         echo json_encode(['code'=>$code, 'msg'=>$msg]);
         break;
 
@@ -107,10 +106,9 @@ switch ($case) {
                 elseif (!$rcon->send_command('serverchat '.$text)) {
                     $alert->code = 12;
                     $msg = $alert->re();
-                } else {
-                    $alert->code = 105;
-                    $alert->r("command", "serverchat");
-                    $alert->r("response", $text);
+                }
+                else {
+                    $alert->code = 107;
                     $msg = $alert->re();
                 }
                 $rcon->disconnect();

@@ -92,7 +92,7 @@ if (isset($_POST["del"])) {
             if (file_exists("app/json/serverinfo/pl_$server.players")) unlink("app/json/serverinfo/pl_$server.players");
             if (file_exists("app/json/serverinfo/chat_$server.log")) unlink("app/json/serverinfo/chat_$server.log");
             if (file_exists("app/json/serverinfo/player_$server.json")) unlink("app/json/serverinfo/player_$server.json");
-            if (file_exists("app/data/config/jobs_$server.json")) unlink("app/data/config/jobs_$server.json");
+            if (file_exists("app/json/servercfg/jobs_$server.json")) unlink("app/json/servercfg/jobs_$server.json");
             if (in_array('deinstall', $opt)) {
                 $jobs->shell("rm -R ".$arkservdir);
                 $jobs->shell("rm -R ".$arklogdir);

@@ -250,6 +250,12 @@
             <text>Das backup wurde eingespielt.</text>
         </c_106>
 
+        <!-- Success | executed [rcon] -->
+        <c_107>
+            <title>Erfolgreich ausgeführt!</title>
+            <text>Rcon Gesendet</text>
+        </c_107>
+
 
 
         <!-- Warning -->

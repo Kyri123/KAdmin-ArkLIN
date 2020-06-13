@@ -41,7 +41,7 @@ $z = 1;
                 $content .= '<li class="list-group-item list-group-item-mod"><b class="text-info">'.($i+1).': </b> <b>{::lang::php::async::get::all::getlog::toolarge}</b></li>';
             }
         }
-        if ($z == $max) die;
+        if ($z == $max) break;
     }
 
 
