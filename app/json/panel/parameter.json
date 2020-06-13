@@ -1,104 +1,147 @@
-
-[
-  {
-    "parameter": "--alwaysrestart",
-    "id_js": "#alwaysrestart",
-    "for": [
-      "start"
-    ]
-  },
-  {
-    "parameter": "--noautoupdate",
-    "id_js": "#noautoupdate",
-    "for": [
-      "start",
-      "restart"
-    ]
-  },
-  {
-    "parameter": "--warn",
-    "id_js": "#warn",
-    "for": [
-      "update",
-      "restart",
-      "stop"
-    ]
-  },
-  {
-    "parameter": "--saveworld",
-    "id_js": "#saveworld",
-    "for": [
-      "update",
-      "stop"
-    ]
-  },
-  {
-    "parameter": "--safe",
-    "id_js": "#safe",
-    "for": [
-      "update"
-    ]
-  },
-  {
-    "parameter": "--force",
-    "id_js": "#force",
-    "for": [
-      "update"
-    ]
-  },
-  {
-    "parameter": "--downloadonly",
-    "id_js": "#downloadonly",
-    "for": [
-      "update"
-    ]
-  },
-  {
-    "parameter": "--backup",
-    "id_js": "#backup",
-    "for": [
-      "update",
-      "restart",
-      "stop"
-    ]
-  },
-  {
-    "parameter": "--update-mods",
-    "id_js": "#update-mods",
-    "for": [
-      "update"
-    ]
-  },
-  {
-    "parameter": "--ifempty",
-    "id_js": "#ifempty",
-    "for": [
-      "update",
-      "stop"
-    ]
-  },
-  {
-    "parameter": "--allmaps",
-    "id_js": "#allmaps",
-    "for": [
-      "backup"
-    ]
-  },
-  {
-    "parameter": "--revstatus",
-    "id_js": "#revstatus",
-    "for": [
-      "checkmodupdate",
-      "checkupdate"
-    ]
-  },
-  {
-    "parameter": "--validate",
-    "id_js": "#validate",
-    "for": [
-      "update",
-      "restart",
-      "start"
-    ]
-  }
+[{
+        "parameter": "--alwaysrestart",
+        "id_js": "#alwaysrestart",
+        "type": 0,
+        "for": [
+            "start"
+        ]
+    },
+    {
+        "parameter": "--noautoupdate",
+        "id_js": "#noautoupdate",
+        "type": 0,
+        "for": [
+            "start",
+            "restart"
+        ]
+    },
+    {
+        "parameter": "--warn",
+        "id_js": "#warn",
+        "type": 0,
+        "for": [
+            "update",
+            "restart",
+            "stop"
+        ]
+    },
+    {
+        "parameter": "--saveworld",
+        "id_js": "#saveworld",
+        "type": 0,
+        "for": [
+            "update",
+            "stop"
+        ]
+    },
+    {
+        "parameter": "--safe",
+        "id_js": "#safe",
+        "type": 0,
+        "for": [
+            "update"
+        ]
+    },
+    {
+        "parameter": "--force",
+        "id_js": "#force",
+        "type": 0,
+        "for": [
+            "update"
+        ]
+    },
+    {
+        "parameter": "--downloadonly",
+        "id_js": "#downloadonly",
+        "type": 0,
+        "for": [
+            "update"
+        ]
+    },
+    {
+        "parameter": "--backup",
+        "id_js": "#backup",
+        "type": 0,
+        "for": [
+            "update",
+            "restart",
+            "stop"
+        ]
+    },
+    {
+        "parameter": "--update-mods",
+        "id_js": "#update-mods",
+        "type": 0,
+        "for": [
+            "update"
+        ]
+    },
+    {
+        "parameter": "--ifempty",
+        "id_js": "#ifempty",
+        "type": 0,
+        "for": [
+            "update",
+            "stop"
+        ]
+    },
+    {
+        "parameter": "--allmaps",
+        "id_js": "#allmaps",
+        "type": 0,
+        "for": [
+            "backup"
+        ]
+    },
+    {
+        "parameter": "--revstatus",
+        "id_js": "#revstatus",
+        "type": 0,
+        "for": [
+            "checkmodupdate",
+            "checkupdate"
+        ]
+    },
+    {
+        "parameter": "--validate",
+        "id_js": "#validate",
+        "type": 0,
+        "for": [
+            "update",
+            "restart",
+            "start"
+        ]
+    },
+    {
+        "parameter": "--warnreason",
+        "id_js": "#warnreason",
+        "type": 1,
+        "for": [
+            null
+        ]
+    },
+    {
+        "parameter": "--stagingdir",
+        "id_js": "#stagingdir",
+        "type": 1,
+        "for": [
+            null
+        ]
+    },
+    {
+        "parameter": "--betapassword",
+        "id_js": "#betapassword",
+        "type": 1,
+        "for": [
+            null
+        ]
+    },
+    {
+        "parameter": "--beta",
+        "id_js": "#beta",
+        "type": 1,
+        "for": [
+            null
+        ]
+    }
 ]
