@@ -186,52 +186,34 @@
 </div>
 
 <script>
-    setInterval(function() {
-        getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=cards&case=info", "server-stats");
-        getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=img&case=info", "serv_img");
-    }, 1000);
-
     $(document).ready(function() {
-        $('#sendaction').click(function(e) {
-            e.preventDefault();
 
-            var cfg = $("#cfg").val();
-            var action = $("#action_sel").val();
-            var para = new Array();
-            $("input:checked").each(function() {
-                para.push($(this).val());
-            });
+        setInterval(function() {
+            getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=cards&case=info", "server-stats");
+            getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=img&case=info", "serv_img");
+        }, 1000);
 
-            $.ajax({
-                type: "POST",
-                url: "/php/async/post/servercenter.main.async.php?case=action",
-                dataType: "json",
-                data: {
-                    cfg: cfg,
-                    action: action,
-                    para: para
-                },
-                success: function(data) {
-                    if (data.code == "200") {
+        $("#action_form").submit(function() {
+            $.post("/php/async/post/servercenter.main.async.php?case=action", $("#action_form").serialize())
+                .done(function(data) {
+                    data = JSON.parse(data);
+                    if (data.code != 404) {
                         $("#action_resp").html(data.msg);
                         $("#all_resp").html(data.msg);
                         $('#action').modal('hide')
                     } else {
                         $("#action_resp").html(data.msg);
                     }
-                    server_data();
-                }
-            });
-
-
+                });
+            return false;
         });
 
-        console.log("loaded");
         $('#action_sel').change(function(e) {
             var action = $("#action_sel").val();
             $.getJSON("/app/json/panel/parameter.json", function(data) {
                 $.each(data, function(i, item) {
-                    $(item.id_js).prop('checked', false);
+                    if (item.type == 0) $(item.id_js).prop('checked', false);
+                    if (item.type == 1) $(item.id_js).val('');
                     $(item.id_js).attr("disabled", true);
                     $.each(item.for, function(il, iteml) {
                         if (iteml == action) {
@@ -246,7 +228,7 @@
 
 
 <div class="modal fade" id="action" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+    <form id="action_form" class="modal-dialog modal-xl" role="document" style="max-width: 700px" method="POST">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{::lang::servercenter::main::modal::send_command::title}</h5>
@@ -256,12 +238,15 @@
             </div>
             <div class="modal-body">
                 <p id="action_resp"></p>
+                {::lang::servercenter::main::modal::send_command::custom_action}
+                <input class="form-control" name="custom" type="text" placeholder="{::lang::servercenter::main::modal::send_command::custom_action_ph}">
+                <hr>
                 <input name="cfg" id="cfg" value="{cfg}" type="hidden">
                 <select name="action" id="action_sel" class="form-control">
                     {action_list}
                 </select><br>
 
-                <div class="form-row" style="padding-left: 25px">
+                <div class="form-row" style="padding-left: 25px;padding-right: 25px">
                     {para_list}
                 </div>
             </div>
@@ -270,7 +255,7 @@
                 <button type="submit" class="btn btn-primary" id="sendaction">{::lang::servercenter::main::modal::send_command::btn_send}</button>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 

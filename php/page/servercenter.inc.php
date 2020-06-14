@@ -217,21 +217,23 @@ foreach ($action_opt as $key) {
 // JS if & array
 $json_para = $helper->file_to_json("app/json/panel/parameter.json");
 $para_list = null;
+$z = 0;
 for ($i=0;$i<count($json_para);$i++) {
     $name = str_replace("--", null, $json_para[$i]["parameter"]);
-    $para_list .= '
-        <div class="icheck-primary mb-3 col-md-6">
-              <input type="checkbox" name="para[]" value="'.$json_para[$i]["parameter"].'" id="'.$name.'" disabled>
-              <label for="'.$name.'">
-                    '.$json_para[$i]["parameter"].' <!--{::lang::php::sc::actions::'.$name.'}-->
-              </label>
-        </div>
-    ';
-    if (count($json_para[$i]["for"]) > 0) {
-        foreach ($json_para[$i]["for"] as $key) {
-            $array[$key][count($array[$key])] = $json_para[$i]["id_js"];
-        }
-    }
+    $para = new Template('parameter.htm', 'app/template/serv/');
+    $para->load();
+    
+    $t0 = ($json_para[$i]["type"] == 0) ? true : false;
+    $t1 = ($json_para[$i]["type"] == 0) ? false : true;
+        
+    $para->r("name", str_replace("--", null, $json_para[$i]["parameter"]));
+    $para->r("parameter", $json_para[$i]["parameter"]);
+    $para->r("i", $z);
+    $para->rif("type0", $t0);
+    $para->rif("type1", $t1);
+
+    if($json_para[$i]["type"] == 1) $z++;
+    $para_list .= $para->load_var();
 }
 
 $l = strlen($servername); $lmax = 25;

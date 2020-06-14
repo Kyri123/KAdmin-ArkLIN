@@ -115,9 +115,11 @@
     {
         "parameter": "--warnreason",
         "id_js": "#warnreason",
-        "type": 1,
+        "type": 0,
         "for": [
-            null
+            "stop",
+            "restart",
+            "update"
         ]
     },
     {
@@ -125,7 +127,7 @@
         "id_js": "#stagingdir",
         "type": 1,
         "for": [
-            null
+            "update"
         ]
     },
     {
@@ -133,7 +135,7 @@
         "id_js": "#betapassword",
         "type": 1,
         "for": [
-            null
+            "update"
         ]
     },
     {
@@ -141,7 +143,7 @@
         "id_js": "#beta",
         "type": 1,
         "for": [
-            null
+            "update"
         ]
     }
 ]
