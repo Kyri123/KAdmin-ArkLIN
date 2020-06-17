@@ -30,7 +30,7 @@
             <btn_createserver>Server Erstellen</btn_createserver>
 
             <tooltip>
-                <usersettings>Benutzer Einstellung - SOON</usersettings>
+                <usersettings>Benutzer Einstellung</usersettings>
                 <logout>Ausloggen</logout>
             </tooltip>
 
@@ -49,6 +49,20 @@
             <hide>verstecke Überfluss</hide>
         </logs>
     </allg>
+
+    <!-- usersettings -->
+    <usersettings>
+        <navigation>Navigation</navigation>
+        <settings>Account Einstellungen</settings>
+        <expsettings>Panel Einstellungen</expsettings> 
+        <expert>Erweiterten Modus aktivieren</expert> 
+        <email>E-Mail Addresse</email>
+        <password>Neues Passwort</password> 
+        <phpassword>Leer lassen um keine änderungen vorzunehmen</phpassword> 
+        <wpassword>Neues Passwort</wpassword> 
+        <phwpassword>Wiederholen</phwpassword>
+        <username>Benutzername</username> 
+    </usersettings>
 
     <!-- Dashboard -->
     <home>
@@ -314,6 +328,8 @@
                     <title>Befehl an den Server senden</title>
                     <btn_close>Schließen</btn_close>
                     <btn_send>Senden</btn_send>
+                    <custom_action>Eigenen Befehl</custom_action>
+                    <custom_action_ph>start --alwaysstart</custom_action_ph>
                 </send_command>
 
                 <danger>
@@ -506,6 +522,11 @@
 
         <config>
             <btn_save>Speichern</btn_save>
+            <sel>Deaktiviert</sel>
+            <nonsel>Aktiviert</nonsel>
+            <th_config>Option</th_config>
+            <th_input>Input</th_input>
+            <custom>Extra hinzufügen</custom>
         </config>
 
         <mods>

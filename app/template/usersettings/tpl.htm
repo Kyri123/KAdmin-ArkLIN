@@ -1,0 +1,116 @@
+<div id="all_resp">{resp}</div>
+
+<div class="row">
+    <div class="col-lg-3 col-sm-12">
+        <ul class="list-group list-group-flush border">
+            <li class="list-group-item bg-dark">
+                <h4>{::lang::usersettings::navigation}</h4>
+            </li>
+            <li class="list-group-item">
+                <a id="pills-home-tab" data-toggle="pill" href="#pills-settings" role="tab" aria-controls="pills-settings" aria-selected="true">{::lang::usersettings::settings}</a>
+            </li>
+            <li class="list-group-item">
+                <a id="pills-profile-tab" data-toggle="pill" href="#pills-expsettings" role="tab" aria-controls="pills-expsettings" aria-selected="false">{::lang::usersettings::expsettings}</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="col-lg-9 col-sm-12">
+        <div class="card shadow p-0" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+            <div class="tab-content" id="pills-tabContent">
+
+
+                <form action="#save" method="post" class="tab-pane fade show active m-0" id="pills-settings" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="list-group-item bg-dark">
+                        <h4>{::lang::usersettings::settings}</h4>
+                        <div class="right">
+                            <input type="submit" class="btn btn-primary" name="saveuser" value="{::lang::config::btn_save}">
+                        </div>
+                    </div>
+
+                    <ul class="list-group list-group-flush border">
+
+                        <li class="list-group-item" style="border-top-width: 1px;">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">{::lang::usersettings::password}</span>
+                                </div>
+                                <input name="pw1" type="password" class="form-control" placeholder="{::lang::usersettings::phpassword}">
+                            </div>
+                        </li>
+
+                        <li class="list-group-item" style="border-top-width: 1px;">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">{::lang::usersettings::wpassword}</span>
+                                </div>
+                                <input name="pw2" type="password" class="form-control" placeholder="{::lang::usersettings::phwpassword}">
+                            </div>
+                        </li>
+
+                        <li class="list-group-item" style="border-top-width: 1px;">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">{::lang::usersettings::email}</span>
+                                </div>
+                                <input name="email" type="text" class="form-control" value="{email}">
+                            </div>
+                        </li>
+
+                        <li class="list-group-item" style="border-top-width: 1px;">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">{::lang::usersettings::username}</span>
+                                </div>
+                                <input name="username" type="text" class="form-control" value="{username}">
+                            </div>
+                        </li>
+
+                    </ul>
+                </form>
+
+
+                <form action="#save" method="post" class="tab-pane fade" id="pills-expsettings" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="list-group-item bg-dark">
+                        <h4>{::lang::usersettings::expsettings}</h4>
+                        <div class="right">
+                            <input type="submit" class="btn btn-primary" name="savepanel" value="{::lang::config::btn_save}">
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush border">
+                        <li class="list-group-item" style="border-top-width: 1px;">
+                            <div class="form-group clearfix m-0">
+                                <div class="icheck-success d-inline">
+                                    <input name="json[expert]" {c_expert} type="checkbox" id="expert">
+                                    <label for="expert">{::lang::usersettings::expert}</label>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
+            <li class="nav-item" style="margin-right: 5px">
+                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-Panel" role="tab" aria-controls="pills-Panel" aria-selected="true">Panel</a>
+            </li>
+            <li class="nav-item" style="margin-right: 5px">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-Arkmanager" role="tab" aria-controls="pills-Arkmanager" aria-selected="false">Arkmanager.cfg</a>
+            </li>
+        </ul>
+    </div>
+</nav>-->

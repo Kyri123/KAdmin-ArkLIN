@@ -17,14 +17,7 @@ function check_curl() {
 }
 
 function check_rew() {
-    if ($file = file_get_contents('http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']."/checkthis")) {
-        if ($file == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    return false;
+    return array_key_exists('HTTP_MOD_REWRITE', $_SERVER);
 }
 
 function check_OS() {

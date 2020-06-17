@@ -47,7 +47,6 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
             }
         }
         $json = array_values($json);
-        print_r($json);
         if (file_put_contents($path, $helper->json_to_str($json))) {
             header('Location: /servercenter/'.$serv->name().'/saves/');
             exit;

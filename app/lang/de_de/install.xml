@@ -123,7 +123,7 @@
                 <text>[b]Crontab[/b]
                     Stelle die Konfiguration ein und Starte die Datei mit "start.sh" (Empfehlung: Verschiebe den Ordner nach /home oder /root)
                     Wenn der Crontab abgerufen wird wird der Abschluss der Installation freigeben [hr][b]Regestrierung[/b]
-                    Erstelle nun ein Account: [a="http://dev.aa.chiraya.de/registration"]Klick mich![/a]
+                    Erstelle nun ein Account: [a="/registration"]Klick mich![/a]
                     Dein Code lautet: [b]{code}[/b]</text>
             </main>
         </step3>

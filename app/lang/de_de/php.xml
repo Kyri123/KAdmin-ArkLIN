@@ -41,6 +41,10 @@
                 <_9>Uninstallmods</_9>
                 <_10>Speichern</_10>
                 <_11>Status</_11>
+                <_12>Liste alle Mods auf</_12>
+                <_13>Spiele letztes Backup ein</_13>
+                <_14>Zeige Prozzess ID</_14>
+                <_15>Breche Runterfahren ab</_15>
             </action>
         </cfg>
         
@@ -185,6 +189,7 @@
                     <urltop>Konfiguration</urltop>
                     <ini_notfound>Wird nicht Gespeichert da die Ini noch nicht Exsistiert!
                     Bitte starte den Server bevor du weiter machst!</ini_notfound>
+                    <noevent>Kein Event</noevent>
                 </konfig>
 
                 <!-- Logs.inc.php -->

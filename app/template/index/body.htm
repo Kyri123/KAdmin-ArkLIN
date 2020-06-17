@@ -49,16 +49,37 @@
             </a>
 
             <div class="sidebar">
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <a class="user-panel mt-3 pb-0 mb-0 d-flex border-0" href="/usersettings">
                     <div class="image">
                         <img src="https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">[{rank}] {user}</a>
-                        <a href="javascript:void" class="mr-1"><i class="fas fa-cogs" data-toggle="tooltip" data-placement="top" title="" data-original-title="{::lang::allg::nav::tooltip::usersettings}"></i></a>
-                        <a href="javascript:void" data-toggle="modal" data-target="#logoutmodal"><i class="fas fa-sign-out-alt" data-toggle="tooltip" data-placement="top" title="" data-original-title="{::lang::allg::nav::tooltip::logout}"></i></a>
+                        <span class="d-block">[{rank}] {user}</span>
                     </div>
-                </div>
+                </a>
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item has-treeview">
+                            <a href="/usersettings" class="nav-link {_usersettings}">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    {::lang::allg::nav::tooltip::usersettings}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="javascript:void" data-toggle="modal" data-target="#logoutmodal" class="nav-link">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>
+                                    {::lang::allg::nav::tooltip::logout}
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="mt-2 mb-2 user-panel"></div>
 
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
@@ -107,6 +128,14 @@
                                 <i class="nav-icon fa fa-book"></i>
                                 <p>
                                     {::lang::allg::nav::changelog} {curr_changelog}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="https://discord.gg/uXxsqXD" target="_blank" class="nav-link aa_nav_hover">
+                                <i class="nav-icon fab fa-discord"></i>
+                                <p>
+                                    Discord
                                 </p>
                             </a>
                         </li>

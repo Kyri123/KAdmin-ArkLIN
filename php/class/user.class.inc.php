@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 
-class userclass
+class userclass extends helper
 {
 
     private $id;
@@ -23,7 +23,7 @@ class userclass
         $this->myconisset = false;
     }
 
-    function setid($id)
+    public function setid($id)
     {
         $this->id = $id;
         $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \'' . $this->id . '\'';
@@ -36,7 +36,7 @@ class userclass
         return false;
     }
 
-    function name()
+    public function name()
     {
         if ($this->myconisset) {
             $frech = $this->frech;
@@ -46,7 +46,7 @@ class userclass
         }
     }
 
-    function lasttime()
+    public function lasttime()
     {
         if ($this->myconisset) {
             $frech = $this->frech;
@@ -56,7 +56,7 @@ class userclass
         }
     }
 
-    function regtime()
+    public function regtime()
     {
         if ($this->myconisset) {
             $frech = $this->frech;
@@ -66,7 +66,7 @@ class userclass
         }
     }
 
-    function rang()
+    public function rang()
     {
         if ($this->myconisset) {
             $frech = $this->frech;
@@ -76,7 +76,7 @@ class userclass
         }
     }
 
-    function ban()
+    public function ban()
     {
         if ($this->myconisset) {
             $frech = $this->frech;
@@ -86,7 +86,7 @@ class userclass
         }
     }
 
-    function email()
+    public function email()
     {
         if ($this->myconisset) {
             $frech = $this->frech;
@@ -96,13 +96,43 @@ class userclass
         }
     }
 
-    function pw()
+    public function pw()
     {
         if ($this->myconisset) {
             $frech = $this->frech;
             return $frech['password'];
         } else {
             return 'Account nicht gefunden oder gesetzt!';
+        }
+    }
+
+    //write user_data
+    public function write($key, $value) {
+        $id = $this->id;
+        $query = 'UPDATE `ArkAdmin_users` SET `'.$key.'`=\''.$value.'\'  WHERE `id` = \''.$id.'\'';
+        if ($this->mycon->query($query)) {
+            $this->setid($id);
+            return true;
+        }
+        $this->myconisset = false;
+        return false;
+    }
+
+    // sende expert modus
+    public function expert()
+    {
+        $id = md5($this->id);
+        $path = "app/json/user/$id.json";
+        if (file_exists($path)) {
+            $json = parent::file_to_json($path, true);
+            if(isset($json["expert"])) {
+                return ($json["expert"] == 1) ? true : false;
+            }
+            else {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 }

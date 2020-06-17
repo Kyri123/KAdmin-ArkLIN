@@ -161,11 +161,11 @@
                         </a>
                     </li>
 
-                    <li class="nav-item ">
+                    <!--<li class="nav-item ">
                         <a href="#/servercenter/{cfg}/files" class="nav-link {_files} text-white aa_nav_hover">
                             <i class="nav-icon fas fa-file-archive pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::files}
                         </a>
-                    </li>
+                    </li>-->
 
                     <li class="nav-item ">
                         <a href="/servercenter/{cfg}/saves" class="nav-link {_saves} text-white aa_nav_hover">
@@ -230,17 +230,22 @@
 <div class="modal fade" id="action" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <form id="action_form" class="modal-dialog modal-xl" role="document" style="max-width: 700px" method="POST">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-dark text-white">
                 <h5 class="modal-title">{::lang::servercenter::main::modal::send_command::title}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span class="text-white" aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <p id="action_resp"></p>
-                {::lang::servercenter::main::modal::send_command::custom_action}
-                <input class="form-control" name="custom" type="text" placeholder="{::lang::servercenter::main::modal::send_command::custom_action_ph}">
-                <hr>
+                {expert}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">{::lang::servercenter::main::modal::send_command::custom_action}</span>
+                    </div>
+                    <input name="custom" type="text" class="form-control" placeholder="{::lang::servercenter::main::modal::send_command::custom_action_ph}">
+                </div>
+                <hr>{/expert}
                 <input name="cfg" id="cfg" value="{cfg}" type="hidden">
                 <select name="action" id="action_sel" class="form-control">
                     {action_list}

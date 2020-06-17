@@ -7,12 +7,15 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
-
+$resp = null;
 $sitetpl= new Template("step2.htm", $tpl_dir);
 $sitetpl->load();
 $complete = false;
 $ppath = "php/inc/custom_konfig.json";
-file_put_contents("app/check/subdone", "true");
+if(!file_put_contents("app/check/subdone", "true")) {
+    $resp = $alert->rd(1);
+}
+
 
 if (!file_exists("remote")) mkdir("remote");
 if (isset($_POST["savepanel"])) {
@@ -50,9 +53,15 @@ if (isset($_POST["savepanel"])) {
             unlink("remote/arkmanager/check");
             $link1 = true;
         }
+        else {
+            $resp = $alert->rd(1);
+        }
         if (file_put_contents("remote/serv/check", "done")) {
             unlink("remote/arkmanager/check");
             $link2 = true;
+        }
+        else {
+            $resp = $alert->rd(1);
         }
         if ($link1 && $link2) {
             header("Location: /install.php/3");

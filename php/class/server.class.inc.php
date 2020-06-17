@@ -51,16 +51,10 @@ class server {
 
     // Bekomme Main Dir
     public function dir_main() {
-
+        global $servlocdir;
+        
         $dir = $this->cfg_read('arkserverroot');
-        $exp = explode('/', $dir);
-
-        for ($i=0;$i<count($exp);$i++) {
-            if (strpos($exp[$i], $this->serv)) {
-                $path = 'remote/serv/'.$exp[$i];
-                break;
-            }
-        }
+        $path = str_replace($servlocdir, "remote/serv/", $dir);
 
         return $path;
     }
@@ -84,16 +78,10 @@ class server {
 
     // Bekomme Backup dir
     public function dir_backup() {
+        global $servlocdir;
 
         $dir = $this->cfg_read('arkbackupdir');
-        $exp = explode('/', $dir);
-
-        for ($i=0;$i<count($exp);$i++) {
-            if (strpos($exp[$i], $this->serv)) {
-                $path = 'remote/serv/'.$exp[$i];
-                break;
-            }
-        }
+        $path = str_replace($servlocdir, "remote/serv/", $dir);
 
         return $path;
     }

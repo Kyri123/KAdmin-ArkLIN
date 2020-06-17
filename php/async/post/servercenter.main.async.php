@@ -22,7 +22,7 @@ switch ($case) {
         $cfg = $_POST["cfg"];
         $serv = new server($cfg);
         $para = $_POST["para"];
-        $para_txt = $_POST["txt"];
+        $para_txt = (isset($_POST["txt"])) ? $_POST["txt"] : "";
         if ($para == null) $para[0] = null;
         $paraend = null;
 
@@ -70,9 +70,11 @@ switch ($case) {
             $alert->code = 12;
             $errorMSG = $alert->re();
         } else {
-            if (!$serv->send_action($send_shell)) {
-                $alert->code = 1;
-                $errorMSG = $alert->re();
+            if($errorMSG == "") {
+                if (!$serv->send_action($send_shell)) {
+                    $alert->code = 1;
+                    $errorMSG = $alert->re();
+                }
             }
         }
 

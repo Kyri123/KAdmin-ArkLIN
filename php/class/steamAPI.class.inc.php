@@ -8,26 +8,30 @@
  * *******************************************************************************************
 */
 
-class steamapi {
+class steamapi extends helper {
 
-    public $API_Key;
+    private $API_Key;
     public $modid;
 
     private $jsonpath = "app/json/steamapi/";
 
     public function __construct()
     {
-        global $API_Key;
-        $this->API_Key = $API_Key;
+        $ckonfig = parent::file_to_json('php/inc/custom_konfig.json', true);
+        $this->API_Key = $ckonfig['apikey'];
     }
 
-    public function getmod($modid) {
-        return $this->get_API_json($modid, 'mod');
-        $this->modid;
+    public function getmod($modid, $time = 3600, $remove = false) {
+        return $this->get_API_json($modid, 'mod', $time, null, $remove);
     }
 
-    public function getmod_class($modid) {
-        $json = $this->get_API_json($modid, 'mod');
+    // Derzeit unbenutzt (Platzhalter)
+    public function getmod_list($serv, $arr, $time = 3600, $remove = false) {
+        return $this->get_API_json($serv, 'mod', $time, $arr, $remove);
+    }
+
+    public function getmod_class($modid, $time = 3600, $remove = false) {
+        $json = $this->get_API_json($modid, 'mod', $time, null, $remove);
 
         $mod = new steam_mod();
         $mod->publishedfileid = $json->response->publishedfiledetails[0]->publishedfileid;
@@ -59,78 +63,55 @@ class steamapi {
         return $mod;
     }
 
-    public function getsteamprofile($sid) {
-        return $this->get_API_json($sid, 'profile');
-    }
-
-    public function getsteamprofile_class($sid) {
-        $json = $this->get_API_json($sid, 'profile');
-
-        $player = new steam_profile();
-        $player->steamid = $json->response->players[0]->steamid;
-        $player->communityvisibilitystate = $json->response->players[0]->communityvisibilitystate;
-        $player->profilestate = $json->response->players[0]->profilestate;
-        $player->personaname = $json->response->players[0]->personaname;
-        $player->lastlogoff = $json->response->players[0]->lastlogoff;
-        $player->commentpermission = $json->response->players[0]->commentpermission;
-        $player->profileurl = $json->response->players[0]->profileurl;
-        $player->avatar = $json->response->players[0]->avatar;
-        $player->avatarmedium = $json->response->players[0]->avatarmedium;
-        $player->avatarfull = $json->response->players[0]->avatarfull;
-        $player->personastate = $json->response->players[0]->personastate;
-        $player->realname = $json->response->players[0]->realname;
-        $player->primaryclanid = $json->response->players[0]->primaryclanid;
-        $player->timecreated = $json->response->players[0]->timecreated;
-        $player->personastateflags = $json->response->players[0]->personastateflags;
-        $player->loccountrycode = $json->response->players[0]->loccountrycode;
-        $player->locstatecode = $json->response->players[0]->locstatecode;
-        $player->loccityid = $json->response->players[0]->loccityid;
-
-        return $player;
+    public function getsteamprofile_list($serv, $arr, $time = 3600, $remove = false) {
+        return $this->get_API_json($serv, 'profile', $time, $arr, $remove);
     }
 
     public function check_mod() {
-        if ($this->getmod_class($this->modid)->consumer_app_id == 346110) {
+        if ($this->getmod_class($this->modid, 0, true)->consumer_app_id == 346110) {
             return true;
         } else {
             return false;
         }
     }
 
-    private function get_API_json($id, $type) {
+    private function get_API_json($id, $type, $time_differ, $arr = null, $remove = false) {
         chdir($_SERVER['DOCUMENT_ROOT']);
-        $file = $this->jsonpath.$type.$id.'.json';
+        $type_loc = ($type == "mod") ? "mods/".$type : $type;
+        $file = $this->jsonpath.$type_loc."_".$id.'.json';
 
         if (file_exists($file)) {
             $filetime = filemtime($file);
             $time = time();
             $diff = $time - $filetime;
-            if ($diff > 3600) {
-                if ($this->gen_API_json($id, $type)) {
+            if ($diff > $time_differ) {
+                if ($this->gen_API_json($id, $type, $arr)) {
                     $json = file_get_contents($file);
                     $json = json_decode($json);
+                    if($remove) unlink($file);
                 }
             } else {
                 $json = file_get_contents($file);
                 $json = json_decode($json);
+                if($remove) unlink($file);
             }
         } else {
-            if ($this->gen_API_json($id, $type)) {
+            if ($this->gen_API_json($id, $type, $arr)) {
                 $json = file_get_contents($file);
                 $json = json_decode($json);
+                if($remove) unlink($file);
             }
         }
         return $json;
     }
 
-
-    private function gen_API_json($id, $type) {
+    private function gen_API_json($id, $type, $arr = null) {
         $set = 0;
         $is = 0;
         $fields = array();
 
         if ($type == "profile") {
-            $url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=".$this->API_Key."&steamids=".$id;
+            $url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=".$this->API_Key."&steamids=".(($arr == null) ? $id : implode(",", $arr));
             $set = 2;
             $is = 1;
         }
@@ -141,9 +122,13 @@ class steamapi {
         }
 
         if ($set == 1) {
-            $fields = array(
+            $fields = ($arr == null) ? array(
                 'itemcount' => 1,
                 'publishedfileids[0]' => $id,
+            ):
+            $fields = array(
+                'itemcount' => count($arr),
+                'publishedfileids' => $arr,
             );
             $postvars = http_build_query($fields);
 
@@ -151,8 +136,7 @@ class steamapi {
 
             curl_setopt($ch, CURLOPT_URL,$url);
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS,
-                "itemcount=1&publishedfileids[0]=".$id);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
 
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $res = curl_exec($ch);
@@ -164,7 +148,9 @@ class steamapi {
         }
 
         if ($is == 1) {
-            if (file_put_contents($this->jsonpath.$type.$id.'.json', $res)) {
+            if(!file_exists($this->jsonpath."mods")) mkdir($this->jsonpath."mods");
+            $type = ($type == "mod") ? "mods/".$type : $type;
+            if (file_put_contents($this->jsonpath.$type."_".$id.'.json', $res)) {
                 return true;
             } else {
                 return false;
