@@ -148,26 +148,6 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
     $a4 = code;
 }
 
-// Speicher Sprache in einer user.json
-if(isset($_SESSION["id"]) && isset($_COOKIE["lang"])) {
-    $uid = md5($_SESSION["id"]);
-    $path = "app/json/user/$uid.json";
-    // speichern wenn die json existiert
-    if(file_exists($path)) {
-        $json = $helper->file_to_json($path);
-        // prüfe ob die json gleich dem Cookies entspricht
-        if($json["lang"] != $_COOKIE["lang"]) {
-            $json["lang"] = $_COOKIE["lang"];
-            $helper->savejson_exsists($json, $path);
-        }
-    // speichern wenn die json NICHT existiert
-    } else {
-    // speichern wenn die json existiert
-        $json["lang"] = $_COOKIE["lang"];
-        $helper->savejson_exsists($json, $path);
-    }
-}
-
 $tpl_register = new Template("register.htm", "app/template/session/");
 $tpl_login = new Template("login.htm", "app/template/session/");
 $tpl_register->load();

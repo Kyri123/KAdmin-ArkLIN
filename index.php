@@ -9,8 +9,15 @@
 */
 
 // hide errors
-error_reporting(0);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
+//check install
+if (!file_exists("app/check/subdone")) {
+    header('Location: /install.php');
+    exit;
+}
 
 // Define vars
 date_default_timezone_set('Europe/Amsterdam');
@@ -61,9 +68,10 @@ include('php/inc/session.inc.php');
 include('php/inc/auto_update_sql_DB.inc.php');
 
 //create globals vars
+$ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
 $API_Key = $ckonfig['apikey'];
 $servlocdir = $ckonfig['servlocdir'];
-$ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
+$expert = $user->expert();
 $jobs = new jobs();
 
 //check is user banned
@@ -192,7 +200,7 @@ if ($page != "login" && $page != "registration" && $page != "crontab" && isset($
     }
 
     // Forward installer
-    elseif (!file_exists("app/check/subdone") || !file_exists("app/check/subdone")) {
+    elseif (!file_exists("app/check/subdone")) {
         header('Location: /install.php');
         exit;
     } else {

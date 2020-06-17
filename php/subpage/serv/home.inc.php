@@ -21,14 +21,17 @@ $page_tpl->r('SESSION_USERNAME' ,$user->name());
 
 $cheatfile = $serv->dir_save(true)."/AllowedCheaterSteamIDs.txt";
 
+$playerjs = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true)["response"]["players"];
+$count = (is_countable($playerjs)) ? count($playerjs): false;
+
 //add_admin
 if (isset($_POST["addadmin"])) {
     $id = $_POST["id"];
-    $api = $steamapi->getsteamprofile_class($id);
+    for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$id = $ix; break;};
     $content = file_get_contents($cheatfile)."\n$id";
     if (file_put_contents($cheatfile, $content)) {
         $alert->code = 100;
-        $alert->r("name", $api->personaname);
+        $alert->r("name", $playerjs[$id]["personaname"]);
         $alert->overwrite_text = "{::lang::php::sc::page::home::add_admin}";
         $resp = $alert->re();
     } else {
@@ -40,13 +43,13 @@ if (isset($_POST["addadmin"])) {
 //remove Admin
 if (isset($url[4]) && isset($url[5]) && $url[4] == 'rm') {
     $id = $url[5];
-    $api = $steamapi->getsteamprofile_class($id);
+    for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$id = $ix; break;};
     $content = file_get_contents($cheatfile);
     if (substr_count($content, $id) > 0) {
         $content = str_replace($id, null, $content);
         if (file_put_contents($cheatfile, $content)) {
             $alert->code = 101;
-            $alert->r("name", $api->personaname);
+            $alert->r("name", $playerjs[$id]["personaname"]);
             $alert->overwrite_text = "{::lang::php::sc::page::home::remove_admin}";
             $resp = $alert->re();
         } else {
@@ -94,19 +97,19 @@ if ($bool_install) {
             }
 
             if ($found) {
-                $api = $steamapi->getsteamprofile_class($id);
+                for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$id = $ix; break;};
                 $list_tpl->r("igname", $pl->CharacterName);
             } else {
-                $api = $steamapi->getsteamprofile_class($file[$i]);
+                for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$id = $ix; break;};
                 $list_tpl->r("igname", "{::lang::php::sc::page::home::unknown_name}");
             }
 
-            $list_tpl->r("stid", $api->steamid);
-            $list_tpl->r("url", $api->profileurl);
+            $list_tpl->r("stid", $playerjs[$id]["steamid"]);
+            $list_tpl->r("url", $playerjs[$id]["profileurl"]);
             $list_tpl->r("cfg", $serv->name());
             $list_tpl->r("rndb", rndbit(25));
-            $list_tpl->r("stname", $api->personaname);
-            $list_tpl->r("img", $api->avatarmedium);
+            $list_tpl->r("stname", $playerjs[$id]["personaname"]);
+            $list_tpl->r("img", $playerjs[$id]["avatarmedium"]);
 
             $adminlist_admin .= $list_tpl->load_var();
         }

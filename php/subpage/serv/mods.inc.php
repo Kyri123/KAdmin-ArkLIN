@@ -10,7 +10,7 @@
 
 $pagename = '{::lang::php::sc::page::saves::pagename}';
 $resp = null;
-$urls = 'http://dev.aa.chiraya.de/servercenter/'.$url[2].'/mods/';
+$urls = '/servercenter/'.$url[2].'/mods/';
 $page_tpl = new Template('mods.htm', 'app/template/serv/page/');
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::saves::urltop}</li>';

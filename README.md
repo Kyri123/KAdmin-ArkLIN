@@ -17,13 +17,6 @@ Webbasiertes Admin Panel für Ark-Gameserver
 - Rufe über einen screen den Webhelper `java/start.sh` auf und las diesem Laufen
 - Rufe die Webseite auf und folge der Installation
 
-# Update
-
-`Wichtig für Update von -0.6.2 auf +0.7.0 Es ist empfohlen das Panel neu zu installieren!`
-- Lade die letzte Version runter
-- lade alle Dateien außer `Install` auf den Webserver
-- Fertig
-
 # Config.Properties
 
 | Eigenschaften | Wert | 
@@ -38,6 +31,13 @@ Webbasiertes Admin Panel für Ark-Gameserver
 | `JobsIntervall` | Intervall für das abrufen des Crontabs (Cronjobs) |
 | `ShellIntervall` | Intervall für das abrufen der Shell Dateien |
 | `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) |
+
+# Update
+
+`Wichtig für Update von -0.6.2 auf +0.7.0 Es ist empfohlen das Panel neu zu installieren!`
+- Lade die letzte Version runter
+- lade alle Dateien außer `Install` auf den Webserver
+- Fertig
 
 # Sprache Installieren
 

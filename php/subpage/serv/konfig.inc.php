@@ -24,11 +24,32 @@ if (isset($_POST['savecfg'])) {
     $cfg = null;
 
     for ($i=0;$i<count($key);$i++) {
-        $cfg .= $key[$i].'="'.$value[$i]."\"\n";
+        $write = ($value[$i] == "none") ? false : true;
+        if($write) $cfg .= $key[$i].'="'.$value[$i]."\"\n";
+    }
+
+    if(is_array($flag)) {
+        for ($i=0;$i<count($flag);$i++) {
+            $cfg .= "arkflag_".$flag[$i].'="True"'."\n";
+        }
     }
 
     $cfg .= $flag.$opt;
     $cfg = ini_save_rdy($cfg);
+    $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
+    if (file_put_contents($path, $cfg)) {
+        $resp = $alert->rd(102);
+        header("Refresh:0"); exit;
+    } else {
+        $resp = $alert->rd(1);
+    } 
+}
+
+// arkmanager.cfg (Expert) Speichern
+$resp = null;
+if (isset($_POST['savecfg_expert'])) {
+    $txtarea = $_POST['txtarea'];
+    $cfg = ini_save_rdy($txtarea);
     $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
     if (file_put_contents($path, $cfg)) {
         $resp = $alert->rd(102);
@@ -65,33 +86,119 @@ $engine = ($serv->ini_load('Engine.ini', true)) ? $serv->ini_get_str() : $defaul
 $strcfg = $serv->cfg_get_str();
 
 $form = null;
-$ark_flag = null;
 $ark_opt = null;
+$flags = array();
 $i = 0;
+
+
+//event 
+$events = array(
+    "Easter",
+    "Arkeolgy",
+    "ExtinctionChronicles",
+    "WinterWonderland",
+    "vday",
+    "Summer",
+    "FearEvolved",
+    "TurkeyTrial",
+    "birthday"
+);
+$eventlist .= "<option value=\"none\">{::lang::php::sc::page::konfig::noevent}</option>";
+$curr = $serv->cfg_read("arkopt_ActiveEvent");
+foreach($events as $k) {
+    $eventlist .="<option value=\"$k\" ".(($curr == $k) ? "selected=\"true\"" : null).">$k</option>";
+}
+$form .= '
+    <tr>
+        <td class="p-2">arkopt_ActiveEvent</td>
+        <td class="p-2">
+            <input type="hidden" name="key[]" readonly value="arkopt_ActiveEvent">
+            <select type="text" name="value[]" class="form-control form-control-sm">'.$eventlist.'</select>
+        </td>
+    </tr>';
+
 if ($serv->isinstalled()) {
+    $hide_cluster = array(
+        "ark_NoTransferFromFiltering",
+        "ark_NoTributeDownloads",
+        "ark_PreventDownloadSurvivors",
+        "ark_PreventUploadSurvivors",
+        "ark_PreventDownloadItems",
+        "ark_PreventUploadItems",
+        "ark_PreventDownloadDinos",
+        "ark_PreventUploadDinos",
+        "arkopt_clusterid",
+        "arkopt_ClusterDirOverride"
+    );
+    $no_del = array(
+        "arkserverroot",
+        "logdir",
+        "arkbackupdir",
+        "arkserverexec",
+        "arkautorestartfile",
+        "arkAutoUpdateOnStart",
+        "arkBackupPreUpdate",
+        "ark_SessionName",
+        "serverMap",
+        "serverMapModId",
+        "ark_TotalConversionMod",
+        "ark_RCONEnabled",
+        "ark_ServerPassword",
+        "ark_ServerAdminPassword",
+        "ark_MaxPlayers",
+        "ark_GameModIds",
+        "aark_RCONEnabled",
+        "ark_Port",
+        "ark_RCONPort",
+        "ark_QueryPort",
+        "ark_AltSaveDirectoryName"
+    );
+    $remove = array(
+        "arkopt_ActiveEvent"
+    );
+
+
     $serv->cfg_get();
     $ini = parse_ini_file('remote/arkmanager/instances/'.$url[2].'.cfg', false);
     foreach($ini as $key => $val) {
         if ($key) {
-            if (strpos($key, 'arkflag_') !== false) {
-                $ark_flag .= $key.'="'.$val.'"
-';
+            if (in_array($key, $remove)) {
+                null;
             }
-            elseif (strpos($key, 'arkopt_') !== false) {
-                $ark_opt .= $key.'="'.$val.'"
-';
-            } else {
-                $form .= '
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">'.$key.'</label>
-                    <div class="col-sm-9">
-                        <input type="hidden" name="key[]" readonly value="'.$key.'">
-                        <input type="text" name="value[]" class="form-control"  value="'.$val.'">
+            elseif (strpos($key, 'arkflag_') !== false) {
+                array_push($flags, $key);
+            }
+            else {
+                $formtype = (!in_array($key, $no_del)) ? 
+                // wenn nicht im array
+                '<div class="input-group mb-0">
+                    <input type="hidden" name="key[]" readonly value="'.$key.'">
+                    <input type="text" name="value[]" class="form-control form-control-sm"  value="'.$val.'">
+                    <div class="input-group-append">
+                    <span onclick="remove(\''.md5($key).'\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>
                     </div>
-                </div>';
+                </div>' : 
+                //sonst
+                '<input type="hidden" name="key[]" readonly value="'.$key.'">
+                <input type="text" name="value[]" class="form-control form-control-sm"  value="'.$val.'">';
+
+                $form .= '
+                    <tr class="'.(($serv->cluster_in() && in_array($key, $hide_cluster)) ? "d-none" : null).'" id="'.md5($key).'">
+                        <td class="p-2">'.$key.'</td>
+                        <td class="p-2">
+                        '.$formtype.'
+                        </td>
+                    </tr>';
             }
         };
     }
+}
+
+//flags
+$flags_json = $helper->file_to_json("app/json/panel/flags.json", true);
+foreach($flags_json as $k => $v) {
+    $sel = (in_array("arkflag_$v", $flags)) ? 'selected="true"' : null;
+    $ark_flag .= "<option value=\"$v\" $sel>$v</option>";
 }
 
 if ($ifckonfig) $resp .= $alert->rd(301, 3);
@@ -102,6 +209,9 @@ $page_tpl->r('strcfg', $strcfg);
 $page_tpl->r('gus', $gus);
 $page_tpl->r('game', $game);
 $page_tpl->r('engine', $engine);
+$page_tpl->r('eventlist', $eventlist);
+$page_tpl->r('amcfg', file_get_contents('remote/arkmanager/instances/'.$url[2].'.cfg'));
+$page_tpl->rif('expert', $user->expert());
 $page_tpl->session();
 $panel = $page_tpl->load_var();
 ?>

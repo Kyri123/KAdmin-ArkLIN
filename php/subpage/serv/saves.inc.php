@@ -108,59 +108,69 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
 
 
 $resp = null;
-$urls = 'http://dev.aa.chiraya.de/servercenter/'.$url[2].'/mods/';
+$urls = '/servercenter/'.$url[2].'/mods/';
 
 $serv->cfg_read('arkserverroot');
 $savedir = $serv->dir_save();
-$player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.json', false);
+
+$player = null;
 $tribe_json = $helper->file_to_json('app/json/saves/tribes_'.$serv->name().'.json', false);
-if (!is_array($player_json)) $player_json = array();
-if (!is_array($tribe_json)) $tribe_json = array();
-
-$player = null; $c_pl = 0;
+$player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.json', false);
+$playerjs = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true)["response"]["players"];
+$jhelper = new player_json_helper();
 // Spieler
-for ($i=0;$i<count($player_json);$i++) {
-    $list_tpl = new Template('list_saves.htm', 'app/template/serv/page/list/');
-    $list_tpl->load();
-
-    $pl = $jhelper->player($player_json, $i);
-
-    for ($z = 0; $z < count($tribe_json); $z++) {
-        $member = $tribe_json[$z]->Members;
-
-        if (in_array($pl->CharacterName, $member)) {
-            $tribe = $jhelper->tribe($tribe_json, $z);
-            $list_tpl->r('tribe', $tribe->Name);
-            break;
+$count = (is_countable($playerjs)) ? count($playerjs): false;
+if($count !== false) {
+    for ($ix=0;$ix<$count;$ix++) {
+        $list_tpl = new Template('list_saves.htm', 'app/template/serv/page/list/');
+        $list_tpl->load();
+    
+        for ($y=0;$y<count($player_json);$y++) {
+            if (intval($playerjs[$ix]["steamid"]) == intval($player_json[$y]->SteamId)) {
+                break;
+            }
+        }
+    
+        $pl = $jhelper->player($player_json, $y);
+    
+        if (is_array($tribe_json)) {
+            for ($z = 0; $z < count($tribe_json); $z++) {
+                $member = $tribe_json[$z]->Members;
+    
+                if (in_array($pl->CharacterName, $member)) {
+                    $tribe = $jhelper->tribe($tribe_json, $z);
+                    $list_tpl->r('tribe', htmlentities($tribe->Name));
+                    break;
+                }
+            }
+        }
+        if ($pl->Level > 1000) $pl->Level = 0;
+        if ($pl->TribeId == 7) $pl->TribeId = null;
+    
+        $list_tpl->r('IG:name', htmlentities($pl->CharacterName));
+        $list_tpl->r('IG:Level', $pl->Level);
+        $list_tpl->r('update', converttime($pl->FileUpdated));
+        $list_tpl->r('rnd', rndbit(10));
+        $list_tpl->r('url', htmlentities($playerjs[$ix]["profileurl"]));
+        $list_tpl->r('img', $playerjs[$ix]["avatar"]);
+        $list_tpl->r('steamname', htmlentities($playerjs[$ix]["personaname"]));
+    
+        $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$pl->SteamId.'.arkprofile');
+    
+        $list_tpl->r('EP', round($pl->ExperiencePoints, '2'));
+        $list_tpl->r('SpielerID', $pl->Id);
+        $list_tpl->r('TEP', $pl->TotalEngramPoints);
+        $list_tpl->r('TID', $pl->TribeId);
+        $file = $savedir.'/'.$pl->SteamId.'.arkprofile';
+        $list_tpl->r('durl', "/".$file);
+    
+        if(file_exists($savedir.'/'.$pl->SteamId.'.arkprofile')) {
+            $player .= $list_tpl->load_var();
+            $c_pl++;
         }
     }
 
-    $list_tpl->r('tribe', '{::lang::php::sc::page::mods::no_tribe}');
-
-    if ($pl->Level > 1000) $pl->Level = 0;
-    if ($pl->TribeId == 7) $pl->TribeId = null;
-
-    $list_tpl->r('IG:name', $pl->CharacterName);
-    $list_tpl->r('IG:Level', $pl->Level);
-    $list_tpl->r('update', converttime($pl->FileUpdated));
-    $list_tpl->r('rnd', rndbit(10));
-    $list_tpl->r('url', $steamapi->getsteamprofile_class($pl->SteamId)->profileurl);
-    $list_tpl->r('img', $steamapi->getsteamprofile_class($pl->SteamId)->avatar);
-    $list_tpl->r('steamname', $steamapi->getsteamprofile_class($pl->SteamId)->personaname);
-
-    $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$pl->SteamId.'.arkprofile');
-
-    $list_tpl->r('EP', round($pl->ExperiencePoints, '2'));
-    $list_tpl->r('SpielerID', $pl->Id);
-    $list_tpl->r('TEP', $pl->TotalEngramPoints);
-    $list_tpl->r('TID', $pl->TribeId);
-    $file = $savedir.'/'.$pl->SteamId.'.arkprofile';
-    $list_tpl->r('durl', "/".$file);
-
-    $player .= $list_tpl->load_var();
-    $c_pl++;
 }
-
 $tribe = null; $c_t = 0;
 // Stämme
 
@@ -178,14 +188,16 @@ for ($i = 0; $i < count($tribe_json); $i++) {
         for ($z=0;$z<count($player_json); $z++) {
             $p = $jhelper->player($player_json, $z);
             if ($p->CharacterName == $key) {
+                for ($ix=0;$ix<$count;$ix++) if($p->SteamId == $playerjs[$ix]["steamid"]) {$id = $ix; break;};
+
                 $playerlist_tpl = new Template('list_tribes_user.htm', 'app/template/serv/page/list/');
                 $playerlist_tpl->load();
 
                 $playerlist_tpl->r('IG:name', $p->CharacterName);
                 $playerlist_tpl->r('lastupdate', converttime($p->FileUpdated));
-                $playerlist_tpl->r('url', $steamapi->getsteamprofile_class($p->SteamId)->profileurl);
-                $playerlist_tpl->r('img', $steamapi->getsteamprofile_class($p->SteamId)->avatar);
-                $playerlist_tpl->r('steamname', $steamapi->getsteamprofile_class($p->SteamId)->personaname);
+                $playerlist_tpl->r('url', $playerjs[$id]["profileurl"]);
+                $playerlist_tpl->r('img', $playerjs[$id]["avatar"]);
+                $playerlist_tpl->r('steamname', $playerjs[$id]["personaname"]);
                 $rank = '<b>{::lang::php::sc::page::mods::member}</b>';
 
                 $playerlist .= $playerlist_tpl->load_var();
@@ -194,7 +206,6 @@ for ($i = 0; $i < count($tribe_json); $i++) {
         }
     }
 
-    $list_tpl->r('steamname', $steamapi->getsteamprofile_class($pl->SteamId)->personaname);
     $list_tpl->r('rnd', rndbit(10));
     $list_tpl->r('name', $pl->Name);
     $list_tpl->r('update', converttime($pl->FileUpdated));
@@ -255,5 +266,6 @@ $page_tpl->r('cw', $w_t);
 $page_tpl->session();
 $panel = $page_tpl->load_var();
 
+$player = null;
 
 ?>

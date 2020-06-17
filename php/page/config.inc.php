@@ -20,9 +20,9 @@ $ppath = "php/inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
 $array = $helper->file_to_json($ppath, true);
 if (!isset($array["clusterestart"])) $array["clusterestart"] = 0;
-if (!isset($array["uninstall_mod"])) $array["clusterestart"] = 0;
-if (!isset($array["install_mod"])) $array["clusterestart"] = 0;
-if (!isset($array["servlocdir"])) $array["clusterestart"] = 0;
+if (!isset($array["uninstall_mod"])) $array["uninstall_mod"] = 0;
+if (!isset($array["install_mod"])) $array["install_mod"] = 0;
+if (!isset($array["servlocdir"])) $array["servlocdir"] = 0;
 if (!isset($array["arklocdir"])) $array["arklocdir"] = null;
 if (!isset($array["apikey"])) $array["apikey"] = null;
 $helper->savejson_exsists($array, $ppath);
@@ -106,7 +106,7 @@ foreach($panelconfig as $key => $value) {
         "Steam-API Key <a href='https://steamcommunity.com/dev/apikey' target='_blank'>({::lang::php::config::key::apikey_found_here})</a>"
     );
 
-    $bool = array("uninstall_mod", "install_mod", "clusterestart");
+    $bool = array("uninstall_mod", "install_mod", "clusterestart", "expert");
     if (in_array($key, $bool)) {
         $list->rif ("ifbool", true);
         $list->rif ("ifnum", false);

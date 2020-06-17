@@ -21,6 +21,27 @@ $setsidebar = false;
 $serv = new server($url[2]);
 $serv->cluster_load();
 
+//erstelle SteamAPI von OnlineSpieler
+$pl_json = $helper->file_to_json('app/json/saves/pl_' . $serv->name() . '.players', false);
+$arr_pl = array();
+if (is_array($pl_json)) {
+    for ($i = 0; $i < count($pl_json); $i++) {
+        $arr_pl[] = $pl_json[$i]->steamID;
+    }
+}
+//erstelle SteamAPI von Savegames
+$player_json = $helper->file_to_json('app/json/saves/player_' . $serv->name() . '.json', false);
+$arr_player = array();
+if (is_array($player_json)) {
+    for ($i = 0; $i < count($player_json); $i++) {
+        $arr_player[] = $player_json[$i]->SteamId;
+    }
+}
+
+$steamapi->getsteamprofile_list("online_".$serv->name(), $arr_pl, 60);
+$steamapi->getsteamprofile_list("savegames_".$serv->name(), $arr_player);
+//$steamapi->getmod_list($serv->name(), explode(",", $serv->cfg_read("ark_GameModIds"))); Generiert Modliste für den server (unbenutzt)
+
 $ifslave = false; if ($serv->cluster_type() == 0 && $serv->cluster_in()) $ifslave = true;
 $ifcadmin = false; if ($serv->cluster_admin() && $ifslave && $serv->cluster_in()) $ifcadmin = true;
 $ifckonfig = false; if ($serv->cluster_konfig() && $ifslave && $serv->cluster_in()) $ifckonfig = true;
@@ -132,33 +153,24 @@ else {
     $warning_list = $warning_listitem->load_var();
 }
 
-$savedir = $serv->dir_save();
-$pl_json = $helper->file_to_json('app/json/saves/pl_' . $serv->name() . '.players');
-$player_json = $helper->file_to_json('app/json/saves/player_' . $serv->name() . '.json', false);
-$player_json_ar = $helper->file_to_json('app/json/saves/player_' . $serv->name() . '.json', true);
-$tribe_json = $helper->file_to_json('app/json/saves/tribes_' . $serv->name() . '.json', false);
-$tribe_json_ar = $helper->file_to_json('app/json/saves/tribes_' . $serv->name() . '.json', true);
-if (!is_array($player_json)) $player_json = array();
-if (!is_array($tribe_json)) $tribe_json = array();
+$tribe_json = $helper->file_to_json('app/json/saves/tribes_'.$serv->name().'.json', false);
+$player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.json', false);
+$player_online = $helper->file_to_json('app/json/steamapi/profile_online_'.$serv->name().'.json', true)["response"]["players"];
 $jhelper = new player_json_helper();
 
-$player = null;
-$c_pl = 0;
-
 // Spieler
-if (is_array($pl_json) && $pl_json[0]["name"] != "NO") {
+if (count($player_online) > 0) {
     for ($i = 0; $i < count($pl_json); $i++) {
         $list_tpl = new Template('list_user.htm', 'app/template/serv/page/list/');
         $list_tpl->load();
 
         for ($y=0;$y<count($player_json);$y++) {
-            if ($pl_json[$i]["steamID"] == $player_json_ar[$y]["SteamId"]) {
-                $z = $y;
+            if (intval($player_online[$i]["steamid"]) == intval($player_json[$y]->SteamId)) {
                 break;
             }
         }
 
-        $pl = $jhelper->player($player_json, $z);
+        $pl = $jhelper->player($player_json, $y);
 
         if (is_array($tribe_json)) {
             for ($z = 0; $z < count($tribe_json); $z++) {
@@ -181,9 +193,9 @@ if (is_array($pl_json) && $pl_json[0]["name"] != "NO") {
         $list_tpl->r('IG:Level', $pl->Level);
         $list_tpl->r('lastupdate', converttime($pl->FileUpdated));
         $list_tpl->r('rnd', rndbit(10));
-        $list_tpl->r('url', $steamapi->getsteamprofile_class($pl->SteamId)->profileurl);
-        $list_tpl->r('img', $steamapi->getsteamprofile_class($pl->SteamId)->avatar);
-        $list_tpl->r('steamname', $steamapi->getsteamprofile_class($pl->SteamId)->personaname);
+        $list_tpl->r('url', $player_online[$i]["profileurl"]);
+        $list_tpl->r('img', $player_online[$i]["avatar"]);
+        $list_tpl->r('steamname', $player_online[$i]["personaname"]);
 
         $list_tpl->r('rm_url', '/servercenter/' . $serv->name() . '/saves/remove/' . $pl->SteamId . '.arkprofile');
 
@@ -275,6 +287,7 @@ $tpl->r("typestr", $clustertype[$serv->cluster_type()]);
 $onlinestate = false;
 if ($serv->statecode() == 2) $onlinestate = true;
 $tpl->rif ("ifonline", $onlinestate);
+$tpl->rif ('expert', $user->expert());
 $tpl->r('joinurl', $serv->status()->connect);
 // lade in TPL
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
