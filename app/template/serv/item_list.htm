@@ -1,10 +1,9 @@
 <a href="/servercenter/{cfg}/home" class="dropdown-item">
     <div class="media">
-        <img src="{map}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+        <div id="img_{cfg}" class="mr-2"></div>
         <div class="media-body">
             <h3 class="dropdown-item-title">
                 {servername}
-                <span class="float-right text-sm text-danger"><i class="fas fa-circle text-{color}" id="state{cfg}"></i></span>
             </h3>
             <p class="text-sm">
                 {subline} {ifin}
@@ -16,25 +15,5 @@
 <div class="dropdown-divider"></div>
 
 <script>
-    setInterval(function() {
-        $.getJSON("/app/json/serverinfo/{cfg}.json", function(data) {
-            on = data.online;
-            run = data.run;
-            listening = data.listening;
-            if (data.installed != "TRUE") {
-                var color = "text-warning";
-            } else if (data.online == "Yes") {
-                var color = "text-success";
-            } else if (data.online == "NO" && data.run == "Yes" && data.listening == "No") {
-                var color = "text-info";
-            } else if (data.online == "NO" && data.run == "No" && data.listening == "No") {
-                var color = "text-danger";
-            } else {
-                var color = "text-danger";
-            }
-            var oldClassList = $("#state{cfg}").attr("class");
-            var newClassList = "fas fa-circle " + color;
-            if (oldClassList != newClassList) $("#state{cfg}").attr("class", "").addClass(newClassList);
-        });
-    }, 1000);
+    getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=imgtop&case=info", "img_{cfg}");
 </script>

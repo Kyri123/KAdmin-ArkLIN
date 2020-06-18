@@ -17,7 +17,7 @@ if ($max == 'NaN') $max = '&#8734;';
 if ($type == 'Ja') $hide = true;
 if ($type == 'Nein') $hide = false;
 
-
+$content = null;
 if (file_exists($file)) {
 $z = 1;
 

@@ -12,26 +12,42 @@
             <li class="nav-item" style="margin-right: 5px">
                 <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-Arkmanager" role="tab" aria-controls="pills-Arkmanager" aria-selected="false">Arkmanager.cfg</a>
             </li>
+            <li class="nav-item" style="margin-right: 5px">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-webhelper" role="tab" aria-controls="pills-webhelper" aria-selected="false">Config.Properties</a>
+            </li>
         </ul>
     </div>
 </nav>
 
 <hr />
 
-<div class="card shadow p-4" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+<div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
     <div class="tab-content" id="pills-tabContent">
         <form action="#save" method="post" class="tab-pane fade show active" id="pills-Panel" role="tabpanel" aria-labelledby="pills-home-tab">
-            <div id="form">
-                <input type="submit" class="btn btn-primary mb-3" name="savepanel" value="{::lang::config::btn_save}">
-                <p>{option_panel}</p>
-                <input type="submit" class="btn btn-primary" name="savepanel" value="{::lang::config::btn_save}">
-            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;" name="savepanel">{::lang::config::btn_save}</button>
+            <table class="table table-striped mb-0" id="form">
+                <thead>
+                    <tr>
+                        <th style="width: 25%">{::lang::servercenter::config::th_config}</th>
+                        <th>{::lang::servercenter::config::th_input}</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    {option_panel}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary" style="width: 100%;" name="savepanel">{::lang::config::btn_save}</button>
         </form>
+
         <form action="#save" method="post" class="tab-pane fade" id="pills-Arkmanager" role="tabpanel" aria-labelledby="pills-profile-tab">
-            <div>
-                <button type="submit" class="btn btn-primary mb-3" name="savearkmanager">{::lang::config::btn_save}</button>
-                <textarea name="text" class="form-control" rows="3" style="min-height: 500px;max-height: 500px;" id="text_game">{arkmanager}</textarea>
-            </div>
+            <button type="submit" class="btn btn-primary" name="savearkmanager" style="width: 100%;">{::lang::config::btn_save}</button>
+            <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 500px;max-height: 500px;" id="text_game">{arkmanager}</textarea>
+        </form>
+
+        <form action="#save" method="post" class="tab-pane fade" id="pills-webhelper" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <button type="submit" class="btn btn-primary" name="savewebhelper" style="width: 100%;">{::lang::config::btn_save}</button>
+            <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 500px;max-height: 500px;" id="text_game">{webhelper}</textarea>
         </form>
     </div>
 </div>

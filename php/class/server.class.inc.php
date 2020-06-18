@@ -318,54 +318,54 @@ class server {
 
     public function cluster_array() {
         if ($this->loadedcluster) return $this->cluster_data;
-        if (!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
     }
 
     public function cluster_in() {
         if ($this->loadedcluster) return $this->cluster_data["in"];
-        if (!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
+        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
     }
 
     public function cluster_clusterid() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["clusterid"];
-        if (!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
-        if (!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
+        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
     public function cluster_name() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["name"];
-        if (!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
-        if (!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
+        if (!$this->cluster_data["in"]) return "{::lang::php::class::notincluster}";
     }
 
     public function cluster_key() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["key"];
-        if (!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
-        if (!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
+        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
     public function cluster_mods() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["mods"];
-        if (!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
-        if (!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
+        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
     public function cluster_konfig() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["konfig"];
-        if (!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
-        if (!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
+        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
     public function cluster_admin() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["admin"];
-        if (!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
-        if (!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
+        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
     public function cluster_type() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["type"];
-        if (!$this->loadedcluster) echo "Lade erst die Cluster daten: load_cluster()";
-        if (!$this->cluster_data["in"]) return "Befindet sich nicht in einem Cluster";
+        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
+        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
 

@@ -85,21 +85,14 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
     define('pw2', $_POST["pw2"]);
     define('code', $_POST["code"]);
     $cont = 1;
-    if (username == null) {
-        $cont = 0;
-    }
-    if (code == null) {
-        $cont = 0;
-    }
-    if (email == null) {
-        $cont = 0;
-    }
-    if (pw1 == null) {
-        $cont = 0;
-    }
-    if (pw2 == null) {
-        $cont = 0;
-    }
+    if (
+            username == null ||
+            code == null ||
+            email == null ||
+            pw1 == null ||
+            pw2 == null
+    ) $cont = 0;
+    
     if ($cont == 1) {
         if (pw1 == pw2) {
             $query = 'SELECT * FROM `ArkAdmin_users` WHERE `username` = \''.username.'\'';

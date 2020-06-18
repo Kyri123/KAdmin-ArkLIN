@@ -16,6 +16,13 @@
             <register>Registrieren</register>
         </session>
 
+        <!-- Classes -->
+        <class>
+            <nocluster>Befindet sich nicht in einem Cluster</nocluster>
+            <clusternotload>Lade erst die Cluster daten: load_cluster()</clusternotload>
+            <notincluster>Kein Cluster</notincluster>
+        </class>
+
         <!-- server.inc.php -->
         <server>
             <subline>{aplayers} / {ark_MaxPlayers} Spieler | V.{serv_version}</subline>

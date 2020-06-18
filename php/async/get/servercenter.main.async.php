@@ -57,7 +57,7 @@ switch ($case) {
 
         $tpl->r("serv_state", $serv_state);
         $tpl->r("serv_color", $serv_color);
-        $tpl->r("serv_pid", $serv_pid);
+        $tpl->r('serv_pid', null);
 
         $tpl->r("pl_plpro", $pl_plpro);
         $tpl->r("pl_disabled", $pl_disabled);
@@ -71,8 +71,12 @@ switch ($case) {
         $tpl->r("action_btntxt", $action_btntxt);
         $tpl->r("action_modal", $action_modal);
 
+        $map_path = "app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
+        if (!file_exists($map_path)) $map_path = "app/dist/img/igmap/ark.png";
+
         if ($_GET["type"] == "cards") $string = $tpl->load_var();
-        if ($_GET["type"] == "img") $string = '<img src="/app/dist/img/logo/ark.png" style="border-radius: 25rem!important;height: 90px;width: 90px;background-color: #001f3f" class="border-'.$serv_color.'">';
+        if ($_GET["type"] == "img") $string = '<img src="/'.$map_path.'" style="border-radius: 25rem !important;border-top-width: 3px!important;height: 90px;width: 90px;background-color: #001f3f" class="border-'.$serv_color.'">';
+        if ($_GET["type"] == "imgtop") $string = '<img src="/'.$map_path.'" style="border-width: 3px!important;background-color: #001f3f" class="img-size-50 border border-'.$serv_color.'">';
 
         echo $string;
         break;

@@ -121,12 +121,12 @@ $jhelper = new player_json_helper();
 // Spieler
 $count = (is_countable($playerjs)) ? count($playerjs): false;
 if($count !== false) {
-    for ($ix=0;$ix<$count;$ix++) {
+    for ($i=0;$i<$count;$i++) {
         $list_tpl = new Template('list_saves.htm', 'app/template/serv/page/list/');
         $list_tpl->load();
     
         for ($y=0;$y<count($player_json);$y++) {
-            if (intval($playerjs[$ix]["steamid"]) == intval($player_json[$y]->SteamId)) {
+            if (intval($playerjs[$i]["steamid"]) == intval($player_json[$y]->SteamId)) {
                 break;
             }
         }
@@ -144,16 +144,16 @@ if($count !== false) {
                 }
             }
         }
-        if ($pl->Level > 1000) $pl->Level = 0;
+        $list_tpl->r('tribe', "{::lang::php::sc::notribe}");
         if ($pl->TribeId == 7) $pl->TribeId = null;
     
         $list_tpl->r('IG:name', htmlentities($pl->CharacterName));
         $list_tpl->r('IG:Level', $pl->Level);
         $list_tpl->r('update', converttime($pl->FileUpdated));
         $list_tpl->r('rnd', rndbit(10));
-        $list_tpl->r('url', htmlentities($playerjs[$ix]["profileurl"]));
-        $list_tpl->r('img', $playerjs[$ix]["avatar"]);
-        $list_tpl->r('steamname', htmlentities($playerjs[$ix]["personaname"]));
+        $list_tpl->r('url', htmlentities($playerjs[$i]["profileurl"]));
+        $list_tpl->r('img', $playerjs[$i]["avatar"]);
+        $list_tpl->r('steamname', htmlentities($playerjs[$i]["personaname"]));
     
         $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$pl->SteamId.'.arkprofile');
     

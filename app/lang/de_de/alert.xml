@@ -200,6 +200,12 @@
             <text>Syslink funktioniert nicht</text>
         </c_30>
 
+        <!-- DANGER | Webhelper Version -->
+        <c_31>
+            <title>Webhelper Warnung</title>
+            <text>Der Webhelper hat nicht die aktuellste version</text>
+        </c_31>
+
 
 
 

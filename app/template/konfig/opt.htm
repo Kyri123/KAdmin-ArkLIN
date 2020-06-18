@@ -1,26 +1,34 @@
 {ifbool}
-<div class="form-group">
-    <label>{keym}</label>
-    <input type="hidden" name="key[]" value="{key}">
-    <select class="form-control rounded-0" name="value[]">
-        <option value="0">{::lang::config::opt::false}</option>
-        <option {true} value="1">{::lang::config::opt::true}</option>
-    </select>
-</div>
-{/ifbool}
-
-{iftxt}
-<div class="form-group">
-    <label>{keym}</label>
-    <input type="hidden" name="key[]" value="{key}">
-    <input class="form-control rounded-0" type="text" name="value[]" value="{value}">
-</div>
-{/iftxt}
-
-{ifnum}
-<div class="form-group">
-    <label>{keym}</label>
-    <input type="hidden" name="key[]" value="{key}">
-    <input class="form-control rounded-0" type="number" name="value[]" value="{value}">
-</div>
+<tr>
+    <td class="p-2">
+        {keym}
+    </td>
+    <td class="p-2">
+        <input type="hidden" name="key[]" readonly value="{key}">
+        <select class="form-control form-control-sm" name="value[]">
+            <option value="0">{::lang::config::opt::false}</option>
+            <option {true} value="1">{::lang::config::opt::true}</option>
+        </select>
+    </td>
+</tr>
+{/ifbool} {iftxt}
+<tr>
+    <td class="p-2">
+        {keym}
+    </td>
+    <td class="p-2">
+        <input type="hidden" name="key[]" readonly value="{key}">
+        <input type="text" name="value[]" class="form-control form-control-sm" value="{value}">
+    </td>
+</tr>
+{/iftxt} {ifnum}
+<tr>
+    <td class="p-2">
+        {keym}
+    </td>
+    <td class="p-2">
+        <input type="hidden" name="key[]" readonly value="{key}">
+        <input type="number" name="value[]" class="form-control form-control-sm" value="{value}">
+    </td>
+</tr>
 {/ifnum}

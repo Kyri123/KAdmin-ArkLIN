@@ -13,6 +13,7 @@ $tpl_dir = 'app/template/usersettings/';
 $resp = null; $logout = false;
 $pagename = "{::lang::php::home::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
+if(!file_exists("app/json/user/")) mkdir("app/json/user/");
 $path = "app/json/user/".md5($_SESSION["id"]).".json";
 
 // Speichern (Benutzerdaten)

@@ -35,5 +35,6 @@
     "AutoDestroyStructures",
     "crossplay",
     "epiconly",
-    "UseVivoc"
+    "UseVivoc",
+    "logs"
 ]

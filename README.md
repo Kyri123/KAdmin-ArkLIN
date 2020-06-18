@@ -9,6 +9,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 
 - [Dev-Tree] Benutzten auf eigene GEFAHR (Debugs, Tests usw.)
 - Es ist eine Alpha bitte verzeiht Schreibfehler & Bugs und Meldet alles..
+- Discord: https://discord.gg/ykGnw49
 
 # Installation
 
@@ -16,6 +17,14 @@ Webbasiertes Admin Panel für Ark-Gameserver
 - Stelle den Java Webhelper ein `java/config.properties` (Siehe unten Config.Properties)
 - Rufe über einen screen den Webhelper `java/start.sh` auf und las diesem Laufen
 - Rufe die Webseite auf und folge der Installation
+
+# Update
+
+`Wichtig für Update von -0.6.2 auf +0.7.0 Es ist empfohlen das Panel neu zu installieren!`
+- Lade die letzte Version runter
+- lade alle Dateien außer `Install` auf den Webserver
+- Denkt dran die Config.Properties nur zu überschreiben wenn ihr das wollt. (Die Konfigurationen müssen dann neu vorgenommen werden!)
+- Fertig
 
 # Config.Properties
 
@@ -30,14 +39,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 | `CHMODIntervall` | Intervall für das überschreiben der Rechte |
 | `JobsIntervall` | Intervall für das abrufen des Crontabs (Cronjobs) |
 | `ShellIntervall` | Intervall für das abrufen der Shell Dateien |
-| `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) |
-
-# Update
-
-`Wichtig für Update von -0.6.2 auf +0.7.0 Es ist empfohlen das Panel neu zu installieren!`
-- Lade die letzte Version runter
-- lade alle Dateien außer `Install` auf den Webserver
-- Fertig
+| `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid....] |
 
 # Sprache Installieren
 

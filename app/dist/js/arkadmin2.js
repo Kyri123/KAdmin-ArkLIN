@@ -25,7 +25,9 @@ function getlog(file, cfg, id, maxid, hideid) {
     var hide = $("#" + hideid).html();
     var max = parseInt(str);
     $.get("/php/async/get/all.getlog.async.php?cfg=" + cfg + "&file=" + file + "&max=" + max + "&type=" + hide, function(data) {
-        $("#" + id).html(data);
+        var target = $("#" + id);
+        var inner = target.html();
+        if (inner != data) target.html(data);
     });
 }
 
@@ -43,6 +45,8 @@ function remove(id) {
 
 function getphp(url, id) {
     $.get(url, function(data) {
-        $("#" + id).html(data);
+        var target = $("#" + id);
+        var inner = target.html();
+        if (inner != data) target.html(data);
     });
 }

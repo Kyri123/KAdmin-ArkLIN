@@ -77,12 +77,13 @@ class Template {
             return null;
         }
         global $_SESSION;
+        $srank = (isset($_SESSION['rank'])) ? $_SESSION['rank'] : 0;
         if (isset($_SESSION['id'])) {
             $this->file = preg_replace("/\{issetS\}(.*)\\{\/issetS\}/Uis", '\\1', $this->file);
             $this->file = preg_replace("/\{!issetS\}(.*)\\{\/!issetS\}/Uis", null, $this->file);
             // -----------1------------
             for ($i=0;$i<10;$i++) {
-                if ($_SESSION['rank'] > $i) {
+                if ($srank > $i) {
                     $this->file = preg_replace("/\{rank".$i."\}(.*)\\{\/rank".$i."\}/Uis", '\\1', $this->file);
                     $this->file = preg_replace("/\{!rank".$i."\}(.*)\\{\/!rank".$i."\}/Uis", null, $this->file);
                 }

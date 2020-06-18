@@ -61,7 +61,7 @@ $helper = new helper();
 $alert = new alert();
 $steamapi = new steamapi();
 $user = new userclass();
-$user->setid($_SESSION['id']);
+if(isset($_SESSION["id"])) $user->setid($_SESSION['id']);
 
 // include util
 include('php/inc/session.inc.php');
@@ -96,14 +96,6 @@ if (file_exists('php/page/'.$page.'.inc.php')) {
     exit;
 }
 
-// check is Webhelper active
-if ($helper->gethelperdiff() > 60) {
-    $alert->code = 4;
-    $alert->overwrite_style = 3;
-    $g_alert .= $alert->re();
-    $g_alert_bool = true;
-}
-
 // Website
 // Load template
 $tpl_h = new Template("head.htm", "app/template/index/");
@@ -115,17 +107,12 @@ $tpl_b->load();
 $tpl_f = new Template("foother.htm", "app/template/index/");
 $tpl_f->load();
 
+// lade Global_Alerts
+include('php/inc/global_alert.inc.php');
+
 // Include
 include('php/inc/server.inc.php');
 include('php/inc/nav_curr.inc.php');
-
-//prüfe ob IE
-if (isie()) {
-    $alert->code = 200;
-    $alert->overwrite_style = 3;
-    $g_alert .= $alert->re();
-    $g_alert_bool = true;
-}
 
 // Define pagename for login & registration
 if ($page == "login" || $page == "registration") {

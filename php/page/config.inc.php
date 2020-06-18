@@ -18,6 +18,7 @@ $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 
 $ppath = "php/inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
+$wpath = 'java/config.properties';
 $array = $helper->file_to_json($ppath, true);
 if (!isset($array["clusterestart"])) $array["clusterestart"] = 0;
 if (!isset($array["uninstall_mod"])) $array["uninstall_mod"] = 0;
@@ -43,6 +44,17 @@ if (isset($_POST["savearkmanager"])) {
     }
 }
 
+// Arkmanager.cfg
+if (isset($_POST["savewebhelper"])) {
+    $content = ini_save_rdy($_POST["text"]);
+    if (file_put_contents($wpath, $content)) {
+        $alert->code = 102;
+        $resp = $alert->re();
+    } else {
+        $alert->code = 1;
+        $resp = $alert->re();
+    }
+}
 
 //Panel CFG
 if (isset($_POST["savepanel"])) {
@@ -143,6 +155,7 @@ foreach($panelconfig as $key => $value) {
 $content_arkmanager = file_get_contents($apath);
 $tpl->r("arkmanager", $content_arkmanager);
 $tpl->r("option_panel", $option_panel);
+$tpl->r('webhelper', file_get_contents($wpath));
 $tpl->r("resp", $resp);
 
 $content = $tpl->load_var();

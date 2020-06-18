@@ -30,7 +30,7 @@ for ($i=0;$i<count($dir);$i++) {
 
         $servername = $data['ark_SessionName'];
         $subline = "{::lang::php::server::subline}";
-        $map = 'https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png';
+        $map = $serv->cfg_read("serverMap");
         if ($json->online == 'Yes') {
             $state = 'bg-success';
             $count_serv_1++;
@@ -48,11 +48,10 @@ for ($i=0;$i<count($dir);$i++) {
         $tpl_serv->r('aplayers', $json->aplayers);
         $tpl_serv->r('ark_MaxPlayers', $data['ark_MaxPlayers']);
         $tpl_serv->r('serv_version', $json->version);
-        $tpl_serv->r('map', $map);
         $tpl_serv->r('state', $state);
-        $tpl_serv->r('color', convertstate($serv->statecode())["color"]);
+        $tpl_serv->r('serv_pid', null);
         $tpl_serv->rif ('ifin', $serv->cluster_in());
-        $tpl_serv->r('clustername', $serv->cluster_name());
+        $tpl_serv->r('clustername', (($serv->cluster_in) ? $serv->cluster_name() : null));
         $tpl_serv->r("typestr", $clustertype[$serv->cluster_type()]);
         $tpl_serv->r('subline', $subline);
         $tpl_serv->r('servername', $servername);
