@@ -22,7 +22,6 @@ $page_tpl->r('SESSION_USERNAME' ,$user->name());
 $cpath = "app/json/servercfg/jobs_" . $serv->name() . ".json";
 
 // erstelle ggf Verzeichnis und Datei.
-if (!file_exists('app/json/servercfg')) mkdir('app/json/servercfg');
 if (!file_exists($cpath)) {
     $array = array(
         "option" =>  array(
