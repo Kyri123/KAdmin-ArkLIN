@@ -19,7 +19,6 @@ $resp = null;
 if (isset($_POST['savecfg'])) {
     $value = $_POST['value'];
     $key = $_POST['key'];
-    $opt = $_POST['opt'];
     $flag = $_POST['flag'];
     $cfg = null;
 
@@ -34,7 +33,7 @@ if (isset($_POST['savecfg'])) {
         }
     }
 
-    $cfg .= $flag.$opt;
+    $cfg .= $flag;
     $cfg = ini_save_rdy($cfg);
     $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
     if (file_put_contents($path, $cfg)) {

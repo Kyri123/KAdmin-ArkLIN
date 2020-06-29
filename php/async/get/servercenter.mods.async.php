@@ -89,8 +89,6 @@ switch ($case) {
         $site = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
         $mods = explode(',', $serv->cfg_read("ark_GameModIds"));
-        $y = 1;
-
 
         $total_count = count($mods);
 
@@ -107,7 +105,6 @@ switch ($case) {
 
                 $tpl = new Template('list_mods_local.htm', 'app/template/serv/page/list/');
                 $tpl->load();
-                $y = $i+1;
                 $btns= null;
                 $installed = false;
                 if (in_array($key, $exp)) $installed = true;

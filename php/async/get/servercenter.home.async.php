@@ -53,9 +53,9 @@ switch ($case) {
         $tpl->load();
         $serv = new server($_GET['cfg']);
         $path = 'app/json/saves/rconlog_'.$serv->name().'.txt';
+        $resp = null;
         if (file_exists($path)) {
             $filearray = file($path);
-            $resp = null;
             $z = count($filearray)-1;
             $ib = 0;
             for ($i=0;$i<count($filearray);$i++) {

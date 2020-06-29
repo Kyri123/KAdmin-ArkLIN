@@ -13,7 +13,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 - Stelle den Java Webhelper ein `arkadmin_server/config/server.json` (Siehe unten Config.Properties)
 - Installiere alle Node.JS Module `cd arkadmin_server` > `npm install`
 - Rufe über einen screen den ArkAdmin Server `cd arkadmin_server` > `node server.js` auf und las diesem Laufen
-- Rufe die Webseite auf und folge der Installation
+- Rufe die Webseite auf und folge der Installation  aqsw2er5r45
 
 # Update
 
