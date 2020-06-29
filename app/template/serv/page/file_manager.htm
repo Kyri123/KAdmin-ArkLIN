@@ -1,0 +1,66 @@
+<div class="col-xl-9 col-md-8">
+    <div class="tab-pane fade  active show" id="pills-Cfg2" role="tabpanel" aria-labelledby="pills-contact-tab">
+        <table class="table table-striped mb-0 border">
+            <thead>
+                <tr>
+                    <th style="width: 25px;"></th>
+                    <th>{::lang::servercenter::file_manager::th_filename}</th>
+                    <th style="width: 135px;">{::lang::servercenter::file_manager::th_action}</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_files"></tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    // load server
+    var table = $("#tbody_files");
+
+    loadfile("");
+
+    function loadfile(p) {
+        var load_data = {
+            path: p,
+            serv: "{cfg}",
+            case: "load"
+        };
+        //lade loader;
+        $.get("/php/async/get/servercenter.file.async.php", load_data, (data) => {
+            table.html(data);
+
+            // lade nun liste
+            var get_data = {
+                path: p,
+                serv: "{cfg}",
+                case: "files"
+            };
+            $.get("/php/async/get/servercenter.file.async.php", get_data, (re) => {
+                table.html(re);
+            });
+        });
+    }
+
+    function removeline(f, id) {
+        var del_data = {
+            case: "del",
+            path: "",
+            file: f,
+            serv: "{cfg}"
+        };
+        $.get("/php/async/get/servercenter.file.async.php", del_data, (re) => {
+            var json = JSON.parse(re);
+            if (json.code == 200) {
+                $(id).remove();
+            } else {
+                var alert_data = {
+                    code: json.code,
+                };
+                $.get("/php/async/get/all.alert.async.php", alert_data, (alert) => {
+                    $("#all_resp").html(alert);
+                });
+            }
+        });
+    }
+</script>

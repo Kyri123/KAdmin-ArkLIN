@@ -12,7 +12,9 @@
 $dirs = array(
     "app/check/",
     "app/json/user/",
-    "app/json/servercfg"
+    "app/json/servercfg",
+    "sh/serv",
+    "cache"
 );
 
 // suche Server verzeichnisse
@@ -31,7 +33,6 @@ for ($i=0;$i<count($dir);$i++) {
 for($i=0;$i<count($dirs);$i++) {
     if(!file_exists($dirs[$i])) mkdir($dirs[$i], 0777, true);
 }
-
 
 //Erstelle Default Dateien
 for ($i=0;$i<count($dir);$i++) {

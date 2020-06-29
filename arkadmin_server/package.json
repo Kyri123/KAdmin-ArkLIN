@@ -1,0 +1,26 @@
+{
+    "name": "arkadmin2-server",
+    "version": "0.0.1",
+    "description": "server fuer das Webpanel von Arkadmin",
+    "main": "server.js",
+    "scripts": {
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Kyri123/arkadmin.git"
+    },
+    "keywords": [
+        "arkadmin"
+    ],
+    "author": "Kyri123",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Kyri123/arkadmin/issues"
+    },
+    "homepage": "https://github.com/Kyri123/arkadmin#readme",
+    "dependencies": {
+        "node-ssh": "^10.0.2",
+        "request": "^2.88.2"
+    }
+}

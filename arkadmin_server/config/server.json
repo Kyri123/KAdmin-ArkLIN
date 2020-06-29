@@ -1,0 +1,12 @@
+{
+    "HTTP": "http://meinurl.com/",
+    "WebPath": "/path/to/webfiles",
+    "AAPath": "/etc/arkmanager",
+    "ServerPath": "/path/to/serverfiles",
+    "WebIntervall": 15000,
+    "WebSubIntervall": 10000,
+    "CHMODIntervall": 5000,
+    "JobsIntervall": 10000,
+    "ShellIntervall": 5000,
+    "CHMOD": 777
+}

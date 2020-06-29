@@ -41,8 +41,8 @@ if (isset($_POST["login"]) && !isset($_SESSION["id"])) {
                 if ($loggedin) {
                     $md5_id = md5($userid);
                     $md5_rnd = md5(rndbit(100));
-                    setcookie("id", $md5_id, time()+(525600*60*100));
-                    setcookie("validate", $md5_rnd, time()+(525600*60*100));
+                    setcookie("id", $md5_id, time()+(525600*60*100), "/");
+                    setcookie("validate", $md5_rnd, time()+(525600*60*100), "/");
                     $query = "INSERT INTO `ArkAdmin_user_cookies` (`md5id`, `validate`, `userid`) VALUES ('".$md5_id."', '".$md5_rnd."', '".$userid."')";
                     $mycon->query($query);
                 }
@@ -154,6 +154,6 @@ $tpl_register->r('3', $a3);
 $tpl_register->r('4', $a4);
 
 $tpl_login->r('bg', '/app/dist/img/backgrounds/side.jpg');
-$tpl_login->r('meld', $resp);
+$tpl_login->r('meld', $resp); 
 
 ?>

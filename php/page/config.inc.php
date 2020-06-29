@@ -18,7 +18,7 @@ $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 
 $ppath = "php/inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
-$wpath = 'java/config.properties';
+$wpath = 'arkadmin_server/config/server.json';
 $array = $helper->file_to_json($ppath, true);
 if (!isset($array["clusterestart"])) $array["clusterestart"] = 0;
 if (!isset($array["uninstall_mod"])) $array["uninstall_mod"] = 0;
@@ -44,10 +44,19 @@ if (isset($_POST["savearkmanager"])) {
     }
 }
 
-// Arkmanager.cfg
+// save Webhelper
 if (isset($_POST["savewebhelper"])) {
-    $content = ini_save_rdy($_POST["text"]);
-    if (file_put_contents($wpath, $content)) {
+    $a_key = $_POST["key"];
+    $a_value = $_POST["value"];
+    $filter_bool = array("install_mod","uninstall_mod");
+    $filter_link = array("servlocdir","arklocdir");
+
+    for ($i=0;$i<count($a_key);$i++) {
+        $json[$a_key[$i]] = $a_value[$i];
+    }
+
+    $json_str = $helper->json_to_str($json);
+    if (file_put_contents($wpath, $json_str)) {
         $alert->code = 102;
         $resp = $alert->re();
     } else {
@@ -152,10 +161,25 @@ foreach($panelconfig as $key => $value) {
     $option_panel .= $list->load_var();
 }
 
+$panelconfig = $helper->file_to_json($wpath, true);
+$option_server = null;
+foreach($panelconfig as $key => $value) {
+    $list = new Template("opt.htm", $tpl_dir);
+    $list->load();
+    $list->rif ("ifbool", false);
+    $list->rif ("ifnum", false);
+    $list->rif ("iftxt", true);
+    $list->r("key", $key);
+    $key = str_replace($find, $repl, $key);
+    $list->r("keym", $key);
+    $list->r("value", $value);
+    $option_server .= $list->load_var();
+}
+
 $content_arkmanager = file_get_contents($apath);
 $tpl->r("arkmanager", $content_arkmanager);
 $tpl->r("option_panel", $option_panel);
-$tpl->r('webhelper', file_get_contents($wpath));
+$tpl->r('webhelper', $option_server);
 $tpl->r("resp", $resp);
 
 $content = $tpl->load_var();

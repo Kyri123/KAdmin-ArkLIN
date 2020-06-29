@@ -42,7 +42,13 @@ switch ($case) {
         }
 
         // Action Card
-        if ($data["next"] == "TRUE") {
+        if ($data["next"] == "TRUE" && $user->expert()) {
+            $action_state = "{::lang::php::async::get::servercenter::main::action_closed}";
+            $action_btntxt = "Aktion auswählen <i class=\"fas fa-arrow-circle-right\"></i>";
+            $action_modal = 'data-toggle="modal" data-target="#action"';
+            $action_color = "danger";
+        }
+        elseif ($data["next"] == "TRUE") {
             $action_state = "{::lang::php::async::get::servercenter::main::action_closed}";
             $action_btntxt = "{::lang::php::async::get::servercenter::main::action_closed_need_open}";
             $action_modal = null;
@@ -54,6 +60,7 @@ switch ($case) {
             $action_modal = 'data-toggle="modal" data-target="#action"';
             $action_color = "success";
         }
+        
 
         $tpl->r("serv_state", $serv_state);
         $tpl->r("serv_color", $serv_color);

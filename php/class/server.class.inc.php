@@ -124,7 +124,7 @@ class server {
         $doc_state_file = 'sh/serv/jobs_ID_'.$this->name().'.state';
         $doc_state = $doc.'/'.$doc_state_file;
         $doc = $doc.'/sh/serv/sub_jobs_ID_'.$this->name().'.sh';
-        $command = 'echo "" > '.$doc.' ; arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Freigabe für neue Befehle erteilt...</b>" >> '.$log.' ; exit';
+        $command = 'echo "" > '.$doc.' ; arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
         $command = str_replace("\r", null, $command);
         if (file_put_contents($doc_state_file, 'FALSE') && file_put_contents('sh/serv/sub_jobs_ID_'.$this->name().'.sh', $command)) return true;
         return false;

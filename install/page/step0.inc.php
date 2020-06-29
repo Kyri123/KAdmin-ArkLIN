@@ -49,7 +49,7 @@ if (check_OS()) {
     $os = false;
 }
 
-if (check_arkmanager()) {
+if (check_cmd()) {
     $sitetpl->r("am_state_color", "success");
     $sitetpl->r("am_btn", "up");
     $sitetpl->r("am_state", "{::lang::install::found}");

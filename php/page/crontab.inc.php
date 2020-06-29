@@ -8,7 +8,6 @@
  * *******************************************************************************************
 */
 
-
 $tpl_crontab = new Template('crontab.htm', 'app/template/system/');
 $tpl_crontab->load();
 $re = null;
@@ -46,7 +45,7 @@ if ($job == "status") {
 
 //Für Spielerliste & Auswertung von Server Status
 elseif ($job == "player") {
-    include("$subpage/crontab/player/player_check.inc.php");
+    include("$subpage/player/player_check.inc.php");
 }
 
 //jobs

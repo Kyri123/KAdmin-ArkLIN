@@ -7,6 +7,8 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
 
 $url = $_SERVER["REQUEST_URI"];
 $url = explode("/", $url);

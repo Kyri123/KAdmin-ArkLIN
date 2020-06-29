@@ -14,6 +14,8 @@ $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::mods::pagename}</li>';
 $jhelper = new player_json_helper();
 
+$c_pl = $c_t = $w_t = 0;
+
 if (isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
 
     //set vars
@@ -174,78 +176,84 @@ if($count !== false) {
 $tribe = null; $c_t = 0;
 // Stämme
 
-for ($i = 0; $i < count($tribe_json); $i++) {
-    $list_tpl = new Template('list_tribes.htm', 'app/template/serv/page/list/');
-    $list_tpl->load();
-
-    $pl = $jhelper->tribe($tribe_json, $i);
-    $playerlist = null;
-    $ct=0;
-
-    $member = $tribe_json[$i]->Members;
-
-    foreach ($member as $key) {
-        for ($z=0;$z<count($player_json); $z++) {
-            $p = $jhelper->player($player_json, $z);
-            if ($p->CharacterName == $key) {
-                for ($ix=0;$ix<$count;$ix++) if($p->SteamId == $playerjs[$ix]["steamid"]) {$id = $ix; break;};
-
-                $playerlist_tpl = new Template('list_tribes_user.htm', 'app/template/serv/page/list/');
-                $playerlist_tpl->load();
-
-                $playerlist_tpl->r('IG:name', $p->CharacterName);
-                $playerlist_tpl->r('lastupdate', converttime($p->FileUpdated));
-                $playerlist_tpl->r('url', $playerjs[$id]["profileurl"]);
-                $playerlist_tpl->r('img', $playerjs[$id]["avatar"]);
-                $playerlist_tpl->r('steamname', $playerjs[$id]["personaname"]);
-                $rank = '<b>{::lang::php::sc::page::mods::member}</b>';
-
-                $playerlist .= $playerlist_tpl->load_var();
-                $ct++;
+if(is_countable($tribe_json)) {
+    for ($i = 0; $i < count($tribe_json); $i++) {
+        $list_tpl = new Template('list_tribes.htm', 'app/template/serv/page/list/');
+        $list_tpl->load();
+    
+        $pl = $jhelper->tribe($tribe_json, $i);
+        $playerlist = null;
+        $ct=0;
+    
+        $member = $tribe_json[$i]->Members;
+    
+        foreach ($member as $key) {
+            if(is_countable($player_json)) {
+                for ($z=0;$z<count($player_json); $z++) {
+                    $p = $jhelper->player($player_json, $z);
+                    if ($p->CharacterName == $key) {
+                        for ($ix=0;$ix<$count;$ix++) if($p->SteamId == $playerjs[$ix]["steamid"]) {$id = $ix; break;};
+        
+                        $playerlist_tpl = new Template('list_tribes_user.htm', 'app/template/serv/page/list/');
+                        $playerlist_tpl->load();
+        
+                        $playerlist_tpl->r('IG:name', $p->CharacterName);
+                        $playerlist_tpl->r('lastupdate', converttime($p->FileUpdated));
+                        $playerlist_tpl->r('url', $playerjs[$id]["profileurl"]);
+                        $playerlist_tpl->r('img', $playerjs[$id]["avatar"]);
+                        $playerlist_tpl->r('steamname', $playerjs[$id]["personaname"]);
+                        $rank = '<b>{::lang::php::sc::page::mods::member}</b>';
+        
+                        $playerlist .= $playerlist_tpl->load_var();
+                        $ct++;
+                    }
+                }
             }
         }
+    
+        $list_tpl->r('rnd', rndbit(10));
+        $list_tpl->r('name', $pl->Name);
+        $list_tpl->r('update', converttime($pl->FileUpdated));
+        $list_tpl->r('pl', $playerlist);
+        $list_tpl->r('count', $ct);
+        $list_tpl->r('id', $pl->Id);
+        $file = $savedir.'/'.$pl->Id.'.arktribe';
+        $list_tpl->r('durl', "/".$file);
+    
+        $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$pl->Id.'.arktribe');
+    
+        $tribe .= $list_tpl->load_var();
+        $list_tpl = null;
+        $c_t++;
     }
-
-    $list_tpl->r('rnd', rndbit(10));
-    $list_tpl->r('name', $pl->Name);
-    $list_tpl->r('update', converttime($pl->FileUpdated));
-    $list_tpl->r('pl', $playerlist);
-    $list_tpl->r('count', $ct);
-    $list_tpl->r('id', $pl->Id);
-    $file = $savedir.'/'.$pl->Id.'.arktribe';
-    $list_tpl->r('durl', "/".$file);
-
-    $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$pl->Id.'.arktribe');
-
-    $tribe .= $list_tpl->load_var();
-    $list_tpl = null;
-    $c_t++;
 }
 
 $world = null; $w_t = 0;
 $dirarr = dirToArray($savedir);
 // World
-for ($i=0;$i<count($dirarr);$i++) {
-    if (strpos($dirarr[$i], '.ark')) {
-        $file = $savedir.'/'.$dirarr[$i];
-        if (file_exists($file)) {
-            $list_tpl = new Template('list_world.htm', 'app/template/serv/page/list/');
-            $list_tpl->load();
-            $time = filemtime($file);
+if(is_countable($dirarr)) {
+    for ($i=0;$i<count($dirarr);$i++) {
+        if (strpos($dirarr[$i], '.ark')) {
+            $file = $savedir.'/'.$dirarr[$i];
+            if (file_exists($file)) {
+                $list_tpl = new Template('list_world.htm', 'app/template/serv/page/list/');
+                $list_tpl->load();
+                $time = filemtime($file);
 
-            $name = str_replace('.ark', null, $dirarr[$i]);
-            $date_array = date_parse($name);
+                $name = str_replace('.ark', null, $dirarr[$i]);
+                $date_array = date_parse($name);
 
-            $list_tpl->r('name', $name);
-            $list_tpl->r('update', converttime($time));
-            $list_tpl->r('durl', "/".$file);
-            $list_tpl->r('rnd', rndbit(10));
+                $list_tpl->r('name', $name);
+                $list_tpl->r('update', converttime($time));
+                $list_tpl->r('durl', "/".$file);
+                $list_tpl->r('rnd', rndbit(10));
 
-            $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$dirarr[$i]);
+                $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$dirarr[$i]);
 
-            if (!strpos($name, 'profile') && $date_array["year"] == null) {
-                $world .= $list_tpl->load_var();
-                $w_t++;
+                if (!strpos($name, 'profile') && $date_array["year"] == null) {
+                    $world .= $list_tpl->load_var();
+                    $w_t++;
+                }
             }
         }
     }

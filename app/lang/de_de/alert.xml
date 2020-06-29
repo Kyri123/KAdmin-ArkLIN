@@ -206,6 +206,18 @@
             <text>Der Webhelper hat nicht die aktuellste version</text>
         </c_31>
 
+        <!-- DANGER | path !dir -->
+        <c_32>
+            <title>Type Error</title>
+            <text>Pfad ist keine Ordner</text>
+        </c_32>
+
+        <!-- DANGER | path !file -->
+        <c_33>
+            <title>Type Error</title>
+            <text>Pfad ist keine Datei</text>
+        </c_33>
+
 
 
 
@@ -291,5 +303,11 @@
             <title>Sync Mode : Modifikationen</title>
             <text>Funktion Modifikationen wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.</text>
         </c_302>
+
+        <!-- INFO | syncmode - konfig -->
+        <c_303>
+            <title>PHP Info</title>
+            <text>Die PHP Version ist unter PHP 7.3 bitte Update die PHP version.</text>
+        </c_303>
     </alert>
 </lang>

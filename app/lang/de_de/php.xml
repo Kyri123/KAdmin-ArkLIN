@@ -241,6 +241,12 @@
                     <tool_disturb>Deaktivieren</tool_disturb>
                     <nothing>Keine Jobs gefunden!</nothing>
                 </jobs>
+
+                <!-- file_manager.inc.php -->
+                <file_manager>
+                    <pagename>ServerCenter - Filebrowser</pagename>
+                    <urltop>Filebrowser</urltop>
+                </file_manager>
             </page>
         </sc>
 

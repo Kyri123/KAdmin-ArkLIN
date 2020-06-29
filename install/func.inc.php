@@ -28,7 +28,7 @@ function check_OS() {
     }
 }
 
-function check_arkmanager() {
+function check_cmd() {
     $cmd = "arkmanager";
     $return = shell_exec(sprintf("which %s", escapeshellarg($cmd)));
     return !empty($return);

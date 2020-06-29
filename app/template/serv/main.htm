@@ -1,5 +1,4 @@
-<div id="all_resp">
-    {resp}</div>
+<div id="all_resp">{resp}</div>
 
 <div class="row" id="server-stats" style="padding-top: 0px;">
 
@@ -116,7 +115,7 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="description-block">
-                            <h5 class="description-header"><a href="{arkservers}" target="_blank">Öffnen</a></h5>
+                            <h5 class="description-header"><a href="{arkservers}" target="_blank">{::lang::servercenter::open_url}</a></h5>
                             <span class="description-text">ARKServers</span>
                         </div>
                     </div>
@@ -161,11 +160,11 @@
                         </a>
                     </li>
 
-                    <!--<li class="nav-item ">
-                        <a href="#/servercenter/{cfg}/files" class="nav-link {_files} text-white aa_nav_hover">
-                            <i class="nav-icon fas fa-file-archive pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::files}
+                    <li class="nav-item ">
+                        <a href="/servercenter/{cfg}/file_manager" class="nav-link {_file_manager} text-white aa_nav_hover">
+                            <i class="nav-icon fas fa-file pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::files}
                         </a>
-                    </li>-->
+                    </li>
 
                     <li class="nav-item ">
                         <a href="/servercenter/{cfg}/saves" class="nav-link {_saves} text-white aa_nav_hover">
@@ -239,11 +238,17 @@
             <div class="modal-body">
                 <p id="action_resp"></p>
                 {expert}
-                <div class="input-group">
+                <div class="input-group mb-2">
                     <div class="input-group-prepend">
                         <span class="input-group-text">{::lang::servercenter::main::modal::send_command::custom_action}</span>
                     </div>
                     <input name="custom" type="text" class="form-control" placeholder="{::lang::servercenter::main::modal::send_command::custom_action_ph}">
+                </div>
+                <div class="icheck-primary mb-3 col-md-12">
+                    <input type="checkbox" name="force" value="true" id="forcethis">
+                    <label for="forcethis">
+                            {::lang::servercenter::force_action}
+                        </label>
                 </div>
                 <hr>{/expert}
                 <input name="cfg" id="cfg" value="{cfg}" type="hidden">
@@ -251,8 +256,7 @@
                     {action_list}
                 </select><br>
 
-                <div class="form-row" style="padding-left: 25px;padding-right: 25px">
-                    {para_list}
+                <div class="form-row" style="padding-left: 25px;padding-right: 25px">{para_list}
                 </div>
             </div>
             <div class="modal-footer">

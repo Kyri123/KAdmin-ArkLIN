@@ -55,7 +55,6 @@ switch ($case) {
             if($input != "" && $para_input == "--beta") $paraend .= " --validate ";
         }
 
-
         // überschreibe ggf die action liste
         $send_shell = ($_POST["custom"] == "") ? $action.$paraend : $_POST["custom"];
 
@@ -66,19 +65,13 @@ switch ($case) {
         // sende command
         $server = new server($cfg);
         $json = json_decode(file_get_contents('app/json/serverinfo/'.$cfg.'.json'));
-        if ($json->next == 'TRUE') {
-            $alert->code = 12;
-            $errorMSG = $alert->re();
-        } else {
-            if($errorMSG == "") {
-                if (!$serv->send_action($send_shell)) {
-                    $alert->code = 1;
-                    $errorMSG = $alert->re();
-                }
+        $force = (isset($_POST["force"])) ? true : false;
+        if($errorMSG == "") {
+            if (!$serv->send_action($send_shell, $force)) {
+                $alert->code = 13;
+                $errorMSG = $alert->re();
             }
         }
-
-
 
         if (empty($errorMSG)){
             $alert->code = 105;

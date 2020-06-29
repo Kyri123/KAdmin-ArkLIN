@@ -100,7 +100,7 @@ class Template {
 
     public function load_var() {
         if ($this->load) {
-            $this->finial();
+            $this->final();
             return $this->file;
         } else {
             echo "Template not Loaded";
@@ -109,7 +109,7 @@ class Template {
 
     public function echo() {
         if ($this->load) {
-            $this->finial();
+            $this->final();
             echo $this->file;
         } else {
             echo "Template not Loaded";
@@ -131,7 +131,7 @@ class Template {
         }
     }
 
-    private function finial() {
+    private function final() {
         $langfile = "app/lang/$this->lang/";
         if (!file_exists($langfile)) $langfile = "app/lang/de_de/";
         if (file_exists($langfile.'htm.xml') && file_exists($langfile.'php.xml') && file_exists($langfile.'install.xml')) {

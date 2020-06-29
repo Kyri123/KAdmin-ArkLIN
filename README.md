@@ -1,10 +1,6 @@
 # Arkadmin 
 Webbasiertes Admin Panel für Ark-Gameserver
 
-- Lade die aktuelle Version runter: https://github.com/Kyri123/Arkadmin/releases
-- Lade alle Dateien auf den Webserver hoch (ACHTUNG: Der Webserver MUSS auf dem gleichen Server wie die Arkserver liegen)
-- Rufe deine Webseite auf und folge die Schritte (Du wirst automatisch weitergeleitet zur Install.php)
-
 # Wichtig
 
 - [Dev-Tree] Benutzten auf eigene GEFAHR (Debugs, Tests usw.)
@@ -14,16 +10,19 @@ Webbasiertes Admin Panel für Ark-Gameserver
 # Installation
 
 - Lade die letzte Version runter und Lade die Dateien in deinen Webserver
-- Stelle den Java Webhelper ein `java/config.properties` (Siehe unten Config.Properties)
-- Rufe über einen screen den Webhelper `java/start.sh` auf und las diesem Laufen
-- Rufe die Webseite auf und folge der Installation
+- Stelle den Java Webhelper ein `arkadmin_server/config/server.json` (Siehe unten Config.Properties)
+- Installiere alle Node.JS Module `cd arkadmin_server` > `npm install`
+- Rufe über einen screen den ArkAdmin Server `cd arkadmin_server` > `node server.js` auf und las diesem Laufen
+- Rufe die Webseite auf und folge der Installation  aqsw2er5r45
 
 # Update
 
 `Wichtig für Update von -0.6.2 auf +0.7.0 Es ist empfohlen das Panel neu zu installieren!`
+`Wichtig für Update von -0.8.1 auf +0.8.2 der neue ArkAdmin-Server muss eingestellt werden & Node.JS wird nun benötigt`
+
 - Lade die letzte Version runter
-- lade alle Dateien außer `Install` auf den Webserver
-- Denkt dran die Config.Properties nur zu überschreiben wenn ihr das wollt. (Die Konfigurationen müssen dann neu vorgenommen werden!)
+- lade alle Dateien außer `Install` & `Install.php` auf den Webserver
+- Denkt dran die Config des ArkAdmin-Server nicht zu überschreiben! (Sonst muss die Konfiguration neu vorgenommen werden!)
 - Fertig
 
 # Config.Properties
@@ -39,7 +38,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 | `CHMODIntervall` | Intervall für das überschreiben der Rechte |
 | `JobsIntervall` | Intervall für das abrufen des Crontabs (Cronjobs) |
 | `ShellIntervall` | Intervall für das abrufen der Shell Dateien |
-| `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid....] |
+| `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ] |
 
 # Sprache Installieren
 
@@ -48,11 +47,11 @@ Webbasiertes Admin Panel für Ark-Gameserver
 
 # Benötigt
 
-- PHP (Empfohlen: >7.3)
-- PHP mod_rewrite
-- PHP cURL
-- Linux Root rechte (bzw Rechte um chmod, screen & arkmanager zu benutzten)
-- Linux
-- Screen
-- Java (Für den WebHelper)
-- Arkmanager (https://github.com/FezVrasta/ark-server-tools)
+- `PHP` Version => 7.3
+- `PHP` mod_rewrite
+- `PHP` cURL
+- `PHP` MySQLi
+- `Linux` Root rechte (bzw Rechte um chmod 777, screen & arkmanager zu benutzten)
+- `Linux` Screen
+- `Linux` Node.JS & NPM
+- `Linux` Arkmanager (https://github.com/FezVrasta/ark-server-tools)

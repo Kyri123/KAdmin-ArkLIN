@@ -1,0 +1,36 @@
+<!-- dir -->
+<tr id="{id}">
+    <td>{ico}</td>
+    <td>{name}</td>
+    <td>
+        {!re}
+        <a class="btn btn-info btn-sm" data-toggle="collapse" href="#M{id}" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <i class="fa fa-info" aria-hidden="true"></i>
+        </a>{/!re} {dir}
+        <a href="javascript:void(0)" onclick="loadfile('{surl}')" class="btn btn-sm btn-secondary">{re}<i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>{/re}{!re}<i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>{/!re}</a>{/dir}
+        {!dir}
+        <a href="{durl}" download class="btn btn-sm btn-success"><i class="nav-icon fa fa-download" aria-hidden="true"></i></a>{/!dir} {!re} {!dir} <a href="javascript:void(0)" onclick="removeline('{durl}', '#{id}')" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>{/!dir}{/!re}
+    </td>
+</tr>
+
+<!-- Modal -->
+<tr class="collapse" id="M{id}">
+    <td colspan="4" class="p-0">
+        <table class="table table-bordered table-hover table-light m-0">
+            <tbody>
+                {!dir}
+                <tr>
+                    <td>{::lang::servercenter::file_manager::info_size}</td>
+                    <td>{size}</td>
+                </tr>{/!dir}
+                <tr>
+                    <td>{::lang::servercenter::file_manager::info_dirname}</td>
+                    <td>{dirname}</td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+<tr class="collapse" id="M{id}">
+    <td colspan="4" class="p-0" style="height: 5px;"></td>
+</tr>

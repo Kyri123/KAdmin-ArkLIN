@@ -7,11 +7,13 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
-
 // hide errors
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 //error_reporting(E_ALL);
+
+// kleiner fix für PHP 70-72
+include("php/functions/php70-72.inc.php");
 
 //check install
 if (!file_exists("app/check/subdone")) {
@@ -26,11 +28,10 @@ $setsidebar = $g_alert_bool = false;
 
 //start Session
 session_start();
-
 // read URL
-$url = $_SERVER["REQUEST_URI"];
+$url = $surl = $_SERVER["REQUEST_URI"];
 $url = explode("/", $url);
-if ($url[1] == "") {
+if ($url[1] == "" || $url[1] == "favicon.ico") {
     header('Location: /home');
     exit;
 }
@@ -39,6 +40,7 @@ if ($url[1] == "") {
 include('php/inc/config.inc.php');
 include('php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
+include('php/inc/auto_update_sql_DB.inc.php');
 
 // Include functions
 include('php/functions/allg.func.inc.php');
@@ -84,7 +86,7 @@ if ($user->ban() > 0) {
 if (isset($_SESSION["id"])) {
     $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE (`id`=\''.$_SESSION["id"].'\')';
     $mycon->query($query);
-}
+} 
 
 // Define default page
 $page = $url[1];
@@ -119,7 +121,6 @@ if ($page == "login" || $page == "registration") {
     $pagename = '{::lang::php::index::pagename_reg}';
     if ($page == "login") $pagename = '{::lang::php::index::pagename_login}';
 }
-
 // replace
 $tpl_h->r('time', time());
 

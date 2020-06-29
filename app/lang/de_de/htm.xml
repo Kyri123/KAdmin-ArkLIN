@@ -286,7 +286,7 @@
         <new>Neuerungen</new>
         <change>Änderungen</change>
         <bug>Bugfixes</bug>
-        <java>Java (WebHelper)</java>
+        <java>ArkAdmin Server</java>
     </changelog>
 
     <!-- Error404 Seite -->
@@ -302,6 +302,8 @@
     <servercenter>
         <load>Lade...</load>
         <wait>Bitte warten</wait>
+        <open_url>Öffnen</open_url>
+        <force_action>Befehl im Panel erzwingen</force_action>
 
         <topline>
             <state>Server Status</state>
@@ -320,7 +322,7 @@
                 <logs>Logs</logs>
                 <mods>Modifikationen</mods>
                 <saves>Savegames</saves>
-                <files>[platzhalter] Filebrowser</files>
+                <files>Simple Filebrowser</files>
             </nav>
 
             <modal>
@@ -451,6 +453,17 @@
                 <backup>Backups</backup>
             </nav>
         </backup>
+        
+        <file_manager>
+            <th_filename>Datei</th_filename>
+            <th_info>Details</th_info>
+            <th_action>Aktion</th_action>
+            <info_size>Dateigröße</info_size>
+            <info_dirname>Pfad</info_dirname>
+            <download>Download</download>
+            <open>Öffnen</open>
+            <remove>Löschen</remove>
+        </file_manager>
 
         <home>
             <nav>

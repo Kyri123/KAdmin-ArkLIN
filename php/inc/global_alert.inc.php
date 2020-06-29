@@ -16,6 +16,14 @@ if(!check_webhelper()) {
     $g_alert_bool = true;
 }
 
+// check is PHP version
+if(PHP_VERSION_ID < 70300) {
+    $alert->code = 303;
+    $alert->overwrite_style = 3;
+    $g_alert .= $alert->re();
+    $g_alert_bool = true;
+}
+
 //prüfe ob IE
 if (isie()) {
     $alert->code = 200;

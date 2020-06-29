@@ -47,7 +47,18 @@
 
         <form action="#save" method="post" class="tab-pane fade" id="pills-webhelper" role="tabpanel" aria-labelledby="pills-profile-tab">
             <button type="submit" class="btn btn-primary" name="savewebhelper" style="width: 100%;">{::lang::config::btn_save}</button>
-            <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 500px;max-height: 500px;" id="text_game">{webhelper}</textarea>
+            <table class="table table-striped mb-0" id="form">
+                <thead>
+                    <tr>
+                        <th style="width: 25%">{::lang::servercenter::config::th_config}</th>
+                        <th>{::lang::servercenter::config::th_input}</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    {webhelper}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary" name="savewebhelper" style="width: 100%;">{::lang::config::btn_save}</button>
         </form>
     </div>
 </div>

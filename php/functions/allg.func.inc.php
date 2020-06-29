@@ -7,6 +7,15 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+function setico($target, $ico = null) {
+    if(is_dir($target)) {
+        $ico = '<i class="nav-icon fas fa-folder-open pr-1" aria-hidden="true"></i>';
+    }
+    else {
+
+    }
+    return $ico;
+}
 
 function convertstate($serverstate) {
     if ($serverstate == 0) {

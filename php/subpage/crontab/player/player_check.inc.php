@@ -174,10 +174,13 @@ $dir = dirToArray('remote/arkmanager/instances/');
                 $serv_state = file_get_contents('sh/serv/jobs_ID_'.$serv->name().'.state');
                 $serv_state = str_replace("\n", null, $serv_state);
                 $serv_state = str_replace(" ", null, $serv_state);
-                if ($serv_state == 'TRUE') {
+                $log = 'sh/resp/'.$serv->name().'/last.log';
+                $filetime = filemtime($log);
+                $diff = time()-$filetime;
+                if ($serv_state == 'TRUE' && $diff > 10) {
                     $server['next'] = 'FALSE';
                 }
-                elseif ($serv_state== 'FALSE') {
+                else {
                     $server['next'] = 'TRUE';
                 }
                 if ($checkit) {

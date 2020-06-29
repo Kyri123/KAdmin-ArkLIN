@@ -7,9 +7,18 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+
+session_start();
 
 date_default_timezone_set('Europe/Amsterdam');
 chdir('../../../');
+
+include("php/functions/php70-72.inc.php");
+include('php/inc/config.inc.php');
+include('php/class/mysql.class.inc.php');
+$mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 
 include('php/class/helper.class.inc.php');
 include('php/class/user.class.inc.php');
@@ -23,8 +32,7 @@ include('php/functions/allg.func.inc.php');
 $steamapi = new steamapi();
 $helper = new helper();
 $user = new userclass();
+$user->setid($_SESSION["id"]);
 $jhelper = new player_json_helper();
 $alert = new alert();
-
-
 ?>
