@@ -74,7 +74,7 @@ foreach ($dir as $k => $v) {
             $visit = "aa_active";
             $exsists = true;
         }
-        $tpl->r("_$sitename", $visit);
+        $tpl->r("__$sitename", $visit);
     }
 }
 
@@ -281,6 +281,7 @@ $tpl->rif ('ifcadmin', $ifcadmin);
 $tpl->rif ('ifckonfig', $ifckonfig);
 $tpl->rif ('ifcmods', $ifcmods);
 $tpl->rif ('ifslave', $ifslave);
+$tpl->rif ('modsupport', $serv->mod_support());
 $tpl->r("typestr", $clustertype[$serv->cluster_type()]);
 
 //teste state

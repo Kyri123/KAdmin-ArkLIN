@@ -40,4 +40,11 @@ function check_webhelper() {
     return ($curr == $run) ? true : false;
 }
 
+function check_server_run() {
+    $curr = (time() * 1000);
+    $run = (file_exists("arkadmin_server/data/run_time.txt")) ? intval(file_get_contents("arkadmin_server/data/run_time.txt")) : 0;
+    $diff = $curr - $run;
+    return (5000 > $diff) ? true : false;
+}
+
 ?>

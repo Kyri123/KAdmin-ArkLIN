@@ -11,7 +11,7 @@ $resp = null;
 $sitetpl= new Template("step1.htm", $tpl_dir);
 $sitetpl->load();
 $complete = false;
-$resp = $alert->rd(1);
+$resp = null;
 
 if (isset($_POST["send"])) {
     $dbhost = $_POST["host"];

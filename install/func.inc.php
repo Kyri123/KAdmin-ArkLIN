@@ -28,10 +28,16 @@ function check_OS() {
     }
 }
 
-function check_cmd() {
-    $cmd = "arkmanager";
+function check_cmd($cmd = "arkmanager") {
     $return = shell_exec(sprintf("which %s", escapeshellarg($cmd)));
     return !empty($return);
+}
+
+function check_server_run() {
+    $curr = (time() * 1000);
+    $run = (file_exists("arkadmin_server/data/run_time.txt")) ? intval(file_get_contents("arkadmin_server/data/run_time.txt")) : 0;
+    $diff = $curr - $run;
+    return (5000 > $diff) ? true : false;
 }
 
 

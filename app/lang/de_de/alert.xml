@@ -37,10 +37,10 @@
             <text>Konnte Datensatz nicht lesen oder schreiben</text>
         </c_3>
 
-        <!-- DANGER | Webhelper -->
+        <!-- DANGER | ArkAdmin-Server -->
         <c_4>
-            <title>Webhelper Warnung</title>
-            <text>Der Webhelper hat länger als 60 Sekunden nicht mehr das Panel abgerufen! (Letzte Prüfung: {lastcheck_webhelper})</text>
+            <title>ArkAdmin-Server Warnung</title>
+            <text>Der ArkAdmin-Server hat länger als 60 Sekunden nicht mehr das Panel abgerufen! (Letzte Prüfung: {lastcheck_webhelper})</text>
         </c_4>
 
         <!-- DANGER | allready exsists -->
@@ -200,10 +200,10 @@
             <text>Syslink funktioniert nicht</text>
         </c_30>
 
-        <!-- DANGER | Webhelper Version -->
+        <!-- DANGER | ArkAdmin-Server Version -->
         <c_31>
-            <title>Webhelper Warnung</title>
-            <text>Der Webhelper hat nicht die aktuellste version</text>
+            <title>ArkAdmin-Server Warnung</title>
+            <text>Der ArkAdmin-Server hat nicht die aktuellste version. Bitte starte den Server neu.</text>
         </c_31>
 
         <!-- DANGER | path !dir -->
@@ -217,6 +217,12 @@
             <title>Type Error</title>
             <text>Pfad ist keine Datei</text>
         </c_33>
+
+        <!-- DANGER | ArkAdmin-Server -->
+        <c_34>
+            <title>ArkAdmin-Server Warnung</title>
+            <text>Der ArkAdmin-Server läuft nicht!</text>
+        </c_34>
 
 
 

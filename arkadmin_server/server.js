@@ -2,7 +2,7 @@ const fs = require("fs");
 const shell = require("./packages/src/shell");
 const crontab = require("./packages/src/crontab");
 const head = require("./packages/src/head");
-const version = "0.0.1";
+const version = "0.0.2";
 var config = null;
 
 //global vars from JSON (Konfig)
@@ -11,6 +11,11 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         //lade konfig als array
         config = JSON.parse(data, config);
         head.load(version, config);
+
+        // schreibe run_time();
+        setInterval(() => {
+            fs.writeFile("data/run_time.txt", Date.now(), () => {});
+        }, 1000);
 
         //handle Crontab
         crontab.req(config.HTTP + "crontab/player", config.WebIntervall);

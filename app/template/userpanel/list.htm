@@ -1,4 +1,5 @@
-{!ifmodal}<tr>
+{!ifmodal}
+<tr>
     <td>
         [{uid}] {username}
     </td>
@@ -12,29 +13,26 @@
         {lastlogin}
     </td>
     <td class="project-state">
-        {ifban}<span class="badge badge-danger">{::lang::userpanel::list::banned}</span>{/ifban}
-        {!ifban}<span class="badge badge-success">{::lang::userpanel::list::notbanned}</span>{/!ifban}
+        {ifban}<span class="badge badge-danger">{::lang::userpanel::list::banned}</span>{/ifban} {!ifban}
+        <span class="badge badge-success">{::lang::userpanel::list::notbanned}</span>{/!ifban}
     </td>
     <td class="project-actions text-right">
+        {!self}
         <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#remove{username}">
             <i class="fas fa-trash">
-            </i>
-            {::lang::userpanel::list::remove}
+            </i> {::lang::userpanel::list::remove}
         </a>
         {ifban}
         <a class="btn btn-danger btn-sm" href="/userpanel/tban/{uid}/0">
             <i class="fa fa-check">
-            </i>
-            {::lang::userpanel::list::unban}
+            </i> {::lang::userpanel::list::unban}
         </a>
-        {/ifban}
-        {!ifban}
+        {/ifban} {!ifban}
         <a class="btn btn-danger btn-sm" href="/userpanel/tban/{uid}/1">
             <i class="fa fa-times">
-            </i>
-            {::lang::userpanel::list::ban}
+            </i> {::lang::userpanel::list::ban}
         </a>
-        {/!ifban}
+        {/!ifban}{/!self}
     </td>
 </tr>
 {/!ifmodal}{ifmodal}

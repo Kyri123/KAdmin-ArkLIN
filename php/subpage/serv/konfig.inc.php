@@ -22,8 +22,13 @@ if (isset($_POST['savecfg'])) {
     $flag = $_POST['flag'];
     $cfg = null;
 
+    if(!$serv->mod_support()) {
+        $remove[] = "ark_GameModIds";
+        $remove[] = "serverMapModId";
+    }
+
     for ($i=0;$i<count($key);$i++) {
-        $write = ($value[$i] == "none") ? false : true;
+        $write = ($value[$i] == "none" && !in_array($value[$i], $remove)) ? false : true;
         if($write) $cfg .= $key[$i].'="'.$value[$i]."\"\n";
     }
 
@@ -35,6 +40,7 @@ if (isset($_POST['savecfg'])) {
 
     $cfg .= $flag;
     $cfg = ini_save_rdy($cfg);
+    $cfg = str_replace("Array", null, $cfg);
     $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
     if (file_put_contents($path, $cfg)) {
         $resp = $alert->rd(102);
@@ -152,13 +158,17 @@ if ($serv->isinstalled()) {
         "ark_QueryPort",
         "ark_AltSaveDirectoryName"
     );
-    $remove = array(
-        "arkopt_ActiveEvent"
-    );
+    $remove[] = "arkopt_ActiveEvent";
 
+    if(!$serv->mod_support()) {
+        $remove[] = "ark_GameModIds";
+        $remove[] = "serverMapModId";
+    }
 
     $serv->cfg_get();
     $ini = parse_ini_file('remote/arkmanager/instances/'.$url[2].'.cfg', false);
+    if(!isset($ini["ark_GameModIds"])) $ini["ark_GameModIds"] = "";
+    if(!isset($ini["serverMapModId"])) $ini["serverMapModId"] = "";
     foreach($ini as $key => $val) {
         if ($key) {
             if (in_array($key, $remove)) {
@@ -168,18 +178,34 @@ if ($serv->isinstalled()) {
                 array_push($flags, $key);
             }
             else {
+                $add = null;
+                if($key == "serverMap") {
+                    $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="setmap()" id="mapsel">
+                        <option value="">{::lang::php::sc::page::konfig::nosel}</option>
+                        <option value="Aberration_P">Aberration_P</option>
+                        <option value="CrystalIsles">CrystalIsles</option>
+                        <option value="Extinction">Extinction</option>
+                        <option value="Genesis">Genesis</option>
+                        <option value="Ragnarok">Ragnarok</option>
+                        <option value="ScorchedEarth_P">ScorchedEarth_P</option>
+                        <option value="TheCenter">TheCenter</option>
+                        <option value="TheIsland">TheIsland</option>
+                        <option value="Valguero_P">Valguero_P</option>
+                    </select></div>';
+                }
+
                 $formtype = (!in_array($key, $no_del)) ? 
                 // wenn nicht im array
                 '<div class="input-group mb-0">
                     <input type="hidden" name="key[]" readonly value="'.$key.'">
-                    <input type="text" name="value[]" class="form-control form-control-sm"  value="'.$val.'">
+                    <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'">
                     <div class="input-group-append">
                     <span onclick="remove(\''.md5($key).'\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>
                     </div>
                 </div>' : 
                 //sonst
-                '<input type="hidden" name="key[]" readonly value="'.$key.'">
-                <input type="text" name="value[]" class="form-control form-control-sm"  value="'.$val.'">';
+                '<div class="input-group mb-0"><input type="hidden" name="key[]" readonly value="'.$key.'">
+                <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'">'.$add.'</div>';
 
                 $form .= '
                     <tr class="'.(($serv->cluster_in() && in_array($key, $hide_cluster)) ? "d-none" : null).'" id="'.md5($key).'">

@@ -169,6 +169,9 @@ class server {
         }
     }
 
+    public function mod_support() {
+        return (!$this->cfg_check("arkflag_crossplay") && !$this->cfg_check("arkflag_epiconly"));
+    }
 
     // Job funktionen
     public function jobs_dir() {

@@ -9,10 +9,31 @@
 */
 function setico($target, $ico = null) {
     if(is_dir($target)) {
-        $ico = '<i class="nav-icon fas fa-folder-open pr-1" aria-hidden="true"></i>';
+        $ico = '<i class="nav-icon fas fa-folder-open" aria-hidden="true"></i>';
     }
     else {
-
+        $type = pathinfo($target)['extension'];
+        if($type == "sh" || $type == "ini") {
+            $ico = '<i class="nav-icon fa fa-file-code-o" aria-hidden="true"></i>';
+        }
+        elseif($type == "txt" || $type == "log") {
+            $ico = '<i class="nav-icon fa fa-file-text-o" aria-hidden="true"></i>';
+        }
+        elseif($type == "ark" || $type == "bak") {
+            $ico = '<i class="nav-icon fa fa-map-o" aria-hidden="true"></i>';
+        }
+        elseif($type == "arkprofile" || $type == "profilebak") {
+            $ico = '<i class="nav-icon fa fa-user" aria-hidden="true"></i>';
+        }
+        elseif($type == "tribebak" || $type == "arktributetribe" || $type == "arktribe") {
+            $ico = '<i class="nav-icon fa fa-users" aria-hidden="true"></i>';
+        }
+        elseif($type == "pnt") {
+            $ico = '<i class="nav-icon fa fa-file-image-o" aria-hidden="true"></i>';
+        }
+        else {
+            $ico = '<i class="nav-icon fa fa-file-o" aria-hidden="true"></i>';
+        }
     }
     return $ico;
 }

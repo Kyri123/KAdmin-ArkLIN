@@ -9,8 +9,11 @@
      -->
 
     <install>
+        <online>Online</online>
+        <offline>Offline</offline>
         <found>Gefunden</found>
         <notfound>Nicht gefunden</notfound>
+        <warning>Bedingt (unter 7.3)</warning>
         <step>Schritt:</step>
         <installer>Installer</installer>
 
@@ -62,6 +65,11 @@
                     <text>[b]Für Linux Allgemein[/b]
                         Folge diesen Link: [a="https://github.com/FezVrasta/ark-server-tools"]Klick Mich![/a]</text>
                 </am>
+                
+                <aa>
+                    <title>ArkAdmin-Server Offline...</title>
+                    <text>Bitte starte den ArkAdmin-Server (Alle infos unter Readme) oder stelle diesen richtig ein!</text>
+                    </aa>
             </section>
         </step0>
 
@@ -121,7 +129,7 @@
             <main>
                 <title>Crontab und Regestrierung</title>
                 <text>[b]Crontab[/b]
-                    Stelle die Konfiguration ein und Starte die Datei mit "start.sh" (Empfehlung: Verschiebe den Ordner nach /home oder /root)
+                    Stelle sicher dass der ArkAdmin-Server richtig eingestellt ist.
                     Wenn der Crontab abgerufen wird wird der Abschluss der Installation freigeben [hr][b]Regestrierung[/b]
                     Erstelle nun ein Account: [a="/registration"]Klick mich![/a]
                     Dein Code lautet: [b]{code}[/b]</text>

@@ -43,7 +43,8 @@ if (isset($_POST["add"])) {
         "{arkbackupdir}",
         "{ark_Port}",
         "{ark_RCONPort}",
-        "{ark_QueryPort}"
+        "{ark_QueryPort}",
+        "{ark_ServerAdminPassword}"
     );
     $repl = array(
         $arkserverroot,
@@ -51,7 +52,8 @@ if (isset($_POST["add"])) {
         $arkbackupdir,
         $ark_Port,
         $ark_RCONPort,
-        $ark_QueryPort
+        $ark_QueryPort,
+        md5(rndbit(10))
     );
     $cfg = str_replace($find, $repl, $cfg);
     if (!file_exists($path) && $ark_QueryPort > 1000) {

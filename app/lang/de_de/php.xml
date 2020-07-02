@@ -197,6 +197,7 @@
                     <ini_notfound>Wird nicht Gespeichert da die Ini noch nicht Exsistiert!
                     Bitte starte den Server bevor du weiter machst!</ini_notfound>
                     <noevent>Kein Event</noevent>
+                    <nosel>Map wählen</nosel>
                 </konfig>
 
                 <!-- Logs.inc.php -->

@@ -122,6 +122,7 @@ for ($i=1;$i<count($userarray);$i++) {
     $list->r("username", $username);
 
     $list->rif ("ifmodal", false);
+    $list->rif ("self", ($id == $_SESSION["id"]));
     $userlist .= $list->load_var();
 
     // Modal
