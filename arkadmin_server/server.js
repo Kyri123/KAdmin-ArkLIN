@@ -2,6 +2,7 @@ const fs = require("fs");
 const shell = require("./packages/src/shell");
 const crontab = require("./packages/src/crontab");
 const head = require("./packages/src/head");
+const { stringify } = require("querystring");
 const version = "0.0.2";
 var config = null;
 
@@ -14,7 +15,9 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
         // schreibe run_time();
         setInterval(() => {
-            fs.writeFile("data/run_time.txt", Date.now(), () => {});
+            var date = "" + Date.now();
+            fs.open('data/run_time.txt', 'w', () => {});
+            fs.writeFile("data/run_time.txt", date, () => {});
         }, 1000);
 
         //handle Crontab
