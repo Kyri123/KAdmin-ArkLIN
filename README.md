@@ -18,6 +18,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 # Update
 
 `Wichtig für Update von -0.6.2 auf +0.7.0 Es ist empfohlen das Panel neu zu installieren!`
+
 `Wichtig für Update von -0.8.1 auf +0.8.2 der neue ArkAdmin-Server muss eingestellt werden & Node.JS wird nun benötigt`
 
 - Lade die letzte Version runter
