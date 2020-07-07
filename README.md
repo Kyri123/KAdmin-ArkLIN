@@ -49,12 +49,13 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 
 # Benötigt
 
+- `Node.JS` version => 12.0.0
+- `Node.JS` NPM
 - `PHP` Version => 7.3 (=> 7.0 wird bedingt unterstützt)
 - `PHP` mod_rewrite
 - `PHP` cURL
 - `PHP` MySQLi
 - `Linux` Root rechte (bzw Rechte um chmod 777, screen & arkmanager zu benutzten)
 - `Linux` Screen
-- `Linux` Node.JS & NPM
 - `Linux` Arkmanager (https://github.com/FezVrasta/ark-server-tools)
 - `Mysql` Server
