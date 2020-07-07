@@ -71,6 +71,48 @@ foreach ($json as $k => $v) {
         }
     }
 
+    // Syncronisiere Whitelist auf Slaves
+    if ($json[$k]["sync"]["whitelist"] && $masterisset) {
+        foreach ($json[$k]["servers"] as $sk => $sv) {
+
+            $slavecfg = new server($sv["server"]);
+            $whitelistfile_master = $mcfg->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
+            $whitelistfile_slave = $slavecfg->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
+
+
+            if($slavecfg->check_rcon()) {
+                $arr = file($whitelistfile_master);
+                if(!is_array($arr)) $arr = [];
+                for($i=0;$i<count($arr);$i++) {
+                    $arr[$i] = trim($arr[$i]);
+                }
+
+                $arr_slave = file($whitelistfile_slave);
+                if(!is_array($arr_slave)) $arr_slave = [];
+                for($i=0;$i<count($arr_slave);$i++) {
+                    $arr_slave[$i] = trim($arr_slave[$i]);
+                }
+                
+                foreach($arr as $user) {
+                    if(!in_array($user, $arr_slave)) {
+                        $command = "AllowPlayerToJoinNoCheck $user";
+                        $response = $slavecfg->exec_rcon($command);
+                    }
+                }
+    
+                foreach($arr_slave as $user) {
+                    if(!in_array($user, $arr)) {
+                        $command = "DisallowPlayerToJoinNoCheck $user";
+                        $response = $slavecfg->exec_rcon($command);
+                    }
+                }
+            }
+            else {
+                if(file_exists($whitelistfile_master)) file_put_contents($whitelistfile_slave, file_get_contents($whitelistfile_master));
+            }
+        }
+    }
+
     // Setzte Optionen und Prüfe bei änderungen Starte den Server neu
     foreach ($json[$k]["servers"] as $sk => $sv) {
 

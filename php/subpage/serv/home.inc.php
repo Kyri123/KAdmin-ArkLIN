@@ -20,6 +20,9 @@ $page_tpl->r('cfg' ,$serv->name());
 $page_tpl->r('SESSION_USERNAME' ,$user->name());
 
 $cheatfile = $serv->dir_save(true)."/AllowedCheaterSteamIDs.txt";
+$whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
+if(!file_exists($cheatfile)) file_put_contents($cheatfile, " ");
+if(!file_exists($whitelistfile)) file_put_contents($whitelistfile, " ");
 
 $playerjs = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true)["response"]["players"];
 $count = (is_countable($playerjs)) ? count($playerjs): false;
@@ -134,10 +137,14 @@ if ($bool_install) {
 } 
 
 if ($ifcadmin) $resp .= $alert->rd(300, 3);
+if ($ifwhitelist) $resp .= $alert->rd(304, 3);
 
 $page_tpl->rif ("installed", $bool_install);
+$page_tpl->rif ('ifwhitelist', $ifwhitelist);
 $page_tpl->r("userlist_admin", $userlist_admin);
 $page_tpl->r("adminlist_admin", $adminlist_admin);
+$page_tpl->r("whitelist_admin", $adminlist_admin);
+$page_tpl->r("pick_whitelist", $serv->cfg_check("exclusivejoin"));
 $page_tpl->session();
 $panel = $page_tpl->load_var();
 

@@ -1,5 +1,6 @@
 # Arkadmin 
-Webbasiertes Admin Panel für Ark-Gameserver
+
+Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://github.com/FezVrasta/ark-server-tools)
 
 # Wichtig
 
@@ -10,7 +11,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 # Installation
 
 - Lade die letzte Version runter und Lade die Dateien in deinen Webserver
-- Stelle den Java Webhelper ein `arkadmin_server/config/server.json` (Siehe unten Config.Properties)
+- Stelle den ArkAdmin-Server ein `arkadmin_server/config/server.json` (Siehe unten Config.Properties)
 - Installiere alle Node.JS Module `cd arkadmin_server` > `npm install`
 - Rufe über einen screen den ArkAdmin Server `cd arkadmin_server` > `node server.js` auf und las diesem Laufen
 - Rufe die Webseite auf und folge der Installation  aqsw2er5r45
@@ -30,7 +31,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 
 | Eigenschaften | Wert | 
 | :--- | :--- |
-| `HTTP` | Weblink zum Arkadmin `http://meinurl.com/` |
+| `HTTP` | Weblink zum Arkadmin `http(s)://meinurl.com/` |
 | `WebPath` | Ordnerpfad wo Arkadmin installiert ist (Webverzeichnis) |
 | `AAPath` | Ordnerpfad wo sich Arkmanager befindet - Normalerweise in: `/etc/arkmanager`  |
 | `ServerPath` | Ordnerpfad wo die Server gespeichert werden |
@@ -48,7 +49,7 @@ Webbasiertes Admin Panel für Ark-Gameserver
 
 # Benötigt
 
-- `PHP` Version => 7.3
+- `PHP` Version => 7.3 (=> 7.0 wird bedingt unterstützt)
 - `PHP` mod_rewrite
 - `PHP` cURL
 - `PHP` MySQLi
@@ -56,3 +57,4 @@ Webbasiertes Admin Panel für Ark-Gameserver
 - `Linux` Screen
 - `Linux` Node.JS & NPM
 - `Linux` Arkmanager (https://github.com/FezVrasta/ark-server-tools)
+- `Mysql` Server

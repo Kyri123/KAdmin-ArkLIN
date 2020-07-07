@@ -42,16 +42,11 @@ $steamapi->getsteamprofile_list("online_".$serv->name(), $arr_pl, 60);
 $steamapi->getsteamprofile_list("savegames_".$serv->name(), $arr_player);
 //$steamapi->getmod_list($serv->name(), explode(",", $serv->cfg_read("ark_GameModIds"))); Generiert Modliste für den server (unbenutzt)
 
-$ifslave = false; if ($serv->cluster_type() == 0 && $serv->cluster_in()) $ifslave = true;
-$ifcadmin = false; if ($serv->cluster_admin() && $ifslave && $serv->cluster_in()) $ifcadmin = true;
-$ifckonfig = false; if ($serv->cluster_konfig() && $ifslave && $serv->cluster_in()) $ifckonfig = true;
-$ifcmods = false; if ($serv->cluster_mods() && $ifslave && $serv->cluster_in()) $ifcmods = true;
-
-if (!$serv->cluster_in()) {
-    $ifcadmin = false;
-    $ifckonfig = false;
-    $ifcmods = false;
-}
+$ifslave = ($serv->cluster_type() == 0 && $serv->cluster_in());
+$ifcadmin = ($serv->cluster_admin() && $ifslave && $serv->cluster_in());
+$ifckonfig = ($serv->cluster_konfig() && $ifslave && $serv->cluster_in());
+$ifwhitelist = ($serv->cluster_whitelist() && $ifslave && $serv->cluster_in());
+$ifcmods = ($serv->cluster_mods() && $ifslave && $serv->cluster_in());
 
 $servername = $serv->cfg_read('ark_SessionName');
 $qport = $serv->cfg_read('ark_QueryPort');

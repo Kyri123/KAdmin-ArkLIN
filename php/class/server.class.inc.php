@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 
-class server {
+class server extends Rcon {
 
     private $serv;
     private $serverfound;
@@ -16,7 +16,7 @@ class server {
     private $ini;
     private $inipath;
     private $loadedcluster = false;
-    private $cluster_data;
+    public $cluster_data;
 
     public function __construct($serv) {
         $this->serv = $serv;
@@ -312,6 +312,7 @@ class server {
                     $infos["mods"] = $mv["sync"]["mods"];
                     $infos["konfig"] = $mv["sync"]["konfig"];
                     $infos["admin"] = $mv["sync"]["admin"];
+                    $infos["whitelist"] = $mv["sync"]["whitelist"];
                 }
             }
         }
@@ -365,16 +366,50 @@ class server {
         if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
+    public function cluster_whitelist() {
+        if ($this->loadedcluster && $this->cluster_data["in"]) return (isset($this->cluster_data["whitelist"])) ? $this->cluster_data["whitelist"] : false;
+        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
+        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
+    }
+
     public function cluster_type() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["type"];
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
         if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
+    // RCON Funktionen
+    public function check_rcon() {
+        return ($this->status()->online == 'Yes' && $this->cfg_read('ark_RCONEnabled') == 'True' && $this->cfg_read('ark_ServerAdminPassword') != '');
+    }
 
+    public function exec_rcon(String $commmand = "") {
+        if ($this->check_rcon()) {
+            $re = 12;
 
+            //inz RCON
+            $ip = $_SERVER['SERVER_ADDR'];
+            $port = $this->cfg_read('ark_RCONPort');
+            $pw = $this->cfg_read('ark_ServerAdminPassword');
+            $rcon = new parent($ip, $port, $pw, 3);
 
-
+            if ($rcon->connect()) {
+                if ($commmand == "") {
+                    $re = 2;
+                }
+                elseif (!$rcon->send_command($commmand)) {
+                    $re = 12;
+                }
+                else {
+                    $re = 108;
+                }
+                $rcon->disconnect();
+            }
+        } else {
+            $re = 12;
+        }
+        return $re;
+    }
 
     // Private Functions
 
@@ -407,6 +442,8 @@ class server {
         }
 
     }
+
+
 }
 
 

@@ -13,6 +13,43 @@ $cfg = $_GET['cfg'];
 $case = $_GET['case'];
 
 switch ($case) {
+    // CASE: Whitelist list
+    case "loadwhite":
+        //erstelle SteamAPI von Savegames
+
+        $serv = new server($cfg);
+        $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
+        $file = file($whitelistfile);
+        $arr = [];
+
+        if (is_array($file)) {
+            for ($i = 0; $i < count($file); $i++) {
+                $find = array("\n", "\r", " ");
+                $file[$i] = str_replace($find, null, $file[$i]);
+                if($file[$i] != "0" && $file[$i] != "" && $file[$i] != null) $arr[] = $file[$i];
+            }
+        }
+        
+        $steamapi->getsteamprofile_list("whitelist_".$serv->name(), $arr, 0);
+        $file = $helper->file_to_json('app/json/steamapi/profile_whitelist_'.$serv->name().'.json', true)["response"]["players"];
+
+        for ($i=0;$i<count($file);$i++) {
+            $list_tpl = new Template('list_whitelist.htm', 'app/template/serv/page/list/');
+            $list_tpl->load();
+
+            $list_tpl->r("sid", $file[$i]["steamid"]);
+            $list_tpl->r("url", $file[$i]["profileurl"]);
+            $list_tpl->r("cfg", $serv->name());
+            $list_tpl->r("rndb", rndbit(25));
+            $list_tpl->r("name", $file[$i]["personaname"]);
+            $list_tpl->r("img", $file[$i]["avatarmedium"]);
+
+            $adminlist_admin .= $list_tpl->load_var();
+        }
+        echo $adminlist_admin;
+    break;
+
+
     // CASE: Chat LOG
     case "livechat":
         $tpl = new Template('list_chat.htm', 'app/template/serv/page/list/');
@@ -45,7 +82,13 @@ switch ($case) {
         $tpl->load();
         $tpl->r("content", $resp);
         $tpl->echo();
-        break;
+    break;
+
+    case "load":
+        $list = new Template("load_list.htm", "app/template/jquery/");
+        $list->load();
+        $list->echo();
+    break;
 
     // CASE: RCON LOG
     case "rconlog":

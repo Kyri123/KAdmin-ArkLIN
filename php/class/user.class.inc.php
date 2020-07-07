@@ -135,6 +135,24 @@ class userclass extends helper
             return false;
         }
     }
+
+    // sende modus
+    public function show_mode($mode)
+    {
+        $id = md5($this->id);
+        $path = "app/json/user/$id.json";
+        if (file_exists($path)) {
+            $json = parent::file_to_json($path, true);
+            if(isset($json[$mode])) {
+                return ($json[$mode] == 1) ? true : false;
+            }
+            else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }
 
 ?>

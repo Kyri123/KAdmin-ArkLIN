@@ -121,6 +121,7 @@ if (isset($_POST["editcluster"])) {
     $sync["admin"] = true; if (!isset($_POST["admin"])) $sync["admin"] = false;
     $sync["mods"] = true; if (!isset($_POST["mods"])) $sync["mods"] = false;
     $sync["konfig"] = true; if (!isset($_POST["konfig"])) $sync["konfig"] = false;
+    $sync["whitelist"] = true; if (!isset($_POST["whitelist"])) $sync["whitelist"] = false;
 
     // options / rules
     $opt["NoTransferFromFiltering"] = true; if (!isset($_POST["NoTransferFromFiltering"])) $opt["NoTransferFromFiltering"] = false;
@@ -165,6 +166,7 @@ if (isset($_POST["add"])) {
     $sync["admin"] = true; if (!isset($_POST["admin"])) $sync["admin"] = false;
     $sync["mods"] = true; if (!isset($_POST["mods"])) $sync["mods"] = false;
     $sync["konfig"] = true; if (!isset($_POST["konfig"])) $sync["konfig"] = false;
+    $sync["whitelist"] = true; if (!isset($_POST["whitelist"])) $sync["whitelist"] = false;
 
     // options / rules
     $opt["NoTransferFromFiltering"] = true; if (!isset($_POST["NoTransferFromFiltering"])) $opt["NoTransferFromFiltering"] = false;
@@ -276,13 +278,15 @@ foreach ($json as $mk => $mv) {
     $list_opt = null;
 
     //sync
-    if ($json[$mk]["sync"]["admin"]) $list_sync .= "<tr><td>Administratoren</td></tr>";
+    if ($json[$mk]["sync"]["admin"]) $list_sync .= "<tr><td>Admins</td></tr>";
     if ($json[$mk]["sync"]["mods"]) $list_sync .= "<tr><td>Mods</td></tr>";
-    if ($json[$mk]["sync"]["konfig"]) $list_sync .= "<tr><td>Konfigurationen</td></tr>";
+    if ($json[$mk]["sync"]["konfig"]) $list_sync .= "<tr><td>Config</td></tr>";
+    if ($json[$mk]["sync"]["whitelist"]) $list_sync .= "<tr><td>Whitelist</td></tr>";
 
     $listtpl->rif ("Administratoren", $json[$mk]["sync"]["admin"]);
     $listtpl->rif ("Mods", $json[$mk]["sync"]["mods"]);
     $listtpl->rif ("Konfigurationen", $json[$mk]["sync"]["konfig"]);
+    $listtpl->rif ("whitelist", $json[$mk]["sync"]["whitelist"]);
     //opt
     if ($json[$mk]["opt"]["NoTransferFromFiltering"]) $list_opt .= "<tr><td>NoTransferFromFiltering</td></tr>";
     if ($json[$mk]["opt"]["NoTributeDownloads"]) $list_opt .= "<tr><td>NoTributeDownloads</td></tr>";

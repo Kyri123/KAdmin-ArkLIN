@@ -34,6 +34,7 @@ for($i=0;$i<count($dirs);$i++) {
     if(!file_exists($dirs[$i])) mkdir($dirs[$i], 0777, true);
 }
 
+
 //Erstelle Default Dateien
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {

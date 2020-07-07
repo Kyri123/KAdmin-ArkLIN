@@ -12,8 +12,8 @@
 require('../main.inc.php');
 
 // create get vars
-$cfg = $_GET['cfg'];
-$case = $_GET['case'];
+$cfg = (isset($_GET['cfg'])) ? $_GET['cfg'] : $_POST['cfg'];
+$case = (isset($_GET['case'])) ? $_GET['case'] : $_POST['case'];
 
 switch ($case) {
     // CASE: RCON send command
@@ -121,6 +121,39 @@ switch ($case) {
         }
 
         echo json_encode(['code'=>$code, 'msg'=>$msg]);
+        break;
+
+        // case toggle whitelist
+        case "togglewhitelist":
+            $rcon = false;
+            $id = $_POST["sid"];
+            $serv = new server($cfg);
+            $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
+            $arr = file($whitelistfile);
+            for($i=0;$i<count($arr);$i++) {
+                $arr[$i] = trim($arr[$i]);
+            }
+            $i = 0;
+            if(!$serv->check_rcon()) {
+                $content = file_get_contents($whitelistfile);
+                if(in_array($id, $arr)) {
+                    $content = str_replace($id, null, $content);
+                }
+                else {
+                    $content .= "\n\r$id";
+                }
+                $response = (file_put_contents($whitelistfile, $content)) ? 105 : 1 ;
+            }
+            elseif(in_array($id, $arr)) {
+                $command = "DisallowPlayerToJoinNoCheck $id";
+                $rcon = true;
+            }
+            else {
+                $command = "AllowPlayerToJoinNoCheck $id";
+                $rcon = true;
+            }
+            if($rcon) $response = $serv->exec_rcon($command);
+            echo $alert->rd($response);
         break;
     default:
         echo "Case not found";

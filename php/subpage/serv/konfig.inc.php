@@ -16,7 +16,7 @@ $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}<
 
 // arkmanager.cfg Speichern
 $resp = null;
-if (isset($_POST['savecfg'])) {
+if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
     $value = $_POST['value'];
     $key = $_POST['key'];
     $flag = $_POST['flag'];
@@ -49,10 +49,45 @@ if (isset($_POST['savecfg'])) {
         $resp = $alert->rd(1);
     } 
 }
+else {
+    if(isset($_POST['savecfg'])) $resp = $alert->rd(7);
+}
+
+// arkmanager.cfg Speichern
+$resp = null;
+if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
+
+    $value = $_POST['value'];
+    $key = $_POST['key'];
+    $skey = $_POST['skey'];
+
+    for ($i=0;$i<count($key);$i++) {
+        $cfg[$skey[$i]][$key[$i]] = $value[$i];
+    }
+
+    $cfg_done = null;
+    foreach ($cfg as $k => $v){
+        $cfg_done .= "\n[$k]\n";
+        foreach ($v as $ik => $iv){
+            $cfg_done .= "$ik=$iv\n";
+        }
+    }
+
+    $type = $_POST["type"];
+    $path = $serv->dir_konfig().$type;
+    $text = ini_save_rdy($cfg_done);
+    if (file_put_contents($path, $text)) {
+        $resp = $alert->rd(102);
+    } else {
+        $resp = $alert->rd(1);
+    }
+}
+else {
+    if(isset($_POST['savenormal'])) $resp = $alert->rd(7);
+}
 
 // arkmanager.cfg (Expert) Speichern
-$resp = null;
-if (isset($_POST['savecfg_expert'])) {
+if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
     $txtarea = $_POST['txtarea'];
     $cfg = ini_save_rdy($txtarea);
     $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
@@ -62,9 +97,12 @@ if (isset($_POST['savecfg_expert'])) {
         $resp = $alert->rd(1);
     } 
 }
+else {
+    if(isset($_POST['savecfg_expert'])) $resp = $alert->rd(7);
+}
 
 // Game,GUS,Engine.ini Speichern
-if (isset($_POST['save'])) {
+if (isset($_POST['save']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
     $type = $_POST["type"];
     $text = $_POST["text"];
     $path = $serv->dir_konfig().$type;
@@ -79,14 +117,23 @@ if (isset($_POST['save'])) {
         $resp = $alert->rd(1);
     }
 }
+else {
+    if(isset($_POST['save'])) $resp = $alert->rd(7);
+}
 
 $page_tpl->r('cfg' ,$url[2]);
 
 $default = "{::lang::php::sc::page::konfig::ini_notfound}";
+$default_table = "<tr colspan='2'><td>{::lang::php::sc::page::konfig::ini_notfound}</td></tr>";
 
 $gus = ($serv->ini_load('GameUserSettings.ini', true)) ? $gus = $serv->ini_get_str() : $default;
 $game = ($serv->ini_load('Game.ini', true)) ? $serv->ini_get_str() : $default;
 $engine = ($serv->ini_load('Engine.ini', true)) ? $serv->ini_get_str() : $default;
+
+$gus_nexp = ($serv->ini_load('GameUserSettings.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
+$game_nexp = ($serv->ini_load('Game.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
+
+$inis = array("gus" => $gus_nexp, "game" => $game_nexp);
 
 $strcfg = $serv->cfg_get_str();
 
@@ -219,6 +266,46 @@ if ($serv->isinstalled()) {
     }
 }
 
+
+// GameUserSettings
+
+foreach($inis as $mk => $mv) {
+    $re[$mk] = null;
+    if(is_array($mv)) {
+        // sections
+        if(is_array($mv)) foreach($mv as $sk => $sv) {
+
+            $it = null;
+            $tpl_sec = new Template("section.htm", "app/template/serv/page/list/konfig/");
+            $tpl_sec->load();
+            
+            // items
+            if(is_array($sv)) foreach($sv as $ik => $iv) {
+
+                $tpl_item = new Template("item.htm", "app/template/serv/page/list/konfig/");
+                $tpl_item->load();
+
+                $tpl_item->r("sk", $sk);
+                $tpl_item->r("rnd", md5(rndbit(50)));
+                $tpl_item->r("k", strval($ik));
+                $tpl_item->r("v", ($iv != "") ? $iv : 0);
+
+                $it .= $tpl_item->load_var();
+
+            }
+            $tpl_sec->r("rnd", md5(rndbit(50)));
+            $tpl_sec->r("sk", $sk);
+            $tpl_sec->r("name", $sk);
+            $tpl_sec->r("items", $it);
+
+            $re[$mk] .= $tpl_sec->load_var();
+
+        }
+    }
+}
+
+
+
 //flags
 $flags_json = $helper->file_to_json("app/json/panel/flags.json", true);
 foreach($flags_json as $k => $v) {
@@ -230,6 +317,8 @@ if ($ifckonfig) $resp .= $alert->rd(301, 3);
 $page_tpl->r('ark_opt', $ark_opt);
 $page_tpl->r('ark_flag', $ark_flag);
 $page_tpl->r('form', $form);
+$page_tpl->r('form_GUS', $re["gus"]);
+$page_tpl->r('form_GAME', $re["game"]);
 $page_tpl->r('strcfg', $strcfg);
 $page_tpl->r('gus', $gus);
 $page_tpl->r('game', $game);

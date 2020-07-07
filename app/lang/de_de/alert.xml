@@ -224,6 +224,7 @@
             <text>Der ArkAdmin-Server läuft nicht!</text>
         </c_34>
 
+        
 
 
 
@@ -280,6 +281,12 @@
             <text>Rcon Gesendet</text>
         </c_107>
 
+        <!-- Success | executed [rcon] -->
+        <c_108>
+            <title>Erfolgreich ausgeführt!</title>
+            <text>Rcon Gesendet</text>
+        </c_108>
+
 
 
         <!-- Warning -->
@@ -310,10 +317,16 @@
             <text>Funktion Modifikationen wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.</text>
         </c_302>
 
-        <!-- INFO | syncmode - konfig -->
+        <!-- INFO | PHP info -->
         <c_303>
             <title>PHP Info</title>
             <text>Die PHP Version ist unter PHP 7.3 bitte Update die PHP version.</text>
         </c_303>
+
+        <!-- INFO | syncmode - Whitelist -->
+        <c_3004>
+            <title>Sync Mode : Whitelist</title>
+            <text>Funktion Whitelist wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.</text>
+        </c_3004>
     </alert>
 </lang>

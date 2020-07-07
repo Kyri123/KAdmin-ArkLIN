@@ -69,6 +69,7 @@ if(isset($_POST["saveuser"])) {
 if(isset($_POST["savepanel"])) {
     $json = $helper->file_to_json($path, true);
     $json["expert"] = (isset($_POST["json"]["expert"])) ? 1 : 0;
+    $json["konfig"] = (isset($_POST["json"]["konfig"])) ? 1 : 0;
     if ($helper->savejson_create($json, $path)) {
         $alert->code = 102;
         $resp = $alert->re();
@@ -87,6 +88,7 @@ $tpl->r("resp", $resp);
 $tpl->r("username", $user->name());
 $tpl->r("email", $user->email());
 $tpl->r("c_expert", ($user->expert()) ? "checked" : null);
+$tpl->r("c_konfig", ($user->show_mode("konfig")) ? "checked" : null);
 
 // sendet alles an Index
 $content = $tpl->load_var();

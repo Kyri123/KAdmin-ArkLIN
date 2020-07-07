@@ -18,7 +18,10 @@
                 {installed}{!ifcadmin}
                 <li class="nav-item">
                     <a class="nav-link" id="pills-admins-tab" data-toggle="pill" href="#pills-admins" role="tab" aria-controls="pills-admins" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::admin}</a>
-                </li>{/!ifcadmin}{/installed}
+                </li>{/!ifcadmin}{!ifwhitelist}
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-whitel-tab" data-toggle="pill" href="#pills-whitel" role="tab" aria-controls="pills-whitel" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::whitel}</a>
+                </li>{/!ifwhitelist}{/installed}
             </ul>
             <div class="form-inline">
                 <div class="form-inline">
@@ -156,14 +159,73 @@
                 <ul class="list-group">
                     {adminlist_admin}
                 </ul>
-            </div>{/!ifcadmin}{/installed}
+            </div>{/!ifcadmin}{/installed} {installed}{!ifwhitelist}
+            <div class="tab-pane fade" id="pills-whitel" role="tabpanel" aria-labelledby="pills-whitel-tab">
+                <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
+                <div class="pl-4 pr-4 pt-0 pb-0">
+                    <form action="#add_admin" method="post" class="form-group row" id="sendwhitelist">
+                        <label class="col-sm-2 col-form-label">{::lang::servercenter::home::section::whitel::SteamID}</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" name="sid" id="SteamID" type="number" required placeholder="{::lang::servercenter::home::section::whitel::PH}">
+                            <input class="form-control" name="cfg" type="hidden" value="{cfg}">
+                            <input class="form-control" name="case" type="hidden" value="togglewhitelist">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" name="addadmin">{::lang::servercenter::home::section::whitel::btn}</button>
+                        </div>
+                    </form>
+                </div>
+                <ul class="list-group" id="whitelist"></ul>
+            </div>{/!ifwhitelist}{/installed}
 
         </div>
     </div>
     </div>
 
     <script>
+        // toggle whitelist
+        function toggle_white(sid, cfg, caser) {
+            $.post("/php/async/post/servercenter.home.async.php", {
+                "sid": sid,
+                "cfg": cfg,
+                "case": caser
+            }, (resp) => {
+                $("#all_resp").html(resp);
+                load_white();
+            });
+        }
+
+        // load whitelist
+        function load_white() {
+            var target = $("#whitelist");
+            var cfg = "{cfg}";
+            $.get("/php/async/get/servercenter.home.async.php", {
+                "cfg": cfg,
+                "case": "load"
+            }, (re) => {
+                target.html(re);
+                $.get("/php/async/get/servercenter.home.async.php", {
+                    "cfg": cfg,
+                    "case": "loadwhite"
+                }, (re) => {
+                    target.html(re);
+                });
+            });
+        }
+
         $(document).ready(function() {
+
+            // send whitelist
+            $("#sendwhitelist").submit(function(e) {
+                $.post("/php/async/post/servercenter.home.async.php", $(this).serialize(), (resp) => {
+                    $("#SteamID").val('');
+                    $("#all_resp").html(resp);
+                    load_white();
+                });
+                e.preventDefault();
+            });
+            load_white();
+
 
             // R-Con
             $('#send_rcon').click(function(e) {

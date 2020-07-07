@@ -62,6 +62,7 @@
         <wpassword>Neues Passwort</wpassword> 
         <phwpassword>Wiederholen</phwpassword>
         <username>Benutzername</username> 
+        <konfig>Konfiguration sperren wenn der Server offline ist</konfig>
     </usersettings>
 
     <!-- Dashboard -->
@@ -149,6 +150,7 @@
                         <admin>Administratoren</admin>
                         <mods>Mods</mods>
                         <config>Konfigurationen</config>
+                        <whitelist>Whitelist</whitelist>
                         <option>Optionen</option>
                         <surv>Verbiete Überlebender</surv>
                         <surv_sec_line>Erlaubt (False) oder Verbietet (True)</surv_sec_line>
@@ -471,6 +473,7 @@
                 <lchat>Live-Chat</lchat>
                 <rcon>Rcon-Konsole</rcon>
                 <admin>Administratoren</admin>
+                <whitel>Whitelist</whitel>
             </nav>
             <section>
                 <lchat>
@@ -491,6 +494,12 @@
                     <info>Der User muss zuerst auf dem Server gewesen sein! (Änderungen werden erst nach einem Neustart wirksam)</info>
                     <btn_add>Hinzufügen</btn_add>
                 </admin>
+
+                <whitel>
+                    <PH>SteamID</PH>
+                    <SteamID>SteamID: </SteamID>
+                    <btn>Hinzufügen / Entfernen</btn>
+                </whitel>
             </section>
         </home>
 
@@ -540,6 +549,9 @@
             <th_config>Option</th_config>
             <th_input>Input</th_input>
             <custom>Extra hinzufügen</custom>
+            <edit>Bearbeiten</edit>
+            <exp>Experten-Modus</exp>
+            <sec_create>Section Erstellen:</sec_create>
         </config>
 
         <mods>

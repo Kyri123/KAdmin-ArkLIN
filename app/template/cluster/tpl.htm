@@ -56,92 +56,102 @@
                             </div>
                         </div>
                         <!-- /-ROW -->
+                        <!-- /-ROW -->
+                        <div class="row">
+                            <div class="icheck-primary mb-3 col-md-12">
+                                <input type="checkbox" name="whitelist" value="true" id="whitelist">
+                                <label for="whitelist">
+                                    {::lang::cluster::list::clusters::modal::settings::whitelist}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /-ROW -->
                     </div>
                 </div>
 
 
-            <div class="form-group row">
-                <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::option}</label>
-                <div class="col-sm-8">
-                    <!-- /-ROW -->
-                    <div class="row">
-                        <div class="icheck-primary mb-3 col-md-12">
-                            <input type="checkbox" name="NoTransferFromFiltering" value="true" id="NoTransferFromFiltering">
-                            <label for="NoTransferFromFiltering">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::option}</label>
+                    <div class="col-sm-8">
+                        <!-- /-ROW -->
+                        <div class="row">
+                            <div class="icheck-primary mb-3 col-md-12">
+                                <input type="checkbox" name="NoTransferFromFiltering" value="true" id="NoTransferFromFiltering">
+                                <label for="NoTransferFromFiltering">
                                 NoTransferFromFiltering
                             </label>
+                            </div>
                         </div>
-                    </div>
-                    <!-- /-ROW -->
-                    <!-- /-ROW -->
-                    <div class="row">
-                        <div class="icheck-primary mb-3 col-md-12">
-                            <input type="checkbox" name="NoTributeDownloads" value="true" id="NoTributeDownloads">
-                            <label for="NoTributeDownloads">
+                        <!-- /-ROW -->
+                        <!-- /-ROW -->
+                        <div class="row">
+                            <div class="icheck-primary mb-3 col-md-12">
+                                <input type="checkbox" name="NoTributeDownloads" value="true" id="NoTributeDownloads">
+                                <label for="NoTributeDownloads">
                                 NoTributeDownloads
                             </label>
+                            </div>
                         </div>
+                        <!-- /-ROW -->
                     </div>
-                    <!-- /-ROW -->
-                </div>
-                <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::surv} <br><span class="text-sm">{::lang::cluster::list::clusters::modal::settings::surv_sec_line}</span></label>
-                <div class="col-sm-8">
-                    <!-- -ROW -->
-                    <div class="row">
-                        <div class="icheck-primary mb-3 col-md-6">
-                            <input type="checkbox" name="PreventDownloadSurvivors" value="true" id="PreventDownloadSurvivors">
-                            <label for="PreventDownloadSurvivors">
+                    <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::surv} <br><span class="text-sm">{::lang::cluster::list::clusters::modal::settings::surv_sec_line}</span></label>
+                    <div class="col-sm-8">
+                        <!-- -ROW -->
+                        <div class="row">
+                            <div class="icheck-primary mb-3 col-md-6">
+                                <input type="checkbox" name="PreventDownloadSurvivors" value="true" id="PreventDownloadSurvivors">
+                                <label for="PreventDownloadSurvivors">
                                 {::lang::cluster::list::clusters::modal::settings::download}
                             </label>
-                        </div>
-                        <div class="icheck-primary mb-3 col-md-6">
-                            <input type="checkbox" name="PreventUploadSurvivors" value="true" id="PreventUploadSurvivors">
-                            <label for="PreventUploadSurvivors">
+                            </div>
+                            <div class="icheck-primary mb-3 col-md-6">
+                                <input type="checkbox" name="PreventUploadSurvivors" value="true" id="PreventUploadSurvivors">
+                                <label for="PreventUploadSurvivors">
                                 {::lang::cluster::list::clusters::modal::settings::upload}
                             </label>
+                            </div>
                         </div>
+                        <!-- -ROW -->
                     </div>
-                    <!-- -ROW -->
-                </div>
-                <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::items}</label>
-                <div class="col-sm-8">
-                    <!-- -ROW -->
-                    <div class="row">
-                        <div class="icheck-primary mb-3 col-md-6">
-                            <input type="checkbox" name="PreventDownloadItems" value="true" id="PreventDownloadItems">
-                            <label for="PreventDownloadItems">
+                    <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::items}</label>
+                    <div class="col-sm-8">
+                        <!-- -ROW -->
+                        <div class="row">
+                            <div class="icheck-primary mb-3 col-md-6">
+                                <input type="checkbox" name="PreventDownloadItems" value="true" id="PreventDownloadItems">
+                                <label for="PreventDownloadItems">
                                 {::lang::cluster::list::clusters::modal::settings::download}
                             </label>
-                        </div>
-                        <div class="icheck-primary mb-3 col-md-6">
-                            <input type="checkbox" name="PreventUploadItems" value="true" id="PreventUploadItems">
-                            <label for="PreventUploadItems">
+                            </div>
+                            <div class="icheck-primary mb-3 col-md-6">
+                                <input type="checkbox" name="PreventUploadItems" value="true" id="PreventUploadItems">
+                                <label for="PreventUploadItems">
                                 {::lang::cluster::list::clusters::modal::settings::upload}
                             </label>
+                            </div>
                         </div>
+                        <!-- -ROW -->
                     </div>
-                    <!-- -ROW -->
-                </div>
-                <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::creature}</label>
-                <div class="col-sm-8">
-                    <!-- -ROW -->
-                    <div class="row">
-                        <div class="icheck-primary mb-3 col-md-6">
-                            <input type="checkbox" name="PreventDownloadDinos" value="true" id="PreventDownloadDinos">
-                            <label for="PreventDownloadDinos">
+                    <label class="col-sm-4 col-form-label">{::lang::cluster::list::clusters::modal::settings::creature}</label>
+                    <div class="col-sm-8">
+                        <!-- -ROW -->
+                        <div class="row">
+                            <div class="icheck-primary mb-3 col-md-6">
+                                <input type="checkbox" name="PreventDownloadDinos" value="true" id="PreventDownloadDinos">
+                                <label for="PreventDownloadDinos">
                                 {::lang::cluster::list::clusters::modal::settings::download}
                             </label>
-                        </div>
-                        <div class="icheck-primary mb-3 col-md-6">
-                            <input type="checkbox" name="PreventUploadDinos" value="true" id="PreventUploadDinos">
-                            <label for="PreventUploadDinos">
+                            </div>
+                            <div class="icheck-primary mb-3 col-md-6">
+                                <input type="checkbox" name="PreventUploadDinos" value="true" id="PreventUploadDinos">
+                                <label for="PreventUploadDinos">
                                 {::lang::cluster::list::clusters::modal::settings::upload}
                             </label>
+                            </div>
                         </div>
+                        <!-- -ROW -->
                     </div>
-                    <!-- -ROW -->
                 </div>
-            </div>
             </div>
 
             <div class="modal-footer">

@@ -7,30 +7,90 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
                 {!ifckonfig}
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-GameUserStetting" role="tab" aria-controls="pills-home" aria-selected="true">GameUserSettings.ini</a>
+                <!-- GUS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        GameUserSettings.ini
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" data-toggle="pill" href="#pills-GameUserStetting" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
+                        <a class="dropdown-item" data-toggle="pill" href="#pills-GameUserStetting-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
+                    </div>
                 </li>
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-Game" role="tab" aria-controls="pills-profile" aria-selected="false">Game.ini</a>
+
+                <!-- Game -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Game.ini
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" data-toggle="pill" href="#pills-Game" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
+                        <a class="dropdown-item" data-toggle="pill" href="#pills-Game-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
+                    </div>
                 </li>
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-Engine" role="tab" aria-controls="pills-contact" aria-selected="false">Engine.ini</a>
+
+                <!-- Engine -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Engine.ini
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" data-toggle="pill" href="#pills-Engine" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a>
+                        <!--{expert}<a class="dropdown-item" data-toggle="pill" href="#pills-Engine-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}-->
+                    </div>
                 </li>{/!ifckonfig}
-                <li class="nav-item">
-                    <a class="nav-link {ifckonfig} active {/ifckonfig}" id="pills-contact-tab" data-toggle="pill" href="#pills-Cfg2" role="tab" aria-controls="pills-contact" aria-selected="false">Arkmanager</a>
+
+                <!-- Arkmanager -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Arkmanager.cfg
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" data-toggle="pill" href="#pills-AM" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
+                        <a class="dropdown-item" data-toggle="pill" href="#pills-AM-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
+                    </div>
                 </li>
-                {expert}
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-expert-tab" data-toggle="pill" href="#pills-Cfg3" role="tab" aria-controls="pills-expert" aria-selected="false">[Expert] Arkmanager</a>
-                </li>{/expert}
             </ul>
         </div>
     </nav>
+
     <hr />
+
     <div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
         <div class="tab-content" id="pills-tabContent">
             {!ifckonfig}
+
+
+            <!-- GUS - Normal -->
             <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div id="form">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+                    <table class="table table-striped mb-0">
+                        <tbody>
+                            <tr id="tbody_GUS">
+                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
+                                <td class="p-2">
+                                    <div class="input-group mb-0">
+                                        <input type="text" class="form-control form-control-sm" id="tbody_GUS_section">
+                                        <div class="input-group-append">
+                                            <span onclick="addsection('#tbody_GUS')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {form_GUS}
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+
+                    <input type="hidden" name="type" id="type_gus" value="GameUserSettings.ini">
+                    <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
+                </div>
+            </form>
+
+
+            <!-- GUS - EXP -->
+            <form action="#save" method="post" class="tab-pane fade" id="pills-GameUserStetting-exp" role="tabpanel" aria-labelledby="pills-home-tab">
                 <div id="form">
                     <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
                     <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_gus">{gus}</textarea>
@@ -40,7 +100,36 @@
             </form>
 
 
-            <form action="#save" method="post" class="tab-pane fade" id="pills-Game" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <!-- GAME - Normal -->
+            <form action="#save" method="post" class="tab-pane fade" id="pills-Game" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div id="form">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+                    <table class="table table-striped mb-0">
+                        <tbody>
+                            <tr id="tbody_Game">
+                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
+                                <td class="p-2">
+                                    <div class="input-group mb-0">
+                                        <input type="text" class="form-control form-control-sm" id="tbody_Game_section">
+                                        <div class="input-group-append">
+                                            <span onclick="addsection('#tbody_Game')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {form_GAME}
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+
+                    <input type="hidden" name="type" id="type_gus" value="Game.ini">
+                    <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
+                </div>
+            </form>
+
+
+            <!-- GAME - EXP -->
+            <form action="#save" method="post" class="tab-pane fade" id="pills-Game-exp" role="tabpanel" aria-labelledby="pills-profile-tab">
                 <div>
                     <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
                     <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 5700px;" id="text_game">{game}</textarea>
@@ -50,6 +139,7 @@
             </form>
 
 
+            <!-- Engine - Normal -->
             <form action="#save" method="post" class="tab-pane fade" id="pills-Engine" role="tabpanel" aria-labelledby="pills-contact-tab">
                 <div>
                     <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
@@ -59,8 +149,8 @@
                 </div>
             </form>{/!ifckonfig}
 
-
-            <div class="tab-pane fade {ifckonfig}show active{/ifckonfig}" id="pills-Cfg2" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <!-- AA - NORMAL -->
+            <div class="tab-pane fade {ifckonfig}show active{/ifckonfig}" id="pills-AM" role="tabpanel">
                 <form action="#save" method="post">
                     <button type="submit" class="btn btn-primary" style="width: 100%;" name="savecfg">{::lang::servercenter::config::btn_save}</button>
                     <table class="table table-striped mb-0">
@@ -120,7 +210,8 @@
             </div>
 
 
-            <div class="tab-pane fade" id="pills-Cfg3" role="tabpanel" aria-labelledby="pills-expert-tab">
+            <!-- AA - EXP -->
+            <div class="tab-pane fade" id="pills-AM-exp" role="tabpanel">
                 <form action="#save" method="post">
                     <button type="submit" class="btn btn-primary" name="savecfg_expert" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
                     <textarea name="txtarea" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;">{amcfg}</textarea>
@@ -146,5 +237,40 @@
         var target = $("#input_serverMap");
         var opt = $("#mapsel");
         target.val(opt.val());
+    }
+
+    function addsection(id) {
+        var target = $(id);
+        var section = $(id + "_section");
+        var val = section.val();
+
+        if (val != "") {
+            var data = {
+                "case": "create_section",
+                "section": val
+            };
+            $.get("/php/async/get/servercenter.konfig.async.php", data, (re) => {
+                target.after(re);
+                if (!section.hasClass("border-success")) section.toggleClass("border-success");
+                if (section.hasClass("border-danger")) section.toggleClass("border-danger");
+            })
+        } else {
+            if (section.hasClass("border-success")) section.toggleClass("border-success");
+            if (!section.hasClass("border-danger")) section.toggleClass("border-danger");
+        }
+    }
+
+    function removesection(section) {
+        $("tr[data-section='" + section + "']").remove();
+    }
+
+    function additem(id, section) {
+        var data = {
+            "case": "create",
+            "section": section
+        };
+        $.get("/php/async/get/servercenter.konfig.async.php", data, (re) => {
+            $("#" + id).after(re);
+        })
     }
 </script>

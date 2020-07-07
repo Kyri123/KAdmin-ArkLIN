@@ -1,0 +1,28 @@
+{default_warn}
+<li class="list-group-item list-group-item-mod">
+    <div class="row p-0">
+        <div class="col-12">
+            <i class="text-warning fas fa-exclamation-circle rounded -align-left position-absolute" style="font-size: 45px" height="50" width="50"></i>
+            <div style="margin-left: 60px;">{::lang::php::sc::warn::nowarn_found}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::php::sc::warn::all_ok}</span></div>
+        </div>
+    </div>
+</li>
+{/default_warn} {default_warn}
+<li class="list-group-item list-group-item-mod">
+    <div class="row p-0">
+        <div class="col-12">
+            <i class="text-danger fas fa-exclamation-triangle rounded -align-left position-absolute" style="font-size: 45px" height="50" width="50"></i>
+            <div style="margin-left: 60px;">{::lang::php::sc::danger::nodanger_found}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::php::sc::danger::all_ok}</span></div>
+        </div>
+    </div>
+</li>
+{/default_warn} {list}
+<li class="list-group-item list-group-item-mod">
+    <div class="row p-0">
+        <div class="col-12">
+            <i class="text-danger fas fa-exclamation-triangle rounded -align-left position-absolute" style="font-size: 45px" height="50" width="50"></i>
+            <div style="margin-left: 60px;">{type}<br><span class="font-weight-light" style="font-size: 11px;">{txt}</span></div>
+        </div>
+    </div>
+</li>
+{/list}

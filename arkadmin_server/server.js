@@ -2,7 +2,6 @@ const fs = require("fs");
 const shell = require("./packages/src/shell");
 const crontab = require("./packages/src/crontab");
 const head = require("./packages/src/head");
-const { stringify } = require("querystring");
 const version = "0.0.2";
 var config = null;
 
@@ -49,6 +48,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
         console.log('\x1b[36m%s\x1b[0m', "------------------------------------------------------");
         //schreibe Version
+        fs.open('data/run.txt', 'w', () => {});
         fs.writeFile("data/run.txt", version, () => {});
     } else {
         console.log("cannot read config/server.json");
