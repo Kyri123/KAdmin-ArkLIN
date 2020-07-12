@@ -132,8 +132,9 @@ $engine = ($serv->ini_load('Engine.ini', true)) ? $serv->ini_get_str() : $defaul
 
 $gus_nexp = ($serv->ini_load('GameUserSettings.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
 $game_nexp = ($serv->ini_load('Game.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
+$engine_nexp = ($serv->ini_load('Engine.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
 
-$inis = array("gus" => $gus_nexp, "game" => $game_nexp);
+$inis = array("gus" => $gus_nexp, "game" => $game_nexp, "engine" => $engine_nexp);
 
 $strcfg = $serv->cfg_get_str();
 
@@ -282,15 +283,31 @@ foreach($inis as $mk => $mv) {
             // items
             if(is_array($sv)) foreach($sv as $ik => $iv) {
 
-                $tpl_item = new Template("item.htm", "app/template/serv/page/list/konfig/");
-                $tpl_item->load();
-
-                $tpl_item->r("sk", $sk);
-                $tpl_item->r("rnd", md5(rndbit(50)));
-                $tpl_item->r("k", strval($ik));
-                $tpl_item->r("v", ($iv != "") ? $iv : 0);
-
-                $it .= $tpl_item->load_var();
+                if(is_array($iv)) {
+                    $name = $ik;
+                    foreach($iv as $pk => $pv) {
+                        $tpl_item = new Template("item.htm", "app/template/serv/page/list/konfig/");
+                        $tpl_item->load();
+        
+                        $tpl_item->r("sk", $sk);
+                        $tpl_item->r("rnd", md5(rndbit(50)));
+                        $tpl_item->r("k", $name."[$pk]");
+                        $tpl_item->r("v", $pv);
+        
+                        $it .= $tpl_item->load_var();
+                    }
+                }
+                else {
+                    $tpl_item = new Template("item.htm", "app/template/serv/page/list/konfig/");
+                    $tpl_item->load();
+    
+                    $tpl_item->r("sk", $sk);
+                    $tpl_item->r("rnd", md5(rndbit(50)));
+                    $tpl_item->r("k", strval($ik));
+                    $tpl_item->r("v", $iv);
+    
+                    $it .= $tpl_item->load_var();
+                }
 
             }
             $tpl_sec->r("rnd", md5(rndbit(50)));
@@ -319,6 +336,7 @@ $page_tpl->r('ark_flag', $ark_flag);
 $page_tpl->r('form', $form);
 $page_tpl->r('form_GUS', $re["gus"]);
 $page_tpl->r('form_GAME', $re["game"]);
+$page_tpl->r('form_ENGINE', $re["engine"]);
 $page_tpl->r('strcfg', $strcfg);
 $page_tpl->r('gus', $gus);
 $page_tpl->r('game', $game);

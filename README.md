@@ -7,6 +7,7 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 - [Dev-Tree] Benutzten auf eigene GEFAHR (Debugs, Tests usw.)
 - Es ist eine Alpha bitte verzeiht Schreibfehler & Bugs und Meldet alles..
 - Discord: https://discord.gg/ykGnw49
+- Unterstützt kein "Docker"
 
 # Installation
 
@@ -25,9 +26,11 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 - Lade die letzte Version runter
 - lade alle Dateien außer `Install` & `Install.php` auf den Webserver
 - Denkt dran die Config des ArkAdmin-Server nicht zu überschreiben! (Sonst muss die Konfiguration neu vorgenommen werden!)
+- Installiere alle Node.JS Module `cd arkadmin_server` > `npm install`
+- Starte den ArkAdmin-Server neu
 - Fertig
 
-# Config.Properties
+# Config.json
 
 | Eigenschaften | Wert | 
 | :--- | :--- |
@@ -41,6 +44,17 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 | `JobsIntervall` | Intervall für das abrufen des Crontabs (Cronjobs) |
 | `ShellIntervall` | Intervall für das abrufen der Shell Dateien |
 | `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ] |
+| `use_ssh` | Aktiviere/Deaktivere SHH (1: an;0: aus) benötigt konfiguration in ssh.js |
+
+# ssh.js
+
+| Eigenschaften | Wert | 
+| :--- | :--- |
+| `host` | SSH2 Host (Bsp. `localhost/127.0.0.1`) |
+| `username` | SSH2 Benutzername (Bsp. `root`) |
+| `password` | SSH2 Passwort  |
+| `port` | SSH2 port (Standart: `22`) |
+| `key_path` | Pfad zum SSH-Key (Erstelle einen mit: `ssh-keygen -t rsa`) |
 
 # Sprache Installieren
 
@@ -49,7 +63,7 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 
 # Benötigt
 
-- `Node.JS` version => 12.0.0
+- `Node.JS` Version => 12.0.0
 - `Node.JS` NPM
 - `PHP` Version => 7.3 (=> 7.0 wird bedingt unterstützt)
 - `PHP` mod_rewrite

@@ -20,6 +20,7 @@ $tpl_dir_all = 'app/template/all/';
 $setsidebar = false;
 $serv = new server($url[2]);
 $serv->cluster_load();
+$txt_alert = $site_name = $player = null;
 
 //erstelle SteamAPI von OnlineSpieler
 $pl_json = $helper->file_to_json('app/json/saves/pl_' . $serv->name() . '.players', false);
@@ -277,7 +278,7 @@ $tpl->rif ('ifckonfig', $ifckonfig);
 $tpl->rif ('ifcmods', $ifcmods);
 $tpl->rif ('ifslave', $ifslave);
 $tpl->rif ('modsupport', $serv->mod_support());
-$tpl->r("typestr", $clustertype[$serv->cluster_type()]);
+$tpl->r("typestr", ($serv->cluster_in()) ? $clustertype[$serv->cluster_type()] : null);
 
 //teste state
 $onlinestate = false;

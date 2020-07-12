@@ -101,20 +101,13 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
                 $query = 'SELECT * FROM `ArkAdmin_users` WHERE `email` = \''.email.'\'';
                 $mycon->query($query);
                 if ($mycon->numRows() == 0) {
-
                     $q_code = 'SELECT * FROM `ArkAdmin_reg_code` WHERE `used` = \'0\' AND `code` = \''.code.'\'';
                     if ($mycon->query($q_code)->numRows() > 0) {
                         $row_code = $mycon->query($q_code)->fetchArray();
                         $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `rang`, `registerdate`) VALUES (\''.username.'\', \''.email.'\', \''.md5(pw1).'\', \'1\', \''.time().'\')';
-                        $mycon->query($query);
-                        $query = 'SELECT * FROM `ArkAdmin_users` WHERE `email` = \''.email.'\'';
-                        $row = $mycon->query($query)->fetchArray();
-                        $_SESSION["id"] = $row['id'];
-                        $_SESSION["rank"] = $row['rang'];
-                        $query = 'UPDATE `ArkAdmin_reg_code` SET `used`=\'1\' WHERE (`id`=\''.$row_code["id"].'\')';
-                        $mycon->query($query);
-                        header('Location: /home');
-                        exit;
+                        if($mycon->query($query)) {
+                            $resp = $alert->rd(109, 3);
+                        }
                     }
                     else {
                         $resp = $alert->rd(24, 3);

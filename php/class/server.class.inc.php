@@ -249,12 +249,12 @@ class server extends Rcon {
 
     // Inis
 
-    public function ini_load($ini, $group) {
+    public function ini_load($ini, $group = false) {
 
         $path = $this->dir_main();
         $dir = $path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini;
         if (file_exists($dir)) {
-            $this->ini = parse_ini_file($dir, $group);
+            $this->ini = parse_ini_file($dir, $group, INI_SCANNER_RAW);
             $this->inipath = $dir;
             return TRUE;
         } else {

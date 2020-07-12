@@ -25,6 +25,13 @@
     border-color: #3c8dbc!important;
 }
 
+.aa_update_active {
+    border-color: #3d9970!important;
+    color: #3d9970!important;
+    border-left: 3px solid transparent;
+    box-shadow: none;
+}
+
 .aa_main_active {
     border-color: #3c8dbc!important;
     color: #3c8dbc!important;

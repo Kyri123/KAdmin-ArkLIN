@@ -27,7 +27,7 @@ for ($i=count($json)-1;$i>-1;$i--) {
     }
 }
 
-$n_changelog = '<span class="badge badge-secondary">Neu!</span>';
+$n_changelog = null;
 for ($i=count($json)-1;$i>-1;$i--) {
     if ($cc >= $i) {
         $n_changelog = null;
@@ -53,6 +53,8 @@ for ($i=count($json)-1;$i>-1;$i--) {
 
 
 $tpl_b->r('curr_changelog', $n_changelog);
+$tpl_b->r('curr_changelog_css', (($n_changelog != null) ? "aa_update_active" : null));
+
 
 
 

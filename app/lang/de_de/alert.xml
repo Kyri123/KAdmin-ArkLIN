@@ -287,6 +287,11 @@
             <text>Rcon Gesendet</text>
         </c_108>
 
+        <!-- Success | executed [rcon] -->
+        <c_109>
+            <title>Erfolgreich Erstellt!</title>
+            <text>Account wurde erstellt du kannst dich nun einloggen.</text>
+        </c_109>
 
 
         <!-- Warning -->

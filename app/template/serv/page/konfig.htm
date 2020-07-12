@@ -35,8 +35,8 @@
                         Engine.ini
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" data-toggle="pill" href="#pills-Engine" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a>
-                        <!--{expert}<a class="dropdown-item" data-toggle="pill" href="#pills-Engine-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}-->
+                        <a class="dropdown-item" data-toggle="pill" href="#pills-Engine" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
+                        <a class="dropdown-item" data-toggle="pill" href="#pills-Engine-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
                 </li>{/!ifckonfig}
 
@@ -62,7 +62,7 @@
 
 
             <!-- GUS - Normal -->
-            <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel" aria-labelledby="pills-home-tab">
+            <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel">
                 <div id="form">
                     <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
                     <table class="table table-striped mb-0">
@@ -90,7 +90,7 @@
 
 
             <!-- GUS - EXP -->
-            <form action="#save" method="post" class="tab-pane fade" id="pills-GameUserStetting-exp" role="tabpanel" aria-labelledby="pills-home-tab">
+            <form action="#save" method="post" class="tab-pane fade" id="pills-GameUserStetting-exp" role="tabpanel">
                 <div id="form">
                     <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
                     <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_gus">{gus}</textarea>
@@ -101,7 +101,7 @@
 
 
             <!-- GAME - Normal -->
-            <form action="#save" method="post" class="tab-pane fade" id="pills-Game" role="tabpanel" aria-labelledby="pills-home-tab">
+            <form action="#save" method="post" class="tab-pane fade" id="pills-Game" role="tabpanel">
                 <div id="form">
                     <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
                     <table class="table table-striped mb-0">
@@ -129,7 +129,7 @@
 
 
             <!-- GAME - EXP -->
-            <form action="#save" method="post" class="tab-pane fade" id="pills-Game-exp" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <form action="#save" method="post" class="tab-pane fade" id="pills-Game-exp" role="tabpanel">
                 <div>
                     <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
                     <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 5700px;" id="text_game">{game}</textarea>
@@ -140,7 +140,35 @@
 
 
             <!-- Engine - Normal -->
-            <form action="#save" method="post" class="tab-pane fade" id="pills-Engine" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <form action="#save" method="post" class="tab-pane fade" id="pills-Engine" role="tabpanel">
+                <div id="form">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+                    <table class="table table-striped mb-0">
+                        <tbody>
+                            <tr id="tbody_Game">
+                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
+                                <td class="p-2">
+                                    <div class="input-group mb-0">
+                                        <input type="text" class="form-control form-control-sm" id="tbody_Game_section">
+                                        <div class="input-group-append">
+                                            <span onclick="addsection('#tbody_Game')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {form_ENGINE}
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+
+                    <input type="hidden" name="type" id="type_gus" value="Engine.ini">
+                    <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
+                </div>
+            </form>
+
+
+            <!-- Engine - Normal -->
+            <form action="#save" method="post" class="tab-pane fade" id="pills-Engine-exp" role="tabpanel">
                 <div>
                     <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
                     <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_engine">{engine}</textarea>

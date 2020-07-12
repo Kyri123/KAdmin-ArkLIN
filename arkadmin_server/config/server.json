@@ -8,5 +8,6 @@
     "CHMODIntervall": 5000,
     "JobsIntervall": 10000,
     "ShellIntervall": 5000,
-    "CHMOD": 777
+    "CHMOD": 777,
+    "use_ssh": 0
 }
