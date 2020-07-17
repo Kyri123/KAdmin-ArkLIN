@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 
-$tpl_crontab = new Template('crontab.htm', 'app/template/system/');
+$tpl_crontab = new Template('crontab.htm', 'app/template/core/system/');
 $tpl_crontab->load();
 $re = null;
 $root_dir = $_SERVER['DOCUMENT_ROOT'];

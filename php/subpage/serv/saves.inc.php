@@ -9,7 +9,7 @@
 */
 
 $pagename = '{::lang::php::sc::page::mods::pagename}';
-$page_tpl = new Template('saves.htm', 'app/template/serv/page/');
+$page_tpl = new Template('saves.htm', 'app/template/sub/serv/');
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::mods::pagename}</li>';
 $jhelper = new player_json_helper();
@@ -124,7 +124,7 @@ $jhelper = new player_json_helper();
 $count = (is_countable($playerjs)) ? count($playerjs): false;
 if($count !== false) {
     for ($i=0;$i<$count;$i++) {
-        $list_tpl = new Template('list_saves.htm', 'app/template/serv/page/list/');
+        $list_tpl = new Template('saves.htm', 'app/template/lists/serv/savegames/');
         $list_tpl->load();
     
         for ($y=0;$y<count($player_json);$y++) {
@@ -178,7 +178,7 @@ $tribe = null; $c_t = 0;
 
 if(is_countable($tribe_json)) {
     for ($i = 0; $i < count($tribe_json); $i++) {
-        $list_tpl = new Template('list_tribes.htm', 'app/template/serv/page/list/');
+        $list_tpl = new Template('tribes.htm', 'app/template/lists/serv/savegames/');
         $list_tpl->load();
     
         $pl = $jhelper->tribe($tribe_json, $i);
@@ -194,7 +194,7 @@ if(is_countable($tribe_json)) {
                     if ($p->CharacterName == $key) {
                         for ($ix=0;$ix<$count;$ix++) if($p->SteamId == $playerjs[$ix]["steamid"]) {$id = $ix; break;};
         
-                        $playerlist_tpl = new Template('list_tribes_user.htm', 'app/template/serv/page/list/');
+                        $playerlist_tpl = new Template('tribes_user.htm', 'app/template/lists/serv/savegames/');
                         $playerlist_tpl->load();
         
                         $playerlist_tpl->r('IG:name', $p->CharacterName);
@@ -236,7 +236,7 @@ if(is_countable($dirarr)) {
         if (strpos($dirarr[$i], '.ark')) {
             $file = $savedir.'/'.$dirarr[$i];
             if (file_exists($file)) {
-                $list_tpl = new Template('list_world.htm', 'app/template/serv/page/list/');
+                $list_tpl = new Template('world.htm', 'app/template/lists/serv/savegames/');
                 $list_tpl->load();
                 $time = filemtime($file);
 

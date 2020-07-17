@@ -9,7 +9,7 @@
 */
 
 // Vars
-$tpl_dir = 'app/template/scc/';
+$tpl_dir = 'app/template/core/scc/';
 $tpl_dir_all = 'app/template/all/';
 $setsidebar = false;
 $cfglist = null;

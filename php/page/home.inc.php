@@ -9,7 +9,7 @@
 */
 
 // Vars
-$tpl_dir = 'app/template/home/';
+$tpl_dir = 'app/template/core/home/';
 $setsidebar = false;
 $pagename = "{::lang::php::home::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";

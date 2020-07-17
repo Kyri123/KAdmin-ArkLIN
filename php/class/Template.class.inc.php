@@ -14,6 +14,7 @@ class Template {
     private $file = null;
     private $debug = false;
     private $load = false;
+    private $file_str = false;
     public $lang = "de_de";
     private $rfrom = array();
     private $rto = array();
@@ -29,6 +30,7 @@ class Template {
         } else {
             $this->filepath = null;
         }
+        $this->file_str = $file;
     }
 
     public function debug($bool) {
@@ -40,18 +42,18 @@ class Template {
             $this->file = file_get_contents($this->filepath);
             $this->load = true;
             if ($this->debug) {
-                echo '<p>Template Found</p>';
+                echo '<p>Template Found ' . $this->file_str . ' </p>';
             }
         } else {
             if ($this->debug) {
-                echo '<p>Template not Found</p>';
+                echo '<p>Template not Found ' . $this->file_str . ' </p>';
             }
         }
     }
 
     public function r($from, $to) {
         if (!$this->load) {
-            echo "Template not Loaded";
+            echo "<p>Template not Loaded ' . $this->file_str . ' </p>";
             return false;
         }
         array_push($this->rfrom, '{'.$from.'}');
@@ -63,7 +65,7 @@ class Template {
 
     public function rif ($key, $boolean) {
         if (!$this->load) {
-            echo "Template not Loaded";
+            echo "<p>Template not Loaded ' . $this->file_str . ' </p>";
             return false;
         }
         array_push($this->rifkey, $key);
@@ -73,7 +75,7 @@ class Template {
 
     public function session() {
         if (!$this->load) {
-            echo "Template not Loaded";
+            echo "<p>Template not Loaded ' . $this->file_str . ' </p>";
             return null;
         }
         global $_SESSION;
@@ -103,7 +105,7 @@ class Template {
             $this->final();
             return $this->file;
         } else {
-            echo "Template not Loaded";
+            echo "<p>Template not Loaded ' . $this->file_str . ' </p>";
         }
     }
 
@@ -112,7 +114,7 @@ class Template {
             $this->final();
             echo $this->file;
         } else {
-            echo "Template not Loaded";
+            echo "<p>Template not Loaded ' . $this->file_str . ' </p>";
         }
     }
 

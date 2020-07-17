@@ -10,7 +10,7 @@ function changelog($str) {
 
 
 // Vars
-$tpl_dir = 'app/template/changelog/';
+$tpl_dir = 'app/template/core/changelog/';
 $tpl_dir_all = 'app/template/all/';
 $setsidebar = false;
 $pagename = 'Changelogs';

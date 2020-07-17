@@ -8,8 +8,10 @@
  * *******************************************************************************************
 */
 // hide errors
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
+include('php/inc/config.inc.php');
+
+ini_set('display_errors', $display_error);
+ini_set('display_startup_errors', $display_error);
 //error_reporting(E_ALL);
 
 // kleiner fix für PHP 70-72
@@ -37,7 +39,6 @@ if ($url[1] == "" || $url[1] == "favicon.ico") {
 }
 
 // Connent to MYSQL
-include('php/inc/config.inc.php');
 include('php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 include('php/inc/auto_update_sql_DB.inc.php');
@@ -100,13 +101,13 @@ if (file_exists('php/page/'.$page.'.inc.php')) {
 
 // Website
 // Load template
-$tpl_h = new Template("head.htm", "app/template/index/");
+$tpl_h = new Template("head.htm", "app/template/core/index/");
 $tpl_h->load();
 
-$tpl_b = new Template("body.htm", "app/template/index/");
+$tpl_b = new Template("body.htm", "app/template/core/index/");
 $tpl_b->load();
 
-$tpl_f = new Template("foother.htm", "app/template/index/");
+$tpl_f = new Template("foother.htm", "app/template/core/index/");
 $tpl_f->load();
 
 // lade Global_Alerts

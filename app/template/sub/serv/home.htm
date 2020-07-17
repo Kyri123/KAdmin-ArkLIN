@@ -9,13 +9,13 @@
                 <li class="nav-item" style="margin-right: 5px">
                     <a class="nav-link active" id="pills-llog-tab" data-toggle="pill" href="#pills-llog" role="tab" aria-controls="pills-llog" aria-selected="true" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')">{::lang::servercenter::home::nav::llog}</a>
                 </li>
+                {rcon}
                 <li class="nav-item" style="margin-right: 5px">
                     <a class="nav-link" id="pills-lchat-tab" data-toggle="pill" href="#pills-lchat" role="tab" aria-controls="pills-lchat" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::lchat}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-rcon-tab" data-toggle="pill" href="#pills-rcon" role="tab" aria-controls="pills-rcon" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::rcon}</a>
-                </li>
-                {installed}{!ifcadmin}
+                </li>{/rcon} {installed}{!ifcadmin}
                 <li class="nav-item">
                     <a class="nav-link" id="pills-admins-tab" data-toggle="pill" href="#pills-admins" role="tab" aria-controls="pills-admins" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::admin}</a>
                 </li>{/!ifcadmin}{!ifwhitelist}
@@ -84,6 +84,7 @@
                 </div>
             </div>
 
+            {rcon}
             <div class="tab-pane fade" id="pills-lchat" role="tabpanel" aria-labelledby="pills-lchat-tab">
                 <div class="pl-4 pr-4 pt-4 pb-0" id="livechatresp"></div>
                 <div class="pl-4 pr-4 pt-0 pb-0">
@@ -136,9 +137,7 @@
                         </div>
                     </li>
                 </ul>
-            </div>
-
-            {installed}{!ifcadmin}
+            </div>{/rcon} {installed}{!ifcadmin}
             <div class="tab-pane fade" id="pills-admins" role="tabpanel" aria-labelledby="pills-admins-tab">
                 <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
                 <div class="pl-4 pr-4 pt-0 pb-0">
@@ -161,6 +160,7 @@
                 </ul>
             </div>{/!ifcadmin}{/installed} {installed}{!ifwhitelist}
             <div class="tab-pane fade" id="pills-whitel" role="tabpanel" aria-labelledby="pills-whitel-tab">
+                {!whiteactive}{whiteactive_meld}{/!whiteactive}
                 <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
                 <div class="pl-4 pr-4 pt-0 pb-0">
                     <form action="#add_admin" method="post" class="form-group row" id="sendwhitelist">

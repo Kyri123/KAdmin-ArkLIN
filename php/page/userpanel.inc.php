@@ -9,7 +9,7 @@
 */
 
 // Vars
-$tpl_dir = 'app/template/userpanel/';
+$tpl_dir = 'app/template/core/userpanel/';
 $tpl_dir_all = 'app/template/all/';
 $setsidebar = false;
 $cfglist = null;
@@ -143,7 +143,7 @@ $codearray = $mycon->fetchAll();
 $list_codes = null;
 if (count($codearray)>0) {
     for ($i=0;$i<count($codearray);$i++) {
-        $list = new Template("list_codes.htm", $tpl_dir);
+        $list = new Template("codes.htm", $tpl_dir);
         $list->load();
         $list->r("id", $codearray[$i]["id"]);
         $list->r("code", $codearray[$i]["code"]);
@@ -152,7 +152,7 @@ if (count($codearray)>0) {
         $list_codes .= $list->load_var();
     }
 } else {
-    $list = new Template("list_codes.htm", $tpl_dir);
+    $list = new Template("codes.htm", $tpl_dir);
     $list->load();
     $list->r("code", "{::lang::php::userpanel::nocodefound}");
     $list->rif ("ifemtpy", true);

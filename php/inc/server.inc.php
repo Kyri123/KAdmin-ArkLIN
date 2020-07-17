@@ -19,7 +19,7 @@ for ($i=0;$i<count($dir);$i++) {
         $serv = new server($dir[$i]);
         $serv->cluster_load();
         $count_serv_max++;
-        $tpl_serv = new Template("item_list.htm", "app/template/serv/");
+        $tpl_serv = new Template("item_list.htm", "app/template/core/serv/");
         $tpl_serv->load();
 
         $data = parse_ini_file('remote/arkmanager/instances/'.$dir[$i].'.cfg');

@@ -135,7 +135,7 @@ class server extends Rcon {
         return file_get_contents('remote/arkmanager/instances/'.$this->serv.'.cfg');
     }
 
-    function cfg_get() {
+    public function cfg_get() {
         return $this->cfg;
     }
 
@@ -383,6 +383,11 @@ class server extends Rcon {
         return ($this->status()->online == 'Yes' && $this->cfg_read('ark_RCONEnabled') == 'True' && $this->cfg_read('ark_ServerAdminPassword') != '');
     }
 
+    public function check_cfg_rcon()
+    {
+        return ($this->cfg_read('ark_RCONEnabled') == 'True' && $this->cfg_read('ark_ServerAdminPassword') != '');
+    }
+
     public function exec_rcon(String $commmand = "") {
         if ($this->check_rcon()) {
             $re = 12;
@@ -413,7 +418,7 @@ class server extends Rcon {
 
     // Private Functions
 
-    private function write_ini_file($array, $file)
+    private function write_ini_file(Array $array, String $file)
     {
         $res = array();
         foreach ($array as $key => $val) {

@@ -2,7 +2,7 @@
 
 
 // Vars
-$tpl_dir = 'app/template/error/';
+$tpl_dir = 'app/template/core/error/';
 $setsidebar = false;
 
 $urls = NULL;

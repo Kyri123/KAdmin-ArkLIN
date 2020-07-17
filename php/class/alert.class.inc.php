@@ -33,7 +33,7 @@ class alert extends helper {
     }
 
     private function inz() {
-        $this->tpl = new Template("tpl.htm", "app/template/alert/");
+        $this->tpl = new Template("tpl.htm", "app/template/universally/alert/");
         $this->tpl->load();
 
         $key = 'c_'.$this->code;

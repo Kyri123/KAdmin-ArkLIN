@@ -113,7 +113,7 @@ foreach ($json as $k => $v) {
         }
     }
 
-    // Setzte Optionen und Prüfe bei änderungen Starte den Server neu
+    // Setzte Optionen und Prüfe änderungen -> Starte den Server neu (if Konfig = true/1)
     foreach ($json[$k]["servers"] as $sk => $sv) {
 
         //var_dump($json[$k]); echo "<hr>";

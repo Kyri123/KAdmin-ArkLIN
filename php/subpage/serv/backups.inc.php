@@ -9,7 +9,7 @@
 */
 
 $pagename = '{::lang::php::sc::page::backup::pagename}';
-$page_tpl = new Template('backup.htm', 'app/template/serv/page/');
+$page_tpl = new Template('backup.htm', 'app/template/sub/serv/');
 $page_tpl->load();
 $page_tpl->debug(true);
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
@@ -130,7 +130,7 @@ if (isset($_POST["playthisin"])) {
 $dir_array = dirToArray($serv->dir_backup());
 foreach ($dir_array as $key => $value) {
     $list2 = null;
-    $listtpl = new Template('list_backup.htm', 'app/template/serv/page/list/');
+    $listtpl = new Template('backup.htm', 'app/template/lists/serv/backups/');
     $listtpl->load();
     $rndb = rndbit(50);
     $listtpl->r("rndb", $rndb);
@@ -138,7 +138,7 @@ foreach ($dir_array as $key => $value) {
     $listtpl->r("i", count($dir_array[$key]));
     $listtpl->r("y", $y);
     for ($i=0;$i<count($dir_array[$key]);$i++) {
-        $list2tpl = new Template('list2_backup.htm', 'app/template/serv/page/list/');
+        $list2tpl = new Template('backup_sub.htm', 'app/template/lists/serv/backups/');
         $list2tpl->load();
         $rndb = "modal".$y.$i;
         $list2tpl->r("rndb", $rndb);
@@ -162,7 +162,7 @@ foreach ($dir_array as $key => $value) {
 
 }
 if ($list == null) {
-    $listtpl = new Template('list_backup.htm', 'app/template/serv/page/list/');
+    $listtpl = new Template('backup.htm', 'app/template/lists/serv/backups/');
     $listtpl->load();
     $listtpl->rif ("ifemtpy", true);
     $list .= $listtpl->load_var();

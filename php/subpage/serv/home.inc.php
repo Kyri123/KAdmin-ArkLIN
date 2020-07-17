@@ -9,7 +9,7 @@
 */
 
 $pagename = '{::lang::php::sc::page::home::pagename}';
-$page_tpl = new Template('home.htm', 'app/template/serv/page/');
+$page_tpl = new Template('home.htm', 'app/template/sub/serv/');
 $page_tpl->load();
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::home::urltop}</li>';
@@ -22,7 +22,7 @@ $page_tpl->r('SESSION_USERNAME' ,$user->name());
 $cheatfile = $serv->dir_save(true)."/AllowedCheaterSteamIDs.txt";
 $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
 if(!file_exists($cheatfile)) file_put_contents($cheatfile, " ");
-if(!file_exists($whitelistfile)) file_put_contents($whitelistfile, " ");
+if(!file_exists($whitelistfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($whitelistfile, " ");
 
 $playerjs = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true)["response"]["players"];
 $count = (is_countable($playerjs)) ? count($playerjs): false;
@@ -86,7 +86,7 @@ if ($bool_install) {
         $find = array("\n", "\r", " ");
         $file[$i] = str_replace($find, null, $file[$i]);
         if (is_numeric($file[$i])) {
-            $list_tpl = new Template('list_user_admin.htm', 'app/template/serv/page/list/');
+            $list_tpl = new Template('user_admin.htm', 'app/template/lists/serv/home/');
             $list_tpl->load();
 
             $found = false;
@@ -136,11 +136,14 @@ if ($bool_install) {
     }
 } 
 
-if ($ifcadmin) $resp .= $alert->rd(300, 3);
-if ($ifwhitelist) $resp .= $alert->rd(304, 3);
+if ($ifcadmin) $resp_cluster .= $alert->rd(300, 3);
+if ($ifwhitelist) $resp_cluster .= $alert->rd(304, 3);
 
 $page_tpl->rif ("installed", $bool_install);
 $page_tpl->rif ('ifwhitelist', $ifwhitelist);
+$page_tpl->rif ('rcon', $serv->check_rcon());
+$page_tpl->rif ('whiteactive', $serv->cfg_check("arkflag_exclusivejoin"));
+$page_tpl->r ('whiteactive_meld', $alert->rd(202, 3));
 $page_tpl->r("userlist_admin", $userlist_admin);
 $page_tpl->r("adminlist_admin", $adminlist_admin);
 $page_tpl->r("whitelist_admin", $adminlist_admin);

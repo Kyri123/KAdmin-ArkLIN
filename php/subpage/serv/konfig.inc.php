@@ -9,7 +9,7 @@
 */
 
 $pagename = '{::lang::php::sc::page::konfig::pagename}';
-$page_tpl = new Template('konfig.htm', 'app/template/serv/page/');
+$page_tpl = new Template('konfig.htm', 'app/template/sub/serv/');
 $page_tpl->load();
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}</li>';
@@ -22,6 +22,7 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
     $flag = $_POST['flag'];
     $cfg = null;
 
+    $remove[] = null;
     if(!$serv->mod_support()) {
         $remove[] = "ark_GameModIds";
         $remove[] = "serverMapModId";
@@ -44,7 +45,7 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
     $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
     if (file_put_contents($path, $cfg)) {
         $resp = $alert->rd(102);
-        header("Refresh:0"); exit;
+        //header("Refresh:0"); exit;
     } else {
         $resp = $alert->rd(1);
     } 
@@ -129,6 +130,11 @@ $default_table = "<tr colspan='2'><td>{::lang::php::sc::page::konfig::ini_notfou
 $gus = ($serv->ini_load('GameUserSettings.ini', true)) ? $gus = $serv->ini_get_str() : $default;
 $game = ($serv->ini_load('Game.ini', true)) ? $serv->ini_get_str() : $default;
 $engine = ($serv->ini_load('Engine.ini', true)) ? $serv->ini_get_str() : $default;
+
+$gus_bool = ($serv->ini_load('GameUserSettings.ini', true));
+$game_bool = ($serv->ini_load('Game.ini', true));
+$engine_bool = ($serv->ini_load('Engine.ini', true));
+$show = ($engine_bool && $game_bool && $gus_bool);
 
 $gus_nexp = ($serv->ini_load('GameUserSettings.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
 $game_nexp = ($serv->ini_load('Game.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
@@ -277,7 +283,7 @@ foreach($inis as $mk => $mv) {
         if(is_array($mv)) foreach($mv as $sk => $sv) {
 
             $it = null;
-            $tpl_sec = new Template("section.htm", "app/template/serv/page/list/konfig/");
+            $tpl_sec = new Template("section.htm", "app/template/lists/serv/konfig/");
             $tpl_sec->load();
             
             // items
@@ -286,7 +292,7 @@ foreach($inis as $mk => $mv) {
                 if(is_array($iv)) {
                     $name = $ik;
                     foreach($iv as $pk => $pv) {
-                        $tpl_item = new Template("item.htm", "app/template/serv/page/list/konfig/");
+                        $tpl_item = new Template("item.htm", "app/template/lists/serv/konfig/");
                         $tpl_item->load();
         
                         $tpl_item->r("sk", $sk);
@@ -298,7 +304,7 @@ foreach($inis as $mk => $mv) {
                     }
                 }
                 else {
-                    $tpl_item = new Template("item.htm", "app/template/serv/page/list/konfig/");
+                    $tpl_item = new Template("item.htm", "app/template/lists/serv/konfig/");
                     $tpl_item->load();
     
                     $tpl_item->r("sk", $sk);
@@ -325,12 +331,26 @@ foreach($inis as $mk => $mv) {
 
 //flags
 $flags_json = $helper->file_to_json("app/json/panel/flags.json", true);
+$i = 0;
 foreach($flags_json as $k => $v) {
-    $sel = (in_array("arkflag_$v", $flags)) ? 'selected="true"' : null;
-    $ark_flag .= "<option value=\"$v\" $sel>$v</option>";
+    $sel = (in_array("arkflag_$v", $flags)) ? 'checked="true"' : null;
+    if($i == 0) $ark_flag .= '<div class="row">';
+    $ark_flag .= '  <div class="icheck-primary mb-3 col-lg-6 col-12">
+                        <input type="checkbox" name="flag[]" value="' . $v . '" id="' . md5($v) . '" ' . $sel . '>
+                        <label for="' . md5($v) . '">
+                            ' . $v . '
+                        </label>
+                    </div>';
+    if($i == 1) {
+        $ark_flag .= '</div>';
+        $i = 0;
+    }
+    else {
+        $i++;
+    }
 }
 
-if ($ifckonfig) $resp .= $alert->rd(301, 3);
+if ($ifckonfig) $resp_cluster .= $alert->rd(301, 3);
 $page_tpl->r('ark_opt', $ark_opt);
 $page_tpl->r('ark_flag', $ark_flag);
 $page_tpl->r('form', $form);
@@ -344,6 +364,7 @@ $page_tpl->r('engine', $engine);
 $page_tpl->r('eventlist', $eventlist);
 $page_tpl->r('amcfg', file_get_contents('remote/arkmanager/instances/'.$url[2].'.cfg'));
 $page_tpl->rif('expert', $user->expert());
+$page_tpl->rif('show', $show);
 $page_tpl->session();
 $panel = $page_tpl->load_var();
 ?>

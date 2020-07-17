@@ -14,8 +14,8 @@ if (!file_exists("remote/arkmanager/instances/".$url[2].".cfg")) {
 }
 
 // Vars
-$tpl_dir = 'app/template/serv/';
-$tpl_dir_lists = 'app/template/serv/page/list/';
+$tpl_dir = 'app/template/core/serv/';
+$tpl_dir_lists = 'app/template/lists/serv/main/';
 $tpl_dir_all = 'app/template/all/';
 $setsidebar = false;
 $serv = new server($url[2]);
@@ -83,7 +83,7 @@ $tpl->r("__home", null);
 if ($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>{::lang::php::sc::notmod}</b>' ?? $tmod = '<b>'.$serv->cfg_read('ark_TotalConversionMod').'</b>';
 
 //danger list
-$danger_listitem = new Template('list_warn_err.htm', $tpl_dir_lists);
+$danger_listitem = new Template('warn_err.htm', $tpl_dir_lists);
 $danger_listitem->load();
 
 if ($globa_json->error_count > 0) {
@@ -120,7 +120,7 @@ else {
 }
 
 //warning list
-$warning_listitem = new Template('list_warn_err.htm', $tpl_dir_lists);
+$warning_listitem = new Template('warn_err.htm', $tpl_dir_lists);
 $warning_listitem->load();
 
 if ($globa_json->warning_count > 0) {
@@ -157,7 +157,7 @@ $jhelper = new player_json_helper();
 // Spieler
 if (count($player_online) > 0) {
     for ($i = 0; $i < count($pl_json); $i++) {
-        $list_tpl = new Template('list_user.htm', 'app/template/serv/page/list/');
+        $list_tpl = new Template('user.htm', 'app/template/lists/serv/main/');
         $list_tpl->load();
 
         for ($y=0;$y<count($player_json);$y++) {
@@ -205,7 +205,7 @@ if (count($player_online) > 0) {
     }
 }
 if ($player == null) {
-    $list_tpl = new Template('list_user.htm', 'app/template/serv/page/list/');
+    $list_tpl = new Template('user.htm', 'app/template/lists/serv/main/');
     $list_tpl->load();
     $list_tpl->r('img', "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
     $list_tpl->rif ('empty', false);
@@ -228,7 +228,7 @@ $para_list = null;
 $z = 0;
 for ($i=0;$i<count($json_para);$i++) {
     $name = str_replace("--", null, $json_para[$i]["parameter"]);
-    $para = new Template('parameter.htm', 'app/template/serv/');
+    $para = new Template('parameter.htm', 'app/template/core/serv/');
     $para->load();
     
     $t0 = ($json_para[$i]["type"] == 0) ? true : false;
@@ -272,6 +272,9 @@ $tpl->r('url_site', 'http://'.$_SERVER['SERVER_NAME']);
 $tpl->r('panel', $panel);
 $tpl->r('resp', $resp);
 $tpl->r('playerlist', $player);
+$tpl->r ('rcon_meld', $alert->rd(201, 3));
+$tpl->r ('cluster_meld', $resp_cluster);
+$tpl->rif ('rcon', $serv->check_rcon());
 $tpl->rif ('ifin', $serv->cluster_in());
 $tpl->rif ('ifcadmin', $ifcadmin);
 $tpl->rif ('ifckonfig', $ifckonfig);

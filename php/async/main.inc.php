@@ -7,16 +7,17 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
+chdir('../../../');
+include("php/functions/php70-72.inc.php");
+include('php/inc/config.inc.php');
+
+ini_set('display_errors', $display_error);
+ini_set('display_startup_errors', $display_error);
 
 session_start();
 
 date_default_timezone_set('Europe/Amsterdam');
-chdir('../../../');
 
-include("php/functions/php70-72.inc.php");
-include('php/inc/config.inc.php');
 include('php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 

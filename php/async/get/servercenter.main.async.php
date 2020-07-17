@@ -16,7 +16,7 @@ switch ($case) {
     // CASE: Info
     case "info":
         $serv = new server($cfg);
-        $tpl = new Template("server.htm", "app/template/serv/");
+        $tpl = new Template("server.htm", "app/template/core/serv/");
         $tpl->load();
         $i = false;
         $path = "app/json/serverinfo/" . $serv->name() . ".json";

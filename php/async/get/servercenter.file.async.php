@@ -38,7 +38,7 @@ switch ($case) {
         foreach($dir_scan as $item) {
             if($item != "." && $item != "..") {
                 $target = "$dir/$item";
-                $list = new Template("list_file_manager.htm", "app/template/serv/page/list/");
+                $list = new Template("file_manager.htm", "app/template/lists/serv/jquery/");
                 $list->load();
 
                 $fileinfos = pathinfo( $target);
@@ -63,7 +63,7 @@ switch ($case) {
             }
             elseif($item == "..") {
                 $target = $dir;
-                $list = new Template("list_file_manager.htm", "app/template/serv/page/list/");
+                $list = new Template("file_manager.htm", "app/template/lists/serv/jquery/");
                 $list->load();
 
                 $dirpz = "$dirp/";
@@ -94,7 +94,7 @@ switch ($case) {
 
 
     case "load":
-        $list = new Template("load_file_manager.htm", "app/template/jquery/");
+        $list = new Template("load_file_manager.htm", "app/template/universally/jquery/");
         $list->load();
         $list->echo();
     break;

@@ -9,7 +9,7 @@
 */
 
 // Vars
-$tpl_dir = 'app/template/usersettings/';
+$tpl_dir = 'app/template/core/usersettings/';
 $resp = null; $logout = false;
 $pagename = "{::lang::php::home::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";

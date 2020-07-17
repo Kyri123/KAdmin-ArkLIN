@@ -9,7 +9,7 @@
 */
 
 $pagename = '{::lang::php::sc::page::file_manager::pagename}';
-$page_tpl = new Template('file_manager.htm', 'app/template/serv/page/');
+$page_tpl = new Template('file_manager.htm', 'app/template/sub/serv/');
 $page_tpl->load();
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::file_manager::urltop}</li>';

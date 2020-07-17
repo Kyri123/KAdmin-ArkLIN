@@ -108,6 +108,9 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
                         if($mycon->query($query)) {
                             $resp = $alert->rd(109, 3);
                         }
+                        else {
+                            $resp = $alert->rd(3, 3);
+                        }
                     }
                     else {
                         $resp = $alert->rd(24, 3);
@@ -134,8 +137,8 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
     $a4 = code;
 }
 
-$tpl_register = new Template("register.htm", "app/template/session/");
-$tpl_login = new Template("login.htm", "app/template/session/");
+$tpl_register = new Template("register.htm", "app/template/core/session/");
+$tpl_login = new Template("login.htm", "app/template/core/session/");
 $tpl_register->load();
 $tpl_login->load();
 

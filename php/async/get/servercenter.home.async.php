@@ -34,7 +34,7 @@ switch ($case) {
         $file = $helper->file_to_json('app/json/steamapi/profile_whitelist_'.$serv->name().'.json', true)["response"]["players"];
 
         for ($i=0;$i<count($file);$i++) {
-            $list_tpl = new Template('list_whitelist.htm', 'app/template/serv/page/list/');
+            $list_tpl = new Template('whitelist.htm', 'app/template/lists/serv/jquery/');
             $list_tpl->load();
 
             $list_tpl->r("sid", $file[$i]["steamid"]);
@@ -52,7 +52,7 @@ switch ($case) {
 
     // CASE: Chat LOG
     case "livechat":
-        $tpl = new Template('list_chat.htm', 'app/template/serv/page/list/');
+        $tpl = new Template('chat.htm', 'app/template/lists/serv/jquery/');
         $tpl->load();
         $serv = new server($_GET['cfg']);
         $path = 'app/json/saves/chat_'.$serv->name().'.log';
@@ -64,7 +64,7 @@ switch ($case) {
             for ($i=0;$i<count($filearray);$i++) {
                 if ($filearray[$z] != null) {
                     $exp = explode('(-/-)', $filearray[$z]);
-                    $tpl = new Template('list_chat.htm', 'app/template/serv/page/list/');
+                    $tpl = new Template('chat.htm', 'app/template/lists/serv/jquery/');
                     $tpl->load();
                     $tpl->r('msg', $exp[1]);
                     $tpl->r('time', date('d.m.Y - H:i:s', $exp[0]));
@@ -78,21 +78,21 @@ switch ($case) {
         }
         if ($resp == null) $resp = '<li class="list-group-item">0 | {::lang::php::async::get::all::getlog::no_log_found}</li>';
 
-        $tpl = new Template("content.htm", "app/template/default/");
+        $tpl = new Template("content.htm", "app/template/universally/default/");
         $tpl->load();
         $tpl->r("content", $resp);
         $tpl->echo();
     break;
 
     case "load":
-        $list = new Template("load_list.htm", "app/template/jquery/");
+        $list = new Template("load_list.htm", "app/template/universally/jquery/");
         $list->load();
         $list->echo();
     break;
 
     // CASE: RCON LOG
     case "rconlog":
-        $tpl = new Template('list_chat.htm', 'app/template/serv/page/list/');
+        $tpl = new Template('chat.htm', 'app/template/lists/serv/jquery/');
         $tpl->load();
         $serv = new server($_GET['cfg']);
         $path = 'app/json/saves/rconlog_'.$serv->name().'.txt';
@@ -104,7 +104,7 @@ switch ($case) {
             for ($i=0;$i<count($filearray);$i++) {
                 if ($filearray[$z] != null) {
                     $exp = explode('(-/-)', $filearray[$z]);
-                    $tpl = new Template('list_chat.htm', 'app/template/serv/page/list/');
+                    $tpl = new Template('chat.htm', 'app/template/lists/serv/jquery/');
                     $tpl->load();
                     $tpl->r('msg', $exp[1]);
                     $tpl->r('time', date('d.m.Y - H:i:s', $exp[0]));
@@ -118,7 +118,7 @@ switch ($case) {
         }
         if ($resp == null) $resp = '<li class="list-group-item">0 | {::lang::php::async::get::all::getlog::no_log_found}</li>';
 
-        $tpl = new Template("content.htm", "app/template/default/");
+        $tpl = new Template("content.htm", "app/template/universally/default/");
         $tpl->load();
         $tpl->r("content", $resp);
         $tpl->echo();

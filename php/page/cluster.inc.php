@@ -9,7 +9,7 @@
 */
 
 // Vars
-$tpl_dir = 'app/template/cluster/';
+$tpl_dir = 'app/template/core/cluster/';
 $setsidebar = false;
 $cfglist = null;
 $pagename = "{::lang::php::cluster::pagename}";
@@ -231,7 +231,7 @@ $helper->savejson_exsists($json, $clusterjson_path);
 $json = $helper->file_to_json($clusterjson_path);
 $list = null;
 foreach ($json as $mk => $mv) {
-    $listtpl = new Template("list_clusters.htm", $tpl_dir);
+    $listtpl = new Template("clusters.htm", $tpl_dir);
     $listtpl->load();
 
     $serverlist = null;

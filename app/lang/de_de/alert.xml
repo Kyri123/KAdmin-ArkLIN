@@ -300,7 +300,22 @@
             <title>Browser Warnung</title>
             <text>Internet Explorer wird nicht 100%ig Untersützt!</text>
         </c_200>
- 
+
+        <!-- Warning | Rcon deaktiviert -->
+        <c_201>
+            <title>RCON Warnung</title>
+            <text>Achtung RCON ist nicht aktiv (Rcon = False oder Kein Admin Passwort oder Server Offline)
+
+                - Live Chat Deaktivitert
+                - Rcon-Konsole Deaktivitert
+            </text>
+        </c_201>
+
+        <!-- Warning | Rcon deaktiviert -->
+        <c_202>
+            <title>Whitelist Warnung</title>
+            <text>Achtung Whitelist ist nicht aktiv - Aktiviere: [b]exclusivejoin[/b]</text>
+        </c_202>
 
 
         <!-- INFO -->

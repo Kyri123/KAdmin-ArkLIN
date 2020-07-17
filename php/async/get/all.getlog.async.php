@@ -49,7 +49,7 @@ $z = 1;
     $content = '<li class="list-group-item list-group-item-mod">{::lang::php::async::get::all::getlog::no_log_found}</i></li>';
 }
 
-$tpl = new Template("content.htm", "app/template/default/");
+$tpl = new Template("content.htm", "app/template/universally/default/");
 $tpl->load();
 $tpl->r("content", $content);
 $tpl->echo();

@@ -9,7 +9,7 @@
 */
 
 $pagename = '{::lang::php::sc::page::jobs::pagename}';
-$page_tpl = new Template('jobs.htm', 'app/template/serv/page/');
+$page_tpl = new Template('jobs.htm', 'app/template/sub/serv/');
 $page_tpl->load();
 $page_tpl->debug(true);
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
@@ -174,7 +174,7 @@ $json = null; $jobs = null;
 $json = $helper->file_to_json($cpath, true);
 
 foreach($json['jobs'] as $key => $value) {
-    $list = new Template('list_jobs.htm', 'app/template/serv/page/list/');
+    $list = new Template('jobs.htm', 'app/template/lists/serv/jobs/');
     $list->load();
     $list->rif ('empty', true);
     if ($json['jobs'][$key]['active'] == "true") {
@@ -200,7 +200,7 @@ foreach($json['jobs'] as $key => $value) {
 }
 
 if ($jobs == null) {
-    $list = new Template('list_jobs.htm', 'app/template/serv/page/list/');
+    $list = new Template('jobs.htm', 'app/template/lists/serv/jobs/');
     $list->load();
     $list->rif ('empty', false);
     $list->r('title', '{::lang::php::sc::page::jobs::nothing}');

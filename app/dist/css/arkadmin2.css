@@ -47,3 +47,17 @@
     font-weight: 900;
     content: "\f0da";
 }
+
+.social_icon {
+    position: absolute;
+    left: 5px;
+}
+
+.social_icon a {
+    padding-left: 5px;
+    color: #6c757d;
+}
+
+.social_icon a:hover {
+    color: #3a83cc;
+}

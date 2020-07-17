@@ -14,8 +14,9 @@ include('pconfig.inc.php');
 #allgmeine
 $sitename = "ArkAdmin";
 $sitename_short = "AA";
-$version = '0.9.1';
+$version = '0.10.0';
 $ip = $_SERVER['SERVER_ADDR'];
+$display_error = 0;
 
 #Webserver
 $webserver['url'] = 'http://data.chiraya.de/';

@@ -48,27 +48,34 @@
             </div>
             {!ifcmods}
             <div class="tab-pane fade" id="pills-add" role="tabpanel" aria-labelledby="pills-add-tab">
-                <form action="{urls}" method="post" class="p-3 pt-4">
-                    <div class="form-group row m-0">
-                        <label class="col-sm-2 col-form-label">{::lang::servercenter::mods::workshop_url}</label>
-                        <div class="col-sm-7 pb-0">
-                            <input type="text" name="url" class="form-control" placeholder="https://steamcommunity.com/sharedfiles/filedetails/?id=<id>">
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary mb-3" name="addmod" style="width:100%">{::lang::servercenter::mods::btn_add}</button>
-                        </div>
-                    </div>
-                </form>
-                <hr class="m-0">
-                <form action="{urls}" method="post" class="p-3 pt-4">
-                    <div class="form-group row m-0">
-                        <label class="col-sm-2 col-form-label">{::lang::servercenter::mods::mod_id}</label>
-                        <div class="col-sm-7">
-                            <input type="number" name="url" class="form-control" placeholder="<id> (.../filedetails/?id=<id>)">
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary mb-3" name="addmod" style="width:100%">{::lang::servercenter::mods::btn_add}</button>
-                        </div>
+                <form action="{urls}" method="post" class="tab-pane fade active show" id="pills-Game" role="tabpanel">
+                    <div id="form">
+                        <table class="table table-striped mb-0">
+                            <tbody>
+                                <tr class="bg-dark">
+                                    <th class="p-0">
+                                        <div class="list-group-item bg-dark">
+                                            <h4 class="m-0">{::lang::servercenter::mods::nav::add}</h4>
+                                            <div class="right">
+                                                <button type="button" class="btn btn-sm btn-success" onclick="additem('#viaurl')"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr id="viaurl">
+                                    <td class="p-2">
+                                        <div class="input-group mb-0">
+                                            <input type="text" name="url[]" class="form-control form-control-sm" placeholder="Worshop URL / ModID">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="bg-dark">
+                                    <th class="p-0">
+                                        <button type="submit" class="btn btn-primary" name="addmod" style="width:100%">{::lang::servercenter::mods::btn_add}</button>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </form>
             </div>{/!ifcmods}
@@ -79,4 +86,9 @@
 <script>
     getphp("/php/async/get/servercenter.mods.async.php?cfg={cfg}&case=mods_active", "modlist");
     getphp("/php/async/get/servercenter.mods.async.php?cfg={cfg}&case=mods_installed", "modlist_loc");
+
+    function additem(id) {
+        var clone = $(id).clone(true);
+        $(id).after(clone)
+    }
 </script>

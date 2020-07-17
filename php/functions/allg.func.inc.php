@@ -559,7 +559,7 @@ function get_lang_list() {
     $dir = "app/lang";
     $dir = dirToArray("app/lang");
     foreach($dir as $k => $v) {
-        $ftpl = new Template("lang.htm", "app/template/default/");
+        $ftpl = new Template("lang.htm", "app/template/universally/default/");
         $ftpl->load();
 
         $xml = new xml_helper("app/lang/$k/info.xml");
