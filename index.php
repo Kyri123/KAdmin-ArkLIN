@@ -10,8 +10,12 @@
 // hide errors
 include('php/inc/config.inc.php');
 
-ini_set('display_errors', $display_error);
-ini_set('display_startup_errors', $display_error);
+include('php/class/helper.class.inc.php');
+$helper = new helper();
+$ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
+
+ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
+ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 //error_reporting(E_ALL);
 
 // kleiner fix für PHP 70-72
@@ -48,7 +52,6 @@ include('php/functions/allg.func.inc.php');
 include('php/functions/check.func.inc.php');
 
 // include classes
-include('php/class/helper.class.inc.php');
 include('php/class/xml_helper.class.php');
 include('php/class/Template.class.inc.php');
 include('php/class/alert.class.inc.php');
@@ -60,7 +63,6 @@ include('php/class/server.class.inc.php');
 include('php/class/jobs.class.inc.php');
 
 //create class_var
-$helper = new helper();
 $alert = new alert();
 $steamapi = new steamapi();
 $user = new userclass();
@@ -71,7 +73,6 @@ include('php/inc/session.inc.php');
 include('php/inc/auto_update_sql_DB.inc.php');
 
 //create globals vars
-$ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
 $API_Key = $ckonfig['apikey'];
 $servlocdir = $ckonfig['servlocdir'];
 $expert = $user->expert();
@@ -161,7 +162,7 @@ if ($page != "login" && $page != "registration" && $page != "crontab" && isset($
 } else {
 
     // Login
-    if ($page == "login" && file_exists("app/check/done")) {
+    if ($page == "login" && file_exists("app/check/done") && !isset($_SESSION['id'])) {
         if (isset($_SESSION["id"])) {
             header('Location: /home');
             exit;
@@ -172,7 +173,7 @@ if ($page != "login" && $page != "registration" && $page != "crontab" && isset($
     }
 
     // Registration
-    elseif ($page == "registration" && file_exists("app/check/subdone")) {
+    elseif ($page == "registration" && file_exists("app/check/subdone") && !isset($_SESSION['id'])) {
         if (isset($_SESSION["id"])) {
             header('Location: /home');
             exit;

@@ -30,15 +30,20 @@ $count = (is_countable($playerjs)) ? count($playerjs): false;
 //add_admin
 if (isset($_POST["addadmin"])) {
     $id = $_POST["id"];
-    for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$i = $ix; break;};
-    $content = file_get_contents($cheatfile)."\n$id";
-    if (file_put_contents($cheatfile, $content)) {
-        $alert->code = 100;
-        $alert->r("name", $playerjs[$i]["personaname"]);
-        $alert->overwrite_text = "{::lang::php::sc::page::home::add_admin}";
-        $resp = $alert->re();
+    if(is_int($id) && $id > 70000000000) {
+        for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$i = $ix; break;};
+        $content = file_get_contents($cheatfile)."\n$id";
+        if (file_put_contents($cheatfile, $content)) {
+            $alert->code = 100;
+            $alert->r("name", strval($playerjs[$i]["personaname"]));
+            $alert->overwrite_text = "{::lang::php::sc::page::home::add_admin}";
+            $resp = $alert->re();
+        } else {
+            $alert->code = 1;
+            $resp = $alert->re();
+        }
     } else {
-        $alert->code = 1;
+        $alert->code = 2;
         $resp = $alert->re();
     }
 }
@@ -139,11 +144,16 @@ if ($bool_install) {
 if ($ifcadmin) $resp_cluster .= $alert->rd(300, 3);
 if ($ifwhitelist) $resp_cluster .= $alert->rd(304, 3);
 
+$alert->code = 202;
+$alert->overwrite_style = 3;
+$alert->overwrite_mb = 0;
+$white_alert = $alert->re();
+
 $page_tpl->rif ("installed", $bool_install);
 $page_tpl->rif ('ifwhitelist', $ifwhitelist);
 $page_tpl->rif ('rcon', $serv->check_rcon());
 $page_tpl->rif ('whiteactive', $serv->cfg_check("arkflag_exclusivejoin"));
-$page_tpl->r ('whiteactive_meld', $alert->rd(202, 3));
+$page_tpl->r ('whiteactive_meld', $white_alert);
 $page_tpl->r("userlist_admin", $userlist_admin);
 $page_tpl->r("adminlist_admin", $adminlist_admin);
 $page_tpl->r("whitelist_admin", $adminlist_admin);

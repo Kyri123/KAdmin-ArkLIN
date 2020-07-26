@@ -491,7 +491,7 @@
                 <admin>
                     <player>Benutzer:</player>
                     <default>Bitte Wählen</default>
-                    <info>Der User muss zuerst auf dem Server gewesen sein! (Änderungen werden erst nach einem Neustart wirksam)</info>
+                    <info>Der User muss zuerst auf dem Server gewesen sein um als Spieler aufgelistet zu werden. (Änderungen werden erst nach einem Neustart wirksam)</info>
                     <btn_add>Hinzufügen</btn_add>
                 </admin>
 
@@ -513,12 +513,13 @@
             <section>
                 <allg>
                     <name>Bezeichnung</name>
-                    <name_placeholder>Bsp.: Neustart</name_placeholder>
+                    <name_placeholder>Bsp.: Neustart um 0:00</name_placeholder>
                     <para>Parameter</para>
                     <time>Datum und Zeit</time>
                     <intervall>Intervall (in Sekunden)</intervall>
                     <intervall_placeholder>3600 = 1h, 86400 = 1 Tag</intervall_placeholder>
                     <btn_save>Speichern</btn_save>
+                    <command>Befehl</command>
                     <active>
                         <true>Aktiviert</true>
                         <false>Deaktivert</false>

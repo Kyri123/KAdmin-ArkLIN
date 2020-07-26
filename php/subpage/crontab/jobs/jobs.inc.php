@@ -17,24 +17,6 @@ for ($i=0;$i<count($dir);$i++) {
         $cpath = "app/json/servercfg/jobs_" . $serv->name() . ".json";
         if (file_exists($cpath)) {
             $json = $helper->file_to_json($cpath, true);
-            if (count($json['jobs']) > 0) {
-                foreach($json['jobs'] as $key => $value) {
-                    $diff =  time() - $json['jobs'][$key]['datetime'];
-                    if ($diff >= 0 && $json['jobs'][$key]['active'] == "true") {
-                        if ($diff > $json['jobs'][$key]['intervall']) {
-                            $x = $diff / $json['jobs'][$key]['intervall'];
-                            $x = floor($x);
-                            $x = $x * $json['jobs'][$key]['intervall'];
-                        }
-                        else {
-                            $x = $json['jobs'][$key]['intervall'];
-                        }
-                        $nextrun = $json['jobs'][$key]['datetime'] + $x;
-                        $jobs->arkmanager($json['jobs'][$key]['action'].' '.$json['jobs'][$key]['parameter']);
-                        $json['jobs'][$key]['datetime'] = $nextrun;
-                    }
-                }
-            }
 
             // Backup & Update
             $key[0] = 'backup'; $key[1] = 'update';
@@ -61,6 +43,32 @@ for ($i=0;$i<count($dir);$i++) {
         }
     }
 }
+
+// Lese und verarbeite Jobs aus der Datenbank
+$query = 'SELECT * FROM `ArkAdmin_jobs`';
+if($mycon->query($query)->numRows() > 0) {
+    $arr = $mycon->query($query)->fetchAll();
+    foreach ($arr as $k => $v) {
+        $diff = time() - $v["time"];
+        $iv = $v["intervall"];
+        if($diff >= 0) {
+            if ($diff > $iv) {
+                $x = $diff / $iv;
+                $x = floor($x);
+                $x = $x * $iv;
+            }
+            else {
+                $x = $iv;
+            }
+            $nextrun = $v["time"] + $x;
+            $jobs->set($v["server"]);
+            $jobs->arkmanager($v["job"].' '.$v['parm']);
+            echo $query = 'UPDATE `ArkAdmin_jobs` SET `time` = \''.$nextrun.'\' WHERE `id` = \''.$v["id"].'\'';
+            $mycon->query($query);
+        }
+    }
+}
+
 
 
 ?>

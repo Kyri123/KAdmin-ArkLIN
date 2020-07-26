@@ -15,7 +15,7 @@ class xml_helper extends helper {
     private $find = false;
     private $xml_string;
 
-    public function __construct($xml_path)
+    public function __construct(String $xml_path)
     {
         $this->xml_path = $xml_path;
         if (file_exists($xml_path)) {
@@ -27,7 +27,7 @@ class xml_helper extends helper {
         }
     }
 
-    public function byattr($attr) {
+    public function byattr(String $attr) {
         if ($this->find) {
             $xml = simplexml_load_string($this->xml_string);
             $result = $xml->xpath($attr);

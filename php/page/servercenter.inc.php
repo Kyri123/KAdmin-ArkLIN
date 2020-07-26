@@ -86,7 +86,7 @@ if ($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>{::lang::php::s
 $danger_listitem = new Template('warn_err.htm', $tpl_dir_lists);
 $danger_listitem->load();
 
-if ($globa_json->error_count > 0) {
+if ($globa_json->error_count > 0 && is_countable($globa_json->error)) {
     for ($i=0;$i<count($globa_json->error);$i++) {
 
         if (strpos($globa_json->error[$i], 'is requested but not installed') !== false) {
@@ -123,7 +123,7 @@ else {
 $warning_listitem = new Template('warn_err.htm', $tpl_dir_lists);
 $warning_listitem->load();
 
-if ($globa_json->warning_count > 0) {
+if ($globa_json->warning_count > 0 && is_countable($globa_json->warning)) {
     for ($i=0;$i<count($globa_json->warning);$i++) {
 
         if (strpos($globa_json->warning[$i], 'Your ARK server exec could not be found.') !== false) {
@@ -272,7 +272,7 @@ $tpl->r('url_site', 'http://'.$_SERVER['SERVER_NAME']);
 $tpl->r('panel', $panel);
 $tpl->r('resp', $resp);
 $tpl->r('playerlist', $player);
-$tpl->r ('rcon_meld', $alert->rd(201, 3));
+$tpl->r ('rcon_meld', $alert->rd(305, 3));
 $tpl->r ('cluster_meld', $resp_cluster);
 $tpl->rif ('rcon', $serv->check_rcon());
 $tpl->rif ('ifin', $serv->cluster_in());

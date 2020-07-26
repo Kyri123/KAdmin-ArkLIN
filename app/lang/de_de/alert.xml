@@ -194,7 +194,7 @@
             <text>Konnte keine Verbindung zur Datenbank aufbauen</text>
         </c_29>
 
-        <!-- DANGER | Mysql Error -->
+        <!-- DANGER | Syslink Error -->
         <c_30>
             <title>System Error</title>
             <text>Syslink funktioniert nicht</text>
@@ -344,9 +344,19 @@
         </c_303>
 
         <!-- INFO | syncmode - Whitelist -->
-        <c_3004>
+        <c_304>
             <title>Sync Mode : Whitelist</title>
             <text>Funktion Whitelist wurde Deaktiviert da die Synchronisation aktiv ist. Gehe für Änderungen zum Masterserver.</text>
-        </c_3004>
+        </c_304>
+
+        <!-- INFO | Rcon deaktiviert -->
+        <c_305>
+            <title>RCON Info</title>
+            <text>Achtung RCON ist nicht aktiv (Rcon = False oder Kein Admin Passwort oder Server Offline)
+
+                - Live Chat Deaktivitert
+                - Rcon-Konsole Deaktivitert
+            </text>
+        </c_305>
     </alert>
 </lang>

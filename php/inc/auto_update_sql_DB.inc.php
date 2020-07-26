@@ -21,4 +21,19 @@ if ($mycon->numRows() == 1) {
         $mycon->query($query);
     }
 }
+
+//check SQL for jobs
+$table = "ArkAdmin_jobs";
+$query = "SHOW TABLES LIKE '".$table."'";
+$query_file = "app/sql/jobs.sql";
+$mycon->query($query);
+if ($mycon->numRows() == 1) {
+    null;
+} else {
+    $query_file = file($query_file);
+    foreach ($query_file as $query) {
+        $mycon->query($query);
+    }
+}
+
 ?>

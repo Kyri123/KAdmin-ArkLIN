@@ -64,9 +64,14 @@
             <!-- GUS - Normal -->
             <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel">
                 <div id="form">
-                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
                     <table class="table table-striped mb-0">
                         <tbody>
+                            <tr class="bg-dark">
+                                <th colspan="2" class="p-0">
+                                    <div class="list-group-item bg-dark">
+                                        <h4 class="m-0">GameUserSettings.ini</h4>
+                                </th>
+                            </tr>
                             <tr id="tbody_GUS">
                                 <td class="p-2">{::lang::servercenter::config::sec_create}</td>
                                 <td class="p-2">
@@ -85,27 +90,40 @@
 
                     <input type="hidden" name="type" id="type_gus" value="GameUserSettings.ini">
                     <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
-                </div>
+                    </div>
             </form>
 
 
             <!-- GUS - EXP -->
             <form action="#save" method="post" class="tab-pane fade" id="pills-GameUserStetting-exp" role="tabpanel">
                 <div id="form">
-                    <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                    <table class="table table-striped mb-0">
+                        <tr class="bg-dark">
+                            <th colspan="2" class="p-0">
+                                <div class="list-group-item bg-dark">
+                                    <h4 class="m-0">GameUserSettings.ini</h4>
+                            </th>
+                        </tr>
+                    </table>
                     <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_gus">{gus}</textarea>
                     <input type="hidden" name="type" id="type_gus" value="GameUserSettings.ini">
                     <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
-                </div>
+                    <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                    </div>
             </form>
 
 
             <!-- GAME - Normal -->
             <form action="#save" method="post" class="tab-pane fade" id="pills-Game" role="tabpanel">
                 <div id="form">
-                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
                     <table class="table table-striped mb-0">
                         <tbody>
+                            <tr class="bg-dark">
+                                <th colspan="2" class="p-0">
+                                    <div class="list-group-item bg-dark">
+                                        <h4 class="m-0">Game.ini</h4>
+                                </th>
+                            </tr>
                             <tr id="tbody_Game">
                                 <td class="p-2">{::lang::servercenter::config::sec_create}</td>
                                 <td class="p-2">
@@ -124,27 +142,40 @@
 
                     <input type="hidden" name="type" id="type_gus" value="Game.ini">
                     <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
-                </div>
+                    </div>
             </form>
 
 
             <!-- GAME - EXP -->
             <form action="#save" method="post" class="tab-pane fade" id="pills-Game-exp" role="tabpanel">
                 <div>
-                    <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                    <table class="table table-striped mb-0">
+                        <tr class="bg-dark">
+                            <th colspan="2" class="p-0">
+                                <div class="list-group-item bg-dark">
+                                    <h4 class="m-0">Game.ini</h4>
+                            </th>
+                        </tr>
+                    </table>
                     <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 5700px;" id="text_game">{game}</textarea>
                     <input type="hidden" name="type" id="type_game" value="Game.ini">
                     <input type="hidden" name="cfg" id="cfg_game" value="{cfg}">
-                </div>
+                    <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                    </div>
             </form>
 
 
             <!-- Engine - Normal -->
             <form action="#save" method="post" class="tab-pane fade" id="pills-Engine" role="tabpanel">
                 <div id="form">
-                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
                     <table class="table table-striped mb-0">
                         <tbody>
+                            <tr class="bg-dark">
+                                <th colspan="2" class="p-0">
+                                    <div class="list-group-item bg-dark">
+                                        <h4 class="m-0">Engine.ini</h4>
+                                </th>
+                            </tr>
                             <tr id="tbody_Game">
                                 <td class="p-2">{::lang::servercenter::config::sec_create}</td>
                                 <td class="p-2">
@@ -163,26 +194,39 @@
 
                     <input type="hidden" name="type" id="type_gus" value="Engine.ini">
                     <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
-                </div>
+                    </div>
             </form>
 
 
             <!-- Engine - Normal -->
             <form action="#save" method="post" class="tab-pane fade" id="pills-Engine-exp" role="tabpanel">
                 <div>
-                    <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                    <table class="table table-striped mb-0">
+                        <tr class="bg-dark">
+                            <th colspan="2" class="p-0">
+                                <div class="list-group-item bg-dark">
+                                    <h4 class="m-0">Engine.ini</h4>
+                            </th>
+                        </tr>
+                    </table>
                     <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_engine">{engine}</textarea>
                     <input type="hidden" name="type" id="type_engine" value="Engine.ini">
                     <input type="hidden" name="cfg" id="cfg_engine" value="{cfg}">
-                </div>
+                    <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                    </div>
             </form>{/!ifckonfig}{/show}
 
             <!-- AA - NORMAL -->
             <div class="tab-pane fade {ifckonfig}show active{/ifckonfig} {!show}show active{/!show}" id="pills-AM" role="tabpanel">
                 <form action="#save" method="post">
-                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savecfg">{::lang::servercenter::config::btn_save}</button>
                     <table class="table table-striped mb-0">
                         <thead>
+                            <tr class="bg-dark">
+                                <th colspan="2" class="p-0">
+                                    <div class="list-group-item bg-dark">
+                                        <h4 class="m-0">Arkmanager.cfg</h4>
+                                </th>
+                            </tr>
                             <tr>
                                 <th style="width: 100px">{::lang::servercenter::config::th_config}</th>
                                 <th>{::lang::servercenter::config::th_input}</th>
@@ -233,70 +277,78 @@
                     <button type="submit" class="btn btn-primary" style="width: 100%;" name="savecfg">{::lang::servercenter::config::btn_save}</button>
 
                 </form>
+                </div>
+
+
+                <!-- AA - EXP -->
+                <div class="tab-pane fade" id="pills-AM-exp" role="tabpanel">
+                    <table class="table table-striped mb-0">
+                        <tr class="bg-dark">
+                            <th colspan="2" class="p-0">
+                                <div class="list-group-item bg-dark">
+                                    <h4 class="m-0">Arkmanager.cfg</h4>
+                            </th>
+                        </tr>
+                    </table>
+                    <form action="#save" method="post">
+                        <textarea name="txtarea" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;">{amcfg}</textarea>
+                        <button type="submit" class="btn btn-primary" name="savecfg_expert" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                    </form>
+                    </div>
+
+
+                </div>
+            </div>
             </div>
 
+            <script>
+                $('select[name="flag[]"]').bootstrapDualListbox({
+                    nonSelectedListLabel: '{::lang::servercenter::config::sel}',
+                    selectedListLabel: '{::lang::servercenter::config::nonsel}',
+                    preserveSelectionOnMove: 'moved',
+                    infoText: null,
+                    showFilterInputs: true,
+                    moveOnSelect: false
+                });
 
-            <!-- AA - EXP -->
-            <div class="tab-pane fade" id="pills-AM-exp" role="tabpanel">
-                <form action="#save" method="post">
-                    <button type="submit" class="btn btn-primary" name="savecfg_expert" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
-                    <textarea name="txtarea" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;">{amcfg}</textarea>
-                </form>
-            </div>
+                function setmap() {
+                    var target = $("#input_serverMap");
+                    var opt = $("#mapsel");
+                    target.val(opt.val());
+                }
 
+                function addsection(id) {
+                    var target = $(id);
+                    var section = $(id + "_section");
+                    var val = section.val();
 
-        </div>
-    </div>
-</div>
+                    if (val != "") {
+                        var data = {
+                            "case": "create_section",
+                            "section": val
+                        };
+                        $.get("/php/async/get/servercenter.konfig.async.php", data, (re) => {
+                            target.after(re);
+                            if (!section.hasClass("border-success")) section.toggleClass("border-success");
+                            if (section.hasClass("border-danger")) section.toggleClass("border-danger");
+                        })
+                    } else {
+                        if (section.hasClass("border-success")) section.toggleClass("border-success");
+                        if (!section.hasClass("border-danger")) section.toggleClass("border-danger");
+                    }
+                }
 
-<script>
-    $('select[name="flag[]"]').bootstrapDualListbox({
-        nonSelectedListLabel: '{::lang::servercenter::config::sel}',
-        selectedListLabel: '{::lang::servercenter::config::nonsel}',
-        preserveSelectionOnMove: 'moved',
-        infoText: null,
-        showFilterInputs: true,
-        moveOnSelect: false
-    });
+                function removesection(section) {
+                    $("tr[data-section='" + section + "']").remove();
+                }
 
-    function setmap() {
-        var target = $("#input_serverMap");
-        var opt = $("#mapsel");
-        target.val(opt.val());
-    }
-
-    function addsection(id) {
-        var target = $(id);
-        var section = $(id + "_section");
-        var val = section.val();
-
-        if (val != "") {
-            var data = {
-                "case": "create_section",
-                "section": val
-            };
-            $.get("/php/async/get/servercenter.konfig.async.php", data, (re) => {
-                target.after(re);
-                if (!section.hasClass("border-success")) section.toggleClass("border-success");
-                if (section.hasClass("border-danger")) section.toggleClass("border-danger");
-            })
-        } else {
-            if (section.hasClass("border-success")) section.toggleClass("border-success");
-            if (!section.hasClass("border-danger")) section.toggleClass("border-danger");
-        }
-    }
-
-    function removesection(section) {
-        $("tr[data-section='" + section + "']").remove();
-    }
-
-    function additem(id, section) {
-        var data = {
-            "case": "create",
-            "section": section
-        };
-        $.get("/php/async/get/servercenter.konfig.async.php", data, (re) => {
-            $("#" + id).after(re);
-        })
-    }
-</script>
+                function additem(id, section) {
+                    var data = {
+                        "case": "create",
+                        "section": section
+                    };
+                    $.get("/php/async/get/servercenter.konfig.async.php", data, (re) => {
+                        $("#" + id).after(re);
+                    })
+                }
+            </script>

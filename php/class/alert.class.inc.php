@@ -16,6 +16,10 @@ class alert extends helper {
     public $overwrite_icon = null;
     public $overwrite_title = null;
     public $overwrite_style = 1;
+    public $overwrite_mb = -1;
+    public $overwrite_ml = -1;
+    public $overwrite_mt = -1;
+    public $overwrite_mr = -1;
 
     private $tpl;
     private $from;
@@ -62,6 +66,10 @@ class alert extends helper {
         $this->tpl->r("title", $title);
         $this->tpl->r("text", $text);
         $this->tpl->r("rnd", rndbit(50));
+        $this->tpl->r("mb", (($this->overwrite_mb >= 0) ? 'mb-'.$this->overwrite_mb : 'mb-2'));
+        $this->tpl->r("mr", (($this->overwrite_mr >= 0) ? 'mr-'.$this->overwrite_mr : 'mr-0'));
+        $this->tpl->r("mt", (($this->overwrite_mt >= 0) ? 'mt-'.$this->overwrite_mt : 'mt-0'));
+        $this->tpl->r("ml", (($this->overwrite_ml >= 0) ? 'ml-'.$this->overwrite_ml : 'ml-0'));
 
         $s1 = ($this->overwrite_style == 1) ? true : false;
         $s2 = ($this->overwrite_style == 2) ? true : false;
@@ -81,16 +89,26 @@ class alert extends helper {
         $this->overwrite_text = null;
         $this->overwrite_title = null;
         $this->overwrite_style = false;
+        $this->overwrite_mb = -1;
+        $this->overwrite_mr = -1;
+        $this->overwrite_mt = -1;
+        $this->overwrite_ml = -1;
     }
 
-    public function r($from, $to) {
+    public function r(String $from, String $to) {
         array_push($this->from, '{'.$from.'}');
         array_push($this->to, $to);
         return true;
     }
 
-    public function rd($code, $style = 1) {
+    public function rd(Int $code, Int $style = 1, Int $mt = -1, Int $mr = -1, Int $mb = -1, Int $ml = -1, String $icon = null, String $color = null) {
         $this->overwrite_style = $style;
+        $this->overwrite_mb = $mb;
+        $this->overwrite_mr = $mr;
+        $this->overwrite_mt = $mt;
+        $this->overwrite_ml = $ml;
+        $this->overwrite_color = $color;
+        $this->overwrite_icon = $icon;
         $this->code = $code;
         if ($this->check_code()) {
             $this->inz();

@@ -17,11 +17,11 @@ class jobs extends helper
         #empty
     }
 
-    public function set($str) {
+    public function set(String $str) {
         $this->server = $str;
     }
 
-    public function arkmanager($shell) {
+    public function arkmanager(String $shell) {
         if ($this->server == null) return "Server nicht gesetzt";
         $serv = new server($this->server);
         $file_jobs = $serv->jobs_file();
@@ -31,7 +31,7 @@ class jobs extends helper
         return $serv->jobs_write($file_jobs);
     }
 
-    public function shell($shell) {
+    public function shell(String $shell) {
         if ($this->server == null) return "Server nicht gesetzt";
         $serv = new server($this->server);
         $file_jobs = $serv->jobs_file();

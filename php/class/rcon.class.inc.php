@@ -22,7 +22,7 @@ class Rcon {
     const SERVERDATA_EXECCOMMAND = 2;
     const SERVERDATA_RESPONSE_VALUE = 0;
 
-    public function __construct($host, $port, $password, $timeout)
+    public function __construct(String $host, int $port, String $password, int $timeout)
     {
         $this->host = $host;
         $this->port = $port;
@@ -62,7 +62,7 @@ class Rcon {
         return $this->authorized;
     }
 
-    public function send_command($command)
+    public function send_command(String $command)
     {
         if (!$this->is_connected()) return false;
         // send command packet.

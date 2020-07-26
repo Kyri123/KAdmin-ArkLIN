@@ -33,7 +33,7 @@ class Template {
         $this->file_str = $file;
     }
 
-    public function debug($bool) {
+    public function debug(bool $bool) {
         $this->debug = $bool;
     }
 

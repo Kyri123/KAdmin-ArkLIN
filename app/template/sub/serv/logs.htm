@@ -14,87 +14,104 @@
                     <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">ArkServer</a>
                 </li>
             </ul>
-            <div class="form-inline"><div class="form-inline">
-                <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
-                    <div class="btn-group">
-                        <button class="btn btn-primary btn-sm" type="button">
+            <div class="form-inline">
+                <div class="form-inline">
+                    <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" type="button">
                             <b id="max">25</b>
                         </button>
-                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void();" onclick="set(25, 'max')">25</a>
-                            <a class="dropdown-item" href="javascript:void();" onclick="set(50, 'max')">50</a>
-                            <a class="dropdown-item" href="javascript:void();" onclick="set(150, 'max')">150</a>
-                            <a class="dropdown-item" href="javascript:void();" onclick="set(250, 'max')">250</a>
-                            <a class="dropdown-item" href="javascript:void();" onclick="set(500, 'max')">500</a>
-                            <a class="dropdown-item" href="javascript:void();" onclick="set('∞', 'max')">∞</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:void();" onclick="set(25, 'max')">25</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set(50, 'max')">50</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set(150, 'max')">150</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set(250, 'max')">250</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set(500, 'max')">500</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set('∞', 'max')">∞</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="m-1 float-right btn-group" style="display: inline-flex;" id="hidebar">
-                    <div class="btn-group">
-                        <button class="btn btn-primary btn-sm" type="button">
+                    <div class="m-1 float-right btn-group" style="display: inline-flex;" id="hidebar">
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" type="button">
                             <b>
                                 <i id="iconhide" class="null fas fa-check" aria-hidden="true"></i>
                             </b>
                             <span class="d-none" id="hide">Ja</span>
                         </button>
-                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void();" onclick="set('Ja', 'hide');set_icon('fas', 'fa-check', 'iconhide')">
-                                <i class="fas fa-check" aria-hidden="true"></i> {::lang::allg::logs::show}</a>
-                            <a class="dropdown-item" href="javascript:void();" onclick="set('Nein', 'hide');set_icon('fa', 'fa-times', 'iconhide')">
-                                <i class="fa fa-times" aria-hidden="true"></i> {::lang::allg::logs::hide}</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:void();" onclick="set('Ja', 'hide');set_icon('fas', 'fa-check', 'iconhide')">
+                                    <i class="fas fa-check" aria-hidden="true"></i> {::lang::allg::logs::show}</a>
+                                <a class="dropdown-item" href="javascript:void();" onclick="set('Nein', 'hide');set_icon('fa', 'fa-times', 'iconhide')">
+                                    <i class="fa fa-times" aria-hidden="true"></i> {::lang::allg::logs::hide}</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </nav>
     <hr />
     <div class="card shadow">
         <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div>
-                    <ul class="list-group" id="livelog_am">
-                        <li class="list-group-item">
-                            <div class="row p-0">
-                                <div class="col-12">
-                                    <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
-                                    <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                <div>
-                    <ul class="list-group" id="livelog_ark">
-                        <li class="list-group-item">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <table class="table table-striped mb-0">
+                    <tr class="bg-dark">
+                        <th colspan="2" class="p-0">
+                            <div class="list-group-item bg-dark">
+                                <h4 class="m-0">ArkManager</h4>
+                        </th>
+                    </tr>
+                </table>
+                <table class="table table-striped mb-0" id="livelog_am">
+                    <tr>
+                        <td>
                             <div class="row p-0">
                                 <div class="col-12">
                                     <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
                                     <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
                                 </div>
                             </div>
-                        </li>
-                    </ul>
+                        </td>
+                    </tr>
+                </table>
+                </div>
+
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <table class="table table-striped mb-0">
+                        <tr class="bg-dark">
+                            <th colspan="2" class="p-0">
+                                <div class="list-group-item bg-dark">
+                                    <h4 class="m-0">ArkServer</h4>
+                            </th>
+                        </tr>
+                    </table>
+                    <table class="table table-striped mb-0" id="livelog_ark">
+                        <tr>
+                            <td>
+                                <div class="row p-0">
+                                    <div class="col-12">
+                                        <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                        <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<script>
-    setInterval(function(){
-        getlog('remote/serv/{path}/arkmanager.log', '{cfg}', 'livelog_am', 'max', 'hide'); // This will run on page load
-        getlog('remote/serv/{path}/arkserver.log', '{cfg}', 'livelog_ark', 'max', 'hide'); // This will run on page load
-    }, 1000);
-
-</script>
+        <script>
+            setInterval(function() {
+                getlog('remote/serv/{path}/arkmanager.log', '{cfg}', 'livelog_am', 'max', 'hide'); // This will run on page load
+                getlog('remote/serv/{path}/arkserver.log', '{cfg}', 'livelog_ark', 'max', 'hide'); // This will run on page load
+            }, 1000);
+        </script>

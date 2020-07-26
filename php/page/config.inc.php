@@ -26,6 +26,7 @@ if (!isset($array["install_mod"])) $array["install_mod"] = 0;
 if (!isset($array["servlocdir"])) $array["servlocdir"] = 0;
 if (!isset($array["arklocdir"])) $array["arklocdir"] = null;
 if (!isset($array["apikey"])) $array["apikey"] = null;
+if (!isset($array["show_err"])) $array["show_err"] = 0;
 $helper->savejson_exsists($array, $ppath);
 
 //tpl
@@ -116,7 +117,8 @@ foreach($panelconfig as $key => $value) {
         "clusterestart",
         "servlocdir",
         "arklocdir",
-        "apikey"
+        "apikey",
+        "show_err"
     );
     $repl = array(
         "{::lang::php::config::key::uninstallmod}",
@@ -124,10 +126,11 @@ foreach($panelconfig as $key => $value) {
         "{::lang::php::config::key::clusterestart}",
         "{::lang::php::config::key::servlocdir}",
         "{::lang::php::config::key::arklocdir}",
-        "Steam-API Key <a href='https://steamcommunity.com/dev/apikey' target='_blank'>({::lang::php::config::key::apikey_found_here})</a>"
+        "Steam-API Key <a href='https://steamcommunity.com/dev/apikey' target='_blank'>({::lang::php::config::key::apikey_found_here})</a>",
+        "{::lang::php::config::key::show_err}"
     );
 
-    $bool = array("uninstall_mod", "install_mod", "clusterestart", "expert");
+    $bool = array("uninstall_mod", "install_mod", "clusterestart", "expert", "show_err");
     if (in_array($key, $bool)) {
         $list->rif ("ifbool", true);
         $list->rif ("ifnum", false);

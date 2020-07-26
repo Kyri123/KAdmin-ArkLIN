@@ -20,6 +20,7 @@ $serv = new server("tiamat");
 //tpl
 $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
+
 if (isset($_POST["add"])) {
     //$name = $_POST["name"];
     while (true) {

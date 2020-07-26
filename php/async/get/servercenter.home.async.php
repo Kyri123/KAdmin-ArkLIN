@@ -76,7 +76,7 @@ switch ($case) {
                 if ($ib>99) break;
             }
         }
-        if ($resp == null) $resp = '<li class="list-group-item">0 | {::lang::php::async::get::all::getlog::no_log_found}</li>';
+        if ($resp == null) $resp = '<tr><td>{::lang::php::async::get::all::getlog::no_log_found}</i></td></tr>';
 
         $tpl = new Template("content.htm", "app/template/universally/default/");
         $tpl->load();
@@ -116,7 +116,7 @@ switch ($case) {
                 if ($ib>99) break;
             }
         }
-        if ($resp == null) $resp = '<li class="list-group-item">0 | {::lang::php::async::get::all::getlog::no_log_found}</li>';
+        if ($resp == null) $resp = '<tr><td>{::lang::php::async::get::all::getlog::no_log_found}</i></td></tr>';
 
         $tpl = new Template("content.htm", "app/template/universally/default/");
         $tpl->load();

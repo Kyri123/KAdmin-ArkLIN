@@ -24,7 +24,7 @@ $z = 1;
     $array = array();
     $array = file($file);
     $i = sizeof($array);
-    echo '<li class="list-group-item list-group-item-mod text-primary">Logzeit: '.date ("d.m.Y H:i:s", filemtime($file)).' | Zeigt maximal: <b>'.$max.'</b> | Verstecken: <b>'.$type.'</b></li>';
+    echo '<tr><td class="p-2 text-green">Logzeit: <b>'.date ("d.m.Y H:i:s", filemtime($file)).'</b> | Zeigt maximal: <b>'.$max.'</b> | Verstecken: <b>'.$type.'</b></td></tr>';
     while ($i--) {
         $array[$i] = str_replace("\"", null, $array[$i]);
         $array[$i] = str_replace("\n", null, $array[$i]);
@@ -33,12 +33,12 @@ $z = 1;
             $laenge = strlen($array[$i]);
             $z++;
             if ($laenge < 300 && $type == true) {
-                $content .= '<li class="list-group-item list-group-item-mod"><b class="text-info">'.($i+1).': </b>'.filtersh(alog($array[$i])).'</li>';
+                $content .= '<tr><td class="p-2"><b class="text-info">'.($i+1).': </b>'.filtersh(alog($array[$i])).'</td></tr>';
             }
             elseif ($hide == false) {
-                $content .= '<li class="list-group-item list-group-item-mod"><b class="text-info">'.($i+1).': </b>'.filtersh(alog($array[$i])).'</li>';
+                $content .= '<tr><td class="p-2"><b class="text-info">'.($i+1).': </b>'.filtersh(alog($array[$i])).'</td></tr>';
             } else {
-                $content .= '<li class="list-group-item list-group-item-mod"><b class="text-info">'.($i+1).': </b> <b>{::lang::php::async::get::all::getlog::toolarge}</b></li>';
+                $content .= '<tr><td class="p-2"><b class="text-info">'.($i+1).': </b> <b>{::lang::php::async::get::all::getlog::toolarge}</b></td></tr>';
             }
         }
         if ($z == $max) break;
@@ -46,7 +46,7 @@ $z = 1;
 
 
 } else {
-    $content = '<li class="list-group-item list-group-item-mod">{::lang::php::async::get::all::getlog::no_log_found}</i></li>';
+    $content = '<tr><td>{::lang::php::async::get::all::getlog::no_log_found}</i></td></tr>';
 }
 
 $tpl = new Template("content.htm", "app/template/universally/default/");

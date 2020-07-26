@@ -50,3 +50,9 @@ function getphp(url, id) {
         if (inner != data) target.html(data);
     });
 }
+
+function sel_in_input(target, source) {
+    var tar = $(target);
+    var opt = $(source);
+    tar.val(opt.val());
+}

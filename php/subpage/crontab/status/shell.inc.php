@@ -32,9 +32,9 @@ for ($i=0;$i<count($dir);$i++) {
             file_put_contents($shell_path, $shell_command);
         }
 
-        $mainfile .= 'screen -d -m -t check_server_ID_'.$dir[$i]." sh $check\n";
-        $mainfile .= 'screen -d -m -t jobs_ID_'.$dir[$i]." sh $job\n";
-        $mainfile .= 'screen -d -m -t sub_jobs_ID_'.$dir[$i]." sh $sub_job\n";
+        if(strlen(file_get_contents($check)) > 10) $mainfile .= 'screen -d -m -t check_server_ID_'.$dir[$i]." sh $check\n";
+        if(strlen(file_get_contents($job)) > 10) $mainfile .= 'screen -d -m -t jobs_ID_'.$dir[$i]." sh $job\n";
+        if(strlen(file_get_contents($sub_job)) > 10) $mainfile .= 'screen -d -m -t sub_jobs_ID_'.$dir[$i]." sh $sub_job\n";
 
     }
 }

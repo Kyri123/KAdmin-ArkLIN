@@ -14,9 +14,10 @@ class helper {
         #empty
     }
 
-    public function remotefile_to_json($path, $filename, $differ = 0, $array = true) {
+    public function remotefile_to_json(String $path, String $filename, int $differ = 0, Bool $array = true) {
         $filename = 'cache/'.$filename;
         $diff = 0;
+        $string = null;
         if (file_exists($filename)) {
             $filetime = filemtime($filename);
             $diff = time()-$filetime;
@@ -37,7 +38,7 @@ class helper {
             file_put_contents($filename, $string);
         }
     }
-    public function file_to_json($path, $array = true) {
+    public function file_to_json(String $path, Bool $array = true) {
         if (file_exists($path)) {
             return json_decode(file_get_contents($path), $array);
         } else {
@@ -45,7 +46,7 @@ class helper {
         }
     }
 
-    public function str_to_json($str, $array = true) {
+    public function str_to_json(String $str, Bool $array = true) {
         return json_decode($str, $array);
     }
 
@@ -53,7 +54,7 @@ class helper {
         return json_encode($json);
     }
 
-    public function savejson_exsists($json, $path) {
+    public function savejson_exsists($json, String $path) {
         if (file_exists($path)) {
             if (file_put_contents($path, json_encode($json, JSON_INVALID_UTF8_SUBSTITUTE))) {
                 return true;
@@ -65,7 +66,7 @@ class helper {
         }
     }
 
-    public function savejson_create($json, $path) {
+    public function savejson_create(Array $json, String $path) {
         $content = json_encode($json, JSON_INVALID_UTF8_SUBSTITUTE);
         if (file_put_contents($path, $content)) {
             return true;
@@ -86,7 +87,7 @@ class helper {
         return $diff;
     }
 
-    public function xmlfile_to_array($file) {
+    public function xmlfile_to_array(String $file) {
         $xml = simplexml_load_file($file);
         $xml = $this->str_to_json($this->json_to_str($xml), true);
         return $xml;

@@ -37,8 +37,7 @@ if (!file_exists($cpath)) {
                 "intervall" => 1800,
                 "datetime" => time(),
             )
-        ),
-        "jobs" => array()
+        )
     );
     file_put_contents($cpath, $helper->json_to_str($array));
 }
@@ -90,18 +89,31 @@ if (isset($_POST['addjob'])) {
     if ($name != null) {
         if ($action != null) {
             if ($intervall != null && is_numeric($intervall) && $intervall > 0) {
-                if ($datetime != null && $datetime > time()) {
-                    $json['jobs'][$i]['name'] = $name;
-                    $json['jobs'][$i]['action'] = $action;
-                    $json['jobs'][$i]['intervall'] = $intervall;
-                    $json['jobs'][$i]['parameter'] = $parameter;
-                    $json['jobs'][$i]['datetime'] = $datetime;
-                    if ($helper->savejson_exsists($json, $cpath)) {
+                if ($datetime != null) {
+                    $query = "INSERT INTO `ArkAdmin_jobs` 
+                    (
+                        `job`, 
+                        `parm`, 
+                        `time`, 
+                        `intervall`, 
+                        `active`, 
+                        `server`, 
+                        `name`
+                    ) VALUES (
+                        '$action', 
+                        '$parameter', 
+                        '$datetime', 
+                        '$intervall', 
+                        '1',  
+                        '".$serv->name()."',
+                        '$name'
+                    )";
+                    if ($mycon->query($query)) {
                         $alert->code = 100;
                         $resp = $alert->re();
                     }
                     else {
-                        $alert->code = 1;
+                        $alert->code = 3;
                         $resp = $alert->re();
                     }
                 }
@@ -127,10 +139,10 @@ if (isset($_POST['addjob'])) {
 if (isset($url[4]) && isset($url[5]) && $url[4] == "delete") {
     $i = $url[5];
     $i = intval($i);
-    $json = $helper->file_to_json($cpath);
-    if (isset($json["jobs"][$i])) {
-        unset($json["jobs"][$i]);
-        if ($helper->savejson_create($json, $cpath)) {
+    $query = 'SELECT * FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';
+    if($mycon->query($query)->numRows() > 0) {
+        $query = 'DELETE FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';
+        if ($mycon->query($query)) {
             $alert->code = 101;
             $resp = $alert->re();
         } else {
@@ -146,16 +158,19 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "delete") {
 if (isset($url[4]) && isset($url[5]) && $url[4] == "toggle") {
     $i = $url[5];
     $i = intval($i);
-    $json = $helper->file_to_json($cpath, true);
-    if (isset($json['jobs'][$i])) {
-        if ($json['jobs'][$i]['active'] == "true") {
-            $json['jobs'][$i]['active'] = "false";
+    $query = 'SELECT * FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';
+    if($mycon->query($query)->numRows() > 0) {
+        $arr = $mycon->query($query)->fetchArray();
+        if ($arr['active'] == 1) {
+            $set = 0;
             $txt = "{::lang::php::sc::page::jobs::job_active}";
         } else {
-            $json['jobs'][$i]['active'] = "true";
+            $set = 1;
             $txt = "{::lang::php::sc::page::jobs::job_disturb}";
         }
-        if ($helper->savejson_exsists($json, $cpath)) {
+
+        echo $query = 'UPDATE `ArkAdmin_jobs` SET `active` = \''.$set.'\' WHERE `id` = \''.$i.'\'';
+        if ($mycon->query($query)) {
             $alert->code = 100;
             $alert->overwrite_text = $txt;
             $resp = $alert->re();
@@ -171,32 +186,37 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "toggle") {
 
 
 $json = null; $jobs = null;
-$json = $helper->file_to_json($cpath, true);
-
-foreach($json['jobs'] as $key => $value) {
-    $list = new Template('jobs.htm', 'app/template/lists/serv/jobs/');
-    $list->load();
-    $list->rif ('empty', true);
-    if ($json['jobs'][$key]['active'] == "true") {
-        $toggle_icon = 'fa fa-check';
-        $toggle_btn_color = 'btn-success';
-        $toggle_tooltip = '{::lang::php::sc::page::jobs::tool_active}';
-    } else {
-        $toggle_icon = 'fa fa-times';
-        $toggle_btn_color = 'btn-danger';
-        $toggle_tooltip = '{::lang::php::sc::page::jobs::tool_disturb}';
-    }
-    $list->r('toggle_tooltip', $toggle_tooltip);
-    $list->r('toggle_icon', $toggle_icon);
-    $list->r('toggle_btn_color', $toggle_btn_color);
-    $list->r('title', $json['jobs'][$key]['name']);
-    $list->r('action', $json['jobs'][$key]['action']);
-    $list->r('parameter', $json['jobs'][$key]['parameter']);
-    $list->r('intervall', $json['jobs'][$key]['intervall']);
-    $list->r('cfg', $serv->name());
-    $list->r('i', $key);
-    $list->r('datetime', date('d.m.Y - H:i', $json['jobs'][$key]['datetime']));
-    $jobs .= $list->load_var();
+$query = 'SELECT * FROM `ArkAdmin_jobs` WHERE `server` = \''.$serv->name().'\'';
+if($mycon->query($query)->numRows() > 0) {
+    $json = $mycon->query($query)->fetchAll();
+    foreach($json as $key => $value) {
+        $list = new Template('jobs.htm', 'app/template/lists/serv/jobs/');
+        $list->load();
+        $list->rif ('empty', true);
+        if ($value['active'] == 0) {
+            $toggle_icon = 'fa fa-check';
+            $toggle_btn_color = 'success';
+            $toggle_icon_color = 'danger';
+            $toggle_tooltip = '{::lang::php::sc::page::jobs::tool_active}';
+        } else {
+            $toggle_icon = 'fa fa-times';
+            $toggle_btn_color = 'danger';
+            $toggle_icon_color = 'success';
+            $toggle_tooltip = '{::lang::php::sc::page::jobs::tool_disturb}';
+        }
+        $list->r('toggle_tooltip', $toggle_tooltip);
+        $list->r('toggle_icon', $toggle_icon);
+        $list->r('toggle_btn_color', $toggle_btn_color);
+        $list->r('toggle_icon_color', $toggle_icon_color);
+        $list->r('title', $value['name']);
+        $list->r('action', $value['job']);
+        $list->r('parameter', $value['pram']);
+        $list->r('intervall', $value['intervall']);
+        $list->r('cfg', $serv->name());
+        $list->r('i', $value["id"]);
+        $list->r('datetime', date('d.m.Y - H:i', $value['time']));
+        $jobs .= $list->load_var();
+    } 
 }
 
 if ($jobs == null) {

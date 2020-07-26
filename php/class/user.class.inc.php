@@ -23,7 +23,7 @@ class userclass extends helper
         $this->myconisset = false;
     }
 
-    public function setid($id)
+    public function setid(int $id)
     {
         $this->id = $id;
         $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \'' . $this->id . '\'';
@@ -107,7 +107,7 @@ class userclass extends helper
     }
 
     //write user_data
-    public function write($key, $value) {
+    public function write(String $key, String $value) {
         $id = $this->id;
         $query = 'UPDATE `ArkAdmin_users` SET `'.$key.'`=\''.$value.'\'  WHERE `id` = \''.$id.'\'';
         if ($this->mycon->query($query)) {
@@ -137,7 +137,7 @@ class userclass extends helper
     }
 
     // sende modus
-    public function show_mode($mode)
+    public function show_mode(String $mode)
     {
         $id = md5($this->id);
         $path = "app/json/user/$id.json";

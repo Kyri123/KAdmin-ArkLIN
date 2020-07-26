@@ -1,15 +1,15 @@
 <li class="list-group-item">
     <div class="row p-0">
         <div class="col-12">
-            <i class="fas fa-briefcase rounded -align-left position-absolute" style="height: 50px; width: 50px; color: #858796!important; font-size: 50px;"></i>
-            {empty}<div class="ml-auto float-right  btn-group">
-                <a href="/servercenter/{cfg}/jobs/toggle/{i}" class="btn {toggle_btn_color}" data-toggle="tooltip" data-placement="top" title="{toggle_tooltip}">
-                                <span class="icon text-white">
+            <i class="fas fa-briefcase rounded -align-left position-absolute text-{toggle_icon_color}" style="height: 50px; width: 50px; font-size: 50px;"></i> {empty}
+            <div class="ml-auto float-right  btn-group">
+                <a href="/servercenter/{cfg}/jobs/toggle/{i}" class="btn btn-{toggle_btn_color}" data-toggle="tooltip" data-placement="top" title="{toggle_tooltip}">
+                    <span class="icon text-white">
                                     <i class="{toggle_icon}" ></i>
                                 </span>
                 </a>
                 <a href="/servercenter/{cfg}/jobs/delete/{i}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="{::lang::servercenter::list::jobs::tooltip::remove}">
-                        <span class="icon text-white">
+                    <span class="icon text-white">
                             <i class="fa fa-trash"></i>
                         </span>
                 </a>

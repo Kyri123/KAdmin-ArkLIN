@@ -70,226 +70,287 @@
         <div class="tab-content" id="pills-tabContent">
 
             <div class="tab-pane fade show active" id="pills-llog" role="tabpanel" aria-labelledby="pills-llog-tab">
-                <div>
-                    <ul class="list-group" id="livelog">
-                        <li class="list-group-item">
+                <table class="table table-striped mb-0">
+                    <tr class="bg-dark">
+                        <th colspan="2" class="p-0">
+                            <div class="list-group-item bg-dark">
+                                <h4 class="m-0">{::lang::servercenter::home::nav::llog}</h4>
+                        </th>
+                    </tr>
+                </table>
+                <table class="table table-striped mb-0" id="livelog">
+                    <tr>
+                        <td>
                             <div class="row p-0">
                                 <div class="col-12">
                                     <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
                                     <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
                                 </div>
                             </div>
-                        </li>
-                    </ul>
+                        </td>
+                    </tr>
+                </table>
                 </div>
-            </div>
 
-            {rcon}
-            <div class="tab-pane fade" id="pills-lchat" role="tabpanel" aria-labelledby="pills-lchat-tab">
-                <div class="pl-4 pr-4 pt-4 pb-0" id="livechatresp"></div>
-                <div class="pl-4 pr-4 pt-0 pb-0">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">{::lang::servercenter::home::section::lchat::msg}</label>
-                        <div class="col-sm-7">
-                            <input type="text" id="livechat_text" class="form-control" placeholder="{::lang::servercenter::home::section::lchat::msg_placeholder}">
-                            <input type="hidden" id="livechat_user" value="{SESSION_USERNAME}">
-                            <input type="hidden" id="livechat_cfg" value="{cfg}">
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" id="sendchat">{::lang::servercenter::home::section::lchat::btn_send}</button>
-                        </div>
+                {rcon}
+                <div class="tab-pane fade" id="pills-lchat" role="tabpanel" aria-labelledby="pills-lchat-tab">
+                    <table class="table table-striped mb-0">
+                        <tr class="bg-dark">
+                            <th colspan="2" class="p-0">
+                                <div class="list-group-item bg-dark">
+                                    <h4 class="m-0">{::lang::servercenter::home::nav::lchat}</h4>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="p-0" id="livechatresp"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2">
+                                <div class="form-group row m-0">
+                                    <label class="col-sm-2 col-form-label pt-1">{::lang::servercenter::home::section::lchat::msg}</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="livechat_text" class="form-control form-control-sm" placeholder="{::lang::servercenter::home::section::lchat::msg_placeholder}">
+                                        <input type="hidden" id="livechat_user" value="{SESSION_USERNAME}">
+                                        <input type="hidden" id="livechat_cfg" value="{cfg}">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="submit" class="btn btn-sm btn-primary mb-3" style="width:100%" id="sendchat">{::lang::servercenter::home::section::lchat::btn_send}</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-striped mb-0" id="livechat">
+                        <tr>
+                            <td>
+                                <div class="row p-0">
+                                    <div class="col-12">
+                                        <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                        <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                     </div>
-                </div>
-                <ul class="list-group" id="livechat">
-                    <li class="list-group-item">
-                        <div class="row p-0">
-                            <div class="col-12">
-                                <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
-                                <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+
+                    <div class="tab-pane fade" id="pills-rcon" role="tabpanel" aria-labelledby="pills-rcon-tab">
+                        <table class="table table-striped mb-0">
+                            <tr class="bg-dark">
+                                <th colspan="2" class="p-0">
+                                    <div class="list-group-item bg-dark">
+                                        <h4 class="m-0">{::lang::servercenter::home::nav::rcon}</h4>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="p-0" id="rconresp"></td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">
+                                    <div class="form-group row m-0">
+                                        <label class="col-sm-2 col-form-label pt-1">{::lang::servercenter::home::section::rcon::command}</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="rcon_text" class="form-control form-control-sm" placeholder="{::lang::servercenter::home::section::rcon::command_placeholder}">
+                                            <input type="hidden" id="rcon_user" value="{SESSION_USERNAME}">
+                                            <input type="hidden" id="rcon_cfg" value="{cfg}">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button type="submit" class="btn btn-sm btn-primary mb-3" style="width:100%" id="send_rcon">{::lang::servercenter::home::section::rcon::btn_send}</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table table-striped mb-0" id="rconlog">
+                            <tr>
+                                <td>
+                                    <div class="row p-0">
+                                        <div class="col-12">
+                                            <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                            <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        </div>{/rcon} {installed}{!ifcadmin}
+                        <div class="tab-pane fade" id="pills-admins" role="tabpanel" aria-labelledby="pills-admins-tab">
+                            <table class="table table-striped mb-0">
+                                <tr class="bg-dark">
+                                    <th colspan="2" class="p-0">
+                                        <div class="list-group-item bg-dark">
+                                            <h4 class="m-0">{::lang::servercenter::home::nav::admin}</h4>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td class="p-2">
+                                        <form action="#add_admin" method="post" class="form-group row m-0">
+                                            <label class="col-sm-2 col-form-label pt-1">{::lang::servercenter::home::section::rcon::command}</label>
+                                            <div class="col-sm-7">
+                                                <div class="input-group mb-0"><input type="hidden" name="key[]" readonly="" value="serverMap">
+                                                    <input type="text" name="id" class="form-control form-control-sm" placeholder="SteamID" id="steamid">
+                                                    <div class="input-group-append"><select class="form-control form-control-sm" onchange="sel_in_input('#steamid', '#' + this.id)" id="charsel">
+                                                            <option value="">{::lang::servercenter::home::section::admin::default}</option>
+                                                            {userlist_admin}
+                                                        </select></div>
+                                                </div>
+                                                <span class="text-sm">{::lang::servercenter::home::section::admin::info}</span>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <button type="submit" class="btn btn-sm btn-primary mb-3" style="width:100%" name="addadmin">{::lang::servercenter::home::section::admin::btn_add}</button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                            <ul class="list-group">
+                                {adminlist_admin}
+                            </ul>
+                            </div>{/!ifcadmin}{/installed} {installed}{!ifwhitelist}
+
+                            <div class="tab-pane fade" id="pills-whitel" role="tabpanel" aria-labelledby="pills-whitel-tab">
+
+                                <table class="table table-striped mb-0">
+                                    <tr class="bg-dark">
+                                        <th colspan="2" class="p-0">
+                                            <div class="list-group-item bg-dark">
+                                                <h4 class="m-0">{::lang::servercenter::home::nav::admin}</h4>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-0">{!whiteactive}{whiteactive_meld}{/!whiteactive}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2">
+                                            <form action="#add_admin" method="post" class="form-group row m-0">
+                                                <label class="col-sm-2 col-form-label pt-1">{::lang::servercenter::home::section::rcon::command}</label>
+                                                <div class="col-sm-7">
+                                                    <input class="form-control form-control-sm" name="sid" id="SteamID" type="number" required placeholder="{::lang::servercenter::home::section::whitel::PH}">
+                                                    <input class="form-control" name="cfg" type="hidden" value="{cfg}">
+                                                    <input class="form-control" name="case" type="hidden" value="togglewhitelist">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button type="submit" class="btn btn-sm btn-primary mb-3" style="width:100%" name="addadmin">{::lang::servercenter::home::section::whitel::btn}</button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <ul class="list-group" id="whitelist"></ul>
+                                </div>{/!ifwhitelist}{/installed}
+
                             </div>
                         </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="tab-pane fade" id="pills-rcon" role="tabpanel" aria-labelledby="pills-rcon-tab">
-                <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
-                <div class="pl-4 pr-4 pt-0 pb-0">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">{::lang::servercenter::home::section::rcon::command}</label>
-                        <div class="col-sm-7">
-                            <input type="text" id="rcon_text" class="form-control" placeholder="{::lang::servercenter::home::section::rcon::command_placeholder}">
-                            <input type="hidden" id="rcon_user" value="{SESSION_USERNAME}">
-                            <input type="hidden" id="rcon_cfg" value="{cfg}">
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" id="send_rcon">{::lang::servercenter::home::section::rcon::btn_send}</button>
-                        </div>
                     </div>
-                </div>
-                <ul class="list-group" id="rconlog">
-                    <li class="list-group-item">
-                        <div class="row p-0">
-                            <div class="col-12">
-                                <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
-                                <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>{/rcon} {installed}{!ifcadmin}
-            <div class="tab-pane fade" id="pills-admins" role="tabpanel" aria-labelledby="pills-admins-tab">
-                <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
-                <div class="pl-4 pr-4 pt-0 pb-0">
-                    <form action="#add_admin" method="post" class="form-group row">
-                        <label class="col-sm-2 col-form-label">{::lang::servercenter::home::section::admin::player}</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" name="id" required>
-                                <option value="">{::lang::servercenter::home::section::admin::default}</option>
-                                {userlist_admin}
-                            </select>
-                            <span class="text-sm">{::lang::servercenter::home::section::admin::info}</span>
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" name="addadmin">{::lang::servercenter::home::section::admin::btn_add}</button>
-                        </div>
-                    </form>
-                </div>
-                <ul class="list-group">
-                    {adminlist_admin}
-                </ul>
-            </div>{/!ifcadmin}{/installed} {installed}{!ifwhitelist}
-            <div class="tab-pane fade" id="pills-whitel" role="tabpanel" aria-labelledby="pills-whitel-tab">
-                {!whiteactive}{whiteactive_meld}{/!whiteactive}
-                <div class="pl-4 pr-4 pt-4 pb-0" id="rconresp"></div>
-                <div class="pl-4 pr-4 pt-0 pb-0">
-                    <form action="#add_admin" method="post" class="form-group row" id="sendwhitelist">
-                        <label class="col-sm-2 col-form-label">{::lang::servercenter::home::section::whitel::SteamID}</label>
-                        <div class="col-sm-7">
-                            <input class="form-control" name="sid" id="SteamID" type="number" required placeholder="{::lang::servercenter::home::section::whitel::PH}">
-                            <input class="form-control" name="cfg" type="hidden" value="{cfg}">
-                            <input class="form-control" name="case" type="hidden" value="togglewhitelist">
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary mb-3" style="width:100%" name="addadmin">{::lang::servercenter::home::section::whitel::btn}</button>
-                        </div>
-                    </form>
-                </div>
-                <ul class="list-group" id="whitelist"></ul>
-            </div>{/!ifwhitelist}{/installed}
 
-        </div>
-    </div>
-    </div>
-
-    <script>
-        // toggle whitelist
-        function toggle_white(sid, cfg, caser) {
-            $.post("/php/async/post/servercenter.home.async.php", {
-                "sid": sid,
-                "cfg": cfg,
-                "case": caser
-            }, (resp) => {
-                $("#all_resp").html(resp);
-                load_white();
-            });
-        }
-
-        // load whitelist
-        function load_white() {
-            var target = $("#whitelist");
-            var cfg = "{cfg}";
-            $.get("/php/async/get/servercenter.home.async.php", {
-                "cfg": cfg,
-                "case": "load"
-            }, (re) => {
-                target.html(re);
-                $.get("/php/async/get/servercenter.home.async.php", {
-                    "cfg": cfg,
-                    "case": "loadwhite"
-                }, (re) => {
-                    target.html(re);
-                });
-            });
-        }
-
-        $(document).ready(function() {
-
-            // send whitelist
-            $("#sendwhitelist").submit(function(e) {
-                $.post("/php/async/post/servercenter.home.async.php", $(this).serialize(), (resp) => {
-                    $("#SteamID").val('');
-                    $("#all_resp").html(resp);
-                    load_white();
-                });
-                e.preventDefault();
-            });
-            load_white();
-
-
-            // R-Con
-            $('#send_rcon').click(function(e) {
-                e.preventDefault();
-                var cfg = $("#rcon_cfg").val();
-                var user = $("#rcon_user").val();
-                tx = $("#rcon_text");
-                var text = tx.val();
-
-                $.post("/php/async/post/servercenter.home.async.php?case=rconsend", {
-                        cfg: cfg,
-                        user: user,
-                        text: text
-                    })
-                    .done(function(data) {
-                        console.log(data);
-                        json = $.parseJSON(data);
-                        if (json.code == 1) {
-                            $("#rconresp").html(json.msg);
-                            tx.val("");
-                            tx.attr("placeholder", "{::lang::allg::send_done}");
-                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
-                        } else {
-                            $("#rconresp").html(json.msg);
-                            tx.val("");
-                            tx.attr("placeholder", "{::lang::allg::send_fail}");
-                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
+                    <script>
+                        // toggle whitelist
+                        function toggle_white(sid, cfg, caser) {
+                            $.post("/php/async/post/servercenter.home.async.php", {
+                                "sid": sid,
+                                "cfg": cfg,
+                                "case": caser
+                            }, (resp) => {
+                                $("#all_resp").html(resp);
+                                load_white();
+                            });
                         }
-                    });
-            });
-        });
 
-        // livechat
-        $('#sendchat').click(function(e) {
-            e.preventDefault();
-            var cfg = $("#livechat_cfg").val();
-            var user = $("#livechat_user").val();
-            tx = $("#livechat_text");
-            var text = tx.val();
+                        // load whitelist
+                        function load_white() {
+                            var target = $("#whitelist");
+                            var cfg = "{cfg}";
+                            $.get("/php/async/get/servercenter.home.async.php", {
+                                "cfg": cfg,
+                                "case": "load"
+                            }, (re) => {
+                                target.html(re);
+                                $.get("/php/async/get/servercenter.home.async.php", {
+                                    "cfg": cfg,
+                                    "case": "loadwhite"
+                                }, (re) => {
+                                    target.html(re);
+                                });
+                            });
+                        }
 
-            $.post("/php/async/post/servercenter.home.async.php?case=igchatsend", {
-                    cfg: cfg,
-                    user: user,
-                    text: text
-                })
-                .done(function(data) {
-                    json = $.parseJSON(data);
-                    if (json.code == 1) {
-                        $("#livechatresp").html(json.msg);
-                        tx.val("");
-                        tx.attr("placeholder", "{::lang::allg::send_done}");
-                        getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
-                    } else {
-                        $("#livechatresp").html(json.msg);
-                        tx.val("");
-                        tx.attr("placeholder", "{::lang::allg::send_fail}");
-                        getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
-                    }
-                }, "JSON");
-        });
+                        $(document).ready(function() {
 
-        setInterval(function() {
-            getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide');
-            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
-            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
-        }, 1000);
-    </script>
+                            // send whitelist
+                            $("#sendwhitelist").submit(function(e) {
+                                $.post("/php/async/post/servercenter.home.async.php", $(this).serialize(), (resp) => {
+                                    $("#SteamID").val('');
+                                    $("#all_resp").html(resp);
+                                    load_white();
+                                });
+                                e.preventDefault();
+                            });
+                            load_white();
+
+
+                            // R-Con
+                            $('#send_rcon').click(function(e) {
+                                e.preventDefault();
+                                var cfg = $("#rcon_cfg").val();
+                                var user = $("#rcon_user").val();
+                                tx = $("#rcon_text");
+                                var text = tx.val();
+
+                                $.post("/php/async/post/servercenter.home.async.php?case=rconsend", {
+                                        cfg: cfg,
+                                        user: user,
+                                        text: text
+                                    })
+                                    .done(function(data) {
+                                        console.log(data);
+                                        json = $.parseJSON(data);
+                                        if (json.code == 1) {
+                                            $("#rconresp").html(json.msg);
+                                            tx.val("");
+                                            tx.attr("placeholder", "{::lang::allg::send_done}");
+                                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
+                                        } else {
+                                            $("#rconresp").html(json.msg);
+                                            tx.val("");
+                                            tx.attr("placeholder", "{::lang::allg::send_fail}");
+                                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
+                                        }
+                                    });
+                            });
+                        });
+
+                        // livechat
+                        $('#sendchat').click(function(e) {
+                            e.preventDefault();
+                            var cfg = $("#livechat_cfg").val();
+                            var user = $("#livechat_user").val();
+                            tx = $("#livechat_text");
+                            var text = tx.val();
+
+                            $.post("/php/async/post/servercenter.home.async.php?case=igchatsend", {
+                                    cfg: cfg,
+                                    user: user,
+                                    text: text
+                                })
+                                .done(function(data) {
+                                    json = $.parseJSON(data);
+                                    if (json.code == 1) {
+                                        $("#livechatresp").html(json.msg);
+                                        tx.val("");
+                                        tx.attr("placeholder", "{::lang::allg::send_done}");
+                                        getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
+                                    } else {
+                                        $("#livechatresp").html(json.msg);
+                                        tx.val("");
+                                        tx.attr("placeholder", "{::lang::allg::send_fail}");
+                                        getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
+                                    }
+                                }, "JSON");
+                        });
+
+                        setInterval(function() {
+                            getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide');
+                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
+                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
+                        }, 1000);
+                    </script>

@@ -18,7 +18,7 @@ class server extends Rcon {
     private $loadedcluster = false;
     public $cluster_data;
 
-    public function __construct($serv) {
+    public function __construct(String $serv) {
         $this->serv = $serv;
         if (file_exists('remote/arkmanager/instances/'.$serv.'.cfg')) {
             $this->cfg = parse_ini_file('remote/arkmanager/instances/'.$serv.'.cfg');
@@ -36,7 +36,7 @@ class server extends Rcon {
     }
 
     // Prüfe ob der Server installiert ist
-    public function isinstalled($bool = false) {
+    public function isinstalled(bool $bool = false) {
         $dir = $this->cfg_read('arkserverroot');
         $dir = str_replace('/data/ark_serv_dir/', 'remote/serv/', $dir);
         $dir = $dir.'/ShooterGame/Binaries/Linux/ShooterGameServer';
@@ -87,7 +87,7 @@ class server extends Rcon {
     }
 
     // Bekomme Save Dir
-    public function dir_save($getmaindir = false) {
+    public function dir_save(bool $getmaindir = false) {
 
         $path = $this->dir_main();
         if ($getmaindir) {
@@ -115,7 +115,7 @@ class server extends Rcon {
     }
 
     // Erstelle Shell mit Log
-    public function send_action($shell, $force = false) {
+    public function send_action(String $shell, bool $force = false) {
         if ($this->status()->next == 'TRUE' && !$force) {
             return false;
         }
@@ -139,23 +139,23 @@ class server extends Rcon {
         return $this->cfg;
     }
 
-    public function cfg_check($key) {
+    public function cfg_check(String $key) {
         if (isset($this->cfg[$key])) {
             return true;
         }
         return false;
     }
 
-    public function cfg_read($key) {
+    public function cfg_read(String $key) {
         return $this->cfg[$key];
     }
 
-    public function cfg_write($key, $value) {
+    public function cfg_write(String $key, String $value) {
         $this->cfg[$key] = $value;
         return $this->cfg;
     }
 
-    public function cfg_remove($key) {
+    public function cfg_remove(String $key) {
         if (isset($this->cfg[$key])) unset($this->cfg[$key]);
         return $this->cfg;
     }
@@ -183,7 +183,7 @@ class server extends Rcon {
         return $str;
     }
 
-    public function jobs_write($str) {
+    public function jobs_write(String $str) {
         if (file_put_contents('sh/serv/sub_jobs_ID_' . $this->name() . '.sh', $str)) {
             return true;
         } else {
@@ -249,7 +249,7 @@ class server extends Rcon {
 
     // Inis
 
-    public function ini_load($ini, $group = false) {
+    public function ini_load(String $ini, bool $group = false) {
 
         $path = $this->dir_main();
         $dir = $path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini;
@@ -430,7 +430,7 @@ class server extends Rcon {
         $this->safefilerewrite($file, implode("\n", $res));
     }
 
-    private function safefilerewrite($fileName, $dataToSave)
+    private function safefilerewrite(String $fileName, String $dataToSave)
     {
         if ($fp = fopen($fileName, 'w')) {
             $startTime = microtime(TRUE);
