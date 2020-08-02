@@ -4,12 +4,20 @@
     <label for="{name}">
         {parameter}
     </label>
+    <div class="right" style="top: -0.3rem; right: 0.3rem;">
+        <button style="padding-right: 0.7rem!important;padding-left: 0.7rem!important;" type="button" class="btn btn-sm btn-info" data-toggle="popover_action" title="{name}" data-content="{::lang::servercenter::infoparm::{name}}">
+            <i class="fa fa-info" aria-hidden="true"></i>
+        </button>
+    </div>
 </div>
 {/type0} {type1}
 <div class="icheck-primary mb-6 col-md-12 ">
     <div class="input-group">
         <input type="text" class="form-control" name="txt[{i}]['input']" value="" id="{name}" placeholder='{parameter}=""' disabled>
-        <input type="hidden" name="txt[{i}]['para']" value="{parameter}">
+        <button style="padding-right: 0.7rem!important;padding-left: 0.7rem!important;" type="button" class="btn btn-sm btn-info pl-3 pr-3" data-toggle="popover_action" title="{name}" data-content="{::lang::servercenter::infoparm::{name}}">
+            <i class="fa fa-info" aria-hidden="true"></i>
+        </button>
     </div>
+    <input type="hidden" name="txt[{i}]['para']" value="{parameter}">
 </div>
 {/type1}

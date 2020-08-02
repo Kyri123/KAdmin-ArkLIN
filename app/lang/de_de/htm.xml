@@ -9,6 +9,12 @@
      -->
 
     <allg>
+        <navigation>Navigation</navigation>
+        <save>Speichern</save>
+        <delete>Löschen</delete>
+        <change>Ändern</change>
+
+
         <send_done>Gesendet</send_done>
         <send_fail>Fehler</send_fail>
         <pick_lang>Sprache wählen</pick_lang>
@@ -21,6 +27,7 @@
         </traffic>
 
         <nav>
+            <donate>Spenden</donate>
             <home>Dashboard</home>
             <scc>ServerControllCenter</scc>
             <cluster>Cluster System</cluster>
@@ -176,6 +183,7 @@
     <!-- Panel Konfig -->
     <config>
         <btn_save>Speichern</btn_save>
+        <clear>Cache leeren</clear>
 
         <opt>
             <true>Ja</true>
@@ -313,6 +321,26 @@
             <action>Aktion Status</action>
         </topline>
 
+        <infoparm> 
+            <alwaysrestart>Server startet nach einem Crash bzw Prozess Kill neu</alwaysrestart>
+            <warn>Warne Spieler auf dem Server</warn>
+            <safe>Warte bis der Server gespeichert hat</safe>
+            <downloadonly>Lade Updates nur runter und Installiert diese nicht</downloadonly>
+            <update-mods>Update auch Mods</update-mods>
+            <allmaps>Binde alle Karten in das Backup mit ein</allmaps>
+            <validate>Überprüfe Server Dateien auf Fehler (Lade Server neu runter) - Entfernt KEINE Speicherstände!</validate>
+            <noautoupdate>Führe keine Überprüfung auf neue Updates beim Starten durch</noautoupdate>
+            <saveworld>Speichert Welt</saveworld>
+            <force>Erzwinge Aktion (bsp. Update oder Neustart kann nicht mit dem Ingame befehl abgebrochen werden)</force>
+            <backup>Erstelle Backup</backup>
+            <ifempty>Führe Aktion aus wenn der Server leer ist</ifempty>
+            <revstatus>Gibt bei Status den Statuscode wieder</revstatus>
+            <stagingdir>Verzeichnis für Zwischenspeicher Server (Um Updates in sehr schneller Zeit auszuführen und die Dateien nurnoch Kopieren zu müssen)</stagingdir>
+            <betapassword>Beta Passwort für die Beta -> Benötigt Beta</betapassword>
+            <beta>Beta branch falls eine vorhanden ist</beta>
+            <warnreason>Gibt den Neustart grund Ingame aus (Default definiert in der Konfig)</warnreason>
+        </infoparm>
+
         <main>
             <map>Karte</map>
 
@@ -375,9 +403,8 @@
             <jobs>
                 <intervall>aller [b]{intervall} Sekunden[/b]</intervall>
                 <next>Nächste ausführung: {datetime}</next>
-                <tooltip>
-                    <remove>Löschen</remove>
-                </tooltip>
+                <delaccept>Bist du dir sicher dass du diesen Job entfernen möchtest?</delaccept>
+                <edit_modal>Job Bearbeiten</edit_modal>
             </jobs>
 
             <mods>
@@ -510,6 +537,9 @@
                 <aupdate>Auto Update</aupdate>
             </nav>
 
+            <tooltip_update>Erstelle default Update Aufgabe</tooltip_update>
+            <tooltip_backup>Erstelle default Backup Aufgabe</tooltip_backup>
+
             <section>
                 <allg>
                     <name>Bezeichnung</name>
@@ -537,6 +567,8 @@
                             <installmods>Installiere alle Mods</installmods>
                             <uninstallmods>Deinstalliere alle Mods</uninstallmods>
                             <save>Speichern</save>
+                            <update>Update</update>
+                            <backup>Backup erstellen</backup>
                         </option>
                     </task>
                 </jobs>
@@ -553,6 +585,11 @@
             <edit>Bearbeiten</edit>
             <exp>Experten-Modus</exp>
             <sec_create>Section Erstellen:</sec_create>
+            <steamcmd>
+                <lastsave>Stand des Caches: </lastsave>
+                <show>Zeigen</show>
+                <cache_not_exsists>Cache wurde noch nicht erstellt</cache_not_exsists>
+            </steamcmd>
         </config>
 
         <mods>

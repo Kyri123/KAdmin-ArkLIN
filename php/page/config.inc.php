@@ -15,6 +15,8 @@ $setsidebar = false;
 $cfglist = null;
 $pagename = "{::lang::php::config::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
+$syslpath = "remote/steamcmd";
+$workshop = "$syslpath/steamapps/workshop/appworkshop_346110.acf";
 
 $ppath = "php/inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
@@ -27,6 +29,7 @@ if (!isset($array["servlocdir"])) $array["servlocdir"] = 0;
 if (!isset($array["arklocdir"])) $array["arklocdir"] = null;
 if (!isset($array["apikey"])) $array["apikey"] = null;
 if (!isset($array["show_err"])) $array["show_err"] = 0;
+if (!isset($array["steamcmddir"])) $array["steamcmddir"] = "/home/steam/Steam/";
 $helper->savejson_exsists($array, $ppath);
 
 //tpl
@@ -38,12 +41,24 @@ if (isset($_POST["savearkmanager"])) {
     $content = ini_save_rdy($_POST["text"]);
     if (file_put_contents($apath, $content)) {
         $alert->code = 102;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     } else {
         $alert->code = 1;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
+
+//remove cache
+if (isset($url[2]) && isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamcmd') {
+    if(file_exists($workshop)) {
+        file_put_contents($workshop, "\"AppWorkshop\" {}");
+        header("Location: /config"); exit;
+    }
+    else {
+        header("Location: /config"); exit;
+    }
+}
+
 
 // save Webhelper
 if (isset($_POST["savewebhelper"])) {
@@ -59,10 +74,10 @@ if (isset($_POST["savewebhelper"])) {
     $json_str = $helper->json_to_str($json);
     if (file_put_contents($wpath, $json_str)) {
         $alert->code = 102;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     } else {
         $alert->code = 1;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 
@@ -71,7 +86,7 @@ if (isset($_POST["savepanel"])) {
     $a_key = $_POST["key"];
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");
-    $filter_link = array("servlocdir","arklocdir");
+    $filter_link = array("servlocdir","arklocdir","steamcmddir");
 
     for ($i=0;$i<count($a_key);$i++) {
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "1") $a_value[$i] = 1;
@@ -81,13 +96,19 @@ if (isset($_POST["savepanel"])) {
                 $loc = "remote/serv";
                 if (file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
-                symlink($target, $loc);
+                $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
             }
             elseif ($a_key[$i] == "arklocdir" && readlink("remote/arkmanager") != $a_value[$i]) {
                 $loc = "remote/arkmanager";
                 if (file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
-                symlink($target, $loc);
+                $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
+            }
+            elseif ($a_key[$i] == "steamcmddir" && (readlink("remote/steamcmd") != $a_value[$i] || !file_exists("remote/steamcmd"))) {
+                $loc = "remote/steamcmd";
+                if (file_exists($loc)) unlink($loc);
+                $target = $a_value[$i];
+                $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
             }
             $json[$a_key[$i]] = $a_value[$i];
         } else {
@@ -98,10 +119,10 @@ if (isset($_POST["savepanel"])) {
     $json_str = $helper->json_to_str($json);
     if (file_put_contents($ppath, $json_str)) {
         $alert->code = 102;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     } else {
         $alert->code = 1;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 
@@ -118,7 +139,8 @@ foreach($panelconfig as $key => $value) {
         "servlocdir",
         "arklocdir",
         "apikey",
-        "show_err"
+        "show_err",
+        "steamcmddir"
     );
     $repl = array(
         "{::lang::php::config::key::uninstallmod}",
@@ -127,7 +149,8 @@ foreach($panelconfig as $key => $value) {
         "{::lang::php::config::key::servlocdir}",
         "{::lang::php::config::key::arklocdir}",
         "Steam-API Key <a href='https://steamcommunity.com/dev/apikey' target='_blank'>({::lang::php::config::key::apikey_found_here})</a>",
-        "{::lang::php::config::key::show_err}"
+        "<b>[Debug]</b> {::lang::php::config::key::show_err}",
+        "{::lang::php::config::key::steamcmddir}"
     );
 
     $bool = array("uninstall_mod", "install_mod", "clusterestart", "expert", "show_err");
@@ -179,7 +202,32 @@ foreach($panelconfig as $key => $value) {
     $option_server .= $list->load_var();
 }
 
+
+// steamcmd
+$cachelink = null;
+if(file_exists($syslpath) && is_link($syslpath)) {
+    $steamcmd_exsists = true;
+    $steamcmd_workshop_exsists = file_exists($workshop);
+    if($steamcmd_workshop_exsists) {
+        $cachelink = '<a href="#spoiler" data-toggle="collapse" data-target="#cache" aria-expanded="false" aria-controls="cache">' . converttime(filemtime($workshop ))  . ' ({::lang::servercenter::config::steamcmd::show})</a>';
+        $cachetext = file_get_contents($workshop);
+    }
+    else {
+        $cachelink = '{::lang::servercenter::config::steamcmd::cache_not_exsists}';
+    }
+}
+else {
+    $steamcmd_exsists = false;
+}
+
+
 $content_arkmanager = file_get_contents($apath);
+$tpl->r("steamcmd_info", (($steamcmd_exsists) ? null : $alert->rd(306, 3, 0, 0, 0, 0)));
+$tpl->r("info_CMD", $alert->rd(307, 3, 0, 0, 0, 0));
+$tpl->rif("steamcmdsys", $steamcmd_exsists);
+$tpl->rif("steamfile", $steamcmd_workshop_exsists);
+$tpl->r("cache_link", $cachelink);
+$tpl->r("cache_text", $cachetext);
 $tpl->r("arkmanager", $content_arkmanager);
 $tpl->r("option_panel", $option_panel);
 $tpl->r('webhelper', $option_server);

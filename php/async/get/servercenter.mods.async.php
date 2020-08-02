@@ -13,8 +13,8 @@ $cfg = $_GET['cfg'];
 $case = $_GET['case'];
 $serv = new server($cfg);
 $serv->cluster_load();
-$ifslave = false; if ($serv->cluster_type() == 0 && $serv->cluster_in()) $ifslave = true;
-$ifcmods = false; if ($serv->cluster_mods() && $ifslave && $serv->cluster_in()) $ifcmods = true;
+$ifslave = ($serv->cluster_type() == 0 && $serv->cluster_in());
+$ifcmods = ($serv->cluster_mods() && $ifslave && $serv->cluster_in());
 
 switch ($case) {
     // CASE: Aktive Mods

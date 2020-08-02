@@ -7,6 +7,7 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+// Todo: Remove
 
 $mainfile = null;
 $dir = dirToArray('remote/arkmanager/instances/');
@@ -29,19 +30,18 @@ for ($i=0;$i<count($dir);$i++) {
         $file_time = filemtime($shell_path);
         $diff = $time - $file_time;
         if ($diff > $timediff['shell']) {
-            file_put_contents($shell_path, $shell_command);
+            $query = "INSERT INTO `ArkAdmin_shell` 
+            (
+                `server`, 
+                `command`
+            ) VALUES ( 
+                '".$c_serv->name()."',
+                'screen -dm bash -c \'".$shell_command."\''
+            )";
+            $mycon->query($query);
         }
-
-        if(strlen(file_get_contents($check)) > 10) $mainfile .= 'screen -d -m -t check_server_ID_'.$dir[$i]." sh $check\n";
-        if(strlen(file_get_contents($job)) > 10) $mainfile .= 'screen -d -m -t jobs_ID_'.$dir[$i]." sh $job\n";
-        if(strlen(file_get_contents($sub_job)) > 10) $mainfile .= 'screen -d -m -t sub_jobs_ID_'.$dir[$i]." sh $sub_job\n";
 
     }
 }
-$mainfile .= 'exit';
-//Schreibe main.sh
-$mainfile = str_replace("\r", null, $mainfile);
-echo $mainfile;
-file_put_contents('sh/main.sh', $mainfile);
 
 ?>

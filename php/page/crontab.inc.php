@@ -38,21 +38,15 @@ include("$subpage/allgemein/dir_create.inc.php");
 if (!file_exists("app/data/checked")) file_put_contents("app/data/checked", "checked"); // Schreibe dass der Crontab abgerufen wurde
 
 //Für Serverstatus
-if ($job == "status") {
-    include("$subpage/status/shell.inc.php");
-}
-
+// Todo: Remove
+//if ($job == "status") {
+    //include("$subpage/status/shell.inc.php");
+//}
 
 //Für Spielerliste & Auswertung von Server Status
 elseif ($job == "player") {
     include("$subpage/player/player_check.inc.php");
 }
-
-//jobs
-elseif ($job == "jobs") {
-    include("$subpage/jobs/jobs.inc.php"); // Allgemein Jobs (Auto-Update, Auto-Backup & Custom Jobs)
-}
-
 
 include("$subpage/allgemein/chat_fixer.inc.php");
 include("$subpage/allgemein/cluster.inc.php");

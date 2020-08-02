@@ -358,5 +358,17 @@
                 - Rcon-Konsole Deaktivitert
             </text>
         </c_305>
+
+        <!-- INFO | Syslink SteamCMD -->
+        <c_306>
+            <title>Syslink Info</title>
+            <text>Syslink zur SteamCMD Exsistiert noch nicht oder ist Fehlerhaft. Bitte Ändere dies in den Paneleinstellungen.</text>
+        </c_306>
+
+        <!-- INFO | SteamCMD WIP -->
+        <c_307>
+            <title>SteamCMD Info</title>
+            <text>Diese Optionen sind WIP und werden bald Erweitert</text>
+        </c_307>
     </alert>
 </lang>

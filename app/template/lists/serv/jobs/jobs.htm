@@ -3,18 +3,136 @@
         <div class="col-12">
             <i class="fas fa-briefcase rounded -align-left position-absolute text-{toggle_icon_color}" style="height: 50px; width: 50px; font-size: 50px;"></i> {empty}
             <div class="ml-auto float-right  btn-group">
-                <a href="/servercenter/{cfg}/jobs/toggle/{i}" class="btn btn-{toggle_btn_color}" data-toggle="tooltip" data-placement="top" title="{toggle_tooltip}">
+                <a class="btn btn-primary btn-sm mr-1" href="#modal-edit" data-toggle="modal" data-target="#edit{rnd}">
+                    <span class="icon text-white">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                </a>
+                <a href="/servercenter/{cfg}/jobs/toggle/{i}" class="btn btn-{toggle_btn_color} btn-sm mr-1">
                     <span class="icon text-white">
                                     <i class="{toggle_icon}" ></i>
                                 </span>
                 </a>
-                <a href="/servercenter/{cfg}/jobs/delete/{i}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="{::lang::servercenter::list::jobs::tooltip::remove}">
+                <a class="btn btn-danger btn-sm" href="#modal-del" data-toggle="modal" data-target="#delete{rnd}">
                     <span class="icon text-white">
-                            <i class="fa fa-trash"></i>
-                        </span>
+                        <i class="fa fa-trash"></i>
+                    </span>
                 </a>
             </div>{/empty}
-            <div style="margin-left: 60px;"><b>{title}</b> {empty}{::lang::servercenter::list::jobs::intervall}{/empty}<br />{empty}<span class="font-weight-light" style="font-size: 11px;"> {action} {parameter} | {::lang::servercenter::list::jobs::next}</span>&nbsp;{/empty}&nbsp;</div>
+            <div style="margin-left: 60px;"><b>{title}</b> {empty}{::lang::servercenter::list::jobs::intervall}{/empty}<br />{empty}<span class="font-weight-light" style="font-size: 15px;"> <b>{action}</b> {parameter} | {::lang::servercenter::list::jobs::next}</span>&nbsp;{/empty}&nbsp;</div>
         </div>
     </div>
 </li>
+
+<!-- Modal Edit -->
+<form class="modal fade" id="edit{rnd}" tabindex="-1" method="post" action="/servercenter/{cfg}/jobs" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title text-success">{::lang::servercenter::list::jobs::edit_modal}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body p-0">
+                <table class="table table-striped mb-0">
+                    <tr>
+                        <td class="p-2">
+                            <div class="form-group row m-0">
+                                <label class="col-sm-3 col-form-label pt-1">Bezeichnung</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="name" class="form-control form-control-sm" value="{title}">
+                                    <input type="hidden" name="id" class="form-control form-control-sm" value="{i}">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="p-2">
+                            <div class="form-group row m-0">
+                                <label class="col-sm-3 col-form-label pt-1">Befehl</label>
+                                <div class="col-sm-9">
+                                    <select name="action" class="form-control form-control-sm">
+                                        <option value="start" {__start}>{::lang::servercenter::jobs::section::jobs::task::option::start}</option>
+                                        <option value="restart" {__restart}>{::lang::servercenter::jobs::section::jobs::task::option::restart}</option>
+                                        <option value="stop" {__stop}>{::lang::servercenter::jobs::section::jobs::task::option::stop}</option>
+                                        <option value="installmods" {__installmods}>{::lang::servercenter::jobs::section::jobs::task::option::installmods}</option>
+                                        <option value="uninstallmods" {__uninstallmods}>{::lang::servercenter::jobs::section::jobs::task::option::uninstallmods}</option>
+                                        <option value="saveworld" {__saveworld}>{::lang::servercenter::jobs::section::jobs::task::option::save}</option>
+                                        {backup}<option value="backup" {__backup}>{::lang::servercenter::jobs::section::jobs::task::option::backup}</option>{/backup}
+                                        {update}<option value="update" {__update}>{::lang::servercenter::jobs::section::jobs::task::option::update}</option>{/update}
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="p-2">
+                            <div class="form-group row m-0">
+                                <label class="col-sm-3 col-form-label pt-1">Parameter</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="parameter" class="form-control form-control-sm" value="{parameter}">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="p-2">
+                            <div class="form-group row m-0">
+                                <label class="col-sm-3 col-form-label pt-1">Datum und Zeit</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="time" class="form-control form-control-sm" value="{datetime_edit}">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="p-2">
+                            <div class="form-group row m-0">
+                                <label class="col-sm-3 col-form-label pt-1">Intervall (in Sekunden)</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="intervall" class="form-control form-control-sm" value="{intervall}">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::saves::modal::remove::btn_cancel}</button>
+                <button type="submit" class="btn btn-success" name="edit">{::lang::servercenter::jobs::section::allg::btn_save}</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="delete{rnd}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title text-danger">{::lang::servercenter::list::saves::modal::remove::title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p> {::lang::servercenter::list::jobs::delaccept}</p>
+                <p><b>{title}</b></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::saves::modal::remove::btn_cancel}</button>
+                <a href="/servercenter/{cfg}/jobs/delete/{i}" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::saves::modal::remove::btn_close}</a>
+            </div>
+        </div>
+    </div>
+</div>

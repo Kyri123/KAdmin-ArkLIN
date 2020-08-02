@@ -15,13 +15,13 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 - Stelle den ArkAdmin-Server ein `arkadmin_server/config/server.json` (Siehe unten Config.Properties)
 - Installiere alle Node.JS Module `cd arkadmin_server` > `npm install`
 - Rufe über einen screen den ArkAdmin Server `cd arkadmin_server` > `node server.js` auf und las diesem Laufen
-- Rufe die Webseite auf und folge der Installation  aqsw2er5r45
+- Rufe die Webseite auf und folge der Installation
 
 # Update
 
 `Wichtig für Update von -0.6.2 auf +0.7.0 Es ist empfohlen das Panel neu zu installieren!`
-
 `Wichtig für Update von -0.8.1 auf +0.8.2 der neue ArkAdmin-Server muss eingestellt werden & Node.JS wird nun benötigt`
+`Wichtig für Update von -0.10.1 auf +0.11.0 der ArkAdmin-Server muss neu Konfiguriert werden`
 
 - Lade die letzte Version runter
 - lade alle Dateien außer `Install` & `Install.php` auf den Webserver
@@ -38,15 +38,15 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 | `WebPath` | Ordnerpfad wo Arkadmin installiert ist (Webverzeichnis) |
 | `AAPath` | Ordnerpfad wo sich Arkmanager befindet - Normalerweise in: `/etc/arkmanager`  |
 | `ServerPath` | Ordnerpfad wo die Server gespeichert werden |
+| `SteamPath` | Ordnerpfad wo die SteamCMD liegt gespeichert werden `bsp.: /home/steam/Steam` |
 | `WebIntervall` | Intervall für das abrufen des Crontabs (Hauptfunktionen) |
-| `WebSubIntervall` | Intervall für das abrufen des Crontabs (Nebenfunktionen) |
-| `CHMODIntervall` | Intervall für das überschreiben der Rechte |
-| `JobsIntervall` | Intervall für das abrufen des Crontabs (Cronjobs) |
-| `ShellIntervall` | Intervall für das abrufen der Shell Dateien |
+| `CHMODIntervall` | `in Millisekunden` Intervall für das überschreiben der Rechte |
+| `ShellIntervall` | `in Millisekunden` Intervall für das abrufen der Shell Dateien |
+| `StatusIntervall` | `in Millisekunden` Intervall für das abrufen von dem Status des Servers (Dieser wert sollte nicht zu klein sein) |
 | `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ] |
 | `use_ssh` | Aktiviere/Deaktivere SHH (1: an;0: aus) benötigt konfiguration in ssh.js |
 
-# ssh.js
+# ssh.js (Wird benötigt wenn use_ssh an ist)
 
 | Eigenschaften | Wert | 
 | :--- | :--- |

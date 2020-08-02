@@ -1,11 +1,12 @@
 const request = require('request');
 
-exports.req = (url, timer) => {
+exports.req = (url) => {
     console.log('\x1b[33m%s\x1b[0m', "loaded request: \x1b[36m" + url);
+    time = config.WebIntervall;
     setInterval(() => {
         // gebe abschluss zum Log
-        request(url, () => {
-            console.log('\x1b[33m%s\x1b[0m', "[0] Request: \x1b[36m" + url);
+        request(config.HTTP + url, () => {
+            console.log('\x1b[33m%s\x1b[0m', "[0] Request: \x1b[36m" + config.HTTP + url);
         });
-    }, timer);
+    }, time);
 };

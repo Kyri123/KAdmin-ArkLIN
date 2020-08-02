@@ -116,6 +116,8 @@ class server extends Rcon {
 
     // Erstelle Shell mit Log
     public function send_action(String $shell, bool $force = false) {
+        global $mycon;
+
         if ($this->status()->next == 'TRUE' && !$force) {
             return false;
         }
@@ -124,9 +126,20 @@ class server extends Rcon {
         $doc_state_file = 'sh/serv/jobs_ID_'.$this->name().'.state';
         $doc_state = $doc.'/'.$doc_state_file;
         $doc = $doc.'/sh/serv/sub_jobs_ID_'.$this->name().'.sh';
-        $command = 'echo "" > '.$doc.' ; arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
+        $command = 'arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
         $command = str_replace("\r", null, $command);
-        if (file_put_contents($doc_state_file, 'FALSE') && file_put_contents('sh/serv/sub_jobs_ID_'.$this->name().'.sh', $command)) return true;
+
+        // Füge Kommand zur DB hinzu
+        $query = "INSERT INTO `ArkAdmin_shell` 
+        (
+            `server`, 
+            `command`
+        ) VALUES ( 
+            '".$this->name()."',
+            'screen -dm bash -c \'".$command."\''
+        )";
+
+        if ($mycon->query($query)) return true;
         return false;
     }
 

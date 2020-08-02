@@ -45,7 +45,7 @@ if ($url[1] == "" || $url[1] == "favicon.ico") {
 // Connent to MYSQL
 include('php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
-include('php/inc/auto_update_sql_DB.inc.php');
+if($mycon->is) include('php/inc/auto_update_sql_DB.inc.php');
 
 // Include functions
 include('php/functions/allg.func.inc.php');

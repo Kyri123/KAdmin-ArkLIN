@@ -186,6 +186,12 @@
 </div>
 
 <script>
+    $(function() {
+        $('[data-toggle="popover_action"]').popover({
+            trigger: 'hover'
+        })
+    })
+
     $(document).ready(function() {
 
         setInterval(function() {
@@ -196,6 +202,7 @@
         $("#action_form").submit(function() {
             $.post("/php/async/post/servercenter.main.async.php?case=action", $("#action_form").serialize())
                 .done(function(data) {
+                    console.log(data);
                     data = JSON.parse(data);
                     if (data.code != 404) {
                         $("#action_resp").html(data.msg);

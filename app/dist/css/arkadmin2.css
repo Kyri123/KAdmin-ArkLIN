@@ -61,3 +61,49 @@
 .social_icon a:hover {
     color: #3a83cc;
 }
+
+
+/*-SM-
+
+@media (min-width: 576px) {
+    .text-overflow-dots {
+        width: 80%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+
+/*-MD-
+
+@media (min-width: 768px) {
+    .text-overflow-dots {
+        width: 80%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+
+/*-LG-
+
+@media (min-width: 992px) {
+    .text-overflow-dots {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+
+/*-XL-
+
+@media (min-width: 1200px) {
+    .text-overflow-dots {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}*/

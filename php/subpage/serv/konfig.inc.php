@@ -316,9 +316,12 @@ foreach($inis as $mk => $mv) {
                 }
 
             }
+            $max = 50;
+
             $tpl_sec->r("rnd", md5(rndbit(50)));
             $tpl_sec->r("sk", $sk);
             $tpl_sec->r("name", $sk);
+            $tpl_sec->r("name_withMax", (strlen($sk) > $max) ? substr($sk,0,$max)."..." : $sk);
             $tpl_sec->r("items", $it);
 
             $re[$mk] .= $tpl_sec->load_var();

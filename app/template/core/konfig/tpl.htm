@@ -1,64 +1,115 @@
 <div id="all_resp">{resp}</div>
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarColor02">
-        <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
-            <li class="nav-item" style="margin-right: 5px">
-                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-Panel" role="tab" aria-controls="pills-Panel" aria-selected="true">Panel</a>
+<div class="row">
+    <div class="col-lg-3 col-sm-12 mb-3">
+        <ul class="list-group list-group-flush border">
+            <li class="list-group-item bg-dark">
+                <h4>{::lang::allg::navigation}</h4>
             </li>
-            <li class="nav-item" style="margin-right: 5px">
-                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-Arkmanager" role="tab" aria-controls="pills-Arkmanager" aria-selected="false">Arkmanager.Cfg</a>
+            <li class="list-group-item">
+                <a id="pills-panel-tab" data-toggle="pill" href="#pills-panel" role="tab" aria-controls="pills-panel" aria-selected="true">Panel</a>
             </li>
-            <li class="nav-item" style="margin-right: 5px">
-                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-webhelper" role="tab" aria-controls="pills-webhelper" aria-selected="false">Config.Json</a>
+            <li class="list-group-item">
+                <a id="pills-config-tab" data-toggle="pill" href="#pills-config" role="tab" aria-controls="pills-config" aria-selected="false">ArkAdmin-Server</a>
+            </li>
+            <li class="list-group-item">
+                <a id="pills-aa-tab" data-toggle="pill" href="#pills-aa" role="tab" aria-controls="pills-aa" aria-selected="false">ArkManager</a>
+            </li>
+            <li class="list-group-item">
+                <a id="pills-steamcmd-tab" data-toggle="pill" href="#pills-steamcmd" role="tab" aria-controls="pills-steamcmd" aria-selected="false">SteamCMD</a>
             </li>
         </ul>
     </div>
-</nav>
 
-<hr />
 
-<div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
-    <div class="tab-content" id="pills-tabContent">
-        <form action="#save" method="post" class="tab-pane fade show active" id="pills-Panel" role="tabpanel" aria-labelledby="pills-home-tab">
+    <div class="col-lg-9 col-sm-12">
+        <div class="card shadow p-0" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+            <div class="tab-content" id="pills-tabContent">
+                <form action="#save" method="post" class="tab-pane fade show active" id="pills-panel" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="list-group-item bg-dark">
+                        <h4>Panel</h4>
+                        <div class="right">
+                            <input type="submit" class="btn btn-primary" name="savepanel" value="{::lang::allg::save}">
+                        </div>
+                    </div>
+                    <table class="table table-striped mb-0" id="form">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%">{::lang::servercenter::config::th_config}</th>
+                                <th>{::lang::servercenter::config::th_input}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+                            {option_panel}
+                        </tbody>
+                    </table>
+                </form>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%;" name="savepanel">{::lang::config::btn_save}</button>
-            <table class="table table-striped mb-0" id="form">
-                <thead>
-                    <tr>
-                        <th style="width: 25%">{::lang::servercenter::config::th_config}</th>
-                        <th>{::lang::servercenter::config::th_input}</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                    {option_panel}
-                </tbody>
-            </table>
-            <button type="submit" class="btn btn-primary" style="width: 100%;" name="savepanel">{::lang::config::btn_save}</button>
-        </form>
+                <form action="#save" method="post" class="tab-pane fade" id="pills-aa" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="list-group-item bg-dark">
+                        <h4>ArkManager</h4>
+                        <div class="right">
+                            <input type="submit" class="btn btn-primary" name="savearkmanager" value="{::lang::allg::save}">
+                        </div>
+                    </div>
+                    <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 500px;max-height: 500px;" id="text_game">{arkmanager}</textarea>
+                </form>
 
-        <form action="#save" method="post" class="tab-pane fade" id="pills-Arkmanager" role="tabpanel" aria-labelledby="pills-profile-tab">
-            <button type="submit" class="btn btn-primary" name="savearkmanager" style="width: 100%;">{::lang::config::btn_save}</button>
-            <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 500px;max-height: 500px;" id="text_game">{arkmanager}</textarea>
-        </form>
+                <form action="#save" method="post" class="tab-pane fade" id="pills-config" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="list-group-item bg-dark">
+                        <h4>ArkAdmin-Server</h4>
+                        <div class="right">
+                            <input type="submit" class="btn btn-primary" name="savewebhelper" value="{::lang::allg::save}">
+                        </div>
+                    </div>
+                    <table class="table table-striped mb-0" id="form">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%">{::lang::servercenter::config::th_config}</th>
+                                <th>{::lang::servercenter::config::th_input}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+                            {webhelper}
+                        </tbody>
+                    </table>
+                </form>
 
-        <form action="#save" method="post" class="tab-pane fade" id="pills-webhelper" role="tabpanel" aria-labelledby="pills-profile-tab">
-            <button type="submit" class="btn btn-primary" name="savewebhelper" style="width: 100%;">{::lang::config::btn_save}</button>
-            <table class="table table-striped mb-0" id="form">
-                <thead>
-                    <tr>
-                        <th style="width: 25%">{::lang::servercenter::config::th_config}</th>
-                        <th>{::lang::servercenter::config::th_input}</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                    {webhelper}
-                </tbody>
-            </table>
-            <button type="submit" class="btn btn-primary" name="savewebhelper" style="width: 100%;">{::lang::config::btn_save}</button>
-        </form>
+                <form action="#steamcmd" method="post" class="tab-pane fade" id="pills-steamcmd" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="list-group-item bg-dark">
+                        <h4>SteamCMD</h4>
+                        {steamcmdsys}{steamfile}
+                        <div class="right">
+                            <a href="/config/clear/steamcmd" class="btn btn-primary">{::lang::config::clear}</a>
+                        </div>{/steamfile}{/steamcmdsys}
+                    </div>
+                    {info_CMD}{steamcmd_info} {steamcmdsys}
+                    <table class="table table-striped mb-0" id="form">
+                        <tbody id="tbody">
+                            <tr>
+                                <td class="p-2">
+                                    {::lang::servercenter::config::steamcmd::lastsave}
+                                </td>
+                                <td class="p-2" style="width:80%">
+                                    {cache_link}
+                                    <div id="cache" class="collapse mt-2" aria-labelledby="headingOne">
+                                        <textarea class="form-control form-control-sm" rows="3" style="min-height: 500px;max-height: 500px;">{cache_text}</textarea>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!--<tr>
+                                <td class="p-2">
+                                    {::lang::servercenter::config::steamcmd::lastsave}
+                                </td>
+                                <td class="p-2" style="width:80%">
+                                    <b>{cache}</b>
+                                </td>
+                            </tr>-->
+                        </tbody>
+                    </table> {/steamcmdsys}
+                </form>
+            </div>
+        </div>
     </div>
 </div>

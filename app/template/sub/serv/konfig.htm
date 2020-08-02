@@ -64,32 +64,34 @@
             <!-- GUS - Normal -->
             <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel">
                 <div id="form">
-                    <table class="table table-striped mb-0">
-                        <tbody>
-                            <tr class="bg-dark">
-                                <th colspan="2" class="p-0">
-                                    <div class="list-group-item bg-dark">
-                                        <h4 class="m-0">GameUserSettings.ini</h4>
-                                </th>
-                            </tr>
-                            <tr id="tbody_GUS">
-                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
-                                <td class="p-2">
-                                    <div class="input-group mb-0">
-                                        <input type="text" class="form-control form-control-sm" id="tbody_GUS_section">
-                                        <div class="input-group-append">
-                                            <span onclick="addsection('#tbody_GUS')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0" style="width: 100%;">
+                            <tbody>
+                                <tr class="bg-dark">
+                                    <th colspan="2" class="p-0">
+                                        <div class="list-group-item bg-dark">
+                                            <h4 class="m-0">GameUserSettings.ini</h4>
+                                    </th>
+                                </tr>
+                                <tr id="tbody_GUS">
+                                    <td class="p-2">{::lang::servercenter::config::sec_create}</td>
+                                    <td class="p-2">
+                                        <div class="input-group mb-0">
+                                            <input type="text" class="form-control form-control-sm" id="tbody_GUS_section">
+                                            <div class="input-group-append">
+                                                <span onclick="addsection('#tbody_GUS')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            {form_GUS}
-                        </tbody>
-                    </table>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+                                    </td>
+                                </tr>
+                                {form_GUS}
+                            </tbody>
+                        </table>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
 
-                    <input type="hidden" name="type" id="type_gus" value="GameUserSettings.ini">
-                    <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
+                        <input type="hidden" name="type" id="type_gus" value="GameUserSettings.ini">
+                        <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
                     </div>
             </form>
 
@@ -116,32 +118,34 @@
             <!-- GAME - Normal -->
             <form action="#save" method="post" class="tab-pane fade" id="pills-Game" role="tabpanel">
                 <div id="form">
-                    <table class="table table-striped mb-0">
-                        <tbody>
-                            <tr class="bg-dark">
-                                <th colspan="2" class="p-0">
-                                    <div class="list-group-item bg-dark">
-                                        <h4 class="m-0">Game.ini</h4>
-                                </th>
-                            </tr>
-                            <tr id="tbody_Game">
-                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
-                                <td class="p-2">
-                                    <div class="input-group mb-0">
-                                        <input type="text" class="form-control form-control-sm" id="tbody_Game_section">
-                                        <div class="input-group-append">
-                                            <span onclick="addsection('#tbody_Game')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0">
+                            <tbody>
+                                <tr class="bg-dark">
+                                    <th colspan="2" class="p-0">
+                                        <div class="list-group-item bg-dark">
+                                            <h4 class="m-0">Game.ini</h4>
+                                    </th>
+                                </tr>
+                                <tr id="tbody_Game">
+                                    <td class="p-2">{::lang::servercenter::config::sec_create}</td>
+                                    <td class="p-2">
+                                        <div class="input-group mb-0">
+                                            <input type="text" class="form-control form-control-sm" id="tbody_Game_section">
+                                            <div class="input-group-append">
+                                                <span onclick="addsection('#tbody_Game')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            {form_GAME}
-                        </tbody>
-                    </table>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+                                    </td>
+                                </tr>
+                                {form_GAME}
+                            </tbody>
+                        </table>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
 
-                    <input type="hidden" name="type" id="type_gus" value="Game.ini">
-                    <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
+                        <input type="hidden" name="type" id="type_gus" value="Game.ini">
+                        <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
                     </div>
             </form>
 
@@ -168,32 +172,34 @@
             <!-- Engine - Normal -->
             <form action="#save" method="post" class="tab-pane fade" id="pills-Engine" role="tabpanel">
                 <div id="form">
-                    <table class="table table-striped mb-0">
-                        <tbody>
-                            <tr class="bg-dark">
-                                <th colspan="2" class="p-0">
-                                    <div class="list-group-item bg-dark">
-                                        <h4 class="m-0">Engine.ini</h4>
-                                </th>
-                            </tr>
-                            <tr id="tbody_Game">
-                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
-                                <td class="p-2">
-                                    <div class="input-group mb-0">
-                                        <input type="text" class="form-control form-control-sm" id="tbody_Game_section">
-                                        <div class="input-group-append">
-                                            <span onclick="addsection('#tbody_Game')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0">
+                            <tbody>
+                                <tr class="bg-dark">
+                                    <th colspan="2" class="p-0">
+                                        <div class="list-group-item bg-dark">
+                                            <h4 class="m-0">Engine.ini</h4>
+                                    </th>
+                                </tr>
+                                <tr id="tbody_Game">
+                                    <td class="p-2">{::lang::servercenter::config::sec_create}</td>
+                                    <td class="p-2">
+                                        <div class="input-group mb-0">
+                                            <input type="text" class="form-control form-control-sm" id="tbody_Game_section">
+                                            <div class="input-group-append">
+                                                <span onclick="addsection('#tbody_Game')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            {form_ENGINE}
-                        </tbody>
-                    </table>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+                                    </td>
+                                </tr>
+                                {form_ENGINE}
+                            </tbody>
+                        </table>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
 
-                    <input type="hidden" name="type" id="type_gus" value="Engine.ini">
-                    <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
+                        <input type="hidden" name="type" id="type_gus" value="Engine.ini">
+                        <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
                     </div>
             </form>
 
@@ -219,62 +225,64 @@
             <!-- AA - NORMAL -->
             <div class="tab-pane fade {ifckonfig}show active{/ifckonfig} {!show}show active{/!show}" id="pills-AM" role="tabpanel">
                 <form action="#save" method="post">
-                    <table class="table table-striped mb-0">
-                        <thead>
-                            <tr class="bg-dark">
-                                <th colspan="2" class="p-0">
-                                    <div class="list-group-item bg-dark">
-                                        <h4 class="m-0">Arkmanager.cfg</h4>
-                                </th>
-                            </tr>
-                            <tr>
-                                <th style="width: 100px">{::lang::servercenter::config::th_config}</th>
-                                <th>{::lang::servercenter::config::th_input}</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody">
-                            <tr id="addcfg">
-                                <td class="p-2">{::lang::servercenter::config::custom}</td>
-                                <td class="p-2">
-                                    <div class="input-group">
-                                        <input id="custom_key" type="text" class="form-control form-control-sm" placeholder="arkwarnminutes">
-                                        <input id="custom_val" type="text" class="form-control form-control-sm" placeholder="30">
-                                        <span onclick="add_input()" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                                <tr class="bg-dark">
+                                    <th colspan="2" class="p-0">
+                                        <div class="list-group-item bg-dark">
+                                            <h4 class="m-0">Arkmanager.cfg</h4>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 100px">{::lang::servercenter::config::th_config}</th>
+                                    <th>{::lang::servercenter::config::th_input}</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                                <tr id="addcfg">
+                                    <td class="p-2">{::lang::servercenter::config::custom}</td>
+                                    <td class="p-2">
+                                        <div class="input-group">
+                                            <input id="custom_key" type="text" class="form-control form-control-sm" placeholder="arkwarnminutes">
+                                            <input id="custom_val" type="text" class="form-control form-control-sm" placeholder="30">
+                                            <span onclick="add_input()" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
 
-                                        <script>
-                                            function add_input() {
-                                                var key = $("#custom_key");
-                                                var val = $("#custom_val");
-                                                var table = $("#tbody");
+                                            <script>
+                                                function add_input() {
+                                                    var key = $("#custom_key");
+                                                    var val = $("#custom_val");
+                                                    var table = $("#tbody");
 
-                                                var tpl = '<tr id="tmp_' + key.val() + '"><td>' + key.val() + '</td><td><div class="input-group mb-0">' +
-                                                    '<input type="hidden" name="key[]" readonly value="' + key.val() + '">' +
-                                                    '<input type="text" name="value[]" class="form-control form-control-sm"  value="' + val.val() + '">' +
-                                                    '<div class="input-group-append">' +
-                                                    '<span onclick="remove(\'tmp_' + key.val() + '\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>' +
-                                                    '</div>' +
-                                                    '</div></td></tr>';
+                                                    var tpl = '<tr id="tmp_' + key.val() + '"><td>' + key.val() + '</td><td><div class="input-group mb-0">' +
+                                                        '<input type="hidden" name="key[]" readonly value="' + key.val() + '">' +
+                                                        '<input type="text" name="value[]" class="form-control form-control-sm"  value="' + val.val() + '">' +
+                                                        '<div class="input-group-append">' +
+                                                        '<span onclick="remove(\'tmp_' + key.val() + '\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>' +
+                                                        '</div>' +
+                                                        '</div></td></tr>';
 
-                                                if (key.val() != "" && val.val() != "") {
-                                                    $("#addcfg").append(tpl);
-                                                    key.val('');
-                                                    val.val('');
+                                                    if (key.val() != "" && val.val() != "") {
+                                                        $("#addcfg").append(tpl);
+                                                        key.val('');
+                                                        val.val('');
+                                                    }
                                                 }
-                                            }
-                                        </script>
-                                    </div>
-                                </td>
-                            </tr>
-                            {form}
-                            <tr>
-                                <td class="p-2">Ark Flag</td>
-                                <td class="p-2">
-                                    {ark_flag}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;" name="savecfg">{::lang::servercenter::config::btn_save}</button>
+                                            </script>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {form}
+                                <tr>
+                                    <td class="p-2">Ark Flag</td>
+                                    <td class="p-2">
+                                        {ark_flag}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;" name="savecfg">{::lang::servercenter::config::btn_save}</button>
 
                 </form>
                 </div>

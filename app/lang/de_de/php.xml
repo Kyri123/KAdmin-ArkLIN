@@ -116,6 +116,7 @@
                 <arklocdir>Arkmanager-verzeichnis</arklocdir>
                 <apikey_found_here>finde ich Hier</apikey_found_here>
                 <show_err>Zeige PHP Error</show_err>
+                <steamcmddir>SteamCMD Verzeichnis</steamcmddir>
             </key>
         </config>
 

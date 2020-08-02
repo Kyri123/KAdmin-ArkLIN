@@ -33,9 +33,17 @@ if (isset($_POST["send"])) {
 \$dbname = '".$dbname."';
 ?>";
         if (file_put_contents("php/inc/pconfig.inc.php", $str)) {
-            $resp = $alert->rd(100);
-            header("Location: /install.php/2");
-            exit;
+            $array["dbhost"] = $dbhost;
+            $array["dbuser"] = $dbuser;
+            $array["dbpass"] = $dbpass;
+            $array["dbname"] = $dbname;
+            if ($helper->savejson_create($array, "arkadmin_server/config/mysql.json")) {
+                header("Location: /install.php/2");
+                exit;
+            }
+            else {
+                $resp = $alert->rd(1);
+            }
         }
         else {
             $resp = $alert->rd(1);

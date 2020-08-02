@@ -16,10 +16,10 @@ class Template {
     private $load = false;
     private $file_str = false;
     public $lang = "de_de";
-    private $rfrom = array();
-    private $rto = array();
-    private $rifkey = array();
-    private $rifbool = array();
+    public $rfrom = array();
+    public $rto = array();
+    public $rifkey = array();
+    public $rifbool = array();
     private $langfrom = array();
     private $langto = array();
 
@@ -148,8 +148,9 @@ class Template {
             $this->load_xml("app/lang/de_de/alert.xml");
         }
         
-        $this->rlang(); $this->rintern(); // doppelt um {xxx} aus der XML zu verwenden
-        $this->rlang(); $this->rintern(); // doppelt um {xxx} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
 
         //Todo: nochmals mit der Standartsprachdatei drüber gehen?
 

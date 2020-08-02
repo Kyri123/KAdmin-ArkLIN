@@ -36,4 +36,24 @@ if ($mycon->numRows() == 1) {
     }
 }
 
+//check SQL for jobs
+$table = "ArkAdmin_shell";
+$query = "SHOW TABLES LIKE '".$table."'";
+$query_file = "app/sql/shell.sql";
+$mycon->query($query);
+if ($mycon->numRows() == 1) {
+    null;
+} else {
+    $query_file = file($query_file);
+    foreach ($query_file as $query) {
+        $mycon->query($query);
+    }
+}
+
+// Sende Daten an Server
+$array["dbhost"] = $dbhost;
+$array["dbuser"] = $dbuser;
+$array["dbpass"] = $dbpass;
+$array["dbname"] = $dbname;
+$helper->savejson_create($array, "arkadmin_server/config/mysql.json");
 ?>

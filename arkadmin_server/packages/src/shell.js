@@ -1,13 +1,21 @@
 //const { spawn } = require('child_process');
 const { exec } = require('child_process');
 
-exports.exec = (command, config) => {
+exports.exec = (command, config, type, short = false, text = undefined) => {
     if (config == 0) {
         exec(command);
-        console.log('\x1b[33m%s\x1b[0m', '[0] Shell (progress): \x1b[36m' + command);
+        if (short) {
+            console.log('\x1b[33m%s\x1b[0m', '[0] Shell (' + type + '): \x1b[36m' + text);
+        } else {
+            console.log('\x1b[33m%s\x1b[0m', '[0] Shell (' + type + '): \x1b[36m' + command);
+        }
     } else {
         ssh.execCommand(command).then(() => {
-            console.log('\x1b[33m%s\x1b[0m', '[0] Shell (ssh2): \x1b[36m' + command);
+            if (short) {
+                console.log('\x1b[33m%s\x1b[0m', '[0] Shell (' + type + '): \x1b[36m' + text);
+            } else {
+                console.log('\x1b[33m%s\x1b[0m', '[0] Shell (' + type + '): \x1b[36m' + command);
+            }
         });
     }
 };

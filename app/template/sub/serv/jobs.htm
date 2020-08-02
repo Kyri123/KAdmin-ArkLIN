@@ -1,28 +1,4 @@
 <div class="col-xl-9 col-md-8 mb-4">
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarColor02">
-            <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link active" id="pills-jobs-tab" data-toggle="pill" href="#pills-jobs" role="tab" aria-controls="pills-jobs" aria-selected="true">{::lang::servercenter::jobs::nav::jobs}</a>
-                </li>
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link" id="pills-backup-tab" data-toggle="pill" href="#pills-backup" role="tab" aria-controls="pills-backup" aria-selected="false">{::lang::servercenter::jobs::nav::abackup}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-update-tab" data-toggle="pill" href="#pills-update" role="tab" aria-controls="pills-update" aria-selected="false">{::lang::servercenter::jobs::nav::aupdate}</a>
-                </li>
-            </ul>
-            <div class="form-inline">
-                <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex" id="logbar"></div>
-                <div class="m-1 float-right btn-group" style="display: inline-flex" id="hidebar"></div>
-            </div>
-        </div>
-    </nav>
-    <hr />
     <div class="card shadow">
         <div class="tab-content" id="pills-tabContent">
             <!-- Jobs -->
@@ -34,6 +10,12 @@
                                 <th colspan="2" class="p-0">
                                     <div class="list-group-item bg-dark">
                                         <h4 class="m-0">{::lang::servercenter::jobs::nav::jobs}</h4>
+                                        <div class="right">
+                                            {update_btn}<a data-toggle="tooltip" data-placement="top" title="{::lang::servercenter::jobs::tooltip_update}" href="{update_url}" class="btn btn-sm btn-info"><i class="fa fa-refresh" aria-hidden="true"></i></a>{/update_btn}
+                                            {backup_btn}
+                                            <a data-toggle="tooltip" data-placement="top" title="{::lang::servercenter::jobs::tooltip_backup}" href="{backup_url}" class="btn btn-sm btn-info"><i class="fas fa-file-archive" aria-hidden="true"></i></a>{/backup_btn}
+                                        </div>
+                                    </div>
                                 </th>
                             </tr>
 
@@ -106,136 +88,15 @@
                     <ul class="list-group" id="livelog">
                         {list}
                     </ul>
-                    </div>
-                </div>
-
-                <!-- Auto Backup -->
-                <div class="tab-pane fade" id="pills-backup" role="tabpanel" aria-labelledby="pills-backup-tab">
-                    <form action="/servercenter/{cfg}/jobs" method="post" class="p-0">
-                        <table class="table table-striped mb-0">
-                            <tr class="bg-dark">
-                                <th colspan="2" class="p-0">
-                                    <div class="list-group-item bg-dark">
-                                        <h4 class="m-0">{::lang::servercenter::jobs::nav::abackup}</h4>
-                                </th>
-                            </tr>
-
-                            <tr>
-                                <td class="p-2">
-                                    <div class="form-group row m-0">
-                                        <label class="col-sm-3 col-form-label pt-1">{::lang::servercenter::jobs::section::jobs::task::name}</label>
-                                        <div class="col-sm-9">
-                                            <select name="active" class="form-control form-control-sm">
-                                                <option value="false">{::lang::servercenter::jobs::section::allg::active::false}</option>
-                                                <option value="true" {true_backup}>{::lang::servercenter::jobs::section::allg::active::true}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="p-2">
-                                    <div class="form-group row m-0">
-                                        <label class="col-sm-3 col-form-label pt-1">{::lang::servercenter::jobs::section::allg::para}</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" name="parameter" class="form-control form-control-sm" placeholder="--validate" value="{para_backup}">
-                                            <input type="hidden" name="key" value="backup">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="p-2">
-                                    <div class="form-group row m-0">
-                                        <label class="col-sm-3 col-form-label pt-1">{::lang::servercenter::jobs::section::allg::time}</label>
-                                        <div class="col-sm-9">
-                                            <input style="width:100%;" value="{datetime_backup}" class="form-control form-control-sm" name="time" type="text" placeholder="YYYY-MM-DD HH:II">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="p-2">
-                                    <div class="form-group row m-0">
-                                        <label class="col-sm-3 col-form-label pt-1">{::lang::servercenter::jobs::section::allg::intervall}</label>
-                                        <div class="col-sm-9">
-                                            <input type="number" name="intervall" class="form-control form-control-sm" placeholder="{::lang::servercenter::jobs::section::allg::intervall_placeholder}" value="{intervall_backup}">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        <button type="submit" class="btn btn-primary mb-0" name="set" style="width:100%">{::lang::servercenter::jobs::section::allg::btn_save}</button>
-
-                    </form>
-                    </div>
-
-                    <!-- Auto Update -->
-                    <div class="tab-pane fade" id="pills-update" role="tabpanel" aria-labelledby="pills-update-tab">
-                        <form action="/servercenter/{cfg}/jobs" method="post" class="p-0">
-                            <table class="table table-striped mb-0">
-                                <tr class="bg-dark">
-                                    <th colspan="2" class="p-0">
-                                        <div class="list-group-item bg-dark">
-                                            <h4 class="m-0">{::lang::servercenter::jobs::nav::aupdate}</h4>
-                                    </th>
-                                </tr>
-
-                                <tr>
-                                    <td class="p-2">
-                                        <div class="form-group row m-0">
-                                            <label class="col-sm-3 col-form-label pt-1">{::lang::servercenter::jobs::section::jobs::task::name}</label>
-                                            <div class="col-sm-9">
-                                                <select name="active" class="form-control form-control-sm">
-                                                    <option value="false">{::lang::servercenter::jobs::section::allg::active::false}</option>
-                                                    <option value="true" {true_update}>{::lang::servercenter::jobs::section::allg::active::true}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="p-2">
-                                        <div class="form-group row m-0">
-                                            <label class="col-sm-3 col-form-label pt-1">{::lang::servercenter::jobs::section::allg::para}</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="parameter" class="form-control form-control-sm" placeholder="--validate" value="{para_update}">
-                                                <input type="hidden" name="key" value="update">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="p-2">
-                                        <div class="form-group row m-0">
-                                            <label class="col-sm-3 col-form-label pt-1">{::lang::servercenter::jobs::section::allg::time}</label>
-                                            <div class="col-sm-9">
-                                                <input style="width:100%;" value="{datetime_update}" class="form-control form-control-sm" name="time" type="text" placeholder="YYYY-MM-DD HH:II">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="p-2">
-                                        <div class="form-group row m-0">
-                                            <label class="col-sm-3 col-form-label pt-1">{::lang::servercenter::jobs::section::allg::intervall}</label>
-                                            <div class="col-sm-9">
-                                                <input type="number" name="intervall" class="form-control form-control-sm" placeholder="{::lang::servercenter::jobs::section::allg::intervall_placeholder}" value="{intervall_update}">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                            <button type="submit" class="btn btn-primary mb-0" name="set" style="width:100%">{::lang::servercenter::jobs::section::allg::btn_save}</button>
-
-                        </form>
-                        </div>
-                    </div>
+                    {listmodal}
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
