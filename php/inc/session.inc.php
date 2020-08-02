@@ -16,21 +16,19 @@ if (isset($_POST["login"]) && !isset($_SESSION["id"])) {
     define('pw', $_POST["pw"]);
     
     // Count Username
-    $query = 'SELECT * FROM `ArkAdmin_users` WHERE `username` = \''.$_POST["logger"].'\'';
-    $mycon->query($query);
-    $username_count = $mycon->numRows();
+    $query = 'SELECT * FROM `ArkAdmin_users` WHERE `username` = \''.$_POST["logger"].'\' AND `password` = \''.md5(pw).'\'';
+    $username_count = $mycon->query($query)->numRows();
     
     // Count Email
-    $query = 'SELECT * FROM `ArkAdmin_users` WHERE `email` = \''.$_POST["logger"].'\'';
-    $mycon->query($query);
-    $email_count = $mycon->numRows();
+    $query = 'SELECT * FROM `ArkAdmin_users` WHERE `email` = \''.$_POST["logger"].'\' AND `password` = \''.md5(pw).'\'';
+    $email_count = $mycon->query($query)->numRows();
     
     if ($username_count > 0 || $email_count > 0) {
         if ($username_count > 0) {
-            $query = 'SELECT * FROM `ArkAdmin_users` WHERE `username` = \''.$_POST["logger"].'\'';
+            $query = 'SELECT * FROM `ArkAdmin_users` WHERE `username` = \''.$_POST["logger"].'\' AND `password` = \''.md5(pw).'\'';
         }
         elseif ($email_count > 0) {
-            $query = 'SELECT * FROM `ArkAdmin_users` WHERE `email` = \''.$_POST["logger"].'\'';
+            $query = 'SELECT * FROM `ArkAdmin_users` WHERE `email` = \''.$_POST["logger"].'\' AND `password` = \''.md5(pw).'\'';
         }
         $row = $mycon->query($query)->fetchArray();
         if ($row["password"] == md5(pw)) {
@@ -98,26 +96,19 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
             $query = 'SELECT * FROM `ArkAdmin_users` WHERE `username` = \''.username.'\'';
             $mycon->query($query);
             if ($mycon->numRows() == 0) {
-                $query = 'SELECT * FROM `ArkAdmin_users` WHERE `email` = \''.email.'\'';
-                $mycon->query($query);
-                if ($mycon->numRows() == 0) {
-                    $q_code = 'SELECT * FROM `ArkAdmin_reg_code` WHERE `used` = \'0\' AND `code` = \''.code.'\'';
-                    if ($mycon->query($q_code)->numRows() > 0) {
-                        $row_code = $mycon->query($q_code)->fetchArray();
-                        $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `rang`, `registerdate`) VALUES (\''.username.'\', \''.email.'\', \''.md5(pw1).'\', \'1\', \''.time().'\')';
-                        if($mycon->query($query)) {
-                            $resp = $alert->rd(109, 3);
-                        }
-                        else {
-                            $resp = $alert->rd(3, 3);
-                        }
+                $q_code = 'SELECT * FROM `ArkAdmin_reg_code` WHERE `used` = \'0\' AND `code` = \''.code.'\'';
+                if ($mycon->query($q_code)->numRows() > 0) {
+                    $row_code = $mycon->query($q_code)->fetchArray();
+                    $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `rang`, `registerdate`) VALUES (\''.username.'\', \''.email.'\', \''.md5(pw1).'\', \'1\', \''.time().'\')';
+                    if($mycon->query($query)) {
+                        $resp = $alert->rd(109, 3);
                     }
                     else {
-                        $resp = $alert->rd(24, 3);
+                        $resp = $alert->rd(3, 3);
                     }
                 }
                 else {
-                    $resp = $alert->rd(25, 3);
+                    $resp = $alert->rd(24, 3);
                 }
             } else {
                 $resp = $alert->rd(26, 3);
