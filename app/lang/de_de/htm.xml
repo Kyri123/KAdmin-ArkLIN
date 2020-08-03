@@ -69,7 +69,7 @@
         <wpassword>Neues Passwort</wpassword> 
         <phwpassword>Wiederholen</phwpassword>
         <username>Benutzername</username> 
-        <konfig>Konfiguration sperren wenn der Server offline ist</konfig>
+        <konfig>Konfiguration sperren wenn der Server Online ist</konfig>
     </usersettings>
 
     <!-- Dashboard -->
