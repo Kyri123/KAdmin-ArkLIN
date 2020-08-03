@@ -210,7 +210,7 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "create") {
             `name`
         ) VALUES (
             'backup', 
-            '--all-maps', 
+            '--allmaps', 
             '".time()."', 
             '1800', 
             '1',  
