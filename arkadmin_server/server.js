@@ -6,7 +6,7 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.2.1";
+const version = "0.2.2";
 const mysql = require("mysql");
 
 var config_ssh = sshK.login();
@@ -22,7 +22,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             fs.readFile("config/server.json", 'utf8', (err, data) => {
                 if (err == undefined) config = JSON.parse(data, config);
             });
-        }, 5000);
+        }, 60000);
         head.load(version, config);
 
         //ssh
@@ -41,7 +41,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         global.iscon = false;
         var mysql_inter = () => {
             if (!iscon) {
-                console.log('\x1b[33m%s\x1b[0m', '[0] Mysql: \x1b[95mMysql Verbindung  wird aufgebaut');
+                console.log('\x1b[33m%s\x1b[0m', '[0] Mysql: \x1b[95mMysql Verbindung wird aufgebaut');
                 fs.readFile("config/mysql.json", 'utf8', (err, re) => {
                     if (err) {
                         console.log('\x1b[33m%s\x1b[0m', '[1] Mysql: \x1b[91mVerbindung fehlgeschlagen (Datei Fehler) - Shell/Jobs Deaktiviert');
@@ -61,7 +61,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                                 console.log('\x1b[33m%s\x1b[0m', '[0] Mysql: \x1b[32mVerbindung aufgebaut - Shell/Jobs Aktiviert');
                             } else {
                                 global.iscon = false;
-                                console.log('\x1b[33m%s\x1b[0m', '[1] Mysql: \x1b[91mVerbindung fehlgeschlagen (Verbingsfehler Fehler) - Shell/Jobs Deaktiviert');
+                                console.log('\x1b[33m%s\x1b[0m', '[1] Mysql: \x1b[91mVerbindung fehlgeschlagen (Verbindungsfehler Fehler) - Shell/Jobs Deaktiviert');
                             }
                         });
                     }

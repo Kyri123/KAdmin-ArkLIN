@@ -4,10 +4,10 @@
     "AAPath": "/etc/arkmanager",
     "ServerPath": "/path/to/serverfiles",
     "SteamPath": "/home/steam",
-    "WebIntervall": 15000,
-    "CHMODIntervall": 10000,
-    "ShellIntervall": 1000,
-    "StatusIntervall": 10000,
+    "WebIntervall": 10000,
+    "CHMODIntervall": 60000,
+    "ShellIntervall": 10000,
+    "StatusIntervall": 20000,
     "CHMOD": 777,
     "use_ssh": 0
 }
