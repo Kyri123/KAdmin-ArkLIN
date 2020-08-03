@@ -86,7 +86,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                     });
                 }
             });
-        }, 2000);
+        }, 20000);
 
         //handle Status
         setInterval(() => {
