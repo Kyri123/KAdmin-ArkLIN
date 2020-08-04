@@ -59,6 +59,10 @@
             <hide>verstecke Überfluss</hide>
             <showmax>Zeigt maximal</showmax>
             <time>Logzeit</time> 
+            <clear>Alle Logs löschen</clear> 
+            <cancel>Abbrechen</cancel> 
+            <alert_titel>Bist du dir Sicher?</alert_titel> 
+            <alert>Möchtest du wirklich ALLE logs entfernen?</alert> 
         </logs>
     </allg>
 

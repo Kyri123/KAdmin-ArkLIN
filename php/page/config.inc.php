@@ -59,7 +59,6 @@ if (isset($url[2]) && isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamc
     }
 }
 
-
 // save Webhelper
 if (isset($_POST["savewebhelper"])) {
     $a_key = $_POST["key"];

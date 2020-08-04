@@ -17,7 +17,7 @@
                     <a class="nav-link" id="pills-mods-tab" data-toggle="pill" href="#pills-mods" role="tab" aria-controls="pills-mods" aria-selected="false">Mods</a>
                 </li>
             </ul>
-            <div class="form-inline">
+            <form class="form-inline" action="#" method="POST" id="removeForm">
                 <div class="form-inline">
 
                     <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
@@ -74,8 +74,17 @@
                         </div>
                     </div>
 
+                    <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
+                        <div class="btn-group">
+                            <input type="hidden" name="clearlogs" value="true">
+                            <button class="btn btn-danger btn-sm" type="submit" id="removesubmit">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
+            </form>
     </nav>
     <hr />
     <div class="card shadow">
@@ -161,4 +170,28 @@
                 getlog('remote/serv/{path}/arkserver.log', '{cfg}', 'livelog_ark', 'max', 'hide', 'filter');
                 getlog('remote/serv/{path}/arkmanager.log', '{cfg}', 'livelog_mods', 'max', 'hide', 'filter', 'mods');
             }, 1000);
+
+            $(document).on('click', '#removesubmit', function(e) {
+                e.preventDefault();
+                const sweetAlert = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false
+                })
+                sweetAlert.fire({
+                    title: '{::lang::allg::logs::alert}',
+                    text: "{::lang::allg::logs::alert_titel}",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: '{::lang::allg::logs::cancel}',
+                    confirmButtonText: '{::lang::allg::logs::clear}'
+                }).then((result) => {
+                    if (result.value) {
+                        $('#removeForm').submit();
+                    }
+                });
+            });
         </script>

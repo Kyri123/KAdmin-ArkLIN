@@ -28,7 +28,7 @@ $z = 1;
     $array = file($file);
     $i = sizeof($array);
 
-    $content = '<tr><td class="p-2 text-green">{::lang::allg::logs::time}: <b>'.date ("d.m.Y H:i:s", filemtime($file)).'</b> | {::lang::allg::logs::showmax}: <b>'.$max.'</b> | {::lang::allg::logs::filter}: <b>'.(($filter) ? "{::lang::allg::on}" : "Nein").'</b> | {::lang::allg::logs::hide}: <b>'.(($type == "Ja") ? "{::lang::allg::on}" : "{::lang::allg::aus}").'</b></td></tr>';
+    $content = '<tr><td class="p-2 text-green">{::lang::allg::logs::time}: <b>'.date ("d.m.Y H:i:s", filemtime($file)).'</b> | {::lang::allg::logs::showmax}: <b>'.$max.'</b> | {::lang::allg::logs::filter}: <b>'.(($filter) ? "{::lang::allg::on}" : "Nein").'</b> | {::lang::allg::logs::hide}: <b>'.(($type == "Ja") ? "{::lang::allg::on}" : "{::lang::allg::off}").'</b></td></tr>';
     while ($i--) {
         $array[$i] = str_replace("\"", null, $array[$i]);
         $array[$i] = str_replace("\n", null, $array[$i]);
@@ -48,7 +48,8 @@ $z = 1;
             "fork: retry:",
             "The server is starting...",
             "/usr/local/bin/arkmanager: Zeile 1189",
-            ": start"
+            ": start",
+            "/usr/local/bin/arkmanager: Zeile 920"
         );
         $filterthis["mods"] = array(
             "] Updating mod",
@@ -70,10 +71,10 @@ $z = 1;
         }
         elseif ($array[$i] != "" && $array[$i] != ' ' && !$modfilter) {
             $laenge = strlen($array[$i]);
-            if ($laenge < 300 && $type == true) {
+            if ($laenge < 300 && $hide) {
                 $content .= '<tr><td class="p-2"><b class="text-info">'.($z).strpos_arr($array[$i], $filterthis).': </b>'.filtersh(alog($array[$i])).'</td></tr>';
             }
-            elseif ($hide == false) {
+            elseif (!$hide) {
                 $content .= '<tr><td class="p-2"><b class="text-info">'.($z).strpos_arr($array[$i], $filterthis).': </b>'.filtersh(alog($array[$i])).'</td></tr>';
             } else {
                 $content .= '<tr><td class="p-2"><b class="text-info">'.($z).strpos_arr($array[$i], $filterthis).': </b> <b>{::lang::php::async::get::all::getlog::toolarge}</b></td></tr>';
