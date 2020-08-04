@@ -8,6 +8,7 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 - Es ist eine Alpha bitte verzeiht Schreibfehler & Bugs und Meldet alles..
 - Discord: https://discord.gg/ykGnw49
 - Unterstützt kein "Docker"
+- Der Port `30000` muss Frei sein für den ArkAdmin-Server
 
 # Installation
 

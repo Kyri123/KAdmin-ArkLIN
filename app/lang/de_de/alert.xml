@@ -224,6 +224,12 @@
             <text>Der ArkAdmin-Server läuft nicht!</text>
         </c_34>
 
+        <!-- DANGER | ArkAdmin-Server -->
+        <c_35>
+            <title>ArkAdmin-Server Warnung</title>
+            <text>Der ArkAdmin-Server hat keine Verbdinung zum MySQL_Server!</text>
+        </c_35>
+
         
 
 
