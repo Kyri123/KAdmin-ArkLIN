@@ -21,9 +21,12 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
     if (err == undefined) {
         //lade konfig als array
         config = JSON.parse(data, config);
+        if (config.port == undefined) config.port = 30000;
         setInterval(() => {
             fs.readFile("config/server.json", 'utf8', (err, data) => {
-                if (err == undefined) config = JSON.parse(data, config);
+                if (err == undefined) {
+                    config = JSON.parse(data, config);
+                }
             });
         }, 60000);
         head.load(version, config);
@@ -109,7 +112,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             var resp = '{"version":"' + version + '","db_conntect":"' + iscon + '"}';
             res.write(resp);
             res.end();
-        }).listen(30000);
+        }).listen(config.port);
 
         console.log('\x1b[36m%s\x1b[0m', "------------------------------------------------------");
     } else {

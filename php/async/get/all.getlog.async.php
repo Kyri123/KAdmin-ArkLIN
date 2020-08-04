@@ -38,7 +38,17 @@ $z = 1;
             "Checking",
             "already up to date",
             "S_API FAIL",
-            "Candidates"
+            "Candidates",
+            "Setting breakpad",
+            "The server is now running",
+            "Applying update from staging",
+            "Saved ARK",
+            "Copying to staging",
+            "Saving world",
+            "fork: retry:",
+            "The server is starting...",
+            "/usr/local/bin/arkmanager: Zeile 1189",
+            ": start"
         );
         $filterthis["mods"] = array(
             "] Updating mod",
