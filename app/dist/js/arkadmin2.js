@@ -20,11 +20,17 @@ function setdisplay(id, display) {
     $("#" + id).css("display", display);
 }
 
-function getlog(file, cfg, id, maxid, hideid) {
+function getlog(file, cfg, id, maxid, hideid, filter = "false", mods = "false", home = "false") {
     var str = $("#" + maxid).html();
     var hide = $("#" + hideid).html();
+    var filtern = $("#" + filter).html();
+    if (filtern == "") filtern = filter;
+    var filternmods = $("#" + mods).html();
+    if (filternmods == "") filtern = mods;
+    var filterhome = $("#" + home).html();
+    if (filterhome == "") filtern = home;
     var max = parseInt(str);
-    $.get("/php/async/get/all.getlog.async.php?cfg=" + cfg + "&file=" + file + "&max=" + max + "&type=" + hide, function(data) {
+    $.get("/php/async/get/all.getlog.async.php?cfg=" + cfg + "&file=" + file + "&max=" + max + "&type=" + hide + "&filter=" + filtern + "&mods=" + filternmods + "&home=" + filterhome, function(data) {
         var target = $("#" + id);
         var inner = target.html();
         if (inner != data) target.html(data);

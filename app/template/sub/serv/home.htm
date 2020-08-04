@@ -349,8 +349,11 @@
                         });
 
                         setInterval(function() {
-                            getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide');
+                            getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide', "filter", "mods", "home");
                             getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
                             getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
                         }, 1000);
                     </script>
+                    <div class="d-none" id="filter">false</div>
+                    <div class="d-none" id="mods">false</div>
+                    <div class="d-none" id="home">true</div>

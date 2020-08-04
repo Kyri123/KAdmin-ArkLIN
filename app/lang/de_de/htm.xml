@@ -13,6 +13,8 @@
         <save>Speichern</save>
         <delete>Löschen</delete>
         <change>Ändern</change>
+        <on>An</on>
+        <off>Aus</off>
 
 
         <send_done>Gesendet</send_done>
@@ -53,7 +55,10 @@
 
         <logs>
             <show>Zeige alles</show>
+            <filter>Filter</filter>
             <hide>verstecke Überfluss</hide>
+            <showmax>Zeigt maximal</showmax>
+            <time>Logzeit</time> 
         </logs>
     </allg>
 

@@ -203,6 +203,19 @@ function meld_full($type, $txt = '{ALERT_TXT}', $title = '{ALERT_TITLE}', $setci
                 </div>';
 }
 
+function strpos_arr($haystack, array $array)
+{
+    foreach($array as $str) {
+        if(strpos($haystack, $str) === false) {
+            $bool = false;
+        } else {
+            $bool = true;
+            break;
+        }
+    }
+    return $bool;
+}
+
 
 # Time
 function converttime($stamp, $withsec = false, $onlydate = false) {
@@ -517,7 +530,13 @@ function alog($str) {
         $modid = str_replace(' not fully downloaded - retrying', null, $str);
         $modid = str_replace("Mod ", null, $modid);
         $mod = $steamapi->getmod_class($modid);
-        $str = '<b class="text-gray-800">not fully downloaded: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $mod->title .'</a> (neuer Versuch)</b>';
+        $str = '<b class="text-gray-800">Not fully downloaded: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $mod->title .'</a> (retry)</b>';
+    }
+    if (strpos($str, ' installed') !== false) {
+        $modid = str_replace('Mod ', null, $str);
+        $modid = str_replace(" installed", null, $modid);
+        $mod = $steamapi->getmod_class($modid);
+        $str = '<b class="text-gray-800">Installed: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $mod->title .'</a></b>';
     }
     if (strpos($str, 'Downloading mod ') !== false) {
         $modid = str_replace('Downloading mod ', null, $str);

@@ -44,10 +44,10 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         global.iscon = false;
         var mysql_inter = () => {
             if (!iscon) {
-                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd h:MM:ss") + '] Mysql: \x1b[95mMysql Verbindung wird aufgebaut');
+                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Mysql: \x1b[95mMysql Verbindung wird aufgebaut');
                 fs.readFile("config/mysql.json", 'utf8', (err, re) => {
                     if (err) {
-                        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd h:MM:ss") + '] Mysql: \x1b[91mVerbindung fehlgeschlagen (Datei Fehler) - Shell/Jobs Deaktiviert');
+                        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Mysql: \x1b[91mVerbindung fehlgeschlagen (Datei Fehler) - Shell/Jobs Deaktiviert');
                     } else {
                         var mysql_config = JSON.parse(re);
 
@@ -61,10 +61,10 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                         con.connect((err) => {
                             if (!err) {
                                 global.iscon = true;
-                                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd h:MM:ss") + '] Mysql: \x1b[32mVerbindung aufgebaut - Shell/Jobs Aktiviert');
+                                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Mysql: \x1b[32mVerbindung aufgebaut - Shell/Jobs Aktiviert');
                             } else {
                                 global.iscon = false;
-                                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd h:MM:ss") + '] Mysql: \x1b[91mVerbindung fehlgeschlagen (Verbindungsfehler Fehler) - Shell/Jobs Deaktiviert');
+                                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Mysql: \x1b[91mVerbindung fehlgeschlagen (Verbindungsfehler Fehler) - Shell/Jobs Deaktiviert');
                             }
                         });
                     }
@@ -80,13 +80,13 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             }
         }, config.StatusIntervall);
 
-        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd h:MM:ss") + '] Panel (Server): \x1b[36mRun');
+        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Panel (Server): \x1b[36mRun');
 
         //handle Crontab
         crontab.req("crontab/player");
 
         //handle shell
-        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd h:MM:ss") + '] Geladen: \x1b[36mShell verwaltung');
+        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Geladen: \x1b[36mShell verwaltung');
         setInterval(() => {
             if (iscon) {
                 panel_shell.job(config.use_ssh);
@@ -103,7 +103,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         }, config.CHMODIntervall);
 
 
-        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd h:MM:ss") + '] Server (Webserver): \x1b[36mhttp://' + ip.address() + ':30000/');
+        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Server (Webserver): \x1b[36mhttp://' + ip.address() + ':30000/');
         // Webserver für Abrufen des Server Status
         http.createServer((req, res) => {
             var resp = '{"version":"' + version + '","db_conntect":"' + iscon + '"}';
