@@ -1,6 +1,10 @@
 {
     "name": "arkadmin2-server",
     "version": "0.0.1",
+    "auto-updater": {
+        "repo": "/Kyri123/Arkadmin",
+        "branch": "dev"
+    },
     "description": "server fuer das Webpanel von Arkadmin",
     "main": "server.js",
     "scripts": {
@@ -20,6 +24,7 @@
     },
     "homepage": "https://github.com/Kyri123/arkadmin#readme",
     "dependencies": {
+        "auto-updater": "^1.0.2",
         "dateformat": "^3.0.3",
         "ip": "^1.1.5",
         "mysql": "^2.18.1",

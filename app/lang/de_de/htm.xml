@@ -68,6 +68,7 @@
 
     <!-- usersettings -->
     <usersettings>
+        <pagename>Benutzereinstellungen</pagename>
         <navigation>Navigation</navigation>
         <settings>Account Einstellungen</settings>
         <expsettings>Panel Einstellungen</expsettings> 
