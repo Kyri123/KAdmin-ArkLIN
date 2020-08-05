@@ -1,16 +1,4 @@
-const AutoUpdater = require('auto-updater');
-
-exports.sendcheck = () => {
-    var autoupdater = new AutoUpdater({
-        pathToJson: '',
-        autoupdate: false,
-        checkgit: true,
-        jsonhost: 'raw.githubusercontent.com',
-        contenthost: 'codeload.github.com',
-        progressDebounce: 0,
-        devmode: false
-    });
-
+exports.auto = (autoupdater) => {
     // State the events
     autoupdater.on('git-clone', function() {
         console.log("You have a clone of the repository. Use 'git pull' to be up-to-date");
