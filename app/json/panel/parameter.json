@@ -123,6 +123,14 @@
         ]
     },
     {
+        "parameter": "--onlysavegames",
+        "id_js": "#onlysavegames",
+        "type": 0,
+        "for": [
+            "backup"
+        ]
+    },
+    {
         "parameter": "--stagingdir",
         "id_js": "#stagingdir",
         "type": 1,

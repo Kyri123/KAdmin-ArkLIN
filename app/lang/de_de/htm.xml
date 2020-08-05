@@ -343,12 +343,32 @@
             <force>Erzwinge Aktion (bsp. Update oder Neustart kann nicht mit dem Ingame befehl abgebrochen werden)</force>
             <backup>Erstelle Backup</backup>
             <ifempty>Führe Aktion aus wenn der Server leer ist</ifempty>
-            <revstatus>Gibt bei Status den Statuscode wieder</revstatus>
+            <revstatus>Gibt bei Prüfen den Statuscode wieder</revstatus>
             <stagingdir>Verzeichnis für Zwischenspeicher Server (Um Updates in sehr schneller Zeit auszuführen und die Dateien nurnoch Kopieren zu müssen)</stagingdir>
             <betapassword>Beta Passwort für die Beta -> Benötigt Beta</betapassword>
             <beta>Beta branch falls eine vorhanden ist</beta>
             <warnreason>Gibt den Neustart grund Ingame aus (Default definiert in der Konfig)</warnreason>
+            <onlysavegames>Erstellt ein Backup nur mit den Savegames</onlysavegames>
         </infoparm>
+
+        <infoaction> 
+            <install>Installiert den Server</install>
+            <start>Startet den Server (Wenn autoupdate aktiv ist (in der ArkManager Konfig) wird von dem Start der Server auf Updates überprüft)</start>
+            <update>Prüft den Server auf Updates. Und startet wenn dies der fall ist den Server neu</update>
+            <restart>Startet den Server neu</restart>
+            <stop>Fährt den Server runter</stop>
+            <backup>Erstellt ein Backup von den Spielständen</backup>
+            <checkupdate>Prüft den Server auf ein neues Arkupdate</checkupdate>
+            <checkmodupdate>Prüft den Server auf neue Mod updates</checkmodupdate>
+            <installmods>Installiert alle Mods</installmods>
+            <uninstallmods>Deinstalliert alle Mods</uninstallmods>
+            <saveworld>Speichert den Server</saveworld>
+            <status>Gibt den Status des Servers wieder (Run, Liste, Player, ...)</status>
+            <list-mods>Listet alle Mods auf</list-mods>
+            <restore>Spielt das letzte Backup ein</restore>
+            <getpid>Zeigt die Prozzess ID des Server</getpid>
+            <cancelshutdown>Bricht Neustart oder Runterfahren ab</cancelshutdown>
+        </infoaction>
 
         <main>
             <map>Karte</map>
