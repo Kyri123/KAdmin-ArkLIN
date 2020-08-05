@@ -26,6 +26,8 @@ exports.auto = (autoupdater) => {
                             'wget https://github.com/Kyri123/Arkadmin/archive/' + config.autoupdater_branch + '.zip;' +
                             'unzip ' + config.autoupdater_branch + '.zip; cd Arkadmin-' + config.autoupdater_branch + ';' +
                             'rm ./arkadmin_server/config/server.json; ' +
+                            'rm -R ./install; ' +
+                            'rm ./install.php; ' +
                             'yes | cp -rf ./ ' + config.WebPath + '/ ;' +
                             'cd ../..; rm -R tmp; exit;\'';
                         shell.exec(command, config.use_ssh, 'Auto-Updater', true, 'Update wird gestartet');
