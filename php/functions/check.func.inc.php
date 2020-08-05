@@ -41,22 +41,24 @@ function isie() {
 }
 
 function check_webhelper() {
+    global $webserver;
     if(!check_server()) {
         return false;
     }
     else {
         $curr = (file_exists("arkadmin_server/data/version.txt")) ? trim(file_get_contents("arkadmin_server/data/version.txt")) : "curr_not_found";
-        $run = json_decode(file_get_contents("http://127.0.0.1:30000/"), true)["version"];
+        $run = json_decode(file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/"), true)["version"];
         return ($curr == $run) ? true : false;
     }
 }
 
 function check_server_json_bool($key) {
+    global $webserver;
     if(!check_server()) {
         return false;
     }
     else {
-        $bool = json_decode(file_get_contents("http://127.0.0.1:30000/"), true)[$key];
+        $bool = json_decode(file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/"), true)[$key];
         return ($bool == "true") ? true : false;
     }
 }

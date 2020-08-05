@@ -6,11 +6,12 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.3.0";
+const version = "0.3.01";
 const mysql = require("mysql");
 const http = require('http');
 const updater = require("./packages/src/updater");
 const ip = require("ip");
+const md5 = require('md5');
 
 var config_ssh = sshK.login();
 global.config = [];
@@ -120,7 +121,17 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         // Webserver für Abrufen des Server Status
         http.createServer((req, res) => {
             var resp = '{"version":"' + version + '","db_conntect":"' + iscon + '"}';
-            res.write(resp);
+            var ref = req.headers.referer;
+            if (req.headers.referer != undefined) {
+                if (ref.includes("update") && ref.includes(md5(ip.address()))) {
+                    updater.auto();
+                    res.write("{\"update\":\"running\"}");
+                } else {
+                    res.write(resp);
+                }
+            } else {
+                res.write(resp);
+            }
             res.end();
         }).listen(config.port);
 

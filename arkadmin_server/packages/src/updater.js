@@ -6,7 +6,7 @@ exports.auto = (autoupdater) => {
     var options = {
         url: "https://api.github.com/repos/Kyri123/Arkadmin/branches/" + config.autoupdater_branch,
         headers: {
-            'User-Agent': 'Arkadmin'
+            'User-Agent': 'Arkadmin2-Server AutoUpdater'
         },
         json: true
     };
