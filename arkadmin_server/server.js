@@ -23,10 +23,15 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         //lade konfig als array
         config = JSON.parse(data, config);
         if (config.port == undefined) config.port = 30000;
+        if (config.autoupdater_active == undefined) config.autoupdater_active = 0;
+        if (config.autoupdater_branch == undefined) config.autoupdater_branch = "master";
+        if (config.autoupdater_intervall == undefined) config.autoupdater_intervall = 60000;
         setInterval(() => {
             fs.readFile("config/server.json", 'utf8', (err, data) => {
                 if (err == undefined) {
                     config = JSON.parse(data, config);
+                    if (config.autoupdater_active == undefined) config.autoupdater_active = 0;
+                    if (config.autoupdater_branch == undefined) config.autoupdater_branch = "master";
                 }
             });
         }, 60000);
@@ -107,17 +112,9 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         }, config.CHMODIntervall);
 
         // Startet Auto-Updater
-        const AutoUpdater = require('auto-updater');
-        var autoupdater = new AutoUpdater({
-            pathToJson: './package.json',
-            autoupdate: true,
-            checkgit: true,
-            jsonhost: 'https://data.chiraya.de/package_dev.json',
-            contenthost: 'https://github.com/Kyri123/Arkadmin/archive/dev.zip',
-            progressDebounce: 0,
-            devmode: true
-        });
-        updater.auto(autoupdater);
+        setInterval(() => {
+            if (config.autoupdater_active > 0) updater.auto();
+        }, config.autoupdater_intervall);
 
         console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Server (Webserver): \x1b[36mhttp://' + ip.address() + ':30000/');
         // Webserver für Abrufen des Server Status
