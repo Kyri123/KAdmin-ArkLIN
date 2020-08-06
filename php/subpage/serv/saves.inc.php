@@ -14,7 +14,55 @@ $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::mods::pagename}</li>';
 $jhelper = new player_json_helper();
 
+$resp = null;
 $c_pl = $c_t = $w_t = 0;
+// erstelle Zip download
+if (isset($_POST["zip"])) {
+    if(!file_exists("app/downloads")) mkdir("app/downloads");
+    $zipfile = "app/downloads/savegames.tar";
+    
+    $save = isset($_POST["save"]);
+    $tribe = isset($_POST["tribe"]);
+    $map = isset($_POST["map"]);
+
+    if($tribe || $save || $map) {
+        if(file_exists($zipfile)) unlink($zipfile);
+        if(file_exists($zipfile.".gz")) unlink($zipfile.".gz");
+        if ($zip = new PharData($zipfile)) {
+            $dir = scandir($serv->dir_save());
+            $path = $serv->dir_save();
+            //var_dump($dir);
+            $file_count = 0;
+            foreach($dir as $file) {
+                $file_path = "$path/$file";
+                if(
+                    (strpos($file, 'tribe') !== false && $tribe) ||
+                    (strpos($file, 'ark') !== false && strpos($file, "_0") === false && strpos($file, "_2") === false && strpos($file, "_1") === false && strpos($file, "arktribe") === false && strpos($file, "arkprofile") === false && $map) ||
+                    (strpos($file, 'profile') !== false && $save)
+                ) {
+                    if($zip->addFile($file_path)) $file_count++;
+                } 
+            }
+            //beende zip erstellung
+            if($zip->compress(Phar::GZ)) {
+                $alert->code = 110;
+                $alert->r("url", "/$zipfile");
+                $resp = $alert->re(); //download startet
+                header("Location: /".$zipfile.".gz");
+                if(file_exists($zipfile)) unlink($zipfile);
+            }
+            else {
+                $resp = $alert->rd(1); //keine Daeiten in zip
+            }
+        }
+        else {
+            $resp = $alert->rd(1); //zip konnte nicht erstellt werden
+        }
+    }
+    else {
+        $resp = $alert->rd(2); //fehlender Input
+    }
+}
 
 if (isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
 
@@ -109,7 +157,6 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
 }
 
 
-$resp = null;
 $urls = '/servercenter/'.$url[2].'/mods/';
 
 $serv->cfg_read('arkserverroot');
@@ -271,6 +318,7 @@ $page_tpl->r('world', $world);
 $page_tpl->r('cp', $c_pl);
 $page_tpl->r('ct', $c_t);
 $page_tpl->r('cw', $w_t);
+$page_tpl->r('resp', $resp);
 $page_tpl->session();
 $panel = $page_tpl->load_var();
 

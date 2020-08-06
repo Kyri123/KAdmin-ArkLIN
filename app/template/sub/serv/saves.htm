@@ -17,6 +17,13 @@
                     <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-world" role="tab" aria-controls="pills-profile" aria-selected="false">{::lang::servercenter::saves::nav::map} <b>({cw})</b></a>
                 </li>
             </ul>
+            <div class="d-sm-inline-block right" data-toggle="popover_action" title="{::lang::servercenter::saves::zip::title}" data-content="{::lang::servercenter::saves::zip::text}" data-original-title="{::lang::servercenter::saves::zip::title}">
+                <a data-toggle="modal" data-target="#createzip" href="#" target="_blank" class="btn btn-sm btn-info btn-icon-split rounded-0 ml-1" id="force_update">
+                    <span class="icon text-white-50">
+                        <i class="fa fa-file-archive-o" aria-hidden="true"></i>
+                    </span>
+                </a>
+            </div>
         </div>
     </nav>
     <hr />
@@ -67,4 +74,49 @@
 
                     </div>
                 </div>
+            </div>
+
+
+            <div class="modal fade" id="createzip" tabindex="-1" role="dialog" aria-labelledby="createzip" aria-hidden="true">
+                <form class="modal-dialog modal-xl" role="document" style="max-width: 700px" method="POST" action="#">
+                    <div class="modal-content">
+                        <div class="modal-header bg-dark text-white">
+                            <h5 class="modal-title">{::lang::servercenter::saves::zip::title}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span class="text-white" aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body pl-4">
+                            {::lang::servercenter::saves::zip::info}
+                            <div class="row ml-2 mt-2">
+                                <div class="icheck-primary mb-3 col-md-12">
+                                    <input type="checkbox" name="save" value="true" id="save">
+                                    <label for="save">
+                                        {::lang::servercenter::saves::nav::player}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row ml-2">
+                                <div class="icheck-primary mb-3 col-md-12">
+                                    <input type="checkbox" name="map" value="true" id="map">
+                                    <label for="map">
+                                        {::lang::servercenter::saves::nav::map}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row ml-2">
+                                <div class="icheck-primary mb-3 col-md-12">
+                                    <input type="checkbox" name="tribe" value="true" id="tribe">
+                                    <label for="tribe">
+                                        {::lang::servercenter::saves::nav::tribe}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::main::modal::send_command::btn_close}</button>
+                            <button type="submit" class="btn btn-primary" name="zip">{::lang::servercenter::main::modal::send_command::btn_send}</button>
+                        </div>
+                    </div>
+                </form>
             </div>

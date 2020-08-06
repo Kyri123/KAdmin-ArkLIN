@@ -6,7 +6,7 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.3.02";
+const version = "0.3.0.3";
 const mysql = require("mysql");
 const http = require('http');
 const updater = require("./packages/src/updater");
@@ -117,7 +117,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             if (config.autoupdater_active > 0) updater.auto();
         }, config.autoupdater_intervall);
 
-        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Server (Webserver): \x1b[36mhttp://' + ip.address() + ':30000/');
+        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Server (Webserver): \x1b[36mhttp://' + ip.address() + ':' + config.port + '/');
         // Webserver für Abrufen des Server Status
         http.createServer((req, res) => {
             var resp = '{"version":"' + version + '","db_conntect":"' + iscon + '"}';

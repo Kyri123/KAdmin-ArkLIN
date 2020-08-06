@@ -643,6 +643,12 @@
                 <tribe>Stämme</tribe>
                 <map>Karten</map>
             </nav>
+
+            <zip>
+                <title>Daten runterladen</title>
+                <text>Lade Dateien einfach über eine ZIP Datei runter</text>
+                <info>Wähle aus welche Dateien du downloaden möchtest</info>
+            </zip>
         </saves>
     </servercenter>
 </lang>

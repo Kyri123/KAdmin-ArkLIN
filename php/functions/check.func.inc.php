@@ -10,7 +10,8 @@
 
 function check_server()
 {
-    $header = @get_headers("http://127.0.0.1:30000/");
+    global $webserver;
+    $header = @get_headers("http://127.0.0.1:".$webserver['config']['port']."/");
     return is_array($header);
 }
 
