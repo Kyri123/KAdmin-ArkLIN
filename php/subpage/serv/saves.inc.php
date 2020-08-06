@@ -52,15 +52,15 @@ if (isset($_POST["zip"])) {
                 if(file_exists($zipfile)) unlink($zipfile);
             }
             else {
-                $resp = $alert->rd(1); //keine Daeiten in zip
+                $resp = $alert->rd(1); 
             }
         }
         else {
-            $resp = $alert->rd(1); //zip konnte nicht erstellt werden
+            $resp = $alert->rd(1);
         }
     }
     else {
-        $resp = $alert->rd(2); //fehlender Input
+        $resp = $alert->rd(2);
     }
 }
 
