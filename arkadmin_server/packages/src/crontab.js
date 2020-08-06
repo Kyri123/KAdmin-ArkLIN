@@ -1,12 +1,12 @@
 const request = require('request');
 
 exports.req = (url) => {
-    console.log('\x1b[33m%s\x1b[0m', "loaded request: \x1b[36m" + url);
+    console.log('\x1b[33m%s\x1b[0m', "[" + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + "] Geladen: \x1b[36mAbfrage " + url);
     time = config.WebIntervall;
     setInterval(() => {
         // gebe abschluss zum Log
         request(config.HTTP + url, () => {
-            console.log('\x1b[33m%s\x1b[0m', "[0] Request: \x1b[36m" + config.HTTP + url);
+            console.log('\x1b[33m%s\x1b[0m', "[" + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + "] Request: \x1b[36m" + config.HTTP + url);
         });
     }, time);
 };

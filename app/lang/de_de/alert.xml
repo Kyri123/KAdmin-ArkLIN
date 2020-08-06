@@ -224,6 +224,18 @@
             <text>Der ArkAdmin-Server läuft nicht!</text>
         </c_34>
 
+        <!-- DANGER | ArkAdmin-Server -->
+        <c_35>
+            <title>ArkAdmin-Server Warnung</title>
+            <text>Der ArkAdmin-Server hat keine Verbdinung zum MySQL_Server!</text>
+        </c_35>
+
+        <!-- DANGER | ArkAdmin-Server -->
+        <c_36>
+            <title>ZIP Warnung</title>
+            <text>Es wurden keine Dateien erkannt die in die Zip datei gelegt werden konnten</text>
+        </c_36>
+
         
 
 
@@ -292,6 +304,12 @@
             <title>Erfolgreich Erstellt!</title>
             <text>Account wurde erstellt du kannst dich nun einloggen.</text>
         </c_109>
+
+        <!-- Success | ZIP -->
+        <c_110>
+            <title>Erfolgreich!</title>
+            <text>Der download sollte gleich Starten. Wenn nicht klicke auf diesen link: [a="{url}"]Klick mich![/a]</text>
+        </c_110>
 
 
         <!-- Warning -->

@@ -167,7 +167,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item ">
+                    <li class="nav-item">
                         <a href="/servercenter/{cfg}/saves" class="nav-link {_saves} text-white aa_nav_hover">
                             <i class="nav-icon fas fa-folder-open pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::saves}
                         </a>
@@ -186,12 +186,6 @@
 </div>
 
 <script>
-    $(function() {
-        $('[data-toggle="popover_action"]').popover({
-            trigger: 'hover'
-        })
-    })
-
     $(document).ready(function() {
 
         setInterval(function() {
@@ -229,6 +223,13 @@
                     });
                 });
             });
+            $.get("/php/async/get/servercenter.main.async.php", {
+                "action": action,
+                "case": "actioninfo",
+                "cfg": "{cfg}"
+            }, function(data) {
+                $("#actioninfo").html(data);
+            });
         });
     });
 </script>
@@ -262,7 +263,9 @@
                 <input name="cfg" id="cfg" value="{cfg}" type="hidden">
                 <select name="action" id="action_sel" class="form-control">
                     {action_list}
-                </select><br>
+                </select>
+                <div id="actioninfo"></div>
+                <hr>
 
                 <div class="form-row" style="padding-left: 25px;padding-right: 25px">{para_list}
                 </div>

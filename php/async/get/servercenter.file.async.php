@@ -128,4 +128,5 @@ switch ($case) {
         echo "Case <b>$case</b> not found!";
         break;
 }
+$mycon->close();
 ?>

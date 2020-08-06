@@ -65,12 +65,12 @@ foreach ($json as $k => $v) {
                 foreach ($ini as $ck => $cv) {
                     $serv->ini_load($ck, false);
                     $path = $serv->ini_get_path();
-                    file_put_contents($path, ini_save_rdy($cv));
+                    if($path != "" && $path != null) file_put_contents($path, ini_save_rdy($cv));
                 }
             }
         }
     }
-
+ 
     // Syncronisiere Whitelist auf Slaves
     if ($json[$k]["sync"]["whitelist"] && $masterisset) {
         foreach ($json[$k]["servers"] as $sk => $sv) {

@@ -9,10 +9,16 @@
      -->
 
     <allg>
+
+        <force_update>Erzwinge Panel Update</force_update>
+        <force_update_text>Führt sofort ein Panel Update aus. Dies wird auch getan wenn Auto-Updates deaktiert ist</force_update_text>
+
         <navigation>Navigation</navigation>
         <save>Speichern</save>
         <delete>Löschen</delete>
         <change>Ändern</change>
+        <on>An</on>
+        <off>Aus</off>
 
 
         <send_done>Gesendet</send_done>
@@ -53,12 +59,20 @@
 
         <logs>
             <show>Zeige alles</show>
+            <filter>Filter</filter>
             <hide>verstecke Überfluss</hide>
+            <showmax>Zeigt maximal</showmax>
+            <time>Logzeit</time> 
+            <clear>Alle Logs löschen</clear> 
+            <cancel>Abbrechen</cancel> 
+            <alert_titel>Bist du dir Sicher?</alert_titel> 
+            <alert>Möchtest du wirklich ALLE logs entfernen?</alert> 
         </logs>
     </allg>
 
     <!-- usersettings -->
     <usersettings>
+        <pagename>Benutzereinstellungen</pagename>
         <navigation>Navigation</navigation>
         <settings>Account Einstellungen</settings>
         <expsettings>Panel Einstellungen</expsettings> 
@@ -69,7 +83,7 @@
         <wpassword>Neues Passwort</wpassword> 
         <phwpassword>Wiederholen</phwpassword>
         <username>Benutzername</username> 
-        <konfig>Konfiguration sperren wenn der Server offline ist</konfig>
+        <konfig>Konfiguration sperren wenn der Server Online ist</konfig>
     </usersettings>
 
     <!-- Dashboard -->
@@ -334,12 +348,32 @@
             <force>Erzwinge Aktion (bsp. Update oder Neustart kann nicht mit dem Ingame befehl abgebrochen werden)</force>
             <backup>Erstelle Backup</backup>
             <ifempty>Führe Aktion aus wenn der Server leer ist</ifempty>
-            <revstatus>Gibt bei Status den Statuscode wieder</revstatus>
+            <revstatus>Gibt bei Prüfen den Statuscode wieder</revstatus>
             <stagingdir>Verzeichnis für Zwischenspeicher Server (Um Updates in sehr schneller Zeit auszuführen und die Dateien nurnoch Kopieren zu müssen)</stagingdir>
             <betapassword>Beta Passwort für die Beta -> Benötigt Beta</betapassword>
             <beta>Beta branch falls eine vorhanden ist</beta>
             <warnreason>Gibt den Neustart grund Ingame aus (Default definiert in der Konfig)</warnreason>
+            <onlysavegames>Erstellt ein Backup nur mit den Savegames</onlysavegames>
         </infoparm>
+
+        <infoaction> 
+            <install>Installiert den Server</install>
+            <start>Startet den Server (Wenn autoupdate aktiv ist (in der ArkManager Konfig) wird von dem Start der Server auf Updates überprüft)</start>
+            <update>Prüft den Server auf Updates. Und startet wenn dies der fall ist den Server neu</update>
+            <restart>Startet den Server neu</restart>
+            <stop>Fährt den Server runter</stop>
+            <backup>Erstellt ein Backup von den Spielständen</backup>
+            <checkupdate>Prüft den Server auf ein neues Arkupdate</checkupdate>
+            <checkmodupdate>Prüft den Server auf neue Mod updates</checkmodupdate>
+            <installmods>Installiert alle Mods</installmods>
+            <uninstallmods>Deinstalliert alle Mods</uninstallmods>
+            <saveworld>Speichert den Server</saveworld>
+            <status>Gibt den Status des Servers wieder (Run, Liste, Player, ...)</status>
+            <list-mods>Listet alle Mods auf</list-mods>
+            <restore>Spielt das letzte Backup ein</restore>
+            <getpid>Zeigt die Prozzess ID des Server</getpid>
+            <cancelshutdown>Bricht Neustart oder Runterfahren ab</cancelshutdown>
+        </infoaction>
 
         <main>
             <map>Karte</map>
@@ -609,6 +643,12 @@
                 <tribe>Stämme</tribe>
                 <map>Karten</map>
             </nav>
+
+            <zip>
+                <title>Daten runterladen</title>
+                <text>Lade Dateien einfach über eine tar.gz Datei runter</text>
+                <info>Wähle aus welche Dateien du downloaden möchtest</info>
+            </zip>
         </saves>
     </servercenter>
 </lang>

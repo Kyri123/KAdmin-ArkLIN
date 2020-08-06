@@ -8,6 +8,13 @@
  * *******************************************************************************************
 */
 
+function check_server()
+{
+    global $webserver;
+    $header = @get_headers("http://127.0.0.1:".$webserver['config']['port']."/");
+    return is_array($header);
+}
+
 function check_curl() {
     return (in_array  ('curl', get_loaded_extensions())) ? true : false;
 }
@@ -35,16 +42,26 @@ function isie() {
 }
 
 function check_webhelper() {
-    $curr = (file_exists("arkadmin_server/data/version.txt")) ? trim(file_get_contents("arkadmin_server/data/version.txt")) : "curr_not_found";
-    $run = (file_exists("arkadmin_server/data/run.txt")) ? trim(file_get_contents("arkadmin_server/data/run.txt")) : "run_not_found";
-    return ($curr == $run) ? true : false;
+    global $webserver;
+    if(!check_server()) {
+        return false;
+    }
+    else {
+        $curr = (file_exists("arkadmin_server/data/version.txt")) ? trim(file_get_contents("arkadmin_server/data/version.txt")) : "curr_not_found";
+        $run = json_decode(file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/"), true)["version"];
+        return ($curr == $run) ? true : false;
+    }
 }
 
-function check_server_run() {
-    $curr = (time() * 1000);
-    $run = (file_exists("arkadmin_server/data/run_time.txt")) ? intval(file_get_contents("arkadmin_server/data/run_time.txt")) : 0;
-    $diff = $curr - $run;
-    return (30000 > $diff) ? true : false;
+function check_server_json_bool($key) {
+    global $webserver;
+    if(!check_server()) {
+        return false;
+    }
+    else {
+        $bool = json_decode(file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/"), true)[$key];
+        return ($bool == "true") ? true : false;
+    }
 }
 
 ?>

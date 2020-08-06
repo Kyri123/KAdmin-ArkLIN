@@ -1,3 +1,7 @@
+<div class="d-none" id="filter">false</div>
+<div class="d-none" id="mods">false</div>
+<div class="d-none" id="home">true</div>
+
 <div class="col-xl-9 col-md-8 mb-4">
     <nav class="navbar navbar-expand-lg navbar-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -150,7 +154,23 @@
                                     <div class="form-group row m-0">
                                         <label class="col-sm-2 col-form-label pt-1">{::lang::servercenter::home::section::rcon::command}</label>
                                         <div class="col-sm-7">
-                                            <input type="text" id="rcon_text" class="form-control form-control-sm" placeholder="{::lang::servercenter::home::section::rcon::command_placeholder}">
+                                            <div class="input-group mb-0">
+                                                <input type="text" id="rcon_text" class="form-control form-control-sm" placeholder="{::lang::servercenter::home::section::rcon::command_placeholder}">
+                                                <div class="input-group-append">
+                                                    <select class="form-control form-control-sm" onchange="sel_in_input('#rcon_text', '#' + this.id)" id="selrocn">
+                                                        <option value="">{::lang::servercenter::home::section::admin::default}</option>
+                                                        <option value="destroywilddinos">destroywilddinos</option>
+                                                        <option value="saveworld">saveworld</option>
+                                                        <option value="giveitemtoplayer <PlayerID> <ItemName> <QTY> <Quality> <True/False>">giveitemtoplayer </option>
+                                                        <option value="kickplayer <Steam64ID>">kickplayer</option>
+                                                        <option value="banplayer <Steam64ID>">banplayer</option>
+                                                        <option value="unbanplayer <Steam64ID>">unbanplayer</option>
+                                                        <option value='RenamePlayer <"Player Name"> <New Name>'>unbanplayer</option>
+                                                        <option value='RenameTribe <"Tribe Name"> <New Name>'>unbanplayer</option>
+                                                        <option value="giveexptoplayer <id> <how much> <tribeshared> <preventsharing>">giveexptoplayer</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <input type="hidden" id="rcon_user" value="{SESSION_USERNAME}">
                                             <input type="hidden" id="rcon_cfg" value="{cfg}">
                                         </div>
@@ -187,12 +207,15 @@
                                         <form action="#add_admin" method="post" class="form-group row m-0">
                                             <label class="col-sm-2 col-form-label pt-1">{::lang::servercenter::home::section::rcon::command}</label>
                                             <div class="col-sm-7">
-                                                <div class="input-group mb-0"><input type="hidden" name="key[]" readonly="" value="serverMap">
+                                                <div class="input-group mb-0">
+                                                    <input type="hidden" name="key[]" readonly="" value="serverMap">
                                                     <input type="text" name="id" class="form-control form-control-sm" placeholder="SteamID" id="steamid">
-                                                    <div class="input-group-append"><select class="form-control form-control-sm" onchange="sel_in_input('#steamid', '#' + this.id)" id="charsel">
+                                                    <div class="input-group-append">
+                                                        <select class="form-control form-control-sm" onchange="sel_in_input('#steamid', '#' + this.id)" id="charsel">
                                                             <option value="">{::lang::servercenter::home::section::admin::default}</option>
                                                             {userlist_admin}
-                                                        </select></div>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <span class="text-sm">{::lang::servercenter::home::section::admin::info}</span>
                                             </div>
@@ -349,7 +372,7 @@
                         });
 
                         setInterval(function() {
-                            getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide');
+                            getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide', "filter", "mods", "home");
                             getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
                             getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
                         }, 1000);

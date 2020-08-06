@@ -7,6 +7,8 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+
+
 $dir = dirToArray('remote/arkmanager/instances/');
     for ($i=0;$i<count($dir);$i++) {
         $checkit = false;
@@ -63,7 +65,7 @@ $dir = dirToArray('remote/arkmanager/instances/');
 
                 file_put_contents('app/json/saves/tribes_'.$serv->name().'.json', $json_user_tribe);
                 file_put_contents('app/json/saves/player_'.$serv->name().'.json', $json_user_enc);
-
+ 
             }
             $container = null;
             $json_user = null;
@@ -111,11 +113,11 @@ $dir = dirToArray('remote/arkmanager/instances/');
                     $server['error'][] = null;
                     $server['warning'] = null;
                     $server['warning'][] = null;
-                    $server['online'] = 'NO';
                     $server['aplayers'] = 0;
                     $server['players'] = 0;
                     $server['pid'] = 'NO';
                     $server['run'] = 'NO';
+                    $server['online'] = 'NO';
                     $server['listening'] = 'NO';
                     $server['installed'] = $serv->isinstalled();
 
@@ -183,6 +185,8 @@ $dir = dirToArray('remote/arkmanager/instances/');
                 else {
                     $server['next'] = 'TRUE';
                 }
+
+                //schreibe status
                 if ($checkit) {
                     $helper->savejson_create($server, $jsonfile);
                 }

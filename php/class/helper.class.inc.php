@@ -66,7 +66,7 @@ class helper {
         }
     }
 
-    public function savejson_create(Array $json, String $path) {
+    public function savejson_create($json, String $path) {
         $content = json_encode($json, JSON_INVALID_UTF8_SUBSTITUTE);
         if (file_put_contents($path, $content)) {
             return true;

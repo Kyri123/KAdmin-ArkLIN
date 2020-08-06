@@ -20,7 +20,7 @@ $time = time();
 $subpage = "php/subpage/crontab";
 
 $timediff['shell'] = 20;
-$timediff['player'] = 5;
+$timediff['player'] = 8;
 
 //function
 function filter_end ($str) {
@@ -29,7 +29,7 @@ function filter_end ($str) {
     } else {
         return 'No';
     }
-}
+} 
 
 // Dir_creater
 $dir = dirToArray('remote/arkmanager/instances/');

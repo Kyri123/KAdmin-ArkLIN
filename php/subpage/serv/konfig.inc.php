@@ -134,7 +134,12 @@ $engine = ($serv->ini_load('Engine.ini', true)) ? $serv->ini_get_str() : $defaul
 $gus_bool = ($serv->ini_load('GameUserSettings.ini', true));
 $game_bool = ($serv->ini_load('Game.ini', true));
 $engine_bool = ($serv->ini_load('Engine.ini', true));
-$show = ($engine_bool && $game_bool && $gus_bool);
+
+$show = (
+    file_exists($serv->dir_save(true)."/Config/LinuxServer/GameUserSettings.ini") && 
+    file_exists($serv->dir_save(true)."/Config/LinuxServer/Game.ini") && 
+    file_exists($serv->dir_save(true)."/Config/LinuxServer/Engine.ini")
+);
 
 $gus_nexp = ($serv->ini_load('GameUserSettings.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
 $game_nexp = ($serv->ini_load('Game.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;

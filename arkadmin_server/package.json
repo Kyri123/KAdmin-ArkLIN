@@ -1,6 +1,6 @@
 {
     "name": "arkadmin2-server",
-    "version": "0.0.1",
+    "version": "0.3.0",
     "description": "server fuer das Webpanel von Arkadmin",
     "main": "server.js",
     "scripts": {
@@ -20,6 +20,9 @@
     },
     "homepage": "https://github.com/Kyri123/arkadmin#readme",
     "dependencies": {
+        "dateformat": "^3.0.3",
+        "ip": "^1.1.5",
+        "md5": "^2.3.0",
         "mysql": "^2.18.1",
         "node-ssh": "^10.0.2",
         "request": "^2.88.2"

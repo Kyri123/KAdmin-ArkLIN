@@ -30,7 +30,7 @@ $count = (is_countable($playerjs)) ? count($playerjs): false;
 //add_admin
 if (isset($_POST["addadmin"])) {
     $id = $_POST["id"];
-    if(is_int($id) && $id > 70000000000) {
+    if(is_numeric($id) && $id > 700000000) {
         for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$i = $ix; break;};
         $content = file_get_contents($cheatfile)."\n$id";
         if (file_put_contents($cheatfile, $content)) {

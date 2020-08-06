@@ -13,7 +13,7 @@ $page_tpl = new Template('logs.htm', 'app/template/sub/serv/');
 $page_tpl->load();
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::logs::urltop}</li>';
-
+$resp = null;
 
 $logpath = $serv->cfg_read('logdir');
 
@@ -26,8 +26,18 @@ for ($i=0;$i<count($exp);$i++) {
     }
 }
 
+if(isset($_POST["clearlogs"])) {
+    if(file_put_contents("$logpath/arkserver.log", " ") && file_put_contents("$logpath/arkmanager.log", " ")) {
+        $resp = $alert->rd(101);
+    }
+    else {
+        $resp = $alert->rd(1);
+    }
+}
+
 $page_tpl->r('cfg' ,$serv->name());
 $page_tpl->r('path' ,$path);
+$page_tpl->r('resp' ,$resp);
 $page_tpl->session();
 $panel = $page_tpl->load_var();
 ?>

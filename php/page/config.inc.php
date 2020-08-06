@@ -59,7 +59,6 @@ if (isset($url[2]) && isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamc
     }
 }
 
-
 // save Webhelper
 if (isset($_POST["savewebhelper"])) {
     $a_key = $_POST["key"];
@@ -187,14 +186,18 @@ foreach($panelconfig as $key => $value) {
     $option_panel .= $list->load_var();
 }
 
-$panelconfig = $helper->file_to_json($wpath, true);
+$servercfg = $helper->file_to_json($wpath, true);
+if(!isset($servercfg["port"])) $servercfg["port"] = 30000;
+if(!isset($servercfg["autoupdater_active"])) $servercfg["autoupdater_active"] = 0;
+if(!isset($servercfg["autoupdater_branch"])) $servercfg["autoupdater_branch"] = "master";
+if(!isset($servercfg["autoupdater_intervall"])) $servercfg["autoupdater_intervall"] = 60000;
 $option_server = null;
-foreach($panelconfig as $key => $value) {
+foreach($servercfg as $key => $value) {
     $list = new Template("opt.htm", $tpl_dir);
     $list->load();
     $list->rif ("ifbool", false);
-    $list->rif ("ifnum", false);
-    $list->rif ("iftxt", true);
+    $list->rif ("ifnum", is_numeric($value));
+    $list->rif ("iftxt", !is_numeric($value));
     $list->r("key", $key);
     $key = str_replace($find, $repl, $key);
     $list->r("keym", $key);

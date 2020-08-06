@@ -123,6 +123,18 @@ if ($page == "login" || $page == "registration") {
     $pagename = '{::lang::php::index::pagename_reg}';
     if ($page == "login") $pagename = '{::lang::php::index::pagename_login}';
 }
+
+//tmp Force Update
+$btns .= '
+    <div class="d-sm-inline-block ">
+        <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-info btn-icon-split rounded-0 ml-1" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
+            <span class="icon text-white-50">
+                <i class="fa fa-refresh"></i>
+            </span>
+        </a>
+    </div>
+';
+
 // replace
 $tpl_h->r('time', time());
 
