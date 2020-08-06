@@ -183,6 +183,8 @@ $dir = dirToArray('remote/arkmanager/instances/');
                 else {
                     $server['next'] = 'TRUE';
                 }
+
+                //schreibe status
                 if ($checkit) {
                     $helper->savejson_create($server, $jsonfile);
                 }

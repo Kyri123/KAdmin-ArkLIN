@@ -20,7 +20,7 @@ $time = time();
 $subpage = "php/subpage/crontab";
 
 $timediff['shell'] = 20;
-$timediff['player'] = 5;
+$timediff['player'] = 10;
 
 //function
 function filter_end ($str) {
