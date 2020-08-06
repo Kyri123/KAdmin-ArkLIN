@@ -21,4 +21,5 @@ if(isset($_GET["replace"])) $replace = $_GET["replace"];
 if(isset($replace) && is_countable($replace)) foreach($replace as $k => $v) $alert->r($v[0], $v[1]);
 
 echo $alert->re();
+$mycon->close();
 ?>

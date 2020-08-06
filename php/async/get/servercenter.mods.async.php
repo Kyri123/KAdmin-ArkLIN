@@ -138,4 +138,5 @@ switch ($case) {
         echo "Case not found";
         break;
 }
+$mycon->close();
 ?>

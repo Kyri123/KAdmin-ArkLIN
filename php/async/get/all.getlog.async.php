@@ -93,6 +93,6 @@ $tpl = new Template("content.htm", "app/template/universally/default/");
 $tpl->load();
 $tpl->r("content", $content);
 $tpl->echo();
-
+$mycon->close();
 
 ?>

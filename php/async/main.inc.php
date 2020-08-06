@@ -7,6 +7,7 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+
 chdir('../../../');
 include("php/functions/php70-72.inc.php");
 include('php/inc/config.inc.php');
@@ -30,6 +31,7 @@ include('php/class/rcon.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/alert.class.inc.php');
 include('php/functions/allg.func.inc.php');
+
 $steamapi = new steamapi();
 $helper = new helper();
 $user = new userclass();

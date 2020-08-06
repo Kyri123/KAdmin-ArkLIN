@@ -37,4 +37,5 @@ switch ($case) {
     default:
     break;
 }
+$mycon->close();
 ?>
