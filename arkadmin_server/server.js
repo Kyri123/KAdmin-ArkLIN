@@ -1,3 +1,12 @@
+/*
+ * *******************************************************************************************
+ * @author:  Oliver Kaufmann (Kyri123)
+ * @copyright Copyright (c) 2019-2020, Oliver Kaufmann
+ * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
+ * Github: https://github.com/Kyri123/Arkadmin
+ * *******************************************************************************************
+ */
+
 const fs = require("fs");
 const shell = require("./packages/src/shell");
 const panel_shell = require("./packages/src/panel_shell");
@@ -6,7 +15,7 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.3.0.3";
+const version = "0.3.1.0";
 const mysql = require("mysql");
 const http = require('http');
 const updater = require("./packages/src/updater");
@@ -23,10 +32,19 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
     if (err == undefined) {
         //lade konfig als array
         config = JSON.parse(data, config);
+
+        // beende ArkAdmin-Server wenn die Konfiguration nicht richtig eingestellt
+        if (config.WebPath == "/path/to/webfiles" || config.ServerPath == "/path/to/serverfiles") {
+            process.exit(1);
+        }
+
+        // setzte nicht default werte
         if (config.port == undefined) config.port = 30000;
         if (config.autoupdater_active == undefined) config.autoupdater_active = 0;
         if (config.autoupdater_branch == undefined) config.autoupdater_branch = "master";
         if (config.autoupdater_intervall == undefined) config.autoupdater_intervall = 60000;
+
+        // hole aller 60 Sekunden die Konfigurationsdaten neu
         setInterval(() => {
             fs.readFile("config/server.json", 'utf8', (err, data) => {
                 if (err == undefined) {
@@ -38,21 +56,23 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         }, 60000);
         head.load(version, config);
 
-        //ssh
+        //ssh (wenn aktiv verbinde damit)
         if (config.use_ssh > 0) {
             global.ssh = new NodeSSH();
-            ssh.connect({
+            option = {
                 host: config_ssh.host,
                 username: config_ssh.username,
                 password: config_ssh.password,
                 port: config_ssh.port,
                 privateKey: fs.readFileSync(config_ssh.key_path, 'utf8')
-            });
+            };
+            if (ssh.connect(option)) process.exit(2);
         }
 
-        // mysql
+        // mysql verbindung aufbauen
         global.iscon = false;
         var mysql_inter = () => {
+            // verbinde neu wenn Mysql verbindung nicht besteht
             if (!iscon) {
                 console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Mysql: \x1b[95mMysql Verbindung wird aufgebaut');
                 fs.readFile("config/mysql.json", 'utf8', (err, re) => {
@@ -89,7 +109,6 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                 status.sendcheck();
             }
         }, config.StatusIntervall);
-
         console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Panel (Server): \x1b[36mRun');
 
         //handle Crontab
@@ -139,4 +158,11 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
     } else {
         console.log("cannot read config/server.json");
     }
+});
+
+
+// Code Meldungen
+process.on('exit', function(code) {
+    if (code == 1) return console.log(`\x1b[91mBitte stelle die Konfiguration ein! (config/server.json)`);
+    if (code == 2) return console.log(`\x1b[91mKeine Verbindung zum SSH2 Server`);
 });

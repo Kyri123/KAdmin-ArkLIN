@@ -41,7 +41,6 @@ if ($url[1] == "" || $url[1] == "favicon.ico") {
     header('Location: /home');
     exit;
 }
-
 // Connent to MYSQL
 include('php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
