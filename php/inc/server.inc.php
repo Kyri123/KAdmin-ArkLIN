@@ -51,8 +51,8 @@ for ($i=0;$i<count($dir);$i++) {
         $tpl_serv->r('state', $state);
         $tpl_serv->r('serv_pid', null);
         $tpl_serv->rif ('ifin', $serv->cluster_in());
-        $tpl_serv->r('clustername', (($serv->cluster_in) ? $serv->cluster_name() : null));
-        $tpl_serv->r("typestr", $clustertype[$serv->cluster_type()]);
+        $tpl_serv->r('clustername', (($serv->cluster_in()) ? $serv->cluster_name() : null));
+        $tpl_serv->r("typestr", (($serv->cluster_in()) ? $clustertype[$serv->cluster_type()] : null));
         $tpl_serv->r('subline', $subline);
         $tpl_serv->r('servername', $servername);
         $tpl_serv->r('cfg', $dir[$i]);

@@ -17,7 +17,7 @@ if (!file_exists("remote/arkmanager/instances/".$url[2].".cfg")) {
 $tpl_dir = 'app/template/core/serv/';
 $tpl_dir_lists = 'app/template/lists/serv/main/';
 $tpl_dir_all = 'app/template/all/';
-$setsidebar = false;
+$setsidebar = false; $resp_cluster = null;
 $serv = new server($url[2]);
 $serv->cluster_load();
 $txt_alert = $site_name = $player = null;

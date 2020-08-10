@@ -13,6 +13,7 @@ $page_tpl = new Template('home.htm', 'app/template/sub/serv/');
 $page_tpl->load();
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::home::urltop}</li>';
+$adminlist_admin = null;
 
 $user = new userclass();
 $user->setid($_SESSION['id']);

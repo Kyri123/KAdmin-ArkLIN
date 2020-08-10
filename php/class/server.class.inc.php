@@ -253,7 +253,6 @@ class server extends Rcon {
         $class->listening = $data["listening"];
         $class->installed = $data["installed"];
         $class->cfg = $data["cfg"];
-        $class->bid = $data["bid"];
         $class->ARKServers = $data["ARKServers"];
         $class->next = $data["next"];
         $class->ServerName = $data["ServerName"];
@@ -481,7 +480,6 @@ class data_server {
     public $listening;
     public $installed;
     public $cfg;
-    public $bid;
     public $ARKServers;
     public $next;
     public $ServerName;
