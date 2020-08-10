@@ -128,7 +128,6 @@ class server extends Rcon {
         $doc = $doc.'/sh/serv/sub_jobs_ID_'.$this->name().'.sh';
         $command = 'arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
         $command = str_replace("\r", null, $command);
-        file_put_contents($doc_state_file, "FALSE");
 
         // Füge Kommand zur DB hinzu
         $query = "INSERT INTO `ArkAdmin_shell` 
@@ -140,7 +139,10 @@ class server extends Rcon {
             'screen -dm bash -c \'".$command."\''
         )";
 
-        if ($mycon->query($query)) return true;
+        if ($mycon->query($query)) { 
+            return true;
+            file_put_contents($doc_state_file, "FALSE");
+        }
         return false;
     }
 
