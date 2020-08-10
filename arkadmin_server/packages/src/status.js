@@ -20,6 +20,7 @@ exports.sendcheck = () => {
     fs.readdirSync(arkmanager_folder).forEach(file => {
         // Erstelle Abfrage wenn es eine .cfg Datei ist
         if (file.includes(".cfg") && !file.includes("example")) {
+            data = undefined;
             var data = {};
             var name = file.replace(".cfg", "");
             var cfg = ini.parse(fs.readFileSync(arkmanager_folder + file, 'utf-8'));
