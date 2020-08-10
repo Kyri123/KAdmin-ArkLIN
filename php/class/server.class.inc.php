@@ -218,10 +218,10 @@ class server extends Rcon {
         elseif ($data["listening"] == "Yes" && $data["online"] == "Yes" && $data["run"] == "Yes") {
             $serverstate = 2;
         }
-        elseif ($data["listening"] == "No" && $data["online"] == "NO" && $data["run"] == "Yes") {
+        elseif ($data["listening"] == "No" && $data["online"] == "No" && $data["run"] == "Yes") {
             $serverstate = 1;
         }
-        elseif ($data["listening"] == "Yes" && $data["online"] == "NO" && $data["run"] == "Yes") {
+        elseif ($data["listening"] == "Yes" && $data["online"] == "No" && $data["run"] == "Yes") {
             $serverstate = 1;
         }
         elseif ($data["listening"] == "No" && $data["online"] == "Yes" && $data["run"] == "Yes") {

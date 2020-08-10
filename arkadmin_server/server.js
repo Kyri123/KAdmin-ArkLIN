@@ -15,7 +15,7 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.3.1.0";
+const version = "0.4.0.0";
 const mysql = require("mysql");
 const http = require('http');
 const updater = require("./packages/src/updater");
@@ -35,14 +35,21 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
         // beende ArkAdmin-Server wenn die Konfiguration nicht richtig eingestellt
         if (config.WebPath == "/path/to/webfiles" || config.ServerPath == "/path/to/serverfiles") {
-            process.exit(1);
+            process.exit(2);
         }
 
         // setzte nicht default werte
         if (config.port == undefined) config.port = 30000;
         if (config.autoupdater_active == undefined) config.autoupdater_active = 0;
         if (config.autoupdater_branch == undefined) config.autoupdater_branch = "master";
-        if (config.autoupdater_intervall == undefined) config.autoupdater_intervall = 60000;
+        if (config.autoupdater_intervall == undefined) config.autoupdater_intervall = 120000;
+
+        // prüfe Minimal werte
+        if (config.WebIntervall < 5000) process.exit(4);
+        if (config.CHMODIntervall < 60000) process.exit(5);
+        if (config.ShellIntervall < 10000) process.exit(6);
+        if (config.StatusIntervall < 5000) process.exit(7);
+        if (config.autoupdater_intervall < 120000) process.exit(8);
 
         // hole aller 60 Sekunden die Konfigurationsdaten neu
         setInterval(() => {
@@ -66,7 +73,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                 port: config_ssh.port,
                 privateKey: fs.readFileSync(config_ssh.key_path, 'utf8')
             };
-            if (ssh.connect(option)) process.exit(2);
+            if (ssh.connect(option)) process.exit(3);
         }
 
         // mysql verbindung aufbauen
@@ -144,13 +151,10 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             if (req.headers.referer != undefined) {
                 if (ref.includes("update") && ref.includes(md5(ip.address()))) {
                     updater.auto();
-                    res.write("{\"update\":\"running\"}");
-                } else {
-                    res.write(resp);
+                    resp = "{\"update\":\"running\"}";
                 }
-            } else {
-                res.write(resp);
             }
+            res.write(resp);
             res.end();
         }).listen(config.port);
 
@@ -163,6 +167,11 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
 // Code Meldungen
 process.on('exit', function(code) {
-    if (code == 1) return console.log(`\x1b[91mBitte stelle die Konfiguration ein! (config/server.json)`);
-    if (code == 2) return console.log(`\x1b[91mKeine Verbindung zum SSH2 Server`);
+    if (code == 2) return console.log(`\x1b[91mBitte stelle die Konfiguration ein! (config/server.json)`);
+    if (code == 3) return console.log(`\x1b[91mKeine Verbindung zum SSH2 Server`);
+    if (code == 4) return console.log(`\x1b[91mMinimal Werte unterschritten: WebIntervall darf nicht kleiner als 5000 sein!`);
+    if (code == 5) return console.log(`\x1b[91mMinimal Werte unterschritten: CHMODIntervall darf nicht kleiner als 60000 sein!`);
+    if (code == 6) return console.log(`\x1b[91mMinimal Werte unterschritten: ShellIntervall darf nicht kleiner als 10000 sein!`);
+    if (code == 7) return console.log(`\x1b[91mMinimal Werte unterschritten: StatusIntervall darf nicht kleiner als 5000 sein!`);
+    if (code == 8) return console.log(`\x1b[91mMinimal Werte unterschritten: autoupdater_intervall darf nicht kleiner als 120000 sein!`);
 });

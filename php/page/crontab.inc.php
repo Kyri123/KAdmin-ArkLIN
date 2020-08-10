@@ -37,12 +37,6 @@ include("$subpage/allgemein/dir_create.inc.php");
 
 if (!file_exists("app/data/checked")) file_put_contents("app/data/checked", "checked"); // Schreibe dass der Crontab abgerufen wurde
 
-//Für Serverstatus
-// Todo: Remove
-//if ($job == "status") {
-    //include("$subpage/status/shell.inc.php");
-//}
-
 //Für Spielerliste & Auswertung von Server Status
 elseif ($job == "player") {
     include("$subpage/player/player_check.inc.php");

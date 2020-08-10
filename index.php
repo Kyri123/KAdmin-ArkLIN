@@ -41,6 +41,7 @@ if ($url[1] == "" || $url[1] == "favicon.ico") {
     header('Location: /home');
     exit;
 }
+
 // Connent to MYSQL
 include('php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
@@ -69,7 +70,6 @@ if(isset($_SESSION["id"])) $user->setid($_SESSION['id']);
 
 // include util
 include('php/inc/session.inc.php');
-include('php/inc/auto_update_sql_DB.inc.php');
 
 //create globals vars
 $API_Key = $ckonfig['apikey'];

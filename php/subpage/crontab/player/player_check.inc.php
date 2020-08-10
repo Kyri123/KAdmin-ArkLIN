@@ -81,96 +81,27 @@ $dir = dirToArray('remote/arkmanager/instances/');
             $diff = $time - $file_time;
             if ($diff > $timediff['player']) {
                 $checkit = true;
-                if ($fn = fopen($log_file,"r")) {
-                    $jsonfile = 'app/json/serverinfo/'.$serv->name().'.json';
 
-                    $search  = array(
-                        " ",
-                        'Serveronline',
-                        'ActivePlayers',
-                        'Players',
-                        'ServerPID',
-                        'Serverrunning',
-                        'Serverlistening',
-                        'Serverversion',
-                        'ServerbuildID'
-                    );
-                    $replace = array(
-                        null,
-                        'online',
-                        'aplayers',
-                        'players',
-                        'pid',
-                        'run',
-                        'listening',
-                        'version',
-                        'bid'
-                    );
+                $jsonfile = 'app/json/serverinfo/'.$serv->name().'.json';
+                $raw_jsonfile = $helper->file_to_json('app/json/serverinfo/raw_'.$serv->name().'.json');
+                
+                $server['warning_count'] = 0;
+                $server['error_count'] = 0;
+                $server['error'] = null;
+                $server['error'][] = null;
+                $server['warning'] = null;
+                $server['warning'][] = null;
+                $server['aplayers'] = 0;
+                $server['players'] = 0;
+                $server['pid'] = 'No';
+                $server['run'] = 'No';
+                $server['online'] = 'No';
+                $server['listening'] = 'No';
+                $server['installed'] = $serv->isinstalled();
 
-                    $server['warning_count'] = 0;
-                    $server['error_count'] = 0;
-                    $server['error'] = null;
-                    $server['error'][] = null;
-                    $server['warning'] = null;
-                    $server['warning'][] = null;
-                    $server['aplayers'] = 0;
-                    $server['players'] = 0;
-                    $server['pid'] = 'NO';
-                    $server['run'] = 'NO';
-                    $server['online'] = 'NO';
-                    $server['listening'] = 'NO';
-                    $server['installed'] = $serv->isinstalled();
+                foreach($raw_jsonfile as $k => $v) $server[$k] = $v;
 
-
-                    $ier = 0;
-                    $wer = 0;
-
-                    while(!feof($fn))  {
-                        $result = fgets($fn);
-                        $result = sh_crontab($result);
-                        if (!strpos($result, "'status'")) {
-                            if (strpos($result, 'http:') || strpos($result, 'steam:')) {
-                                $exp = explode("link:", $result);
-                                $exp[1] = str_replace("\n", null, $exp[1]);
-                                $key = "connect";
-                                if ($exp[0] == "ARKServers") $key = "ARKServers";
-                                $server[$key] = sh_crontab($exp[1]);;
-                            }
-                            elseif (strpos($result, 'ERROR')) {
-                                $exp = explode("ERROR", $result);
-                                $exp[1] = str_replace("\n", null, $exp[1]);
-                                $server['error'][$ier] = sh_crontab($exp[1]);;
-                                $ier++;
-                            }
-                            elseif (strpos($result, 'WARN')) {
-                                $exp = explode("WARN", $result);
-                                $exp[1] = str_replace("\n", null, $exp[1]);
-                                $server['warning'][$ier] = sh_crontab($exp[1]);;
-                                $wer++;
-                            }
-                            else {
-                                $exp = explode(":", $result);
-                                $key = str_replace($search, $replace, $exp[0]);
-                                if ($key != "ServerName") $exp[1] = str_replace(" ", null, $exp[1]);
-                                if ($key == "ServerName") {
-                                    $str = $exp[1];
-                                    $expstr = explode(" - (", $str);
-                                    $server['version'] = str_replace(array(")", "v"), array(null, null), $expstr[1]);
-                                }
-                                $exp[1] = str_replace("\n", null, $exp[1]);
-                                if ($key != null) $server[$key] = sh_crontab($exp[1]);
-                            }
-                        }
-                        $server['cfg'] = $name;
-                    }
-                    if ($ier > 0) $server['error_count'] = $ier;
-                    if ($wer > 0) $server['warning_count'] = $wer;
-                    $server['ARKServers'] = "https://arkservers.net/server/".$ip.":".$serv->cfg_read("ark_QueryPort");
-                    fclose($fn);
-
-                    $count_serv_max++;
-
-                }
+                $server['run'] = ($server['run'] === true) ? "Yes" : "No";
 
                 if (!file_exists('sh/serv/jobs_ID_'.$serv->name().'.state')) file_put_contents('sh/serv/jobs_ID_'.$serv->name().'.state', 'TRUE');
                 $serv_state = file_get_contents('sh/serv/jobs_ID_'.$serv->name().'.state');
@@ -188,6 +119,7 @@ $dir = dirToArray('remote/arkmanager/instances/');
 
                 //schreibe status
                 if ($checkit) {
+                    var_dump($server); echo "<hr>";
                     $helper->savejson_create($server, $jsonfile);
                 }
             }

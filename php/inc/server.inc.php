@@ -26,7 +26,7 @@ for ($i=0;$i<count($dir);$i++) {
         $json = file_get_contents('app/json/serverinfo/'.$dir[$i].'.json');
         $json = json_decode($json, true);
 
-        $json["online"] = (isset($json["online"])) ? filtersh($json["online"]) : "NO";
+        $json["online"] = (isset($json["online"])) ? filtersh($json["online"]) : "No";
 
         $servername = $data['ark_SessionName'];
         $subline = "{::lang::php::server::subline}";
@@ -35,7 +35,7 @@ for ($i=0;$i<count($dir);$i++) {
             $state = 'bg-success';
             $count_serv_1++;
         }
-        elseif ($json["online"] == 'NO') {
+        elseif ($json["online"] == 'No') {
             $state = 'bg-danger';
         } else {
             $state = 'bg-warning';
