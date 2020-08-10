@@ -58,6 +58,15 @@ exports.sendcheck = () => {
                     data.cfg = name;
                     data.ServerMap = state.map;
                     data.ServerName = state.name;
+
+                    // Hole Version
+                    var version_split = state.name.split("-")[1];
+                    version_split = version_split.replace(")", "");
+                    version_split = version_split.replace("(", "");
+                    version_split = version_split.replace(" ", "");
+                    version_split = version_split.replace("v", "");
+                    data.version = version_split;
+
                     fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
                 }).catch((error) => {
                     fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
