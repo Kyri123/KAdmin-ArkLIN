@@ -12,7 +12,7 @@
 $tpl_dir = 'app/template/core/scc/';
 $tpl_dir_all = 'app/template/all/';
 $setsidebar = false;
-$cfglist = null;
+$cfglist = $cfgmlist = null;
 $pagename = "{::lang::php::scc::pagename}";
 $urltop = '<li class="breadcrumb-item">Server Controll Center</li>';
 $serv = new server("tiamat");

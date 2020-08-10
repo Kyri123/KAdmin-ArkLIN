@@ -15,7 +15,7 @@ $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}</li>';
 
 // arkmanager.cfg Speichern
-$resp = null;
+$resp = $ark_flag = $eventlist = null;
 if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
     $value = $_POST['value'];
     $key = $_POST['key'];

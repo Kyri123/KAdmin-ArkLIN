@@ -328,7 +328,7 @@ foreach ($json as $mk => $mv) {
 }
 
 $cfg_array = $helper->file_to_json("app/json/serverinfo/all.json");
-
+$sel_serv = null;
 foreach ($cfg_array["cfgs"] as $key) {
     $cfg = str_replace(".cfg", null, $key);
     $server = new server($cfg);

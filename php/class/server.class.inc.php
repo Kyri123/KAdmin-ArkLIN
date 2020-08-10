@@ -163,7 +163,7 @@ class server extends Rcon {
     }
 
     public function cfg_read(String $key) {
-        return $this->cfg[$key];
+        return ($this->cfg_check($key)) ? $this->cfg[$key] : null;
     }
 
     public function cfg_write(String $key, String $value) {
