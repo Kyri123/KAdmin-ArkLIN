@@ -11,7 +11,7 @@
 const { exec } = require('child_process');
 const logger = require('./logger');
 
-exports.exec = (command, config, type, short = false, text = undefined) => {
+exports.exec = (command, config, type, short = false, text = undefined, logthis = true) => {
     if (config == 0) {
         exec(command);
         if (short) {
@@ -28,5 +28,5 @@ exports.exec = (command, config, type, short = false, text = undefined) => {
             }
         });
     }
-    logger.log("Shell: " + command);
+    if (logger) logthis.log("Shell: " + command);
 };

@@ -15,7 +15,7 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.4.0.4";
+const version = "0.4.0.5";
 const mysql = require("mysql");
 const http = require('http');
 const updater = require("./packages/src/updater");
@@ -137,10 +137,10 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
         //handle chmod
         setInterval(() => {
-            shell.exec("chmod 777 -R " + config.WebPath, config.use_ssh, 'CHMOD');
-            shell.exec("chmod 777 -R " + config.AAPath, config.use_ssh, 'CHMOD');
-            shell.exec("chmod 777 -R " + config.ServerPath, config.use_ssh, 'CHMOD');
-            shell.exec("chmod 777 -R " + config.SteamPath, config.use_ssh, 'CHMOD');
+            shell.exec("chmod 777 -R " + config.WebPath, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec("chmod 777 -R " + config.AAPath, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec("chmod 777 -R " + config.ServerPath, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec("chmod 777 -R " + config.SteamPath, config.use_ssh, 'CHMOD', false, undefined, false);
         }, config.CHMODIntervall);
         logger.log("Gestartet: CHMOD");
 
