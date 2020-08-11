@@ -24,17 +24,17 @@ exports.auto = () => {
     req.get(options, (err, res, api) => {
         if (err) {
             // wenn keine verbindung zu Github-API besteht
-            console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Auto-Updater: \x1b[91mVerbindung fehlgeschlagen');
+            console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[91mVerbindung fehlgeschlagen');
         } else if (res.statusCode === 200) {
             // Prüfe SHA mit API
             fs.readFile("data/sha.txt", 'utf8', (err, data) => {
                 if (err == undefined) {
                     if (data == api.commit.sha) {
                         // kein Update
-                        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Auto-Updater: \x1b[32mIst auf dem neusten Stand');
+                        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[32mIst auf dem neusten Stand');
                     } else {
                         // Update verfügbar
-                        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Auto-Updater: \x1b[36mUpdate wird gestartet');
+                        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[36mUpdate wird gestartet');
                         logger.log("Update auf: " + data);
                         var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
                             'rm -R tmp ; mkdir tmp ; cd tmp ;' +
@@ -60,12 +60,12 @@ exports.auto = () => {
                     }
                 } else {
                     // sende Error wenn Datei nicht gefunden wenrden konnte
-                    console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Auto-Updater: \x1b[91mLocale sha.txt nicht gefunden');
+                    console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[91mLocale sha.txt nicht gefunden');
                 }
             });
         } else {
             // wenn keine verbindung zu Github-API besteht
-            console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Auto-Updater: \x1b[91mVerbindung fehlgeschlagen');
+            console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[91mVerbindung fehlgeschlagen');
         }
     });
 };

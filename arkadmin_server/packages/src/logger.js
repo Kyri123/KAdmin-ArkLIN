@@ -11,7 +11,7 @@ const fs = require("fs");
 
 // Speicher in Logdatei
 exports.log = (text) => {
-    var addtext = '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] ' + text + '\n';
+    var addtext = '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] ' + text + '\n';
     fs.appendFile('data/server.log', addtext, function(err) {
         if (err) throw err;
     });

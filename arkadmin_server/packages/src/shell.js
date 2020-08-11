@@ -15,16 +15,16 @@ exports.exec = (command, config, type, short = false, text = undefined) => {
     if (config == 0) {
         exec(command);
         if (short) {
-            console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Shell (' + type + '): \x1b[36m' + text);
+            console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Shell (' + type + '): \x1b[36m' + text);
         } else {
-            console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Shell (' + type + '): \x1b[36m' + command);
+            console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Shell (' + type + '): \x1b[36m' + command);
         }
     } else {
         ssh.execCommand(command).then(() => {
             if (short) {
-                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Shell (' + type + '): \x1b[36m' + text);
+                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Shell (' + type + '): \x1b[36m' + text);
             } else {
-                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Shell (' + type + '): \x1b[36m' + command);
+                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Shell (' + type + '): \x1b[36m' + command);
             }
         });
     }
