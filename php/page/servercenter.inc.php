@@ -249,8 +249,6 @@ if ($l > $lmax) {
     $servername = substr($servername, 0 , $lmax) . " ...";
 }
 
-if ($txt_alert != null) $resp .= meld_full('info', nl2br($txt_alert), 'Cluster: Alpha Version', null);
-
 
 $tpl->r('danger_resp', $danger_list);
 $tpl->r('warning_resp', $warning_list);

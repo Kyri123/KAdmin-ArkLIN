@@ -8,13 +8,21 @@
  * *******************************************************************************************
 */
 
-
-$dir = dirToArray('remote/arkmanager/instances/');
+$ipath = 'remote/arkmanager/instances/';
+$dir = scandir($ipath);
     for ($i=0;$i<count($dir);$i++) {
-        $checkit = false;
-        if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
-            $serv = new server($dir[$i]);
+        $ifile = $ipath.$dir[$i];
+        // wenn es ein Verzeichnis ist skippe
+        if(is_dir($ifile)) continue;
 
+        $ifile_info = pathinfo($ipath.$dir[$i]);
+        $checkit = false;
+
+        if ($ifile_info['extension'] == "cfg" && strpos($ifile_info['filename'], "example") !== true) {
+            //erstelle Server Klasse
+            $serv = new server($ifile_info['filename']);
+
+            // Erstelle logdateien
             $log = 'app/json/saves/chat_'.$serv->name().'.log';
             if (!file_exists($log)) file_put_contents($log, " ");
             $pl = 'app/json/saves/pl_'.$serv->name().'.players';
@@ -22,15 +30,17 @@ $dir = dirToArray('remote/arkmanager/instances/');
 
             if ($serv->isinstalled() == "TRUE") {
 
+                // lade Spielstände & Informationen
                 $path = $serv->dir_save();
                 $container = null;
                 $container = new Container();
                 $container->LoadDirectory($path);
                 $container->LinkPlayersAndTribes();
 
-                $json_user = null;
-                $json_tribe = null;
+                // lösche inhalt von vars
+                $json_user = $json_tribe = null;
 
+                // holen Stamm Informationen
                 $z = 0;
                 foreach($container->Tribes as $tribe)
                 {
@@ -43,6 +53,7 @@ $dir = dirToArray('remote/arkmanager/instances/');
                     $z++;
                 }
 
+                // holen Spieler Informationen
                 $z = 0;
                 foreach($container->Players as $Players)
                 {
@@ -60,31 +71,23 @@ $dir = dirToArray('remote/arkmanager/instances/');
                     $z++;
                 }
 
-                if (!$json_user_enc = json_encode($json_user, JSON_INVALID_UTF8_SUBSTITUTE)) echo '<br />false!<br />';
-                if (!$json_user_tribe = json_encode($json_tribe, JSON_INVALID_UTF8_SUBSTITUTE)) echo '<br />false!<br />';
-
-                file_put_contents('app/json/saves/tribes_'.$serv->name().'.json', $json_user_tribe);
-                file_put_contents('app/json/saves/player_'.$serv->name().'.json', $json_user_enc);
- 
+                // Speicher Informationen / encode
+                if ($json_user_enc = json_encode($json_user, JSON_INVALID_UTF8_SUBSTITUTE)) file_put_contents('app/json/saves/tribes_'.$serv->name().'.json', $json_user_tribe);
+                if ($json_user_tribe = json_encode($json_tribe, JSON_INVALID_UTF8_SUBSTITUTE)) file_put_contents('app/json/saves/player_'.$serv->name().'.json', $json_user_enc);
             }
-            $container = null;
-            $json_user = null;
-            $json_tribe = null;
+            // lösche inhalt von vars
+            $container = $json_user = $json_tribe = null;
 
             // erstelle STATUS
-            $log_file = 'sh/resp/'.$serv->name().'/status.log';
-            $time = time();
-            $file_time = filemtime($log_file);
-            if (!file_put_contents($log_file.'2', sh_crontab(file_get_contents($log_file)))) exit;
-            $log_file = 'sh/resp/'.$serv->name().'/status.log2';
-            $log_file = 'sh/resp/'.$serv->name().'/status.log';
-            $diff = $time - $file_time;
-            if ($diff > $timediff['player']) {
-                $checkit = true;
+            $raw = 'app/json/serverinfo/raw_'.$serv->name().'.json';
+            if (file_exists($raw)) {
+                $checkit = true; $server = null;
 
                 $jsonfile = 'app/json/serverinfo/'.$serv->name().'.json';
                 $raw_jsonfile = $helper->file_to_json('app/json/serverinfo/raw_'.$serv->name().'.json');
+                $server = $helper->file_to_json($jsonfile);
                 
+                // setzte Default daten
                 $server['warning_count'] = 0;
                 $server['error_count'] = 0;
                 $server['error'] = null;
@@ -99,73 +102,77 @@ $dir = dirToArray('remote/arkmanager/instances/');
                 $server['listening'] = 'No';
                 $server['installed'] = $serv->isinstalled();
 
+                // verarbeite AA-Server response
                 foreach($raw_jsonfile as $k => $v) $server[$k] = $v;
-
                 $server['run'] = ($server['run'] === true) ? "Yes" : "No";
 
+                // lese Status für die Ausführung von Aktionen
                 if (!file_exists('sh/serv/jobs_ID_'.$serv->name().'.state')) file_put_contents('sh/serv/jobs_ID_'.$serv->name().'.state', 'TRUE');
-                $serv_state = file_get_contents('sh/serv/jobs_ID_'.$serv->name().'.state');
-                $serv_state = str_replace("\n", null, $serv_state);
-                $serv_state = str_replace(" ", null, $serv_state);
+                $serv_state = trim(file_get_contents('sh/serv/jobs_ID_'.$serv->name().'.state'));
                 $log = 'sh/resp/'.$serv->name().'/last.log';
-                $filetime = filemtime($log);
-                $diff = time()-$filetime;
-                if ($serv_state == 'TRUE' && $diff > 10) {
+                if ($serv_state == 'TRUE' && timediff($log, ($webserver['config']['ShellIntervall'] / 1000 + 3))) {
                     $server['next'] = 'FALSE';
                 }
                 else {
                     $server['next'] = 'TRUE';
                 }
 
-                //schreibe status
+                //schreibe Informationen zur verarbeitung
                 if ($checkit) {
-                    var_dump($server); echo "<hr>";
                     $helper->savejson_create($server, $jsonfile);
                 }
             }
+            
+            // Verbinde alle Chatlogs
+            $path_tolog = $serv->dir_save(true).'/Logs/'; echo "<br>";
+            if(file_exists($path_tolog) && is_dir($path_tolog)) {
+                $dirlog = scandir($path_tolog);
+                arsort($dirlog);
+                $log = null;
 
-            if ($server['online'] == 'Yes' && $serv->cfg_read('ark_RCONEnabled') == 'True' && $serv->cfg_read('ark_ServerAdminPassword') != '') {
+                // hole alle Logs und füge sie an dem String
+                foreach($dirlog as $v) {
+                    if(strpos($v, "ServerGame") !== false) {
+                        $file = $path_tolog.$v; 
+                        $log .= file_get_contents($file);
+                    }
+                } 
+
+                // Speicher Log
+                $log_file = $path_tolog.'ServerPanel.log';
+                echo file_put_contents($log_file, $log);
+            }
+
+            // erstelle Spielerliste (Online)
+            if ($serv->check_rcon()) {
+                // Verbinde zum RCON
                 $ip = $_SERVER['SERVER_ADDR'];
                 $port = $serv->cfg_read('ark_RCONPort');
                 $pw = $serv->cfg_read('ark_ServerAdminPassword');
                 $rcon = new Rcon($ip, $port, $pw, 3);
                 $rcon->connect();
 
-
-                //serverCHAT
-                $log = 'app/json/saves/chat_'.$serv->name().'.log';
-                $file = file_get_contents($log);
-                $file_old = $file;
-                $rcon->send_command('getchat');
-                $resp = $rcon->get_response();
-                $exp = explode("\n", $resp);
-                $string = null;
-                for ($u=0;$u<count($exp);$u++) {
-                    $string .= "\n".time()."(-/-)".$exp[$u];
-                }
-                $file = $file.$string;
-
-                if(
-                    strlen($file_old) < strlen($file) &&
-                    strpos($resp, 'But no response') !== false &&
-                    strpos($resp, 'Connection refused') !== false
-                ) file_put_contents($log, $file);
-
-
                 //serverPLAYER
+                //Überarbeiten???
                 $player = array();
                 $pl = 'app/json/saves/pl_'.$serv->name().'.players';
                 $rcon->send_command('listplayers');
                 $p_str = $rcon->get_response();
+
+                // wenn keine Spieler verbunden sind
                 if (strpos($p_str, 'No Players Connected') !== false) {
                     $player[0]['name'] = 'NO';
                     $player[0]['steamID'] = 0;
                     $p_str = json_encode($player, JSON_INVALID_UTF8_SUBSTITUTE);
                 }
+
+                // wenn Spieler verbunden sind
                 else {
+                    // Splite liste
                     $pli = 0;
                     $p_str = str_replace("\r", null, $p_str);
                     $exp_1 = explode("\n", $p_str);
+                    // verarbeite spielerliste
                     for ($y=0;$y<count($exp_1);$y++) {
                         if (strlen($exp_1[$y])>15) {
                             for ($x=0;$x<$serv->cfg_read('ark_MaxPlayers');$x++) {
@@ -181,9 +188,11 @@ $dir = dirToArray('remote/arkmanager/instances/');
                         }
                     }
                 }
+
+                // Speicher Liste
                 file_put_contents($pl, $p_str);
 
-                //disco
+                //Trenne Verbindung vom RCON
                 $rcon->disconnect();
             }
 

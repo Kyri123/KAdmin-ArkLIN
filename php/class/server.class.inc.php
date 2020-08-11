@@ -466,7 +466,6 @@ class server extends Rcon {
 
 }
 
-
 class data_server {
     public $warning_count;
     public $error_count;

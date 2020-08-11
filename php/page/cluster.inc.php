@@ -193,7 +193,6 @@ if (isset($_POST["add"])) {
                 $alert->r("cluster", $cluster);
                 $alert->r("clustermd5", $clustermd5);
                 $resp = $alert->re();
-                $resp = meld('success', "", 'Erfolgreich!', null);
             } else {
                 $alert->code = 1;
                 $resp = $alert->re();
@@ -308,6 +307,7 @@ foreach ($json as $mk => $mv) {
     $listtpl->rif ("PreventUploadDinos", $json[$mk]["opt"]["PreventUploadDinos"]);
 
     if (count($json[$mk]["servers"]) == 0 || array_search(1, array_column($json[$mk]["servers"], 'type')) === FALSE) {
+        // Todo $alert
         $txt = "Achtung es wurde kein Master oder Server gefunden! Bitte Prüfe dies.";
         $alert_r = meld_full('danger', nl2br($txt), 'Kein Master oder Server gesetzt!', null, "mb-0");
     }

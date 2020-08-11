@@ -7,6 +7,14 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+
+/**
+ * Setzte Icon von Dateien
+ *
+ * @param  mixed $target
+ * @param  mixed $ico
+ * @return string
+ */
 function setico($target, $ico = null) {
     if(is_dir($target)) {
         $ico = '<i class="nav-icon fas fa-folder-open" aria-hidden="true"></i>';
@@ -38,6 +46,12 @@ function setico($target, $ico = null) {
     return $ico;
 }
 
+/**
+ * Wandelt serverstatus in String (ML)
+ *
+ * @param  mixed $serverstate
+ * @return array
+ */
 function convertstate($serverstate) {
     if ($serverstate == 0) {
         $serv_state = "{::lang::php::function_allg::state_off}";
@@ -58,6 +72,11 @@ function convertstate($serverstate) {
     return array("color" => $serv_color,"str" => $serv_state);
 }
 
+/**
+ * // Informationen vom Arbeitsspeicher (in %)
+ *
+ * @return string
+ */
 function mem_perc(){
 
     $free = shell_exec('free');
@@ -71,6 +90,11 @@ function mem_perc(){
     return $memory_usage;
 }
 
+/**
+ * Informationen vom Arbeitsspeicher
+ *
+ * @return array
+ */
 function mem_array(){
     $free = shell_exec('free');
     $free = (string)trim($free);
@@ -83,60 +107,65 @@ function mem_array(){
     return $memory_usage;
 }
 
-function cpu_perc(){
 
+/**
+ * Prozzessor auslastung (in %)
+ *
+ * @return string
+ */
+function cpu_perc(){
     $load = sys_getloadavg();
     return $load[0];
-
 }
 
-#user allgmeine daten
-function getuserdata($data, $id) {
-    global $mycon;
-    $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \''.$id.'\'';
-    if ($mycon->query($query)->numRows() > 0) {
-        $row = $mycon->query($query)->fetchArray();
-        return $row[$data];
-    } else {
-        return '{::lang::php::function_allg::acc_notfound}';
-    }
-}
+/**
+ * Zufällige String reihenfolge
+ * 
+ * @param  int $l
+ * @return bool
+ */
 
 function rndbit($l) {
     return bin2hex(random_bytes($l));
 }
 
-
-function del_dir( $dir )
-{
-    if ( is_dir( $dir ) )
+/**
+ * Löscht das verzeichnis Rekursiv
+ * 
+ * @param  mixed $dir
+ * @return bool
+ */
+function del_dir($dir) {
+    if(is_dir($dir))
     {
-        $dir_handle = opendir( $dir );
-        if ( $dir_handle )
-        {
-            while( $file = readdir( $dir_handle ) )
-            {
-                if ($file != "." && $file != "..")
-           {
-               if ( ! is_dir( $dir."/".$file ) )
-               {
+        $dir_handle = opendir($dir);
+        if($dir_handle) {
+            while($file = readdir($dir_handle)) {
+            if ($file != "." && $file != "..") {
+                if (!is_dir($dir."/".$file))
+                {
                    unlink( $dir."/".$file );
-               }
-               else
-               {
+                } else {
                    unlink($dir.'/'.$file);
-               }
-
+                }
            }
-      }
-            closedir( $dir_handle );
         }
-        rmdir( $dir );
+            closedir($dir_handle);
+        }
+        rmdir($dir);
         return true;
     }
     return false;
 }
 
+/**
+ * Rechnet bit in gewünschten Format um 
+ *
+ * @param  mixed $size
+ * @param  mixed $sourceUnit Quelle bit | B | KB | MK | GB
+ * @param  mixed $targetUnit Ausgabe bit | B | KB | MK | GB
+ * @return string
+ */
 function bitrechner( $size, $sourceUnit = 'bit', $targetUnit = 'MB' ) {
     $units = array(
         'bit' => 0,
@@ -166,43 +195,13 @@ function bitrechner( $size, $sourceUnit = 'bit', $targetUnit = 'MB' ) {
     return round( $size, 2 ) . ' ' . array_keys($units)[$i];
 }
 
-function meld($type, $txt = '{ALERT_TXT}', $title = '{ALERT_TITLE}', $setcicon = null, $rounded = "rounded-0") {
-    $rnd = bin2hex(random_bytes(50));
-    $icon = "fas fa-question";
-    if ($type == "info") $icon = "fas fa-info";
-    if ($type == "danger") $icon = "fas fa-exclamation-triangle";
-    if ($type == "warning") $icon = "fas fa-exclamation-circle";
-    if ($type == "success") $icon = "fas fa-check";
-    if ($setcicon != null) $icon = $setcicon;
-    return '<div class="card card-'.$type.' '.$rounded.'" id="'.$rnd.'">
-              <div class="card-header '.$rounded.'">
-                <h3 class="card-title"><i class="icon '.$icon.'"></i> '.$title.'</h3>
-
-                <div class="card-tools">
-                      <button type="button" class="btn btn-tool" onclick="remove(\''.$rnd.'\')">
-                            <i class="fas fa-times"></i>
-                      </button>
-                </div>
-              </div>
-              <div class="card-body '.$rounded.'">
-                    '.$txt.'
-              </div>
-            </div>';
-}
-function meld_full($type, $txt = '{ALERT_TXT}', $title = '{ALERT_TITLE}', $setcicon = null, $rounded = "rounded-0") {
-    $icon = "fas fa-question";
-    if ($type == "info") $icon = "fas fa-info";
-    if ($type == "danger") $icon = "fas fa-exclamation-triangle";
-    if ($type == "warning") $icon = "fas fa-exclamation-circle";
-    if ($type == "success") $icon = "fas fa-check";
-    if ($setcicon != null) $icon = $setcicon;
-    return '<div class="alert alert-'.$type.' alert-dismissible '.$rounded.'">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <h5><i class="icon '.$icon.'"></i> '.$title.'</h5>
-                  '.$txt.'
-                </div>';
-}
-
+/**
+ * Schaut ob im Array ein String gefunden wird
+ *
+ * @param  mixed $haystack
+ * @param  array $array
+ * @return bool
+ */
 function strpos_arr($haystack, array $array)
 {
     foreach($array as $str) {
@@ -216,36 +215,27 @@ function strpos_arr($haystack, array $array)
     return $bool;
 }
 
-
-# Time
+/**
+ * Wandelt timestamp in String um
+ *
+ * @param  mixed $stamp
+ * @param  mixed $withsec
+ * @param  mixed $onlydate
+ * @return string
+ */
 function converttime($stamp, $withsec = false, $onlydate = false) {
     if ($withsec) return date("d.m.Y H:i:s", $stamp);
     if ($onlydate) return date("d.m.Y", $stamp);
     return date("d.m.Y H:i", $stamp);
 }
 
-# Alerts
-function alert($type, $text = '{ALERT_TXT}', $css = null, $title = '{ALERT_TITLE}') {
-    $rnd = bin2hex(random_bytes(50));
-    return '<div class="card card-'.$type.' '.$css.'" id="'.$rnd.'">
-              <div class="card-header">
-                <h3 class="card-title">'.$title.'</h3>
-
-                <div class="card-tools">
-                      <button type="button" class="btn btn-tool" onclick="remove(\''.$rnd.'\')">
-                            <i class="fas fa-times"></i>
-                      </button>
-                </div>
-                <!-- /.card-tools -->
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                    '.$text.'
-              </div>
-              <!-- /.card-body -->
-            </div>';
-}
-
+/**
+ * write_ini_file
+ *
+ * @param  mixed $array
+ * @param  mixed $file
+ * @return void
+ */
 function write_ini_file($array, $file)
 {
     $res = array();
@@ -261,6 +251,13 @@ function write_ini_file($array, $file)
     safefilerewrite($file, implode("\n", $res));
 }
 
+/**
+ * safefilerewrite
+ *
+ * @param  mixed $fileName
+ * @param  mixed $dataToSave
+ * @return void
+ */
 function safefilerewrite($fileName, $dataToSave)
 {    if ($fp = fopen($fileName, 'w'))
 {
@@ -280,6 +277,12 @@ function safefilerewrite($fileName, $dataToSave)
 
 }
 
+/**
+ * Wandelt ein Verzeichnis Rekursiv in ein array
+ *
+ * @param  mixed $dir
+ * @return array
+ */
 function dirToArray($dir) { 
 
     $result = array();
@@ -303,6 +306,12 @@ function dirToArray($dir) {
     return $result;
 }
 
+/**
+ * Filtern shell informationen aus einem String & modifiziert ihn (für Logdateien gedacht)
+ *
+ * @param  mixed $str
+ * @return void
+ */
 function filtersh($str) {
     $search  = array(
         "\e[0;39m",
@@ -411,7 +420,8 @@ function alog($str) {
     );
     $str = str_replace($search, $replace, $str);
 
-    /*$search  = array(
+    /* TODO Lang
+    $search  = array(
         'The server is starting', // 1
         'for instance ', // 2
         'Running command ', // 3
@@ -567,12 +577,23 @@ function alog($str) {
     return $str;
 }
 
+/**
+ * Fileter \r \t
+ *
+ * @param  mixed $str
+ * @return void
+ */
 function ini_save_rdy($str) {
     $str = str_replace("\r", null, $str);
     $str = str_replace("\t", null, $str);
     return $str;
 }
 
+/**
+ * Gibt eine liste der Sprachen aus
+ *
+ * @return string
+ */
 function get_lang_list() {
     $re = null;
     $dir = "app/lang";
@@ -595,4 +616,18 @@ function get_lang_list() {
     return $re;
 }
 
+/**
+ * Differnz von wann eine Datei erstellt wurde
+ *
+ * @param  mixed $file
+ * @param  mixed $diff
+ * @return void
+ */
+
+function timediff(String $file, Int $diff) {
+    if($file == "" || $file == null || !file_exists($file)) return -1;
+    $filetime = filemtime($file);
+    $differnz = time()-$filetime;
+    return ($differnz > $diff);
+}
 ?>

@@ -22,6 +22,7 @@
 
 
         <send_done>Gesendet</send_done>
+        <send_done_chat>Gesendet (Es kann ein paar Sekunden dauern bis es angezeigt wird)</send_done_chat>
         <send_fail>Fehler</send_fail>
         <pick_lang>Sprache wählen</pick_lang>
 

@@ -15,7 +15,7 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 - Lade die letzte Version runter und Lade die Dateien in deinen Webserver
 - Stelle den ArkAdmin-Server ein `arkadmin_server/config/server.json` (Siehe unten Config.Properties)
 - Installiere alle Node.JS Module `cd arkadmin_server` > `npm install`
-- Rufe über einen screen den ArkAdmin Server `cd arkadmin_server` > `screen -mdS ArkAdmin node server.js` (bitte den Command genau so benutzten damit der Auto-Updater diesen beenden kann) auf und las diesem Laufen
+- Starte nun den ArkAdmin-Server: `cd arkadmin_server` > `screen -mdS ArkAdmin node server.js`
 - Rufe die Webseite auf und folge der Installation
 
 # Update

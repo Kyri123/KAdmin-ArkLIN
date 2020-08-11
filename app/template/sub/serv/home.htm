@@ -360,7 +360,7 @@
                                     if (json.code == 1) {
                                         $("#livechatresp").html(json.msg);
                                         tx.val("");
-                                        tx.attr("placeholder", "{::lang::allg::send_done}");
+                                        tx.attr("placeholder", "{::lang::allg::send_done_chat}");
                                         getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
                                     } else {
                                         $("#livechatresp").html(json.msg);

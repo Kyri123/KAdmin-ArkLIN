@@ -55,24 +55,27 @@ switch ($case) {
         $tpl = new Template('chat.htm', 'app/template/lists/serv/jquery/');
         $tpl->load();
         $serv = new server($_GET['cfg']);
-        $path = 'app/json/saves/chat_'.$serv->name().'.log';
-        if (file_exists($path)) {
-            $filearray = file($path);
+        $file = $serv->dir_save(true).'/Logs/ServerPanel.log';
+        if (file_exists($file)) {
+            $filearray = file($file);
             $resp = null;
             $z = count($filearray)-1;
             $ib = 0;
+            $find = array(
+                "Log file open"
+            );
+            $k = 1;
             for ($i=0;$i<count($filearray);$i++) {
-                if ($filearray[$z] != null) {
-                    $exp = explode('(-/-)', $filearray[$z]);
+                if ($filearray[$z] != null && !strpos_arr($filearray[$z], $find)) {
+                    $filearray[$z] = preg_replace('#\[(.*?)\]#si', null, $filearray[$z]);
                     $tpl = new Template('chat.htm', 'app/template/lists/serv/jquery/');
-                    $tpl->load();
-                    $tpl->r('msg', $exp[1]);
-                    $tpl->r('time', date('d.m.Y - H:i:s', $exp[0]));
-                    $tpl->r('i', $ib);
+                    $tpl->load();;
+                    $tpl->r('msg', $filearray[$z]);
+                    $tpl->r('i', "<b class='text-info'>$k - </b>");
                     $resp .= $tpl->load_var();
+                    $k++;
                 }
                 $z--;
-                $ib++;
                 if ($ib>99) break;
             }
         }
