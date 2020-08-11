@@ -28,5 +28,5 @@ exports.exec = (command, config, type, short = false, text = undefined, logthis 
             }
         });
     }
-    if (logger) logthis.log("Shell: " + command);
+    if (logthis) logthis.log("Shell: " + command);
 };
