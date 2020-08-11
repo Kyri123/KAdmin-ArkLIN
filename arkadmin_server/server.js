@@ -31,7 +31,7 @@ global.dateFormat = require('dateformat');
 //global vars from JSON (Konfig)
 fs.readFile("config/server.json", 'utf8', (err, data) => {
     if (err == undefined) {
-        logger.log("\n Gestartet: ArkAdmin-Server");
+        logger.log("Gestartet: ArkAdmin-Server");
         //lade konfig als array
         config = JSON.parse(data, config);
 
