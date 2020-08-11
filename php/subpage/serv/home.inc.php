@@ -144,6 +144,16 @@ if ($bool_install) {
 
 if ($ifcadmin) $resp_cluster .= $alert->rd(300, 3);
 if ($ifwhitelist) $resp_cluster .= $alert->rd(304, 3);
+$lchatactive = true;
+if (
+    !($serv->cfg_check("arkflag_servergamelog") &&
+    $serv->cfg_check("arkflag_servergamelogincludetribelogs") &&
+    $serv->cfg_check("arkflag_ServerRCONOutputTribeLogs") &&
+    $serv->cfg_check("arkflag_logs"))
+) {
+    $resp_cluster .= $alert->rd(308, 3);
+    $lchatactive = false;
+}
 
 $alert->code = 202;
 $alert->overwrite_style = 3;
@@ -153,6 +163,7 @@ $white_alert = $alert->re();
 $page_tpl->rif ("installed", $bool_install);
 $page_tpl->rif ('ifwhitelist', $ifwhitelist);
 $page_tpl->rif ('rcon', $serv->check_rcon());
+$page_tpl->rif ('lchatactive', $lchatactive);
 $page_tpl->rif ('whiteactive', $serv->cfg_check("arkflag_exclusivejoin"));
 $page_tpl->r ('whiteactive_meld', $white_alert);
 $page_tpl->r("userlist_admin", $userlist_admin);

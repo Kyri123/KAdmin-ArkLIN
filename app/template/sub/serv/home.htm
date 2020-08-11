@@ -13,10 +13,10 @@
                 <li class="nav-item" style="margin-right: 5px">
                     <a class="nav-link active" id="pills-llog-tab" data-toggle="pill" href="#pills-llog" role="tab" aria-controls="pills-llog" aria-selected="true" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')">{::lang::servercenter::home::nav::llog}</a>
                 </li>
-                {rcon}
+                {rcon}{lchatactive}
                 <li class="nav-item" style="margin-right: 5px">
                     <a class="nav-link" id="pills-lchat-tab" data-toggle="pill" href="#pills-lchat" role="tab" aria-controls="pills-lchat" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::lchat}</a>
-                </li>
+                </li>{/lchatactive}
                 <li class="nav-item">
                     <a class="nav-link" id="pills-rcon-tab" data-toggle="pill" href="#pills-rcon" role="tab" aria-controls="pills-rcon" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::rcon}</a>
                 </li>{/rcon} {installed}{!ifcadmin}
@@ -96,7 +96,7 @@
                 </table>
                 </div>
 
-                {rcon}
+                {rcon}{lchatactive}
                 <div class="tab-pane fade" id="pills-lchat" role="tabpanel" aria-labelledby="pills-lchat-tab">
                     <table class="table table-striped mb-0">
                         <tr class="bg-dark">
@@ -136,7 +136,7 @@
                             </td>
                         </tr>
                     </table>
-                    </div>
+                    </div>{/lchatactive}
 
                     <div class="tab-pane fade" id="pills-rcon" role="tabpanel" aria-labelledby="pills-rcon-tab">
                         <table class="table table-striped mb-0">

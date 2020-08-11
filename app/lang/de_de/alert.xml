@@ -388,5 +388,17 @@
             <title>SteamCMD Info</title>
             <text>Diese Optionen sind WIP und werden bald Erweitert</text>
         </c_307>
+
+        <!-- INFO | Live-Chat deaktiviert -->
+        <c_308>
+            <title>Live-Chat Info</title>
+            <text>Achtung Live-Chat ist nicht aktiv! Folgende Flaggen müssen gesetzt sein:
+
+                - Servergamelog
+                - servergameloginincludestribelog
+                - ServerRCONOutouTribeLog
+                - logs
+            </text>
+        </c_308>
     </alert>
 </lang>
