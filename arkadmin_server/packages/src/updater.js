@@ -43,8 +43,14 @@ exports.auto = () => {
                             'rm ./install.php ; ' +
                             'rm ./arkadmin_server/data/sha.txt ; ' +
                             'yes | cp -rf ./ ' + config.WebPath + '/ ;' +
-                            'cd ../..; rm -R tmp; exit;\'';
-
+                            'cd ../..; rm -R tmp;\'' +
+                            // Starte danach sen ArkAdmin-Server neu
+                            'screen -X -S ArkAdmin quit ; ' +
+                            'cd ' + config.WebPath + '/arkadmin_server/ ; ' +
+                            'npm install ; ' +
+                            'sleep 2s ; ' +
+                            'screen -mdS ArkAdmin node server.js ;' +
+                            'exit;\'';
                         // Beginne Update
                         shell.exec(command, config.use_ssh, 'Auto-Updater', true, 'Update wird gestartet');
                         fs.writeFile("data/sha.txt", "" + api.commit.sha, (err) => {});

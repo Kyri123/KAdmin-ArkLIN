@@ -15,7 +15,7 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 - Lade die letzte Version runter und Lade die Dateien in deinen Webserver
 - Stelle den ArkAdmin-Server ein `arkadmin_server/config/server.json` (Siehe unten Config.Properties)
 - Installiere alle Node.JS Module `cd arkadmin_server` > `npm install`
-- Rufe über einen screen den ArkAdmin Server `cd arkadmin_server` > `node server.js` auf und las diesem Laufen
+- Rufe über einen screen den ArkAdmin Server `cd arkadmin_server` > `screen -mdS ArkAdmin node server.js` (bitte den Command genau so benutzten damit der Auto-Updater diesen beenden kann) auf und las diesem Laufen
 - Rufe die Webseite auf und folge der Installation
 
 # Update
@@ -40,10 +40,13 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 | `AAPath` | Ordnerpfad wo sich Arkmanager befindet - Normalerweise in: `/etc/arkmanager`  |
 | `ServerPath` | Ordnerpfad wo die Server gespeichert werden |
 | `SteamPath` | Ordnerpfad wo die SteamCMD liegt gespeichert werden `bsp.: /home/steam/Steam` |
-| `WebIntervall` | Intervall für das abrufen des Crontabs (Hauptfunktionen) |
-| `CHMODIntervall` | `in Millisekunden` Intervall für das überschreiben der Rechte |
-| `ShellIntervall` | `in Millisekunden` Intervall für das abrufen der Shell Dateien |
-| `StatusIntervall` | `in Millisekunden` Intervall für das abrufen von dem Status des Servers (Dieser wert sollte nicht zu klein sein) |
+| `WebIntervall` | Intervall für das abrufen des Crontabs (Hauptfunktionen) (Mindestens: *5000*) |
+| `CHMODIntervall` | `in Millisekunden` Intervall für das überschreiben der Rechte (Mindestens: *60000*) |
+| `ShellIntervall` | `in Millisekunden` Intervall für das abrufen der Shell Dateien (Mindestens: *10000*) |
+| `StatusIntervall` | `in Millisekunden` Intervall für das abrufen von dem Status des Servers (Mindestens: *5000*) |
+| `autoupdater_intervall` | `in Millisekunden` Intervall für das abrufen des Automatischen Updates (Mindestens: *120000*) |
+| `autoupdater_branch` | Welche Github Branch soll dafür verwendet werden |
+| `autoupdater_active` | Soll der Updater aktiv sein (1: an;0: aus)  |
 | `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ] |
 | `use_ssh` | Aktiviere/Deaktivere SHH (1: an;0: aus) benötigt konfiguration in ssh.js |
 
