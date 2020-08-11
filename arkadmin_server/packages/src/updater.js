@@ -43,7 +43,7 @@ exports.auto = () => {
                             'rm ./install.php ; ' +
                             'rm ./arkadmin_server/data/sha.txt ; ' +
                             'yes | cp -rf ./ ' + config.WebPath + '/ ;' +
-                            'cd ../..; rm -R tmp;\'' +
+                            'cd ../..; rm -R tmp;' +
                             // Starte danach sen ArkAdmin-Server neu
                             'screen -X -S ArkAdmin quit ; ' +
                             'cd ' + config.WebPath + '/arkadmin_server/ ; ' +
