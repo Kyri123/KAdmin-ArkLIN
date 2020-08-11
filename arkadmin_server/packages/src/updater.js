@@ -10,6 +10,7 @@
 const fs = require("fs");
 const req = require('request');
 const shell = require('./shell');
+const logger = require('./logger');
 
 exports.auto = () => {
     var options = {
@@ -34,6 +35,7 @@ exports.auto = () => {
                     } else {
                         // Update verfügbar
                         console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Auto-Updater: \x1b[36mUpdate wird gestartet');
+                        logger.log("Update auf: " + data);
                         var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
                             'rm -R tmp ; mkdir tmp ; cd tmp ;' +
                             'wget https://github.com/Kyri123/Arkadmin/archive/' + config.autoupdater_branch + '.zip ;' +

@@ -9,6 +9,7 @@
 
 //const { spawn } = require('child_process');
 const { exec } = require('child_process');
+const logger = require('./logger');
 
 exports.exec = (command, config, type, short = false, text = undefined) => {
     if (config == 0) {
@@ -27,4 +28,5 @@ exports.exec = (command, config, type, short = false, text = undefined) => {
             }
         });
     }
+    logger.log("Shell: " + command);
 };

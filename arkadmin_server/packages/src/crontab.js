@@ -8,6 +8,7 @@
  */
 
 const request = require('request');
+const logger = require('./logger');
 
 exports.req = (url) => {
     // Lade Abfragen

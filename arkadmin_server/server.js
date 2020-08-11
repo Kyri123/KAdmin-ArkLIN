@@ -15,12 +15,13 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.4.0.3";
+const version = "0.4.0.4";
 const mysql = require("mysql");
 const http = require('http');
 const updater = require("./packages/src/updater");
 const ip = require("ip");
 const md5 = require('md5');
+const logger = require('./packages/src/logger');
 
 var config_ssh = sshK.login();
 global.config = [];
@@ -30,6 +31,7 @@ global.dateFormat = require('dateformat');
 //global vars from JSON (Konfig)
 fs.readFile("config/server.json", 'utf8', (err, data) => {
     if (err == undefined) {
+        logger.log("\n Gestartet: ArkAdmin-Server");
         //lade konfig als array
         config = JSON.parse(data, config);
 
@@ -73,7 +75,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                 port: config_ssh.port,
                 privateKey: fs.readFileSync(config_ssh.key_path, 'utf8')
             };
-            if (ssh.connect(option)) process.exit(3);
+            if (!ssh.connect(option)) process.exit(3);
         }
 
         // mysql verbindung aufbauen
@@ -97,9 +99,12 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
                         con.connect((err) => {
                             if (!err) {
+                                logger.log("Verbunden: Mysql");
+                                logger.log("Gestartet: Jobs & Commands");
                                 global.iscon = true;
                                 console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Mysql: \x1b[32mVerbindung aufgebaut - Shell/Jobs Aktiviert');
                             } else {
+                                logger.log("Fehler: Mysql hat keine Verbindung aufgebaut");
                                 global.iscon = false;
                                 console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Mysql: \x1b[91mVerbindung fehlgeschlagen (Verbindungsfehler Fehler) - Shell/Jobs Deaktiviert');
                             }
@@ -137,6 +142,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             shell.exec("chmod 777 -R " + config.ServerPath, config.use_ssh, 'CHMOD');
             shell.exec("chmod 777 -R " + config.SteamPath, config.use_ssh, 'CHMOD');
         }, config.CHMODIntervall);
+        logger.log("Gestartet: CHMOD");
 
         // Startet Auto-Updater
         setInterval(() => {
@@ -146,17 +152,21 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss") + '] Server (Webserver): \x1b[36mhttp://' + ip.address() + ':' + config.port + '/');
         // Webserver für Abrufen des Server Status
         http.createServer((req, res) => {
-            var resp = '{"version":"' + version + '","db_conntect":"' + iscon + '"}';
             var ref = req.headers.referer;
             if (req.headers.referer != undefined) {
                 if (ref.includes("update") && ref.includes(md5(ip.address()))) {
                     updater.auto();
-                    resp = "{\"update\":\"running\"}";
+                    resp = '{"version":"' + version + '","db_conntect":"' + iscon + '","update":"running"}';
+                } else {
+                    resp = '{"version":"' + version + '","db_conntect":"' + iscon + '"}';
                 }
+            } else {
+                resp = '{"version":"' + version + '","db_conntect":"' + iscon + '"}';
             }
             res.write(resp);
             res.end();
         }).listen(config.port);
+        logger.log("Gestartet: Webserver");
 
         console.log('\x1b[36m%s\x1b[0m', "------------------------------------------------------");
     } else {
@@ -167,11 +177,39 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
 // Code Meldungen
 process.on('exit', function(code) {
-    if (code == 2) return console.log(`\x1b[91mBitte stelle die Konfiguration ein! (config/server.json)`);
-    if (code == 3) return console.log(`\x1b[91mKeine Verbindung zum SSH2 Server`);
-    if (code == 4) return console.log(`\x1b[91mMinimal Werte unterschritten: WebIntervall darf nicht kleiner als 5000 sein!`);
-    if (code == 5) return console.log(`\x1b[91mMinimal Werte unterschritten: CHMODIntervall darf nicht kleiner als 60000 sein!`);
-    if (code == 6) return console.log(`\x1b[91mMinimal Werte unterschritten: ShellIntervall darf nicht kleiner als 10000 sein!`);
-    if (code == 7) return console.log(`\x1b[91mMinimal Werte unterschritten: StatusIntervall darf nicht kleiner als 5000 sein!`);
-    if (code == 8) return console.log(`\x1b[91mMinimal Werte unterschritten: autoupdater_intervall darf nicht kleiner als 120000 sein!`);
+    if (code == 2) {
+        logger.log("Beendet: Bitte stelle die Konfiguration ein! (config/server.json)");
+        logger.log("Beendet: ArkAdmin-Server \n");
+        return console.log(`\x1b[91mBitte stelle die Konfiguration ein! (config/server.json)`);
+    }
+    if (code == 3) {
+        logger.log("Beendet: Keine Verbindung zum SSH2 Server");
+        logger.log("Beendet: ArkAdmin-Server \n");
+        return console.log(`\x1b[91mKeine Verbindung zum SSH2 Server`);
+    }
+    if (code == 4) {
+        logger.log("Beendet: Minimal Werte unterschritten: WebIntervall darf nicht kleiner als 5000 sein!");
+        logger.log("Beendet: ArkAdmin-Server \n");
+        return console.log(`\x1b[91mMinimal Werte unterschritten: WebIntervall darf nicht kleiner als 5000 sein!`);
+    }
+    if (code == 5) {
+        logger.log("Beendet: Minimal Werte unterschritten: CHMODIntervall darf nicht kleiner als 60000 sein!");
+        logger.log("Beendet: ArkAdmin-Server \n");
+        return console.log(`\x1b[91mMinimal Werte unterschritten: CHMODIntervall darf nicht kleiner als 60000 sein!`);
+    }
+    if (code == 6) {
+        logger.log("Beendet: Minimal Werte unterschritten: ShellIntervall darf nicht kleiner als 10000 sein!");
+        logger.log("Beendet: ArkAdmin-Server \n");
+        return console.log(`\x1b[91mMinimal Werte unterschritten: ShellIntervall darf nicht kleiner als 10000 sein!`);
+    }
+    if (code == 7) {
+        logger.log("Beendet: Minimal Werte unterschritten: StatusIntervall darf nicht kleiner als 5000 sein!");
+        logger.log("Beendet: ArkAdmin-Server \n");
+        return console.log(`\x1b[91mMinimal Werte unterschritten: StatusIntervall darf nicht kleiner als 5000 sein!`);
+    }
+    if (code == 8) {
+        logger.log("Beendet: Minimal Werte unterschritten: autoupdater_intervall darf nicht kleiner als 120000 sein!");
+        logger.log("Beendet: ArkAdmin-Server \n");
+        return console.log(`\x1b[91mMinimal Werte unterschritten: autoupdater_intervall darf nicht kleiner als 120000 sein!`);
+    }
 });
