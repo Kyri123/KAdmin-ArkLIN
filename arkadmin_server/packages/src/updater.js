@@ -48,7 +48,7 @@ exports.auto = () => {
                             'yes | cp -rf ./ ' + config.WebPath + '/ ;' +
                             'cd ../..; rm -R tmp;' +
                             // Starte danach sen ArkAdmin-Server neu
-                            'screen -X -S ArkAdmin quit ; ' +
+                            'screen -S ArkAdmin -p 0 -X quit ; ' +
                             'cd ' + config.WebPath + '/arkadmin_server/ ; ' +
                             'npm install ; ' +
                             'sleep 2s ; ' +
