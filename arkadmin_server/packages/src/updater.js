@@ -38,7 +38,7 @@ exports.auto = () => {
                         // Update verfügbar
                         console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[36mUpdate wird gestartet');
                         logger.log("Autoupdate: Update... " + data);
-                        logger.log("Autoupdate: Beende  Server");
+                        logger.log("Autoupdate: Beende Server");
                         var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
                             'rm -R tmp ; mkdir tmp ; cd tmp ;' +
                             'wget https://github.com/Kyri123/Arkadmin/archive/' + config.autoupdater_branch + '.zip ;' +
@@ -52,6 +52,7 @@ exports.auto = () => {
                             'rm ./install.php ; ' +
                             'rm ./arkadmin_server/data/sha.txt ; ' +
                             'rm ./arkadmin_server/data/server.log ; ' +
+                            // Spiele Update auf
                             'yes | cp -rf ./ ' + config.WebPath + '/ ;' +
                             'cd ../..; rm -R tmp;' +
                             // Starte danach sen ArkAdmin-Server neu
@@ -59,7 +60,9 @@ exports.auto = () => {
                             // Installiere Module
                             'npm install ; ' +
                             'sleep 2s ; ' +
+                            // Starte Server wieder
                             'screen -mdS ArkAdmin node server.js ;' +
+                            'screen -wipe ;' +
                             'exit;\'';
                         // Beginne Update
                         shell.exec(command, config.use_ssh, 'Auto-Updater', true, 'Update wird gestartet');
