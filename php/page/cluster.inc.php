@@ -20,11 +20,11 @@ $tpl->load();
 
 $clusterjson_path = "app/json/panel/cluster_data.json";
 
+// Hole Cluster Array / Json
 if (!file_exists($clusterjson_path)) if (!file_put_contents($clusterjson_path, "[]")) die;
 $json = $helper->file_to_json($clusterjson_path);
 
-//remove Cluster
-
+//Entferne Cluster
 if (isset($url[3]) && $url[2] == "removecluster") {
     $key = $url[3];
     if (isset($json[$key])) unset($json[$key]);
@@ -32,6 +32,7 @@ if (isset($url[3]) && $url[2] == "removecluster") {
     header("Location: /cluster"); exit;
 }
 
+// Entferne Server vom Cluster
 if (isset($url[4]) && $url[2] == "remove") {
     $key = $url[3];
     $cfg = $url[4];
@@ -46,6 +47,7 @@ if (isset($url[4]) && $url[2] == "remove") {
     header("Location: /cluster"); exit;
 }
 
+// Toggle Type vom Server (Master/Slave)
 if (isset($url[5]) && $url[2] == "settype") {
     $key = $url[3];
     $cfgkey = $url[4];
@@ -73,7 +75,7 @@ if (isset($url[5]) && $url[2] == "settype") {
     header("Location: /cluster"); exit;
 }
 
-//Füge server zum Cluster
+//Füge server zum Cluster hinzu
 if (isset($_POST["addserver"])) {
     $key = $_POST["key"];
     $cfg = $_POST["server"];
@@ -90,20 +92,24 @@ if (isset($_POST["addserver"])) {
             $server = new server($cfg);
 
             if ($helper->savejson_exsists($json, $clusterjson_path)) {
+                // Melde: Server hinzugefpgt
                 $alert->code = 104;
                 $alert->overwrite_text = "{::lang::php::cluster::overwrite::addedserver}";
                 $alert->r("servername", $server->cfg_read("ark_SessionName"));
                 $alert->r("cluster", $cluster);
                 $resp = $alert->re();
             } else {
+                // Melde: Schreib/Lese Fehler
                 $alert->code = 1;
                 $resp = $alert->re();
             }
         } else {
+            // Melde: Cluster Fehler
             $alert->code = 10;
             $resp = $alert->re();
         }
     } else {
+        // Melde: Server nicht ausgewählt
         $alert->code = 9;
         $resp = $alert->re();
     }

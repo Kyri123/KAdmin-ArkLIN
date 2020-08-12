@@ -15,7 +15,7 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.4.0.5";
+const version = "0.4.0.6";
 const mysql = require("mysql");
 const http = require('http');
 const updater = require("./packages/src/updater");
@@ -194,14 +194,25 @@ process.on('exit', function(code) {
 
     // Exit: Minimalwert von X ist unterschritten
     if (code >= 4 && code <= 8) {
-        if (code == 4) parameter = "WebIntervall";
-        if (code == 5) parameter = "CHMODIntervall";
-        if (code == 6) parameter = "ShellIntervall";
-        if (code == 7) parameter = "StatusIntervall";
-        if (code == 8) parameter = "autoupdater_intervall";
+        if (code == 4) {
+            parameter = "WebIntervall";
+            wert = 5000;
+        } else if (code == 5) {
+            parameter = "CHMODIntervall";
+            wert = 60000;
+        } else if (code == 6) {
+            parameter = "ShellIntervall";
+            wert = 10000;
+        } else if (code == 7) {
+            parameter = "StatusIntervall";
+            wert = 5000;
+        } else if (code == 8) {
+            parameter = "autoupdater_intervall";
+            wert = 120000;
+        }
 
-        logger.log("Beendet: Minimal Werte unterschritten: " + parameter + " darf nicht kleiner als 5000 sein!");
+        logger.log("Beendet: Minimal Werte unterschritten: " + parameter + " darf nicht kleiner als " + wert + " sein!");
         logger.log("Beendet: ArkAdmin-Server \n");
-        return console.log("\x1b[91mMinimal Werte unterschritten: " + parameter + " darf nicht kleiner als 5000 sein!");
+        return console.log("\x1b[91mMinimal Werte unterschritten: " + parameter + " darf nicht kleiner als " + wert + " sein!");
     }
 });

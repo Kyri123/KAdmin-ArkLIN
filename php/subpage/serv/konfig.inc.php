@@ -14,7 +14,7 @@ $page_tpl->load();
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}</li>';
 
-// arkmanager.cfg Speichern
+// arkmanager.cfg Speichern (Normaler Modus)
 $resp = $ark_flag = $eventlist = null;
 if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
     $value = $_POST['value'];
@@ -22,6 +22,7 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
     $flag = $_POST['flag'];
     $cfg = null;
 
+    // entfernte gamemod && mapmod wenn ModSupport Deaktiviert
     $remove[] = null;
     if(!$serv->mod_support()) {
         $remove[] = "ark_GameModIds";
@@ -33,6 +34,7 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
         if($write) $cfg .= $key[$i].'="'.$value[$i]."\"\n";
     }
 
+    // Füge Flaggen hinzu die Ausgewählt sind
     if(is_array($flag)) {
         for ($i=0;$i<count($flag);$i++) {
             $cfg .= "arkflag_".$flag[$i].'="True"'."\n";
@@ -43,18 +45,22 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
     $cfg = ini_save_rdy($cfg);
     $cfg = str_replace("Array", null, $cfg);
     $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
+    // Prüfe ob Datei beschrieben wurde
     if (file_put_contents($path, $cfg)) {
+        // Melde: Erfolg
         $resp = $alert->rd(102);
         //header("Refresh:0"); exit;
     } else {
+        // Melde Lese/Schreib Fehler
         $resp = $alert->rd(1);
     } 
 }
 else {
+    // Melde Fehlschlag
     if(isset($_POST['savecfg'])) $resp = $alert->rd(7);
 }
 
-// arkmanager.cfg Speichern
+// GameUserSettings.ini Speichern (Normaler Modus)
 $resp = null;
 if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
 
@@ -77,13 +83,17 @@ if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode
     $type = $_POST["type"];
     $path = $serv->dir_konfig().$type;
     $text = ini_save_rdy($cfg_done);
+    // Wenn Datei geschreiben wurde
     if (file_put_contents($path, $text)) {
+        // Melde: Erfolg
         $resp = $alert->rd(102);
     } else {
+        // Melde: Lese/SchreibFeher
         $resp = $alert->rd(1);
     }
 }
 else {
+    // Melde Fehlschlag
     if(isset($_POST['savenormal'])) $resp = $alert->rd(7);
 }
 
@@ -92,33 +102,42 @@ if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_
     $txtarea = $_POST['txtarea'];
     $cfg = ini_save_rdy($txtarea);
     $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
+    // Wenn Datei geschreiben wurde
     if (file_put_contents($path, $cfg)) {
+        // Melde: Erofolg
         $resp = $alert->rd(102);
     } else {
+        // Melde: Lese/Schreib Fehler
         $resp = $alert->rd(1);
     } 
 }
 else {
+    // Melde Fehlschlag
     if(isset($_POST['savecfg_expert'])) $resp = $alert->rd(7);
 }
 
-// Game,GUS,Engine.ini Speichern
+// Game,GUS,Engine.ini Speichern (Expertenmodus)
 if (isset($_POST['save']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
     $type = $_POST["type"];
     $text = $_POST["text"];
     $path = $serv->dir_konfig().$type;
+    // Prüfe ob Datei Exsistiert
     if (file_exists($path)) {
         $text = ini_save_rdy($text);
         if (file_put_contents($path, $text)) {
+            // Mel.de Erfolg
             $resp = $alert->rd(102);
         } else {
+            // Melde: Lese/Schreib Fehler
             $resp = $alert->rd(1);
         }
     } else {
+        // Melde: Lese/Schreib Fehler
         $resp = $alert->rd(1);
     }
 }
 else {
+    // Melde Fehlschlag
     if(isset($_POST['save'])) $resp = $alert->rd(7);
 }
 
@@ -135,6 +154,7 @@ $gus_bool = ($serv->ini_load('GameUserSettings.ini', true));
 $game_bool = ($serv->ini_load('Game.ini', true));
 $engine_bool = ($serv->ini_load('Engine.ini', true));
 
+// Prüfe ob Inis exsistieren
 $show = (
     file_exists($serv->dir_save(true)."/Config/LinuxServer/GameUserSettings.ini") && 
     file_exists($serv->dir_save(true)."/Config/LinuxServer/Game.ini") && 
@@ -181,6 +201,7 @@ $form .= '
         </td>
     </tr>';
 
+// Wenn Installiert dann gebe Inis aus
 if ($serv->isinstalled()) {
     $hide_cluster = array(
         "ark_NoTransferFromFiltering",
@@ -228,12 +249,14 @@ if ($serv->isinstalled()) {
     $ini = parse_ini_file('remote/arkmanager/instances/'.$url[2].'.cfg', false);
     if(!isset($ini["ark_GameModIds"])) $ini["ark_GameModIds"] = "";
     if(!isset($ini["serverMapModId"])) $ini["serverMapModId"] = "";
+    // Gehe ini Durch um Editor zu erstellen
     foreach($ini as $key => $val) {
         if ($key) {
             if (in_array($key, $remove)) {
-                null;
+                // Entferne aus der Ini
             }
             elseif (strpos($key, 'arkflag_') !== false) {
+                // Gebe Flaggen seperat in ein Array um sie später weiter zu verarbeiten
                 array_push($flags, $key);
             }
             else {
@@ -279,8 +302,7 @@ if ($serv->isinstalled()) {
 }
 
 
-// GameUserSettings
-
+// Verarbeite Inis um Konfigurationen zu erstellen
 foreach($inis as $mk => $mv) {
     $re[$mk] = null;
     if(is_array($mv)) {
@@ -335,9 +357,7 @@ foreach($inis as $mk => $mv) {
     }
 }
 
-
-
-//flags
+// Erstelle Flaggen liste und verarbeite gesetzte Flaggen
 $flags_json = $helper->file_to_json("app/json/panel/flags.json", true);
 $i = 0;
 foreach($flags_json as $k => $v) {

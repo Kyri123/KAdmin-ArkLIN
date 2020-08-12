@@ -16,6 +16,7 @@ $jhelper = new player_json_helper();
 
 $resp = null;
 $c_pl = $c_t = $w_t = 0;
+
 // erstelle Zip download
 if (isset($_POST["zip"])) {
     if(!file_exists("app/downloads")) mkdir("app/downloads");
@@ -28,23 +29,25 @@ if (isset($_POST["zip"])) {
     if($tribe || $save || $map) {
         if(file_exists($zipfile)) unlink($zipfile);
         if(file_exists($zipfile.".gz")) unlink($zipfile.".gz");
-        if ($zip = new PharData($zipfile)) {
+        // Erstelle tar.gz
+        if ($tar = new PharData($zipfile)) {
             $dir = scandir($serv->dir_save());
             $path = $serv->dir_save();
-            //var_dump($dir);
             $file_count = 0;
             foreach($dir as $file) {
                 $file_path = "$path/$file";
+                // Prüfe ob Datei in die tar.gz darf
                 if(
                     (strpos($file, 'tribe') !== false && $tribe) ||
                     (strpos($file, 'ark') !== false && strpos($file, "_0") === false && strpos($file, "_2") === false && strpos($file, "_1") === false && strpos($file, "arktribe") === false && strpos($file, "arkprofile") === false && $map) ||
                     (strpos($file, 'profile') !== false && $save)
                 ) {
-                    if($zip->addFile($file_path)) $file_count++;
+                    if($tar->addFile($file_path)) $file_count++;
                 } 
             }
             //beende zip erstellung
-            if($zip->compress(Phar::GZ)) {
+            if($tar->compress(Phar::GZ)) {
+                // Melde Download bereit
                 $alert->code = 110;
                 $alert->r("url", "/$zipfile");
                 $resp = $alert->re(); //download startet
@@ -52,21 +55,25 @@ if (isset($_POST["zip"])) {
                 if(file_exists($zipfile)) unlink($zipfile);
             }
             else {
+                // Melde Schreibe/Lese Fehler
                 $resp = $alert->rd(1); 
             }
         }
         else {
+            // Melde Schreib/Lese Fehler
             $resp = $alert->rd(1);
         }
     }
     else {
+        // Melde Input Fehller (Fehlende Werte)
         $resp = $alert->rd(2);
     }
 }
 
+// Entferne Savegame
 if (isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
 
-    //set vars
+    // Setzte Vars
     $file_name = $url[5];
     $savedir = $serv->dir_save();
 
@@ -162,12 +169,15 @@ $urls = '/servercenter/'.$url[2].'/mods/';
 $serv->cfg_read('arkserverroot');
 $savedir = $serv->dir_save();
 
+// Listen
 $player = null;
 $tribe_json = $helper->file_to_json('app/json/saves/tribes_'.$serv->name().'.json', false);
 $player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.json', false);
 $playerjs = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true)["response"]["players"];
 $jhelper = new player_json_helper();
-// Spieler
+
+// Spieler liste
+// Todo: Rework
 $count = (is_countable($playerjs)) ? count($playerjs): false;
 if($count !== false) {
     for ($i=0;$i<$count;$i++) {
@@ -221,8 +231,9 @@ if($count !== false) {
 
 }
 $tribe = null; $c_t = 0;
-// Stämme
 
+// Stämme Liste
+// TODO: Rework
 if(is_countable($tribe_json)) {
     for ($i = 0; $i < count($tribe_json); $i++) {
         $list_tpl = new Template('tribes.htm', 'app/template/lists/serv/savegames/');
@@ -275,9 +286,10 @@ if(is_countable($tribe_json)) {
     }
 }
 
+
 $world = null; $w_t = 0;
 $dirarr = dirToArray($savedir);
-// World
+// World  Liste
 if(is_countable($dirarr)) {
     for ($i=0;$i<count($dirarr);$i++) {
         if (strpos($dirarr[$i], '.ark')) {

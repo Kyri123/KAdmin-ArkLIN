@@ -142,7 +142,7 @@ $tpl_b->r('pagename', $pagename);
 $tpl_b->r('pageicon', $pageicon);
 $tpl_h->r('pagename', $pagename);
 $tpl_b->r('aa_version', $version);
-$tpl_b->r('lastcheck_webhelper', converttime($helper->gethelpertime(), true));
+$tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path)) ? intval(file_get_contents($path)) : time()), true));
 $tpl_b->r('user', $user->name());
 $tpl_b->r('rank', $user->rang());
 $tpl_b->r('content', $content);
