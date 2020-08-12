@@ -25,6 +25,7 @@ exports.auto = () => {
         if (err) {
             // wenn keine verbindung zu Github-API besteht
             console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[91mVerbindung fehlgeschlagen');
+            logger.log("Autoupdate: Github Verbindung fehlgeschlagen");
         } else if (res.statusCode === 200) {
             // Prüfe SHA mit API
             fs.readFile("data/sha.txt", 'utf8', (err, data) => {
@@ -32,10 +33,11 @@ exports.auto = () => {
                     if (data == api.commit.sha) {
                         // kein Update
                         console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[32mIst auf dem neusten Stand');
+                        logger.log("Autoupdate: Panel & Server auf dem neusten Stand");
                     } else {
                         // Update verfügbar
                         console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[36mUpdate wird gestartet');
-                        logger.log("Update auf: " + data);
+                        logger.log("Autoupdate: Update... " + data);
                         var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
                             'rm -R tmp ; mkdir tmp ; cd tmp ;' +
                             'wget https://github.com/Kyri123/Arkadmin/archive/' + config.autoupdater_branch + '.zip ;' +
@@ -61,11 +63,13 @@ exports.auto = () => {
                 } else {
                     // sende Error wenn Datei nicht gefunden wenrden konnte
                     console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[91mLocale sha.txt nicht gefunden');
+                    logger.log("Autoupdate: Locale sha.txt nicht gefunden");
                 }
             });
         } else {
             // wenn keine verbindung zu Github-API besteht
             console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Auto-Updater: \x1b[91mVerbindung fehlgeschlagen');
+            logger.log("Autoupdate: Github Verbindung fehlgeschlagen");
         }
     });
 };
