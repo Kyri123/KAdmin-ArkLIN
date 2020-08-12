@@ -15,11 +15,10 @@ $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::home::urltop}</li>';
 $adminlist_admin = null;
 
-$user = new userclass();
-$user->setid($_SESSION['id']);
 $page_tpl->r('cfg' ,$serv->name());
 $page_tpl->r('SESSION_USERNAME' ,$user->name());
 
+// Erstelle Dateien wenn die nicht exsistieren
 $cheatfile = $serv->dir_save(true)."/AllowedCheaterSteamIDs.txt";
 $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
 if(!file_exists($cheatfile)) file_put_contents($cheatfile, " ");
@@ -28,47 +27,52 @@ if(!file_exists($whitelistfile) && file_exists($serv->dir_main()."/ShooterGame/B
 $playerjs = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true)["response"]["players"];
 $count = (is_countable($playerjs)) ? count($playerjs): false;
 
-//add_admin
+// Administrator hinzufügen
 if (isset($_POST["addadmin"])) {
     $id = $_POST["id"];
+    // SteamID bzw Input prüfen
     if(is_numeric($id) && $id > 700000000) {
         for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$i = $ix; break;};
         $content = file_get_contents($cheatfile)."\n$id";
         if (file_put_contents($cheatfile, $content)) {
+            // Melde: Abschluss (Hinzugefügt)
             $alert->code = 100;
             $alert->r("name", strval($playerjs[$i]["personaname"]));
             $alert->overwrite_text = "{::lang::php::sc::page::home::add_admin}";
             $resp = $alert->re();
         } else {
+            // Melde: Schreib/Lese Fehler
             $alert->code = 1;
             $resp = $alert->re();
         }
     } else {
+        // Melde: Input Fehler
         $alert->code = 2;
         $resp = $alert->re();
     }
 }
 
-//remove Admin
+// Entfernte von Adminliste
 if (isset($url[4]) && isset($url[5]) && $url[4] == 'rm') {
     $id = $url[5];
     for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$i = $ix; break;};
     $content = file_get_contents($cheatfile);
+    // Prüfe ob die ID exsistent ist
     if (substr_count($content, $id) > 0) {
         $content = str_replace($id, null, $content);
         if (file_put_contents($cheatfile, $content)) {
+            // Melde: Erfolgreich
             $alert->code = 101;
             $alert->r("name", $playerjs[$i]["personaname"]);
             $alert->overwrite_text = "{::lang::php::sc::page::home::remove_admin}";
             $resp = $alert->re();
         } else {
+            // Melde: Lese/Schreib Fehler
             $alert->code = 1;
             $resp = $alert->re();
         }
     }
 }
-
-
 
 
 $serv->cfg_read('arkserverroot');
@@ -77,9 +81,9 @@ $player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.js
 $tribe_json = $helper->file_to_json('app/json/saves/tribes_'.$serv->name().'.json', false);
 if (!is_array($player_json)) $player_json = array();
 if (!is_array($tribe_json)) $tribe_json = array();
-$bool_install = filter_var($serv->isinstalled(), FILTER_VALIDATE_BOOLEAN);
-//Liste für Admin
-if ($bool_install) {
+
+// Liste Admins auf
+if ($serv->isinstalled()) {
     if (!file_exists($cheatfile)) file_put_contents($cheatfile, "");
     $jhelper = new player_json_helper();
     $userlist_admin = null;
@@ -142,9 +146,11 @@ if ($bool_install) {
     }
 } 
 
+// Meldung wenn Clusterseitig Admin & Whitelist deaktiviert ist
 if ($ifcadmin) $resp_cluster .= $alert->rd(300, 3);
 if ($ifwhitelist) $resp_cluster .= $alert->rd(304, 3);
 $lchatactive = true;
+// Meldung wenn wegen fehlender Flagge Whitelist deaktiviert ist
 if (
     !($serv->cfg_check("arkflag_servergamelog") &&
     $serv->cfg_check("arkflag_servergamelogincludetribelogs") &&

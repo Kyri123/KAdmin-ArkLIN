@@ -125,6 +125,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
         //handle Crontab
         crontab.req("crontab/player");
+        crontab.req("crontab/status");
 
         //handle shell
         console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Geladen: \x1b[36mShell verwaltung');
@@ -177,39 +178,30 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
 // Code Meldungen
 process.on('exit', function(code) {
+    // Exit: Konfiguration enthält Default informationen
     if (code == 2) {
         logger.log("Beendet: Bitte stelle die Konfiguration ein! (config/server.json)");
         logger.log("Beendet: ArkAdmin-Server \n");
         return console.log(`\x1b[91mBitte stelle die Konfiguration ein! (config/server.json)`);
     }
+
+    // Exit: Es konnte zu SSH2 keine Verbingung aufgebaut werden
     if (code == 3) {
         logger.log("Beendet: Keine Verbindung zum SSH2 Server");
         logger.log("Beendet: ArkAdmin-Server \n");
         return console.log(`\x1b[91mKeine Verbindung zum SSH2 Server`);
     }
-    if (code == 4) {
-        logger.log("Beendet: Minimal Werte unterschritten: WebIntervall darf nicht kleiner als 5000 sein!");
+
+    // Exit: Minimalwert von X ist unterschritten
+    if (code >= 4 && code <= 8) {
+        if (code == 4) parameter = "WebIntervall";
+        if (code == 5) parameter = "CHMODIntervall";
+        if (code == 6) parameter = "ShellIntervall";
+        if (code == 7) parameter = "StatusIntervall";
+        if (code == 8) parameter = "autoupdater_intervall";
+
+        logger.log("Beendet: Minimal Werte unterschritten: " + parameter + " darf nicht kleiner als 5000 sein!");
         logger.log("Beendet: ArkAdmin-Server \n");
-        return console.log(`\x1b[91mMinimal Werte unterschritten: WebIntervall darf nicht kleiner als 5000 sein!`);
-    }
-    if (code == 5) {
-        logger.log("Beendet: Minimal Werte unterschritten: CHMODIntervall darf nicht kleiner als 60000 sein!");
-        logger.log("Beendet: ArkAdmin-Server \n");
-        return console.log(`\x1b[91mMinimal Werte unterschritten: CHMODIntervall darf nicht kleiner als 60000 sein!`);
-    }
-    if (code == 6) {
-        logger.log("Beendet: Minimal Werte unterschritten: ShellIntervall darf nicht kleiner als 10000 sein!");
-        logger.log("Beendet: ArkAdmin-Server \n");
-        return console.log(`\x1b[91mMinimal Werte unterschritten: ShellIntervall darf nicht kleiner als 10000 sein!`);
-    }
-    if (code == 7) {
-        logger.log("Beendet: Minimal Werte unterschritten: StatusIntervall darf nicht kleiner als 5000 sein!");
-        logger.log("Beendet: ArkAdmin-Server \n");
-        return console.log(`\x1b[91mMinimal Werte unterschritten: StatusIntervall darf nicht kleiner als 5000 sein!`);
-    }
-    if (code == 8) {
-        logger.log("Beendet: Minimal Werte unterschritten: autoupdater_intervall darf nicht kleiner als 120000 sein!");
-        logger.log("Beendet: ArkAdmin-Server \n");
-        return console.log(`\x1b[91mMinimal Werte unterschritten: autoupdater_intervall darf nicht kleiner als 120000 sein!`);
+        return console.log("\x1b[91mMinimal Werte unterschritten: " + parameter + " darf nicht kleiner als 5000 sein!");
     }
 });

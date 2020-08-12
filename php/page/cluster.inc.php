@@ -307,9 +307,7 @@ foreach ($json as $mk => $mv) {
     $listtpl->rif ("PreventUploadDinos", $json[$mk]["opt"]["PreventUploadDinos"]);
 
     if (count($json[$mk]["servers"]) == 0 || array_search(1, array_column($json[$mk]["servers"], 'type')) === FALSE) {
-        // Todo $alert
-        $txt = "Achtung es wurde kein Master oder Server gefunden! Bitte Prüfe dies.";
-        $alert_r = meld_full('danger', nl2br($txt), 'Kein Master oder Server gesetzt!', null, "mb-0");
+        $alert_r = $alert->rd(203, 3);
     }
 
     if ($serverlist == null) $serverlist = "<tr><td colspan='5'>Kein Server wurde gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#addservtocluster".$json[$mk]["clusterid"]."\">Server Hinzufügen</a> </td></tr>";
