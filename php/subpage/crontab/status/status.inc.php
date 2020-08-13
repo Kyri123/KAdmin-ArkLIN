@@ -12,6 +12,7 @@ $ipath = 'remote/arkmanager/instances/';
 $dir = scandir($ipath);
 $json_all['onserv'] = $json_all['maxserv'] = 0;
 
+$file = 'app/json/serverinfo/all.json';
 for ($i=0;$i<count($dir);$i++) {
     $ifile = $ipath.$dir[$i];
     // wenn es ein Verzeichnis ist skippe
@@ -21,6 +22,7 @@ for ($i=0;$i<count($dir);$i++) {
     $checkit = false;
 
     if ($ifile_info['extension'] == "cfg" && strpos($ifile_info['filename'], "example") !== true) {
+        $servdata = $serv = new server($ifile_info['filename']);
         // erstelle STATUS
         $raw = 'app/json/serverinfo/raw_'.$serv->name().'.json';
         if (file_exists($raw)) {
