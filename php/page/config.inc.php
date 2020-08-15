@@ -93,19 +93,19 @@ if (isset($_POST["savepanel"])) {
         if (in_array($a_key[$i], $filter_link)) {
             if ($a_key[$i] == "servlocdir" && readlink("remote/serv") != $a_value[$i]) {
                 $loc = "remote/serv";
-                if (file_exists($loc)) unlink($loc);
+                if (is_link($loc) || file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
             }
             elseif ($a_key[$i] == "arklocdir" && readlink("remote/arkmanager") != $a_value[$i]) {
                 $loc = "remote/arkmanager";
-                if (file_exists($loc)) unlink($loc);
+                if (is_link($loc) || file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
             }
             elseif ($a_key[$i] == "steamcmddir" && (readlink("remote/steamcmd") != $a_value[$i] || !file_exists("remote/steamcmd"))) {
                 $loc = "remote/steamcmd";
-                if (file_exists($loc)) unlink($loc);
+                if (is_link($loc) || file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
             }
