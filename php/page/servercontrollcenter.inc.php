@@ -30,12 +30,13 @@ if (isset($_POST["add"])) {
             break;
         }
     }
+
     $arkserverroot = $servlocdir."server_ID_".$name;
     $logdir = $servlocdir."server_ID_".$name."_logs";
     $arkbackupdir = $servlocdir."server_ID_".$name."_backups";
-    $ark_QueryPort = $_POST["port"];
-    $ark_Port = $ark_QueryPort+2;
-    $ark_RCONPort = $ark_QueryPort+4;
+    $ark_QueryPort = $_POST["port"][1];
+    $ark_Port = $_POST["port"][0];
+    $ark_RCONPort = $_POST["port"][2];
 
     $cfg = file_get_contents('app/data/template.cfg');
     $find = array(
@@ -57,18 +58,28 @@ if (isset($_POST["add"])) {
         md5(rndbit(10))
     );
     $cfg = str_replace($find, $repl, $cfg);
-    if (!file_exists($path) && $ark_QueryPort > 1000) {
-        if (file_put_contents($path, $cfg)) {
-            $alert->code = 100;
-            $resp = $alert->re();
-            $serv = new server($name);
-            $serv->cfg_save();
+    if(
+        ($_POST["port"][0] != "" && is_numeric($_POST["port"][0])) && 
+        ($_POST["port"][1] != "" && is_numeric($_POST["port"][1])) && 
+        ($_POST["port"][2] != "" && is_numeric($_POST["port"][2]))
+    ) {
+        if (!file_exists($path) && $ark_QueryPort > 1000) {
+            if (file_put_contents($path, $cfg)) {
+                $alert->code = 100;
+                $resp = $alert->re();
+                $serv = new server($name);
+                $serv->cfg_save();
+            } else {
+                $alert->code = 1;
+                $resp = $alert->re();
+            }
         } else {
-            $alert->code = 1;
+            $alert->code = 5;
             $resp = $alert->re();
         }
-    } else {
-        $alert->code = 5;
+    }
+    else {
+        $alert->code = 2;
         $resp = $alert->re();
     }
 }
