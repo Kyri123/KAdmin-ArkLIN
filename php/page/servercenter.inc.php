@@ -260,7 +260,7 @@ $tpl->r('clustername', $serv->cluster_name());
 $tpl->r('cfg', $url[2]);
 $tpl->r('servername', $servername);
 $tpl->r('global_IP', $ip);
-$tpl->r('con_url', $connect = $globa_json->connect);
+$tpl->r('con_url', $connect = str_replace($serv->cfg_read("ark_Port"), $serv->cfg_read("ark_QueryPort"), $serv->status()->connect));
 $tpl->r('arkservers', $globa_json->ARKServers);
 $tpl->r('QPort', $qport);
 $tpl->r('max_player', $serv->cfg_read('ark_MaxPlayers'));
@@ -287,7 +287,7 @@ $onlinestate = false;
 if ($serv->statecode() == 2) $onlinestate = true;
 $tpl->rif ("ifonline", $onlinestate);
 $tpl->rif ('expert', $user->expert());
-$tpl->r('joinurl', $serv->status()->connect);
+$tpl->r('joinurl', $connect);
 // lade in TPL
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
 $content = $tpl->load_var();
@@ -306,7 +306,7 @@ $btns .= '
             <span class="text">'.$globa_json->error_count.'</span>
         </a>
     </div>
-';
+'; $btns = null;
 
 
 ?>
