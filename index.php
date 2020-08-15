@@ -138,6 +138,7 @@ $btns .= '
 // replace
 $tpl_h->r('time', time());
 
+$path_webhelper = "app/check/webhelper";
 $tpl_b->r('pagename', $pagename);
 $tpl_b->r('pageicon', $pageicon);
 $tpl_h->r('pagename', $pagename);

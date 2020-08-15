@@ -207,7 +207,7 @@ foreach($servercfg as $key => $value) {
 
 
 // steamcmd
-$cachelink = null;
+$cachelink = $cachetext = null;
 if(file_exists($syslpath) && is_link($syslpath)) {
     $steamcmd_exsists = true;
     $steamcmd_workshop_exsists = file_exists($workshop);

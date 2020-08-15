@@ -58,6 +58,7 @@ $tpl->load();
 
 $globa_json = json_decode(file_get_contents('app/json/serverinfo/'.$url[2].'.json'));
 
+$url[3] = (isset($url[3])) ? $url[3] : "home";
 $ssite = $url[3];
 $dir = dirToArray("php/subpage/serv");
 $exsists = false;

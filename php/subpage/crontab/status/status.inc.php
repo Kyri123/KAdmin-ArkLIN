@@ -68,9 +68,10 @@ for ($i=0;$i<count($dir);$i++) {
             }
 
             // Online & Max Counter (Global Information)
-            if ($json['online'] == 'Yes') {
+            if ($servdata->statecode() == 2) {
                 $json_all['onserv']++;
             }
+
             $json_all['maxserv']++;
             $json_all['cfgs'][] = $servdata->name().'.cfg';
         }
