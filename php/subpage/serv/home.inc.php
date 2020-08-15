@@ -166,7 +166,7 @@ $alert->overwrite_style = 3;
 $alert->overwrite_mb = 0;
 $white_alert = $alert->re();
 
-$page_tpl->rif ("installed", $server->isinstalled());
+$page_tpl->rif ("installed", $serv->isinstalled());
 $page_tpl->rif ('ifwhitelist', $ifwhitelist);
 $page_tpl->rif ('rcon', $serv->check_rcon());
 $page_tpl->rif ('lchatactive', $lchatactive);
