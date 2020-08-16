@@ -56,8 +56,12 @@ $z = 1;
             "] Mod",
             "Updating mod"
         );
-        
+
         if(strpos($file, "ServerPanel") !== false) $array[$i] = preg_replace('#\[(.*?)\]#si', null, $array[$i]);
+        if(strpos($file, "rcon") !== false) {
+            $exp = explode('(-/-)', $array[$i]);
+            $array[$i] = date('d.m.Y - H:i:s', $exp[0]) . " - ".$exp[1];
+        }
         if(strpos_arr($array[$i], $filterthis["filter"]) && $filter && !$homefilter) {
             // hidden
         }

@@ -51,7 +51,7 @@ switch ($case) {
     
     default:
         echo "Case not found";
-    break;
+        break;
 }
 $mycon->close();
 ?>
