@@ -56,13 +56,36 @@ $z = 1;
             "] Mod",
             "Updating mod"
         );
+        $filterthis["livechat"] = array(
+            "livechat",
+            "Dein Stamm killed",
+            " - Level",
+            "AdminCmd",
+            "Souls were destroyed",
+            "zerstörte ein(e)",
+            "Saved ARK",
+            "Log file open"
+        );
 
-        if(strpos($file, "ServerPanel") !== false) $array[$i] = preg_replace('#\[(.*?)\]#si', null, $array[$i]);
+        // Lösche [] für Livechat
+        if(strpos($file, "ServerPanel") !== false) { 
+            $array[$i] = preg_replace('#\[(.*?)\]#si', null, $array[$i]);
+        }
+
+        // Ändere das Format für Rconlog
         if(strpos($file, "rcon") !== false) {
             $exp = explode('(-/-)', $array[$i]);
             $array[$i] = date('d.m.Y - H:i:s', $exp[0]) . " - ".$exp[1];
         }
-        if(strpos_arr($array[$i], $filterthis["filter"]) && $filter && !$homefilter) {
+
+        if(
+            strpos_arr($array[$i], $filterthis["livechat"]) && 
+            $filter && 
+            strpos($file, "ServerPanel") !== false
+        ) {
+            // hidden - wenn Livechat und Filter aktiv
+        }
+        elseif(strpos_arr($array[$i], $filterthis["filter"]) && $filter && !$homefilter) {
             // hidden
         }
         elseif(strpos_arr($array[$i], $filterthis["mods"]) && !$homefilter) {
