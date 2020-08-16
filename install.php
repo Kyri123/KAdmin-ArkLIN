@@ -7,36 +7,54 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
 
+// Setzte Error auf 0
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+// werte URL aus
 $url = $_SERVER["REQUEST_URI"];
 $url = explode("/", $url);
 
+// Erstelle bestimmt Dateien
 if(!file_exists("app/check")) mkdir("app/check");
 if(!file_exists("app/cache")) mkdir("app/cache");
 
+// Hole alle benötigten Klassen
 include('php/class/helper.class.inc.php');
 include('php/class/xml_helper.class.php');
 include('php/class/Template.class.inc.php'); 
 include('php/class/alert.class.inc.php'); 
 include("php/functions/allg.func.inc.php");
 include("php/class/mysql.class.inc.php");
-include("install/func.inc.php");
 
+// Installer Klassen
+include("install/php/class/check.class.inc.php");
+
+// Erstelle hauptverzeichnise und Klassen
+$check = new check("install/data/check.json");
 $alert = new alert();
 $helper = new helper();
-$tpl_dir = "install/";
 
-$tpl = new Template("main.htm", $tpl_dir);
+// Verzeichnisse
+$dirs["main"] = "install/";
+$dirs["tpl"] = $dirs["main"]."template/";
+$dirs["data"] = $dirs["main"]."data/";
+$dirs["php"] = $dirs["main"]."php/";
+$dirs["class"] = $dirs["php"]."class/";
+$dirs["function"] = $dirs["php"]."function/";
+$dirs["include"] = $dirs["php"]."include/";
+
+// erstelle Templates
+$tpl = new Template("main.htm", $dirs["tpl"]);
 $tpl->load();
 
+// verarbeite
 $step = 0;
 if (isset($url[2])) $step = $url[2];
-
 for ($i=0;$i<20;$i++) {
     if ($step == $i) {
-        include("install/page/step".$i.".inc.php");
+        include($dirs["include"]."step_".$i.".inc.php");
     }
 }
 

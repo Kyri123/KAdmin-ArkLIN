@@ -119,17 +119,19 @@ class Template {
     }
 
     private function rintern() {
-        $this->file = str_replace($this->rfrom, $this->rto, $this->file);
-        $i = 0;
-        foreach ($this->rifkey as $key) {
-            if ($this->rifbool[$i] === true) {
-                $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", '\\1', $this->file);
-                $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", null, $this->file);
-            } else {
-                $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", null, $this->file);
-                $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", '\\1', $this->file);
-            }
-            $i++;
+        if(is_array($this->rfrom) && is_array($this->rto)) {
+            $this->file = str_replace($this->rfrom, $this->rto, $this->file);
+            $i = 0;
+            foreach ($this->rifkey as $key) {
+                if ($this->rifbool[$i] === true) {
+                    $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", '\\1', $this->file);
+                    $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", null, $this->file);
+                } else {
+                    $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", null, $this->file);
+                    $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", '\\1', $this->file);
+                }
+                $i++;
+            } 
         }
     }
 
