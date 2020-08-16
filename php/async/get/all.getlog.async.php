@@ -64,7 +64,8 @@ $z = 1;
             "Souls were destroyed",
             "zerstörte ein(e)",
             "Saved ARK",
-            "Log file open"
+            "Log file open",
+            "Force respawning Wild Dinos!"
         );
 
         // Lösche [] für Livechat
