@@ -108,7 +108,7 @@ class check extends helper {
             //________________________________________________//
             // Prüfe PHP version
             case "php":
-                if (!PHP_VERSION_ID >= 70300) {
+                if (PHP_VERSION_ID >= 70300) {
                     $this->state = 2;
                 } elseif(PHP_VERSION_ID >= 70000) {
                     $this->state = 1;
@@ -132,7 +132,6 @@ class check extends helper {
         return $bool;
     }
 }
-
 
 
 ?>

@@ -7,54 +7,44 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
-$resp = null;
-$sitetpl= new Template("step1.htm", $tpl_dir);
+
+$sitetpl= new Template("step0.htm", $dirs["tpl"]);
 $sitetpl->load();
 $complete = false;
-$resp = null;
+$ok = false;
 
-if (isset($_POST["send"])) {
-    $dbhost = $_POST["host"];
-    $dbuser = $_POST["user"];
-    $dbpass = $_POST["pw"];
-    $dbname = $_POST["base"];
-    error_reporting(0);
-    $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
-    if ($mycon->is) {
-        $sql = file("app/sql/sql.sql");
-        foreach ($sql as $query) {
-            $mycon->query($query);
-        }
-        $mycon->close();
-        $str = "<?php
-\$dbhost = '".$dbhost."';
-\$dbuser = '".$dbuser."';
-\$dbpass = '".$dbpass."';
-\$dbname = '".$dbname."';
-?>";
-        if (file_put_contents("php/inc/pconfig.inc.php", $str)) {
-            $array["dbhost"] = $dbhost;
-            $array["dbuser"] = $dbuser;
-            $array["dbpass"] = $dbpass;
-            $array["dbname"] = $dbname;
-            if ($helper->savejson_create($array, "arkadmin_server/config/mysql.json")) {
-                header("Location: /install.php/2");
-                exit;
-            }
-            else {
-                $resp = $alert->rd(1);
-            }
-        }
-        else {
-            $resp = $alert->rd(1);
-        }
-    } else {
-        $resp = $alert->rd(29);
+$json = $check->json;
+
+$list = $modals = null;
+for($i=0;$i<count($json);$i++) {
+    // Erstelle Tabelle mit den Prüfungen
+    $checked = $check->check($i);
+    $id = rndbit(10);
+    $list .= "
+        <tr>
+            <td>".$json[$i]['name']."</td>
+            <td>".(($checked["code"] <= 1) ? '<button class="btn btn-info btn-sm" onclick="$(\'#'.$id.'\').toggle()">{::lang::install::allg::showinfos}</button>' : null)."</td>
+            <td style=\"text-align: center; vertical-align: middle;\" class=\"bg-".$checked['color']."\"><i class=\"fa ".$checked['icon']."\"></i></td>
+        </tr>
+    ";
+
+    // Lade zusätzlich den Info Modal
+    if($checked["code"] <= 1) {
+        $list .= "
+            <tr id=\"$id\" style=\"display:none\">
+                <td colspan=\"3\">".$json[$i]["lang"]."</td>
+            </tr>
+        ";
     }
 }
 
-$sitetpl->r("error", $resp);
-$title = "{::lang::install::step1::title}";
+
+
+$sitetpl->r ("modal", $modals);
+$sitetpl->r ("list_check", $list);
+$sitetpl->rif ("ifallok", $check->check_all());
+
+$title = "{::lang::install::step0::title}";
 $content = $sitetpl->load_var();
 
 ?>

@@ -56,7 +56,8 @@ $z = 1;
             "] Mod",
             "Updating mod"
         );
-
+        
+        if(strpos($file, "ServerPanel") !== false) $array[$i] = preg_replace('#\[(.*?)\]#si', null, $array[$i]);
         if(strpos_arr($array[$i], $filterthis["filter"]) && $filter && !$homefilter) {
             // hidden
         }

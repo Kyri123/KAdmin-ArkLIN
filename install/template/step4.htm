@@ -1,0 +1,29 @@
+{error}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-12">
+        <div class="card rounded-0">
+            <div class="card-header">
+                <h3 class="card-title">
+                    {::lang::install::step3::main::title}
+                </h3>
+            </div>
+            <div class="card-body">
+                {::lang::install::step3::main::text}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-12" id="btn">
+
+    </div>
+</div>
+</div>
+
+<script>
+    getphp('/install/page/step3js.inc.php', 'btn');
+    setInterval(function() {
+        getphp('/install/page/step3js.inc.php', 'btn');
+    }, 1000);
+</script>
+<script src="/app/dist/js/arkadmin2.js"></script>

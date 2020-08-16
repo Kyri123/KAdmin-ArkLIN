@@ -4,26 +4,73 @@
         <div class="card rounded-0">
             <div class="card-header">
                 <h3 class="card-title">
-                    {::lang::install::step3::main::title}
+                    {::lang::install::step2::main::title}
                 </h3>
             </div>
             <div class="card-body">
-                {::lang::install::step3::main::text}
+                {::lang::install::step2::main::text}
             </div>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12 col-sm-12 col-12" id="btn">
+    <div class="col-md-12 col-sm-12 col-12">
+        <form role="form" method="post" action="#" class="card card-primary rounded-0">
+            <div class="card-header rounded-0">
+                <h3 class="card-title">{::lang::install::step2::form::title}</h3>
+            </div>
 
+            <div>
+                <div class="card-body">
+                    <form action="#save" method="post" class="tab-pane fade show active" id="pills-Panel" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div id="form">
+                            <div class="form-group">
+                                <label>{::lang::install::step2::form::uninstallmods}</label>
+                                <input type="hidden" name="key[]" value="uninstall_mod">
+                                <select class="form-control rounded-0" name="value[]">
+                                    <option value="0">{::lang::install::step2::false}</option>
+                                    <option value="1">{::lang::install::step2::true}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>{::lang::install::step2::form::installmods}</label>
+                                <input type="hidden" name="key[]" value="install_mod">
+                                <select class="form-control rounded-0" name="value[]">
+                                    <option value="0">{::lang::install::step2::false}</option>
+                                    <option value="1">{::lang::install::step2::true}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>{::lang::install::step2::form::sdir}</label>
+                                <input type="hidden" name="key[]" value="servlocdir">
+                                <input class="form-control rounded-0" type="text" name="value[]" placeholder="/data/ark_serv_dir/">
+                            </div>
+                            <div class="form-group">
+                                <label>{::lang::install::step2::form::adir}</label>
+                                <input type="hidden" name="key[]" value="arklocdir">
+                                <input class="form-control rounded-0" type="text" name="value[]" value="/etc/arkmanager/">
+                            </div>
+                            <div class="form-group">
+                                <label>{::lang::install::step2::form::api}</label>
+                                <input type="hidden" name="key[]" value="apikey">
+                                <input class="form-control rounded-0" type="text" name="value[]" placeholder="{::lang::install::step2::form::api}">
+                            </div>
+                            <div class="form-group">
+                                <label>{::lang::install::step2::form::restartoncchange}</label>
+                                <input type="hidden" name="key[]" value="clusterestart">
+                                <select class="form-control rounded-0" name="value[]">
+                                    <option value="0">{::lang::install::step2::false}</option>
+                                    <option value="1">{::lang::install::step2::true}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer rounded-0">
+                    <button type="submit" name="savepanel" class="btn btn-primary" style="width: 100%">{::lang::install::step2::form::btn_send}</button>
+                </div>
+            </div>
     </div>
 </div>
 </div>
-
-<script>
-    getphp('/install/page/step3js.inc.php', 'btn');
-    setInterval(function() {
-        getphp('/install/page/step3js.inc.php', 'btn');
-    }, 1000);
-</script>
-<script src="/app/dist/js/arkadmin2.js"></script>

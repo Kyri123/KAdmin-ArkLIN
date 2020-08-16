@@ -15,10 +15,10 @@
                 </li>
                 {rcon}{lchatactive}
                 <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link" id="pills-lchat-tab" data-toggle="pill" href="#pills-lchat" role="tab" aria-controls="pills-lchat" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::lchat}</a>
+                    <a class="nav-link" id="pills-lchat-tab" data-toggle="pill" href="#pills-lchat" role="tab" aria-controls="pills-lchat" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')">{::lang::servercenter::home::nav::lchat}</a>
                 </li>{/lchatactive}
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-rcon-tab" data-toggle="pill" href="#pills-rcon" role="tab" aria-controls="pills-rcon" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::rcon}</a>
+                    <a class="nav-link" id="pills-rcon-tab" data-toggle="pill" href="#pills-rcon" role="tab" aria-controls="pills-rcon" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')">{::lang::servercenter::home::nav::rcon}</a>
                 </li>{/rcon} {installed}{!ifcadmin}
                 <li class="nav-item">
                     <a class="nav-link" id="pills-admins-tab" data-toggle="pill" href="#pills-admins" role="tab" aria-controls="pills-admins" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::admin}</a>
@@ -124,7 +124,7 @@
                             </td>
                         </tr>
                     </table>
-                    <table class="table table-striped mb-0" id="livechat">
+                    <table class="table table-striped mb-0" id="lchatlog">
                         <tr>
                             <td>
                                 <div class="row p-0">
@@ -331,12 +331,12 @@
                                             $("#rconresp").html(json.msg);
                                             tx.val("");
                                             tx.attr("placeholder", "{::lang::allg::send_done}");
-                                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
+                                            getlog('{rconlog}', '{cfg}', 'rconlog', 'max', 'hide', "filter", "mods", "home");
                                         } else {
                                             $("#rconresp").html(json.msg);
                                             tx.val("");
                                             tx.attr("placeholder", "{::lang::allg::send_fail}");
-                                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
+                                            getlog('{rconlog}', '{cfg}', 'rconlog', 'max', 'hide', "filter", "mods", "home");
                                         }
                                     });
                             });
@@ -361,19 +361,22 @@
                                         $("#livechatresp").html(json.msg);
                                         tx.val("");
                                         tx.attr("placeholder", "{::lang::allg::send_done_chat}");
-                                        getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
+                                        getlog('{lchatlog}', '{cfg}', 'lchatlog', 'max', 'hide', "filter", "mods", "home");
                                     } else {
                                         $("#livechatresp").html(json.msg);
                                         tx.val("");
                                         tx.attr("placeholder", "{::lang::allg::send_fail}");
-                                        getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
+                                        getlog('{lchatlog}', '{cfg}', 'lchatlog', 'max', 'hide', "filter", "mods", "home");
                                     }
                                 }, "JSON");
                         });
 
                         setInterval(function() {
                             getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide', "filter", "mods", "home");
-                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=livechat', "livechat");
-                            getphp('/php/async/get/servercenter.home.async.php?cfg={cfg}&case=rconlog', "rconlog");
                         }, 1000);
+
+                        setInterval(function() {
+                            getlog('{lchatlog}', '{cfg}', 'lchatlog', 'max', 'hide', "filter", "mods", "home");
+                            getlog('{rconlog}', '{cfg}', 'rconlog', 'max', 'hide', "filter", "mods", "home");
+                        }, 15000);
                     </script>

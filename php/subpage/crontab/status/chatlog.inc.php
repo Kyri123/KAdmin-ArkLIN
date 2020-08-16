@@ -21,11 +21,13 @@ for ($i=0;$i<count($dir);$i++) {
 
     if ($ifile_info['extension'] == "cfg" && strpos($ifile_info['filename'], "example") !== true) {
         
+        $serv = new server($ifile_info["filename"]);
         // Verbinde alle Chatlogs
-        $path_tolog = $serv->dir_save(true).'/Logs/'; echo "<br>";
+        echo $path_tolog = $serv->dir_save(true).'/Logs/'; echo "<br>";
         if(file_exists($path_tolog) && is_dir($path_tolog)) {
             $dirlog = scandir($path_tolog);
-            arsort($dirlog);
+            asort($dirlog);
+            var_dump($dirlog);
             $log = null;
 
             // hole alle Logs und füge sie an dem String
@@ -35,7 +37,7 @@ for ($i=0;$i<count($dir);$i++) {
                     $log .= file_get_contents($file);
                 }
             } 
-
+            
             // Speicher Log
             $log_file = $path_tolog.'ServerPanel.log';
             echo file_put_contents($log_file, $log);
