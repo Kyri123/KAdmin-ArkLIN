@@ -199,7 +199,6 @@ foreach($servercfg as $key => $value) {
     $list->rif ("ifnum", is_numeric($value));
     $list->rif ("iftxt", !is_numeric($value));
     $list->r("key", $key);
-    $key = str_replace($find, $repl, $key);
     $list->r("keym", $key);
     $list->r("value", $value);
     $option_server .= $list->load_var();

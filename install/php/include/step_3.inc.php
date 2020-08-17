@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 $resp = null;
-$sitetpl= new Template("step2.htm", $tpl_dir);
+$sitetpl= new Template("step3.htm", $dirs["tpl"]);
 $sitetpl->load();
 $complete = false;
 $ppath = "php/inc/custom_konfig.json";

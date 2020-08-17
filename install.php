@@ -48,6 +48,7 @@ $dirs["include"] = $dirs["php"]."include/";
 // erstelle Templates
 $tpl = new Template("main.htm", $dirs["tpl"]);
 $tpl->load();
+$resp = null;
 
 // verarbeite
 $step = 0;
@@ -59,10 +60,13 @@ for ($i=0;$i<20;$i++) {
 }
 
 $tpl->r("langlist", get_lang_list());
+$tpl->r("steptid", $step);
 $tpl->r("stepid", ($step+1));
 $tpl->r("title", $title);
+$tpl->r("resp", $resp);
 $tpl->r("pagename", "Installer");
 $tpl->r("time", time());
 $tpl->r("content", $content);
+$tpl->r("code", "7c90c6595f7cb4d2aa0e");
 $tpl->echo();
 ?>

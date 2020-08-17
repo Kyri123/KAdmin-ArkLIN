@@ -1,74 +1,121 @@
-{error}
 <div class="row">
     <div class="col-md-12 col-sm-12 col-12">
-        <div class="card rounded-0">
-            <div class="card-header">
-                <h3 class="card-title">
-                    {::lang::install::step2::main::title}
-                </h3>
-            </div>
-            <div class="card-body">
-                {::lang::install::step2::main::text}
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12 col-sm-12 col-12">
-        <form role="form" method="post" action="#" class="card card-primary rounded-0">
+        <form role="form" method="post" action="#" class="card card-dark rounded-0">
             <div class="card-header rounded-0">
-                <h3 class="card-title">{::lang::install::step2::form::title}</h3>
+                <h3 class="card-title">{::lang::install::step3::form::title}</h3>
             </div>
 
             <div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <form action="#save" method="post" class="tab-pane fade show active" id="pills-Panel" role="tabpanel" aria-labelledby="pills-home-tab">
-                        <div id="form">
-                            <div class="form-group">
-                                <label>{::lang::install::step2::form::uninstallmods}</label>
-                                <input type="hidden" name="key[]" value="uninstall_mod">
-                                <select class="form-control rounded-0" name="value[]">
-                                    <option value="0">{::lang::install::step2::false}</option>
-                                    <option value="1">{::lang::install::step2::true}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>{::lang::install::step2::form::installmods}</label>
-                                <input type="hidden" name="key[]" value="install_mod">
-                                <select class="form-control rounded-0" name="value[]">
-                                    <option value="0">{::lang::install::step2::false}</option>
-                                    <option value="1">{::lang::install::step2::true}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>{::lang::install::step2::form::sdir}</label>
-                                <input type="hidden" name="key[]" value="servlocdir">
-                                <input class="form-control rounded-0" type="text" name="value[]" placeholder="/data/ark_serv_dir/">
-                            </div>
-                            <div class="form-group">
-                                <label>{::lang::install::step2::form::adir}</label>
-                                <input type="hidden" name="key[]" value="arklocdir">
-                                <input class="form-control rounded-0" type="text" name="value[]" value="/etc/arkmanager/">
-                            </div>
-                            <div class="form-group">
-                                <label>{::lang::install::step2::form::api}</label>
-                                <input type="hidden" name="key[]" value="apikey">
-                                <input class="form-control rounded-0" type="text" name="value[]" placeholder="{::lang::install::step2::form::api}">
-                            </div>
-                            <div class="form-group">
-                                <label>{::lang::install::step2::form::restartoncchange}</label>
-                                <input type="hidden" name="key[]" value="clusterestart">
-                                <select class="form-control rounded-0" name="value[]">
-                                    <option value="0">{::lang::install::step2::false}</option>
-                                    <option value="1">{::lang::install::step2::true}</option>
-                                </select>
-                            </div>
-                        </div>
+                        <table class="table table-striped mb-0" id="form">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%">{::lang::servercenter::config::th_config}</th>
+                                    <th>{::lang::servercenter::config::th_input}</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+
+                                <tr>
+                                    <td class="p-2">
+                                        {::lang::php::config::key::clusterestart}
+                                    </td>
+                                    <td class="p-2">
+                                        <input type="hidden" name="key[]" readonly="" value="clusterestart">
+                                        <select class="form-control form-control-sm" name="value[]">
+                                            <option value="0">{::lang::config::opt::false}</option>
+                                            <option value="1">{::lang::config::opt::true}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="p-2">
+                                        <b>[Debug]</b> {::lang::php::config::key::show_err}
+                                    </td>
+                                    <td class="p-2">
+                                        <input type="hidden" name="key[]" readonly="" value="show_err">
+                                        <select class="form-control form-control-sm" name="value[]">
+                                            <option value="0">{::lang::config::opt::false}</option>
+                                            <option value="1">{::lang::config::opt::true}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="p-2">
+                                        {::lang::php::config::key::uninstallmod}
+                                    </td>
+                                    <td class="p-2">
+                                        <input type="hidden" name="key[]" readonly="" value="uninstall_mod">
+                                        <select class="form-control form-control-sm" name="value[]">
+                                            <option value="0">{::lang::config::opt::false}</option>
+                                            <option value="1">{::lang::config::opt::true}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="p-2">
+                                        {::lang::php::config::key::installmod}
+                                    </td>
+                                    <td class="p-2">
+                                        <input type="hidden" name="key[]" readonly="" value="install_mod">
+                                        <select class="form-control form-control-sm" name="value[]">
+                                            <option value="0">{::lang::config::opt::false}</option>
+                                            <option value="1">{::lang::config::opt::true}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="p-2">
+                                        {::lang::php::config::key::steamcmddir}
+                                    </td>
+                                    <td class="p-2">
+                                        <input type="hidden" name="key[]" readonly="" value="steamcmddir">
+                                        <input type="text" name="value[]" class="form-control form-control-sm" placeholder="/.../.../">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="p-2">
+                                        {::lang::php::config::key::servlocdir}
+                                    </td>
+                                    <td class="p-2">
+                                        <input type="hidden" name="key[]" readonly="" value="servlocdir">
+                                        <input type="text" name="value[]" class="form-control form-control-sm" placeholder="/.../.../">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="p-2">
+                                        {::lang::php::config::key::arklocdir}
+                                    </td>
+                                    <td class="p-2">
+                                        <input type="hidden" name="key[]" readonly="" value="arklocdir">
+                                        <input type="text" name="value[]" class="form-control form-control-sm" placeholder="/.../.../">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="p-2">
+                                        Steam-API Key <a href="https://steamcommunity.com/dev/apikey" target="_blank">({::lang::php::config::key::apikey_found_here})</a>
+                                    </td>
+                                    <td class="p-2">
+                                        <input type="hidden" name="key[]" readonly="" value="apikey">
+                                        <input type="text" name="value[]" class="form-control form-control-sm" placeholder="/.../.../">
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
                     </form>
                 </div>
 
-                <div class="card-footer rounded-0">
-                    <button type="submit" name="savepanel" class="btn btn-primary" style="width: 100%">{::lang::install::step2::form::btn_send}</button>
+                <div class="card-footer rounded-0 p-0">
+                    <button type="submit" name="savepanel" class="btn btn-success" style="width: 100%">{::lang::install::step3::form::btn_send}</button>
                 </div>
             </div>
     </div>

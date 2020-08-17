@@ -8,10 +8,9 @@
  * *******************************************************************************************
 */
 
-$sitetpl= new Template("step0.htm", $dirs["tpl"]);
+$sitetpl= new Template("step1.htm", $dirs["tpl"]);
 $sitetpl->load();
-$complete = false;
-$ok = false;
+$complete = $ok = false;
 
 $json = $check->json;
 

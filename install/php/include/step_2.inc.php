@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 $resp = null;
-$sitetpl= new Template("step1.htm", $tpl_dir);
+$sitetpl= new Template("step2.htm", $dirs["tpl"]);
 $sitetpl->load();
 $complete = false;
 $resp = null;

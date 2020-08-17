@@ -34,6 +34,11 @@
     <link rel="stylesheet" href="/app/dist/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <link rel="stylesheet" href="/app/dist/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <link rel="stylesheet" href="/app/dist/plugins/icheck/icheck-bootstrap.min.css">
+    <style>
+        .card-body.p-0 .table tbody>tr>td:last-of-type {
+            padding-right: .75rem!important;
+        }
+    </style>
 
     <style>
         .right {
@@ -66,6 +71,7 @@
                         {langlist}
                     </div>
                 </div>
+            </div>
         </nav>
 
         <div class="content-wrapper" style="min-height: 823px;">
@@ -89,7 +95,27 @@
 
             <div class="content">
                 <div class="container">
+                    {resp}
+                    <div class="card">
+                        <div class="card-header border-transparent bg-dark">
+                            <h3 class="card-title">{::lang::install::step{steptid}::title}</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <h3>{::lang::install::allg::texttitle}</h3>
+                            <p>{::lang::install::allg::text}</p>
+                            <hr>
+                            <p>{::lang::install::step{steptid}::text}</p>
+                        </div>
+                    </div>
                     {content}
+                    <div class="p-4"></div>
+    <div class="p-4"></div>
                 </div>
             </div>
         </div>
