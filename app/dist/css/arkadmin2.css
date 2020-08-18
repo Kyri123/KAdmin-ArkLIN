@@ -120,8 +120,8 @@
 }
 
 .breadcrumb-item a {
-    color: #d9d9d9 !important;
+    color: color: rgb(60, 141, 188) !important;
 }
 .breadcrumb-item a:hover {
-    color: #ababab !important;
+    color: #092328 !important;
 }

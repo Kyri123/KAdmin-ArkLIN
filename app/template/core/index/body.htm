@@ -174,79 +174,15 @@
 
             <!-- Beginne eigentl. seite -->
             <section class="content mt-0">
-                <!-- Traffic -->
-                <div class="row">
-                    <!-- CPU -->
-                    <div class="col-12 col-sm-6 col-md-3 m-0 p-0">
-                        <div class="info-box mb-0 p-0" style="height: 100%">
-                            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-microchip"></i></span>
-                            <div class="info-box-content pt-2 pl-3">
-                                <span class="info-box-text">{::lang::allg::traffic::cpu}</span>
-                                <div class="progress">
-                                    <div class="progress-bar bg-info" style="width: {cpu_perc}%"></div>
-                                </div>
-                                <span class="info-box-number">
-											{cpu_perc}
-											<small>%</small>
-										</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- RAM -->
-                    <div class="col-12 col-sm-6 col-md-3 m-0 p-0">
-                        <div class="info-box mb-0 p-0" style="height: 100%">
-                            <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-memory"></i></span>
-                            <div class="info-box-content pt-2 pl-3">
-                                <span class="info-box-text">{::lang::allg::traffic::ram}</span>
-                                <div class="progress">
-                                    <div class="progress-bar bg-primary" style="width: {ram_perc}%"></div>
-                                </div>
-                                <span class="info-box-number">
-											{ram_used} / {ram_max}
-										</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix hidden-md-up"></div>
-                    <!-- SPEICHER -->
-                    <div class="col-12 col-sm-6 col-md-3 m-0 p-0">
-                        <div class="info-box mb-0 p-0" style="height: 100%">
-                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-hdd"></i></span>
-                            <div class="info-box-content pt-2 pl-3">
-                                <span class="info-box-text">{::lang::allg::traffic::mem}</span>
-                                <div class="progress">
-                                    <div class="progress-bar bg-danger" style="width: {free_perc}%"></div>
-                                </div>
-                                <span class="info-box-number">
-											{free}
-										</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- SERV -->
-                    <div class="col-12 col-sm-6 col-md-3 m-0 p-0">
-                        <div class="info-box mb-0 p-0" style="height: 100%">
-                            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-server"></i></span>
-                            <div class="info-box-content pt-2 pl-3">
-                                <span class="info-box-text">{::lang::allg::traffic::serv}</span>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" style="width: {count_server_perc}%"></div>
-                                </div>
-                                <span class="info-box-number">
-                                    <span class="text-success">{curr_server}</span> / <span class="text-danger">{off_server}</span> / <span class="text-primary">{count_server}</span>
-										</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <nav class="navbar navbar-expand navbar-dark border-dark elevation-4 m-0 mb-4 pl-4" style="margin-right: -7.5px!important;;margin-left: -7.5px!important;">
+                <nav class="navbar navbar-light navbar-expand border-dark elevation-2 m-0 mb-4 pl-4" style="margin-right: -7.5px!important;;margin-left: -7.5px!important;">
                     <a class="navbar-brand" href="#">{pageicon} {pagename}</a>
 
-                    <ol class="breadcrumb ml-auto m-0 bg-dark">
+                    <ol class="breadcrumb ml-auto m-0 bg-light">
                         <li class="breadcrumb-item"><a href="/">ArkAdmin 2</a></li>
                         {urltop}
                     </ol>
                 </nav>
+
                 <div class="container-fluid">
                     <!--<section class="content-header" style="padding-bottom: 0px;">
                         <div class="row mb-2">
@@ -270,6 +206,72 @@
 
                     <section class="content">
                         <div class="container-fluid">
+                        <!-- Traffic -->
+                        <div class="row mb-4">
+                            <!-- CPU -->
+                            <div class="col-12 col-sm-6 col-md-3">
+                                <div class="info-box mb-0 p-0" style="height: 100%">
+                                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-microchip"></i></span>
+                                    <div class="info-box-content pt-2 pl-3">
+                                        <span class="info-box-text">{::lang::allg::traffic::cpu}</span>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-info" style="width: {cpu_perc}%"></div>
+                                        </div>
+                                        <span class="info-box-number">
+                                                {cpu_perc}
+                                                <small>%</small>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- RAM -->
+                            <div class="col-12 col-sm-6 col-md-3">
+                                <div class="info-box mb-0 p-0" style="height: 100%">
+                                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-memory"></i></span>
+                                    <div class="info-box-content pt-2 pl-3">
+                                        <span class="info-box-text">{::lang::allg::traffic::ram}</span>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-primary" style="width: {ram_perc}%"></div>
+                                        </div>
+                                        <span class="info-box-number">
+                                                {ram_used} / {ram_max}
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix hidden-md-up"></div>
+                            <!-- SPEICHER -->
+                            <div class="col-12 col-sm-6 col-md-3">
+                                <div class="info-box mb-0 p-0" style="height: 100%">
+                                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-hdd"></i></span>
+                                    <div class="info-box-content pt-2 pl-3">
+                                        <span class="info-box-text">{::lang::allg::traffic::mem}</span>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-danger" style="width: {free_perc}%"></div>
+                                        </div>
+                                        <span class="info-box-number">
+                                                {free}
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SERV -->
+                            <div class="col-12 col-sm-6 col-md-3">
+                                <div class="info-box mb-0 p-0" style="height: 100%">
+                                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-server"></i></span>
+                                    <div class="info-box-content pt-2 pl-3">
+                                        <span class="info-box-text">{::lang::allg::traffic::serv}</span>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" style="width: {count_server_perc}%"></div>
+                                        </div>
+                                        <span class="info-box-number">
+                                        <span class="text-success">{curr_server}</span> / <span class="text-danger">{off_server}</span> / <span class="text-primary">{count_server}</span>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                              {content}
                         </div>
                     </section>
