@@ -184,25 +184,6 @@
                 </nav>
 
                 <div class="container-fluid">
-                    <!--<section class="content-header" style="padding-bottom: 0px;">
-                        <div class="row mb-2">
-                            <div class="col-sm-6" style="padding-left: 20px;">
-                                <h1 class="text-dark">{pageicon} {pagename}</h1>
-                            </div>
-                            <div class="col-sm-6" style="padding-right: 20px;">
-                                <ol class="breadcrumb float-sm-right">
-                                    <li class="breadcrumb-item"><a href="/">ArkAdmin 2</a></li>
-                                    {urltop}
-                                </ol>
-                            </div>
-                        </div>
-                    </section>-->
-
-                    {if_g_alert}
-                    <section class="content">
-                        <div class="container-fluid">{g_alert}</div>
-                    </section>
-                    {/if_g_alert}
 
                     <section class="content">
                         <div class="container-fluid">
@@ -272,7 +253,7 @@
                             </div>
                         </div>
 
-                             {content}
+                        {if_g_alert}{g_alert}{/if_g_alert} {content}
                         </div>
                     </section>
                 </div>
