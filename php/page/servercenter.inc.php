@@ -292,7 +292,6 @@ $tpl->r('joinurl', $connect);
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
 $content = $tpl->load_var();
 $btns .= '
-    <div class="d-sm-inline-block ">
         <a href="#" class="btn btn-warning btn-icon-split rounded-0" data-toggle="modal" data-target="#warning_modal">
             <span class="icon text-white-50">
                 <i class="fas fa-exclamation-circle"></i>
@@ -305,7 +304,6 @@ $btns .= '
             </span>
             <span class="text">'.$globa_json->error_count.'</span>
         </a>
-    </div>
 '; $btns = null;
 
 

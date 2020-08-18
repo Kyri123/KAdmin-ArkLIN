@@ -126,13 +126,11 @@ if ($page == "login" || $page == "registration") {
 
 //tmp Force Update
 $btns .= '
-    <div class="d-sm-inline-block ">
-        <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-info btn-icon-split rounded-0 ml-1" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
-            <span class="icon text-white-50">
-                <i class="fa fa-refresh"></i>
-            </span>
-        </a>
-    </div>
+    <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-info rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
+        <span class="icon text-white-50">
+            <i class="fa fa-cloud-download"></i>
+        </span>
+    </a>
 ';
 
 // replace
@@ -148,7 +146,7 @@ $tpl_b->r('user', $user->name());
 $tpl_b->r('rank', $user->rang());
 $tpl_b->r('content', $content);
 $tpl_b->r('site_name', $site_name);
-$tpl_b->r('btns', $btns);
+$tpl_b->r('btns', "<div class=\"d-sm-inline-block\">$btns</div>");
 $tpl_b->r('urltop', $urltop);
 $tpl_b->r('g_alert', $g_alert);
 $tpl_b->rif ('if_g_alert', $g_alert_bool);
@@ -157,11 +155,16 @@ $tpl_b->r("langlist", get_lang_list());
 // Server Traffics
 $all = $helper->file_to_json("app/json/serverinfo/all.json");
 $tpl_b->r('count_server', count($all["cfgs"]));
+$tpl_b->r('curr_server', $all["onserv"]);
+$tpl_b->r('off_server', (count($all["cfgs"]) - $all["onserv"]));
+$tpl_b->r('count_server_perc', perc($all["onserv"], count($all["cfgs"])));
 $tpl_b->r('cpu_perc', cpu_perc());
 $tpl_b->r('free', bitrechner(disk_free_space("remote/serv"), "B", "GB"));
 $tpl_b->r('ram_used', str_replace("MB", "GB", bitrechner(mem_array()[1], "B", "GB")));
 $tpl_b->r('ram_max', str_replace("MB", "GB", bitrechner(mem_array()[0], "B", "GB")));
 $tpl_b->r('ram_perc', mem_perc());
+$tpl_b->r('free_perc', perc(disk_free_space("remote/serv"), disk_total_space("remote/serv")));
+$tpl_b->r('perc_on', perc(1, 9));
 $ifnot_traffic = false;
 $check = array("changelog", "404");
 if (in_array($page, $check)) $ifnot_traffic = true;

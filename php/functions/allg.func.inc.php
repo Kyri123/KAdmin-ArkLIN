@@ -630,4 +630,16 @@ function timediff(String $file, Int $diff) {
     $differnz = time()-$filetime;
     return ($differnz > $diff);
 }
+
+/**
+ * Berechnung von %
+ *
+ * @param  mixed $curr
+ * @param  mixed $max
+ * @return int
+ */
+
+function perc($curr, $max) {
+    return ($curr / $max * 100);
+}
 ?>
