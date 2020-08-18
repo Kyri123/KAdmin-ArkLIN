@@ -163,7 +163,7 @@ $tpl_b->r('free', bitrechner(disk_free_space("remote/serv"), "B", "GB"));
 $tpl_b->r('ram_used', str_replace("MB", "GB", bitrechner(mem_array()[1], "B", "GB")));
 $tpl_b->r('ram_max', str_replace("MB", "GB", bitrechner(mem_array()[0], "B", "GB")));
 $tpl_b->r('ram_perc', mem_perc());
-$tpl_b->r('free_perc', perc(disk_free_space("remote/serv"), disk_total_space("remote/serv")));
+$tpl_b->r('free_perc', (100 - perc(disk_free_space("remote/serv"), disk_total_space("remote/serv"))));
 $tpl_b->r('perc_on', perc(1, 9));
 $ifnot_traffic = false;
 $check = array("changelog", "404");
