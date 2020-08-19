@@ -79,7 +79,7 @@ $expert = $user->expert();
 $jobs = new jobs();
 
 //check is user banned
-if ($user->ban() > 0) {
+if ($user->read("ban") > 0) {
     $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
     $mycon->query($query);
     session_destroy();
@@ -142,8 +142,8 @@ $tpl_b->r('pageicon', $pageicon);
 $tpl_h->r('pagename', $pagename);
 $tpl_b->r('aa_version', $version);
 $tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path)) ? intval(file_get_contents($path)) : time()), true));
-$tpl_b->r('user', $user->name());
-$tpl_b->r('rank', $user->rang());
+$tpl_b->r('user', $user->read("username"));
+$tpl_b->r('rank', $user->read("rang"));
 $tpl_b->r('content', $content);
 $tpl_b->r('site_name', $site_name);
 $tpl_b->r('btns', "<div class=\"d-sm-inline-block\">$btns</div>");

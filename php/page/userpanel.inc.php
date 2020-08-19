@@ -52,7 +52,7 @@ if (isset($url[3]) && $url[2] == "rmcode") {
 if (isset($_POST["del"])) {
     $id = $_POST["userid"];
     $user->setid($id);
-    $tpl->r("del_username", $user->name());
+    $tpl->r("del_username", $user->read("username"));
     $query = "DELETE FROM `ArkAdmin_users` WHERE (`id`='".$id."')";
     if ($mycon->query($query)) {
         $alert->code = 101;
@@ -74,7 +74,7 @@ if (isset($url[4]) && $url[2] == "tban") {
         $to = "{::lang::php::userpanel::notbanned}";
     }
     $user->setid($uid);
-    $tpl->r("ban_username", $user->name());
+    $tpl->r("ban_username", $user->read("username"));
     $tpl->r("ban_uid", $uid);
     $tpl->r("ban_to", $to);
     $query = "UPDATE `ArkAdmin_users` SET `ban`='".$set."' WHERE (`id`='".$uid."')";

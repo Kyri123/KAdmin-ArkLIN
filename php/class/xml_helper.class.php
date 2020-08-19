@@ -8,13 +8,19 @@
  * *******************************************************************************************
 */
 
-
+/**
+ * Class xml_helper
+ */
 class xml_helper extends helper {
 
     private $xml_path = null;
     private $find = false;
     private $xml_string;
 
+    /**
+     * xml_helper constructor.
+     * @param String $xml_path
+     */
     public function __construct(String $xml_path)
     {
         $this->xml_path = $xml_path;
@@ -27,6 +33,12 @@ class xml_helper extends helper {
         }
     }
 
+    /**
+     * Suche einen Wert mit einem bestimmten Attribut
+     *
+     * @param String $attr
+     * @return bool|SimpleXMLElement
+     */
     public function byattr(String $attr) {
         if ($this->find) {
             $xml = simplexml_load_string($this->xml_string);
@@ -37,17 +49,17 @@ class xml_helper extends helper {
         }
     }
 
-    public function array() {
-        if ($this->find) {
-            return parent::xmlfile_to_array($this->xml_path);
-        } else {
-            return false;
-        }
-    }
-
-    public function obj() {
-        if ($this->find) {
+    /**
+     * Gibt die XML datei in einen Array aus
+     *
+     * @param bool $obj (true) Objecte | (false) Array
+     * @return SimpleXMLElement|array|bool
+     */
+    public function array($obj = false) {
+        if ($this->find && $obj) {
             return simplexml_load_file($this->xml_path);
+        } elseif ($this->find) {
+            return parent::xmlfile_to_array($this->xml_path);
         } else {
             return false;
         }

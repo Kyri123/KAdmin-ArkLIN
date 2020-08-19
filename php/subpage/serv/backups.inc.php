@@ -16,7 +16,7 @@ $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::backup::urltop}</li>';
 
 $page_tpl->r('cfg' ,$url[2]);
-$page_tpl->r('SESSION_USERNAME' ,$user->name());
+$page_tpl->r('SESSION_USERNAME' ,$user->read("username"));
 
 $dir_array = dirToArray($serv->dir_backup());
 $y = 0; $list = null;

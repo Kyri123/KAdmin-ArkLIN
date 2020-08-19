@@ -16,7 +16,7 @@ $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::home::urltop}</l
 $adminlist_admin = null;
 
 $page_tpl->r('cfg' ,$serv->name());
-$page_tpl->r('SESSION_USERNAME' ,$user->name());
+$page_tpl->r('SESSION_USERNAME' ,$user->read("username"));
 
 // Erstelle Dateien wenn die nicht exsistieren
 $cheatfile = $serv->dir_save(true)."/AllowedCheaterSteamIDs.txt";

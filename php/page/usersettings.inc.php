@@ -18,7 +18,7 @@ $path = "app/json/user/".md5($_SESSION["id"]).".json";
 // Speichern (Benutzerdaten)
 if(isset($_POST["saveuser"])) {
     //EMail
-    if($_POST["email"] != $user->email()) {
+    if($_POST["email"] != $user->read("email")) {
         if($user->write("email", $_POST["email"])) {
             $logout = true;
         }
@@ -29,7 +29,7 @@ if(isset($_POST["saveuser"])) {
     }
 
     //Username
-    if($_POST["username"] != $user->name()) {
+    if($_POST["username"] != $user->read("username")) {
         if($user->write("username", $_POST["username"])) {
             $logout = true;
         }
@@ -85,8 +85,8 @@ $tpl->load();
 
 //rplacer
 $tpl->r("resp", $resp);
-$tpl->r("username", $user->name());
-$tpl->r("email", $user->email());
+$tpl->r("username", $user->read("username"));
+$tpl->r("email", $user->read("email"));
 $tpl->r("c_expert", ($user->expert()) ? "checked" : null);
 $tpl->r("c_konfig", ($user->show_mode("konfig")) ? "checked" : null);
 

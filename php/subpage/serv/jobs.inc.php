@@ -16,7 +16,7 @@ $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::jobs::urltop}</li>';
 
 $page_tpl->r('cfg' ,$url[2]);
-$page_tpl->r('SESSION_USERNAME' ,$user->name());
+$page_tpl->r('SESSION_USERNAME' ,$user->read("username"));
 
 // Cronjobs aktualisieren (AutoUpdate/AutoBackup)
 if (isset($_POST['set'])) {
