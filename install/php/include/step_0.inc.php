@@ -14,6 +14,7 @@ $list_opt = null;
 $tpl_dir = 'app/template/core/konfig/';
 
 $wpath = 'arkadmin_server/config/server.json';
+$limit = $helper->file_to_json("app/json/panel/aas_min.json", true);
 $json = $check->json;
 
 // Speicher ArkAdmin-Server Einstellungen
@@ -23,18 +24,26 @@ if (isset($_POST["savewebhelper"])) {
     $filter_bool = array("install_mod","uninstall_mod");
     $filter_link = array("servlocdir","arklocdir");
 
-    // setzte Vars
+    // Prfüne minimalwerte
+    $allok = true;
     for ($i=0;$i<count($a_key);$i++) {
-        $json[$a_key[$i]] = $a_value[$i];
+        if(isset($limit[$a_key[$i]])) {
+            if(!(intval($limit[$a_key[$i]]) <= intval($a_value[$i]))) $allok = false;
+        }
+        $jsons[$a_key[$i]] = $a_value[$i];
     }
 
     // Speichern
-    $json_str = $helper->json_to_str($json);
-    if (file_put_contents($wpath, $json_str)) {
-        header("Location: /install.php/1");
-    } else {
-        $alert->code = 1;
-        $resp .= $alert->re();
+    $json_str = $helper->json_to_str($jsons);
+    if($allok) {
+        if (file_put_contents($wpath, $json_str)) {
+            header("Location: /install.php/1");
+        } else {
+            $resp .= $alert->rd(1);
+        }
+    }
+    else {
+        $resp .= $alert->rd(2);
     }
 }
 
@@ -46,9 +55,11 @@ foreach($servercfg as $key => $value) {
     $list->rif ("ifbool", false);
     $list->rif ("ifnum", is_numeric($value));
     $list->rif ("iftxt", !is_numeric($value));
+    $list->rif("ifmin", isset($limit[$key]));
     $list->r("key", $key);
     $list->r("keym", $key);
     $list->r("value", $value);
+    $list->r("min", ((isset($limit[$key])) ? $limit[$key] : 0));
     $list_opt .= $list->load_var();
 }
 
