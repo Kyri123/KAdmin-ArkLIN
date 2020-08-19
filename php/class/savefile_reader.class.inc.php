@@ -1,6 +1,6 @@
 <?php
 //from: https://gist.github.com/Sp1rit/d8776427620d01a61f3c6c453541febd
-//Modifiziert: Oliver
+//Modifiziert: Kyri123 (Oliver Kaufmann)
 class Container
 {
     public $Players = array();

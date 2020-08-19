@@ -106,6 +106,16 @@ class userclass extends helper
         }
     }
 
+    //read user_data
+    public function read(String $key) {
+        if ($this->myconisset) {
+            $frech = $this->frech;
+            return $frech[$key];
+        } else {
+            return 'Account nicht gefunden oder gesetzt!';
+        }
+    }
+
     //write user_data
     public function write(String $key, String $value) {
         $id = $this->id;

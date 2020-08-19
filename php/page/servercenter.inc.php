@@ -83,7 +83,7 @@ $tpl->r("__home", null);
 
 if ($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>{::lang::php::sc::notmod}</b>' ?? $tmod = '<b>'.$serv->cfg_read('ark_TotalConversionMod').'</b>';
 
-//danger list
+/*//danger list
 $danger_listitem = new Template('warn_err.htm', $tpl_dir_lists);
 $danger_listitem->load();
 
@@ -148,7 +148,7 @@ else {
     $warning_listitem->rif("default_err", false);
     $warning_listitem->rif("list", false);
     $warning_list = $warning_listitem->load_var();
-}
+}*/
 
 $tribe_json = $helper->file_to_json('app/json/saves/tribes_'.$serv->name().'.json', false);
 $player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.json', false);

@@ -160,6 +160,7 @@ $tpl_b->r('off_server', (count($all["cfgs"]) - $all["onserv"]));
 $tpl_b->r('count_server_perc', perc($all["onserv"], count($all["cfgs"])));
 $tpl_b->r('cpu_perc', cpu_perc());
 $tpl_b->r('free', bitrechner(disk_free_space("remote/serv"), "B", "GB"));
+$tpl_b->r('free_max', bitrechner(disk_total_space("remote/serv"), "B", "GB"));
 $tpl_b->r('ram_used', str_replace("MB", "GB", bitrechner(mem_array()[1], "B", "GB")));
 $tpl_b->r('ram_max', str_replace("MB", "GB", bitrechner(mem_array()[0], "B", "GB")));
 $tpl_b->r('ram_perc', mem_perc());

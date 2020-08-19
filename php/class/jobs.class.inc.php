@@ -8,24 +8,40 @@
  * *******************************************************************************************
 */
 
+/**
+ * Class jobs
+ */
 class jobs extends helper
 {
     public $server = null;
 
+    /**
+     * jobs constructor.
+     */
     public function __construct()
     {
         #empty
     }
 
+    /**
+     * Setzt den Server wo die Jobs erstellt bzw ausgeführt werden sollen
+     *
+     * @param String $str
+     * @return void
+     */
     public function set(String $str) {
         $this->server = $str;
     }
 
+    /**
+     * Erstellt ein Job (shell) mit vordefinierten befehl "arkmanager"
+     *
+     * @param String $shell
+     * @return bool
+     */
     public function arkmanager(String $shell) {
         if ($this->server == null) return "Server nicht gesetzt";
         $serv = new server($this->server);
-        $file_jobs = $serv->jobs_file();
-        $file_jobs = str_replace("\r", null, $file_jobs);
 
         // Füge Kommand zur DB hinzu
         global $mycon;
@@ -42,11 +58,15 @@ class jobs extends helper
         return $mycon->query($query);
     }
 
+
+    /**
+     * Erstellt ein Job (shell)
+     * @param String $shell
+     * @return bool
+     */
     public function shell(String $shell) {
         if ($this->server == null) return "Server nicht gesetzt";
         $serv = new server($this->server);
-        $file_jobs = $serv->jobs_file();
-        $file_jobs = str_replace("\r", null, $file_jobs);
 
         // Füge Kommand zur DB hinzu
         global $mycon;

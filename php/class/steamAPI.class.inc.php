@@ -8,6 +8,9 @@
  * *******************************************************************************************
 */
 
+/**
+ * Class steamapi
+ */
 class steamapi extends helper {
 
     private $API_Key;
@@ -15,21 +18,49 @@ class steamapi extends helper {
 
     private $jsonpath = "app/json/steamapi/";
 
+    /**
+     * steamapi constructor.
+     */
     public function __construct()
     {
         $ckonfig = parent::file_to_json('php/inc/custom_konfig.json', true);
         $this->API_Key = $ckonfig['apikey'];
     }
 
+    /**
+     * Hole daten von einer ModID
+     *
+     * @param $modid
+     * @param int $time
+     * @param false $remove
+     * @return mixed
+     */
     public function getmod($modid, $time = 3600, $remove = false) {
         return $this->get_API_json($modid, 'mod', $time, null, $remove);
     }
 
-    // Derzeit unbenutzt (Platzhalter)
+    /**
+     * Hole Daten von einer Modliste (array)
+     *
+     * @param $serv
+     * @param $arr
+     * @param int $time
+     * @param false $remove
+     * @return mixed
+     */
     public function getmod_list($serv, $arr, $time = 3600, $remove = false) {
         return $this->get_API_json($serv, 'mod', $time, $arr, $remove);
     }
 
+    //Todo: Remove
+    /**
+     * Wandelt Daten von einer Mod direkt weiter in einer Klasse um diese einfacher zu benutzen
+     *
+     * @param $modid
+     * @param int $time
+     * @param false $remove
+     * @return steam_mod
+     */
     public function getmod_class($modid, $time = 3600, $remove = false) {
         $json = $this->get_API_json($modid, 'mod', $time, null, $remove);
 
@@ -63,18 +94,43 @@ class steamapi extends helper {
         return $mod;
     }
 
+    /**
+     * Hole Liste von Profilen von der API
+     *
+     * @param $serv
+     * @param $arr
+     * @param int $time
+     * @param false $remove
+     * @return mixed
+     */
     public function getsteamprofile_list($serv, $arr, $time = 3600, $remove = false) {
         return $this->get_API_json($serv, 'profile', $time, $arr, $remove);
     }
 
-    public function check_mod() {
-        if ($this->getmod_class($this->modid, 0, true)->consumer_app_id == 346110) {
+    /**
+     * Prüfe ob eine vorher gesetzte mod ein gültiges Workshop item ist
+     *
+     * @modid int|string
+     * @return bool
+     */
+    public function check_mod($modid = null) {
+        if ($this->getmod_class(((!$modid == null) ? $modid : $this->modid), 0, true)->consumer_app_id == 346110) {
             return true;
         } else {
             return false;
         }
     }
 
+    /**
+     * Hole Json von der SteamAPI oder Local vom Server
+     *
+     * @param $id
+     * @param $type
+     * @param $time_differ
+     * @param null $arr
+     * @param false $remove
+     * @return mixed
+     */
     private function get_API_json($id, $type, $time_differ, $arr = null, $remove = false) {
         chdir($_SERVER['DOCUMENT_ROOT']);
         $type_loc = ($type == "mod") ? "mods/".$type : $type;
@@ -105,6 +161,14 @@ class steamapi extends helper {
         return $json;
     }
 
+    /**
+     * Generiert aus der API die JSON auf dem Server
+     *
+     * @param $id
+     * @param $type
+     * @param null $arr
+     * @return bool
+     */
     private function gen_API_json($id, $type, $arr = null) {
         $set = 0;
         $is = 0;
@@ -159,28 +223,7 @@ class steamapi extends helper {
     }
 }
 
-
-class steam_profile {
-    public $steamid;
-    public $communityvisibilitystate;
-    public $profilestate;
-    public $personaname;
-    public $lastlogoff;
-    public $commentpermission;
-    public $profileurl;
-    public $avatar;
-    public $avatarmedium;
-    public $avatarfull;
-    public $personastate;
-    public $realname;
-    public $primaryclanid;
-    public $timecreated;
-    public $personastateflags;
-    public $loccountrycode;
-    public $locstatecode;
-    public $loccityid;
-}
-
+//Todo: Remove
 class steam_mod {
     public $publishedfileid;
     public $result;
