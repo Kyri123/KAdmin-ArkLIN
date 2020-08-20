@@ -18,6 +18,8 @@ class Container
                 array_push($this->Tribes, TribeFileParser::Parse($fileinfo->getPathName()));
             }
         }
+
+        if($linkPlayerTribes) $this->LinkPlayersAndTribes();
     }
 
     function LinkPlayersAndTribes()
@@ -45,10 +47,10 @@ class PlayerFileParser
 
         $player = new Player();
         $player->Id = PlayerFileParser::GetId($data);
-        $player->SteamId = PlayerFileParser::GetSteamId($data);
+        $player->SteamId = pathinfo($path)["basename"];
         $player->SteamName = null;
         $player->CharacterName = BinaryHelper::GetString($data, 'PlayerCharacterName');
-        $player->TribeId = pathinfo($path)["basename"];
+        $player->TribeId = 0;
         $player->TribeName = "";
         $player->Level = BinaryHelper::GetUInt16($data, 'CharacterStatusComponent_ExtraCharacterLevel');
         $player->ExperiencePoints = BinaryHelper::GetFloat($data, 'CharacterStatusComponent_ExperiencePoints');
@@ -92,7 +94,7 @@ class TribeFileParser
         $data = fread($handle, filesize($path));
 
         $tribe = new Tribe();
-        $tribe->Id = pathinfo($path)["basename"];
+        $tribe->Id = str_replace(".arktribe", null, pathinfo($path)["basename"]);
         $tribe->Name = BinaryHelper::GetString($data, 'TribeName');
         $tribe->OwnerId = TribeFileParser::GetOwnerId($data);
         // Experimentell! {
