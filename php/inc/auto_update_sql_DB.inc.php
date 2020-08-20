@@ -58,7 +58,7 @@ if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
     }
 }
 
-$mycon->query("table ArkAdmin_players add TribeName longtext null;");
+$mycon->query("alter table ArkAdmin_players add TribeName longtext null;");
 
 $check_json["checked"] = true;
 $helper->savejson_create($check_json, "app/data/sql_check.json");
