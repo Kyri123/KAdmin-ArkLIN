@@ -256,56 +256,66 @@ if($count !== false) {
 $tribe = null; $c_t = 0;
 
 // Stämme Liste
-// TODO: Rework
 if(is_countable($tribe_save)) {
     for ($i = 0; $i < count($tribe_save); $i++) {
         $list_tpl = new Template('tribes.htm', 'app/template/lists/serv/savegames/');
         $list_tpl->load();
-    
-        $pl = $jhelper->tribe($tribe_json, $i);
-        $playerlist = null;
-        $ct=0;
-    
-        $member = $tribe_json[$i]->Members;
-    
-        foreach ($member as $key) {
-            if(is_countable($player_json)) {
-                for ($z=0;$z<count($player_json); $z++) {
-                    $p = $jhelper->player($player_json, $z);
-                    if ($p->CharacterName == $key) {
-                        for ($ix=0;$ix<$count;$ix++) if($p->SteamId == $playerjs[$ix]["steamid"]) {$id = $ix; break;};
-        
+
+        // Hole Daten von MySQL
+        $query = "SELECT * FROM ArkAdmin_tribe WHERE `server`='".$serv->name()."' AND `Id`='".$tribe_save[$i]."'";
+        $query = $mycon->query($query);
+
+        if($query->numRows() > 0) {
+            $rows = $query->fetchArray();
+
+            $tplayer = json_decode($rows["Members"], true);
+
+            $playerlist = null;
+            $ct=0;
+
+            $member = $tribe_json[$i]->Members;
+            if(is_countable($tplayer)) {
+                foreach ($tplayer as $item) {
+
+                    $query = "SELECT * FROM ArkAdmin_players WHERE `server`='" . $serv->name() . "' AND `CharacterName`='" . $item . "'";
+                    $query = $mycon->query($query);
+
+                    if ($query->numRows() > 0) {
+                        $row = $query->fetchArray();
+                        $row["SteamId"] = intval($row["SteamId"]);
+
                         $playerlist_tpl = new Template('tribes_user.htm', 'app/template/lists/serv/savegames/');
                         $playerlist_tpl->load();
-        
-                        $playerlist_tpl->r('IG:name', $p->CharacterName);
-                        $playerlist_tpl->r('lastupdate', converttime($p->FileUpdated));
-                        $playerlist_tpl->r('url', $playerjs[$id]["profileurl"]);
-                        $playerlist_tpl->r('img', $playerjs[$id]["avatar"]);
-                        $playerlist_tpl->r('steamname', $playerjs[$id]["personaname"]);
+
+                        $playerlist_tpl->r('IG:name', $row["CharacterName"]);
+                        $playerlist_tpl->r('lastupdate', converttime($row["FileUpdated"]));
+                        $playerlist_tpl->r('url', $steamapi_user[$row["SteamId"]]["profileurl"]);
+                        $playerlist_tpl->r('img', $steamapi_user[$row["SteamId"]]["avatar"]);
+                        $playerlist_tpl->r('steamname', $steamapi_user[$row["SteamId"]]["personaname"]);
                         $rank = '<b>{::lang::php::sc::page::mods::member}</b>';
-        
+
                         $playerlist .= $playerlist_tpl->load_var();
                         $ct++;
                     }
+
                 }
             }
+
+            $list_tpl->r('rnd', rndbit(10));
+            $list_tpl->r('name', $rows["tribeName"]);
+            $list_tpl->r('update', converttime($rows["FileUpdated"]));
+            $list_tpl->r('pl', $playerlist);
+            $list_tpl->r('count', $ct);
+            $list_tpl->r('id', $rows["Id"]);
+            $file = $savedir.'/'.$rows["Id"].'.arktribe';
+            $list_tpl->r('durl', "/".$file);
+
+            $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$rows["Id"].'.arktribe');
+
+            $tribe .= $list_tpl->load_var();
+            $list_tpl = null;
+            $c_t++;
         }
-    
-        $list_tpl->r('rnd', rndbit(10));
-        $list_tpl->r('name', $pl->Name);
-        $list_tpl->r('update', converttime($pl->FileUpdated));
-        $list_tpl->r('pl', $playerlist);
-        $list_tpl->r('count', $ct);
-        $list_tpl->r('id', $pl->Id);
-        $file = $savedir.'/'.$pl->Id.'.arktribe';
-        $list_tpl->r('durl', "/".$file);
-    
-        $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$pl->Id.'.arktribe');
-    
-        $tribe .= $list_tpl->load_var();
-        $list_tpl = null;
-        $c_t++;
     }
 }
 

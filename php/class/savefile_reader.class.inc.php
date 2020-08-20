@@ -48,7 +48,7 @@ class PlayerFileParser
         $player->SteamId = PlayerFileParser::GetSteamId($data);
         $player->SteamName = BinaryHelper::GetString($data, 'PlayerName');
         $player->CharacterName = BinaryHelper::GetString($data, 'PlayerCharacterName');
-        $player->TribeId = BinaryHelper::GetInt($data, 'TribeID');
+        $player->TribeId = pathinfo($path)["basename"];
         $player->TribeName = "";
         $player->Level = BinaryHelper::GetUInt16($data, 'CharacterStatusComponent_ExtraCharacterLevel');
         $player->ExperiencePoints = BinaryHelper::GetFloat($data, 'CharacterStatusComponent_ExperiencePoints');
