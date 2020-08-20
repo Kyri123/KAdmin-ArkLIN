@@ -390,7 +390,9 @@ function sh_crontab($str) {
 }
 
 function alog($str) {
-    global $steamapi;
+    global $helper;
+    $steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();
+
     $search  = array(
         '', // 9
         '[K', // 10
@@ -512,50 +514,51 @@ function alog($str) {
         $time = explode('[', $str);
         $time = $time[0];
         $modid = explode(']', $str);
-        $modid = $modid[1];
+        $modid = trim($modid[1]);
         $modid = str_replace('Updating mod ', null, $modid);
         $modid = str_replace(" ", null, $modid);
-        $json = $steamapi->getmod($modid);
-        $str = $time.' <b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $json->response->publishedfiledetails[0]->title.'</a></b>';
+        $json = $steamapi_mods[$modid];
+        $str = $time.' <b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
     }
     if (strpos($str, '] Mod') !== false) {
         $time = explode('[', $str);
         $time = $time[0];
         $modid = explode(']', $str);
-        $modid = $modid[1];
+        $modid = trim($modid[1]);
         $modid = str_replace('Updating mod ', null, $modid);
         $modid = str_replace(" ", null, $modid);
         $modid = str_replace("Mod", null, $modid);
         $modid = str_replace("updated", null, $modid);
-        $json = $steamapi->getmod($modid);
-        $str = $time.' <b class="text-success">Update done: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $json->response->publishedfiledetails[0]->title.'</a></b>';
+        $str = $time.' <b class="text-success">Update done: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
     }
     if (strpos($str, 'Updating mod') !== false) {
         $modid = str_replace('Updating mod ', null, $str);
         $modid = str_replace(" ", null, $modid);
-        $json = $steamapi->getmod($modid);
-        $str = '<b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $json->response->publishedfiledetails[0]->title.'</a></b>';
+        $modid = trim($modid);
+        $str = '<b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
     }
     if (strpos($str, 'not fully downloaded') !== false) {
         $modid = str_replace(' not fully downloaded - retrying', null, $str);
         $modid = str_replace("Mod ", null, $modid);
-        $mod = $steamapi->getmod_class($modid);
-        $str = '<b class="text-gray-800">Not fully downloaded: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $mod->title .'</a> (retry)</b>';
+        $modid = trim($modid);
+        $json = $steamapi_mods[$modid];
+        $str = '<b class="text-gray-800">Not fully downloaded: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"] .'</a> (retry)</b>';
     }
     if (strpos($str, ' installed') !== false) {
         $modid = str_replace('Mod ', null, $str);
         $modid = str_replace(" installed", null, $modid);
-        $mod = $steamapi->getmod_class($modid);
-        $str = '<b class="text-gray-800">Installed: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $mod->title .'</a></b>';
+        $modid = trim($modid);
+        $json = $steamapi_mods[$modid];
+        $str = '<b class="text-gray-800">Installed: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"] .'</a></b>';
     }
     if (strpos($str, 'Downloading mod ') !== false) {
         $modid = str_replace('Downloading mod ', null, $str);
         $modid = str_replace(" ", null, $modid);
         $modid = explode('...', $modid);
         $done = $modid[1];
-        $modid = $modid[0];
-        $json = $steamapi->getmod($modid);
-        $str = '<b class="text-gray-800">Downloading: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $json->response->publishedfiledetails[0]->title.'</a></b>';
+        $modid = trim($modid[0]);
+        $json = $steamapi_mods[$modid];
+        $str = '<b class="text-gray-800">Downloading: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
 
         if (strpos($done, 'downloaded') !== false) {
             $str .= ' | <span class="text-success">Done!</span>';

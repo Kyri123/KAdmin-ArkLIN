@@ -79,123 +79,59 @@ $tpl->r("__home", null);
 
 if ($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>{::lang::php::sc::notmod}</b>' ?? $tmod = '<b>'.$serv->cfg_read('ark_TotalConversionMod').'</b>';
 
-/*//danger list
-$danger_listitem = new Template('warn_err.htm', $tpl_dir_lists);
-$danger_listitem->load();
+$player_online = $serv->status()->aplayersarr;
 
-if ($globa_json->error_count > 0 && is_countable($globa_json->error)) {
-    for ($i=0;$i<count($globa_json->error);$i++) {
-
-        if (strpos($globa_json->error[$i], 'is requested but not installed') !== false) {
-
-            $modid = strstr($globa_json->error[$i], '\'');
-            $modid = str_replace('\' to install this mod.', null, $modid);
-            $modid = str_replace('\'arkmanager installmod ', null, $modid);
-
-            $json = $steamapi->getmod($modid);
-
-            $type = '{::lang::php::sc::danger::notinstalled} <a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank"><b>'.$json->response->publishedfiledetails[0]->title.'</b></a>';
-        } else {
-            $type = '{::lang::php::sc::danger::err_notdef}';
-        }
-        $globa_json->error[$i] = str_replace('] ', null, $globa_json->error[0]);
-
-        $danger_listitem->rif("default_warn", false);
-        $danger_listitem->rif("default_err", false);
-        $danger_listitem->rif("list", true);
-        $danger_listitem->r("type", $type);
-        $danger_listitem->r("txt", $globa_json->error[$i]);
-        $danger_list .= $danger_listitem->load_var();
-    }
-}
-else {
-    // erstelle standart meldung wenn keine "error_count" == 0 ... < 1
-    $danger_listitem->rif("default_warn", false);
-    $danger_listitem->rif("default_err", true);
-    $danger_listitem->rif("list", false);
-    $danger_list = $danger_listitem->load_var();
-}
-
-//warning list
-$warning_listitem = new Template('warn_err.htm', $tpl_dir_lists);
-$warning_listitem->load();
-
-if ($globa_json->warning_count > 0 && is_countable($globa_json->warning)) {
-    for ($i=0;$i<count($globa_json->warning);$i++) {
-
-        if (strpos($globa_json->warning[$i], 'Your ARK server exec could not be found.') !== false) {
-            $type = '{::lang::php::sc::warn::serv_notinstalled}';
-        } else {
-            $type = '{::lang::php::sc::warn::err_notdef}';
-        }
-        $globa_json->warning[$i] = str_replace('] ', null, $globa_json->warning[$i]);
-
-        $warning_listitem->rif("default_warn", false);
-        $warning_listitem->rif("default_err", false);
-        $warning_listitem->rif("list", true);
-        $warning_listitem->r("type", $type);
-        $warning_listitem->r("txt", $globa_json->warning[$i]);
-        $warning_list = $warning_listitem->load_var();
-    }
-}
-else {
-    // erstelle standart meldung wenn keine "warning_count" == 0 ... < 1
-    $warning_listitem->rif("default_warn", true);
-    $warning_listitem->rif("default_err", false);
-    $warning_listitem->rif("list", false);
-    $warning_list = $warning_listitem->load_var();
-}*/
-
-$tribe_json = $helper->file_to_json('app/json/saves/tribes_'.$serv->name().'.json', false);
-$player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.json', false);
-$player_online = $helper->file_to_json('app/json/steamapi/profile_online_'.$serv->name().'.json', true)["response"]["players"];
-$jhelper = new player_json_helper();
 
 // Spieler
-if (count($player_online) > 0) {
+if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0) {
     for ($i = 0; $i < count($pl_json); $i++) {
         $list_tpl = new Template('user.htm', 'app/template/lists/serv/main/');
         $list_tpl->load();
 
-        for ($y=0;$y<count($player_json);$y++) {
-            if (intval($player_online[$i]["steamid"]) == intval($player_json[$y]->SteamId)) {
-                break;
-            }
+        // Hole
+        $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `CharacterName`='".$player_online[$i]["name"]."'";
+        $query = $mycon->query($query);
+
+        if($query->numRows() > 0) {
+            $row = $query->fetchArray();
+
+            $img = $steamapi_user[$row["SteamId"]]["avatar"];
+            $SteamId = $row["SteamId"];
+            $surl = $steamapi_user[$row["SteamId"]]["profileurl"];
+            $steamname = $steamapi_user[$row["SteamId"]]["personaname"];
+            $IG_level = $row["Level"];
+            $xp = $row["ExperiencePoints"];
+            $SpielerID = $row["id"];
+            $FileUpdated = $row["FileUpdated"];
+            $TribeId = $row["TribeId"];
+            $TotalEngramPoints = $row["TotalEngramPoints"];
+            $TribeName = $row["TribeName"];
+        }
+        else {
+            $img = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/";
+            $surl = "#unknown";
+            $steamname = "#unknown";
+            $xp = $SpielerID = $TotalEngramPoints = $SteamId = 0;
+            $FileUpdated = time();
+            $TribeId = 7;
+            $TribeName = null;
         }
 
-        $pl = $jhelper->player($player_json, $y);
+        $IG_name = $player_online[$i]["name"];
 
-        if (is_array($tribe_json)) {
-            for ($z = 0; $z < count($tribe_json); $z++) {
-                $member = $tribe_json[$z]->Members;
-
-                if (in_array($pl->CharacterName, $member)) {
-                    $tribe = $jhelper->tribe($tribe_json, $z);
-                    $list_tpl->r('tribe', $tribe->Name);
-                    break;
-                }
-            }
-        }
-
-        $list_tpl->r('tribe', '{::lang::php::sc::notribe}');
-
-        if ($pl->Level > 1000) $pl->Level = 0;
-        if ($pl->TribeId == 7) $pl->TribeId = null;
-
-        $list_tpl->r('IG:name', $pl->CharacterName);
-        $list_tpl->r('IG:Level', $pl->Level);
-        $list_tpl->r('lastupdate', converttime($pl->FileUpdated));
+        $list_tpl->r('tribe', (($TribeName != null) ? $TribeName : '{::lang::php::sc::notribe}'));
+        $list_tpl->r('IG:name', $IG_name);
+        $list_tpl->r('IG:Level', $IG_level);
+        $list_tpl->r('lastupdate', converttime($FileUpdated));
         $list_tpl->r('rnd', rndbit(10));
-        $list_tpl->r('url', $player_online[$i]["profileurl"]);
-        $list_tpl->r('img', $player_online[$i]["avatar"]);
-        $list_tpl->r('steamname', $player_online[$i]["personaname"]);
-
-        $list_tpl->r('rm_url', '/servercenter/' . $serv->name() . '/saves/remove/' . $pl->SteamId . '.arkprofile');
-
-        $list_tpl->r('EP', round($pl->ExperiencePoints, '2'));
-        $list_tpl->r('SpielerID', $pl->Id);
-        $list_tpl->r('TEP', $pl->TotalEngramPoints);
-        $list_tpl->r('TID', $pl->TribeId);
+        $list_tpl->r('url', $surl);
+        $list_tpl->r('img', $img);
+        $list_tpl->r('steamname', $steamname);
+        $list_tpl->r('rm_url', '/servercenter/' . $serv->name() . '/saves/remove/' . $SteamId . '.arkprofile');
+        $list_tpl->r('EP', $xp);
+        $list_tpl->r('SpielerID', $SpielerID);
+        $list_tpl->r('TEP', $TotalEngramPoints);
+        $list_tpl->r('TID', $TribeId);
         $list_tpl->rif ('empty', true);
 
         $player .= $list_tpl->load_var();
@@ -246,9 +182,6 @@ if ($l > $lmax) {
     $servername = substr($servername, 0 , $lmax) . " ...";
 }
 
-
-$tpl->r('danger_resp', $danger_list);
-$tpl->r('warning_resp', $warning_list);
 
 $tpl->r('action_list', $action_list);
 $tpl->r('para_list', $para_list);

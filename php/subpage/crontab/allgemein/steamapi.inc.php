@@ -12,7 +12,9 @@
 $file = 'app/json/serverinfo/all.json';
 $cfg_json = $helper->file_to_json($file);
 
-$sid_array = $mod_array = $player_array = $modid_array = array();
+$sid_array = $modid_array = array();
+$player_array = $steamapi_user;
+$mod_array = $steamapi_mods;
 
 foreach ($cfg_json["cfgs"] as $v) {
     $name = str_replace(".cfg", null, $v);
@@ -60,20 +62,22 @@ foreach ($arr as $v) {
     if(!in_array($v["SteamId"], $sid_array)) $sid_array[] = $v["SteamId"];
 }
 
-$json = $steamapi->getsteamprofile_list("allg", $sid_array, 60)->response->players;
+$json = $steamapi->getsteamprofile_list("allg", $sid_array, 360)->response->players;
 $i = 0;
 foreach ($json as $key => $item) {
+    $sid = intval($item->steamid);
     foreach ($item as $k => $v) {
-        $player_array[$sid_array[$i]][$k] = $v;
+        $player_array[$sid][$k] = $v;
     }
     $i++;
 }
 
-$json = $steamapi->getmod_list("allg", $modid_array, 60)->response->publishedfiledetails;
+$json = $steamapi->getmod_list("allg", $modid_array, 360)->response->publishedfiledetails;
 $i = 0;
 foreach ($json as $key => $item) {
+    $sid = intval($item->publishedfileid);
     foreach ($item as $k => $v) {
-        $mod_array[$modid_array[$i]][$k] = $v;
+        $mod_array[$sid][$k] = $v;
     }
     $i++;
 }

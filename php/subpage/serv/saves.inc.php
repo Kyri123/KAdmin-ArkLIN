@@ -177,65 +177,88 @@ $playerjs = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->
 $jhelper = new player_json_helper();
 
 // Spieler liste
-// Todo: Rework
-$count = (is_countable($playerjs)) ? count($playerjs): false;
+$dir_arr = scandir($serv->dir_save());
+$player_save = $tribe_save = array();
+
+foreach ($dir_arr as $file) {
+    if($file_name != "." && $file_name != ".") {
+        $file_path = $serv->dir_save()."/$file";
+        $file_info = pathinfo($file_path);
+        $ext = $file_info["extension"];
+        $filename = $file_info["filename"];
+
+        if($ext == "arkprofile") $player_save[] = $filename;
+        if($ext == "arktribe") $tribe_save[] = $filename;
+    }
+}
+
+
+$count = (is_countable($player_save)) ? count($player_save) : false;
 if($count !== false) {
     for ($i=0;$i<$count;$i++) {
         $list_tpl = new Template('saves.htm', 'app/template/lists/serv/savegames/');
         $list_tpl->load();
-    
-        for ($y=0;$y<count($player_json);$y++) {
-            if (intval($playerjs[$i]["steamid"]) == intval($player_json[$y]->SteamId)) {
-                break;
-            }
+
+        // Hole
+        $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$player_save[$i]."'";
+        $query = $mycon->query($query);
+
+        if($query->numRows() > 0) {
+            $row = $query->fetchArray();
+            $row["SteamId"] = intval($row["SteamId"]);
+
+            $img = $steamapi_user[$row["SteamId"]]["avatar"];
+            $SteamId = $row["SteamId"];
+            $surl = $steamapi_user[$row["SteamId"]]["profileurl"];
+            $steamname = $steamapi_user[$row["SteamId"]]["personaname"];
+            $IG_level = $row["Level"];
+            $xp = $row["ExperiencePoints"];
+            $SpielerID = $row["id"];
+            $FileUpdated = $row["FileUpdated"];
+            $TribeId = $row["TribeId"];
+            $TotalEngramPoints = $row["TotalEngramPoints"];
+            $TribeName = $row["TribeName"];
+            $IG_name = $row["CharacterName"];
         }
-    
-        $pl = $jhelper->player($player_json, $y);
-    
-        if (is_array($tribe_json)) {
-            for ($z = 0; $z < count($tribe_json); $z++) {
-                $member = $tribe_json[$z]->Members;
-    
-                if (in_array($pl->CharacterName, $member)) {
-                    $tribe = $jhelper->tribe($tribe_json, $z);
-                    $list_tpl->r('tribe', htmlentities($tribe->Name));
-                    break;
-                }
-            }
+        else {
+            $img = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/";
+            $surl = $steamname = $IG_name = "#unknown";
+            $xp = $SpielerID = $TotalEngramPoints = $SteamId = 0;
+            $FileUpdated = time();
+            $TribeId = 7;
+            $TribeName = null;
         }
-        $list_tpl->r('tribe', "{::lang::php::sc::notribe}");
-        if ($pl->TribeId == 7) $pl->TribeId = null;
-    
-        $list_tpl->r('IG:name', htmlentities($pl->CharacterName));
-        $list_tpl->r('IG:Level', $pl->Level);
-        $list_tpl->r('update', converttime($pl->FileUpdated));
+
+        $list_tpl->r('tribe', (($TribeName != null) ? $TribeName : '{::lang::php::sc::notribe}'));
+        $list_tpl->r('IG:name', $IG_name);
+        $list_tpl->r('IG:Level', $IG_level);
+        $list_tpl->r('update', converttime($FileUpdated));
         $list_tpl->r('rnd', rndbit(10));
-        $list_tpl->r('url', htmlentities($playerjs[$i]["profileurl"]));
-        $list_tpl->r('img', $playerjs[$i]["avatar"]);
-        $list_tpl->r('steamname', htmlentities($playerjs[$i]["personaname"]));
-    
-        $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$pl->SteamId.'.arkprofile');
-    
-        $list_tpl->r('EP', round($pl->ExperiencePoints, '2'));
-        $list_tpl->r('SpielerID', $pl->Id);
-        $list_tpl->r('TEP', $pl->TotalEngramPoints);
-        $list_tpl->r('TID', $pl->TribeId);
-        $file = $savedir.'/'.$pl->SteamId.'.arkprofile';
+        $list_tpl->r('url', $surl);
+        $list_tpl->r('img', $img);
+        $list_tpl->r('steamname', $steamname);
+        $list_tpl->r('rm_url', '/servercenter/' . $serv->name() . '/saves/remove/' . $SteamId . '.arkprofile');
+        $list_tpl->r('EP', $xp);
+        $list_tpl->r('SpielerID', $SpielerID);
+        $list_tpl->r('TEP', $TotalEngramPoints);
+        $list_tpl->r('TID', $TribeId);
+        $list_tpl->rif ('empty', false);
+
+        $file = $savedir.'/'.$SteamId.'.arkprofile';
         $list_tpl->r('durl', "/".$file);
     
-        if(file_exists($savedir.'/'.$pl->SteamId.'.arkprofile')) {
+        if(file_exists($savedir.'/'.$SteamId.'.arkprofile')) {
             $player .= $list_tpl->load_var();
             $c_pl++;
         }
     }
-
 }
 $tribe = null; $c_t = 0;
 
 // Stämme Liste
 // TODO: Rework
-if(is_countable($tribe_json)) {
-    for ($i = 0; $i < count($tribe_json); $i++) {
+if(is_countable($tribe_save)) {
+    for ($i = 0; $i < count($tribe_save); $i++) {
         $list_tpl = new Template('tribes.htm', 'app/template/lists/serv/savegames/');
         $list_tpl->load();
     

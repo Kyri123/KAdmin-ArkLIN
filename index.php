@@ -78,6 +78,10 @@ $steamapi = new steamapi();
 $user = new userclass();
 if(isset($_SESSION["id"])) $user->setid($_SESSION['id']);
 
+// Allgemein SteamAPI Arrays
+$steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();
+$steamapi_user = (file_exists("app/json/steamapi/user.json")) ? $helper->file_to_json("app/json/steamapi/user.json", true) : array();
+
 // include util
 include('php/inc/session.inc.php');
 
