@@ -92,7 +92,7 @@ class TribeFileParser
         $data = fread($handle, filesize($path));
 
         $tribe = new Tribe();
-        $tribe->Id = BinaryHelper::GetInt($data, 'TribeID');
+        $tribe->Id = pathinfo($path)["basename"];
         $tribe->Name = BinaryHelper::GetString($data, 'TribeName');
         $tribe->OwnerId = TribeFileParser::GetOwnerId($data);
         // Experimentell! {

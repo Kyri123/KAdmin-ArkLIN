@@ -88,17 +88,23 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
         $list_tpl = new Template('user.htm', 'app/template/lists/serv/main/');
         $list_tpl->load();
 
-        // Hole
-        $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `CharacterName`='".$player_online[$i]["name"]."'";
+        // Hole Daten
+        foreach($steamapi_user as $k => $v) {
+            if($v["personaname"] == $player_online[$i]["name"]) {
+                $fsteamid = $k;
+                break;
+            }
+        }
+        $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$fsteamid."'";
         $query = $mycon->query($query);
 
         if($query->numRows() > 0) {
             $row = $query->fetchArray();
 
-            $img = $steamapi_user[$row["SteamId"]]["avatar"];
-            $SteamId = $row["SteamId"];
-            $surl = $steamapi_user[$row["SteamId"]]["profileurl"];
-            $steamname = $steamapi_user[$row["SteamId"]]["personaname"];
+            $img = $steamapi_user[$fsteamid]["avatar"];
+            $SteamId = $fsteamid;
+            $surl = $steamapi_user[$fsteamid]["profileurl"];
+            $steamname = $steamapi_user[$fsteamid]["personaname"];
             $IG_level = $row["Level"];
             $xp = $row["ExperiencePoints"];
             $SpielerID = $row["id"];
@@ -106,18 +112,19 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
             $TribeId = $row["TribeId"];
             $TotalEngramPoints = $row["TotalEngramPoints"];
             $TribeName = $row["TribeName"];
+            $IG_name = $row["CharacterName"];
         }
         else {
             $img = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/";
             $surl = "#unknown";
-            $steamname = "#unknown";
-            $xp = $SpielerID = $TotalEngramPoints = $SteamId = 0;
+            $steamname = $player_online[$i]["name"];
+            $SteamId = $fsteamid;
+            $xp = $SpielerID = $TotalEngramPoints = 0;
             $FileUpdated = time();
             $TribeId = 7;
             $TribeName = null;
+            $IG_name = $player_online[$i]["name"];
         }
-
-        $IG_name = $player_online[$i]["name"];
 
         $list_tpl->r('tribe', (($TribeName != null) ? $TribeName : '{::lang::php::sc::notribe}'));
         $list_tpl->r('IG:name', $IG_name);
