@@ -133,8 +133,7 @@ class steamapi extends helper {
      */
     private function get_API_json($id, $type, $time_differ, $arr = null, $remove = false) {
         chdir($_SERVER['DOCUMENT_ROOT']);
-        $type_loc = ($type == "mod") ? "mods/".$type : $type;
-        $file = $this->jsonpath.$type_loc."_".$id.'.json';
+        $file = $this->jsonpath.$type."_".$id.'.json';
 
         if (file_exists($file)) {
             $filetime = filemtime($file);
@@ -213,7 +212,6 @@ class steamapi extends helper {
 
         if ($is == 1) {
             if(!file_exists($this->jsonpath."mods")) mkdir($this->jsonpath."mods");
-            $type = ($type == "mod") ? "mods/".$type : $type;
             if (file_put_contents($this->jsonpath.$type."_".$id.'.json', $res)) {
                 return true;
             } else {

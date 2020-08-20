@@ -161,6 +161,7 @@ class server extends Rcon {
      */
     public function send_action(String $shell, bool $force = false) {
         global $mycon;
+        global $helper;
 
         if ($this->status()->next == 'TRUE' && !$force) {
             return false;
@@ -182,9 +183,15 @@ class server extends Rcon {
             'screen -dm bash -c \'".$command."\''
         )";
 
-        if ($mycon->query($query)) { 
-            return true;
+        if ($mycon->query($query)) {
             file_put_contents($doc_state_file, "FALSE");
+
+            $path = "app/json/serverinfo/" . $this->name() . ".json";
+            $data = $helper->file_to_json($path);
+            $data["next"] = 'TRUE';
+            $helper->savejson_create($data, $path);
+
+            return true;
         }
         return false;
     }

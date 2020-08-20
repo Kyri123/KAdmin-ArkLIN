@@ -39,10 +39,6 @@ if (is_array($player_json)) {
     }
 }
 
-$steamapi->getsteamprofile_list("online_".$serv->name(), $arr_pl, 60);
-$steamapi->getsteamprofile_list("savegames_".$serv->name(), $arr_player);
-//$steamapi->getmod_list($serv->name(), explode(",", $serv->cfg_read("ark_GameModIds"))); Generiert Modliste für den server (unbenutzt)
-
 $ifslave = ($serv->cluster_type() == 0 && $serv->cluster_in());
 $ifcadmin = ($serv->cluster_admin() && $ifslave && $serv->cluster_in());
 $ifckonfig = ($serv->cluster_konfig() && $ifslave && $serv->cluster_in());

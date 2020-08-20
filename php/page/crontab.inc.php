@@ -50,5 +50,8 @@ elseif ($job == "status") {
 // Syncronisiere Clusterinformationen
 include("$subpage/allgemein/cluster.inc.php");
 
+// Lade alle Dateien aus der SteamAPI
+include("$subpage/allgemein/steamapi.inc.php");
+
 $tpl_crontab->r('re', $re);
 ?>
