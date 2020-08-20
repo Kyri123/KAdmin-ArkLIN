@@ -13,7 +13,7 @@ include('php/inc/config.inc.php');
 include('php/class/helper.class.inc.php');
 $helper = new helper();
 $ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
-$site_name = null;
+$site_name = $content = null;
 
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
@@ -164,7 +164,7 @@ $tpl_b->r('pagename', $pagename);
 $tpl_b->r('pageicon', $pageicon);
 $tpl_h->r('pagename', $pagename);
 $tpl_b->r('aa_version', $version);
-$tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path)) ? intval(file_get_contents($path)) : time()), true));
+$tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path_webhelper)) ? intval(file_get_contents($path_webhelper)) : time()), true));
 $tpl_b->r('user', $user->read("username"));
 $tpl_b->r('rank', $user->read("rang"));
 $tpl_b->r('content', $content);

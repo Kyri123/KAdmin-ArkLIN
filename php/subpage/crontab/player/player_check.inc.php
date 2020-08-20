@@ -47,7 +47,7 @@ for ($i=0;$i<count($dir);$i++) {
             {
                 $json_tribe[$z]['Id'] = $tribe->Id;
                 $json_tribe[$z]['Name'] = $tribe->Name;
-                $json_tribe[$z]['OwnerId'] = $container->Tribes[0]->Owner->SteamId;
+                $json_tribe[$z]['OwnerId'] = 0;
                 $json_tribe[$z]['FileCreated'] = $tribe->FileCreated;
                 $json_tribe[$z]['FileUpdated'] = $tribe->FileUpdated;
                 $json_tribe[$z]['Members'] = $tribe->Members;
