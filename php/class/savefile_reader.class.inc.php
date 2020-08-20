@@ -22,22 +22,14 @@ class Container
 
     function LinkPlayersAndTribes()
     {
-        foreach($this->Players as $player)
+        foreach($this->Players as $k => $player)
         {
             $player->OwnedTribes = [];
             foreach($this->Tribes as $tribe)
             {
-                if ($tribe->Members === null) {
-                    $tribe->Members = [];
-                }
-
-                if ($tribe->Id == $player->TribeId) {
-                    $player->Tribe = $tribe;
-                    array_push($tribe->Members, $player);
-                }
-                if ($tribe->OwnerId == $player->Id) {
-                    $tribe->Owner = $player;
-                    array_push($player->OwnedTribes, $tribe);
+                if (in_array($player->CharacterName, $tribe->Members)) {
+                    $this->Players[$k]->TribeId = $tribe->Id;
+                    $this->Players[$k]->TribeName = $tribe->Name;
                 }
             }
         }
@@ -57,6 +49,7 @@ class PlayerFileParser
         $player->SteamName = BinaryHelper::GetString($data, 'PlayerName');
         $player->CharacterName = BinaryHelper::GetString($data, 'PlayerCharacterName');
         $player->TribeId = BinaryHelper::GetInt($data, 'TribeID');
+        $player->TribeName = "";
         $player->Level = BinaryHelper::GetUInt16($data, 'CharacterStatusComponent_ExtraCharacterLevel');
         $player->ExperiencePoints = BinaryHelper::GetFloat($data, 'CharacterStatusComponent_ExperiencePoints');
         $player->TotalEngramPoints = BinaryHelper::GetInt($data, 'PlayerState_TotalEngramPoints');
@@ -133,7 +126,7 @@ class TribeFileParser
                 $found = false;
             }
 
-            if ($found) $player[count($player)] = $exp[$i];
+            if ($found && $exp[$i] != "StrProperty") $player[count($player)] = $exp[$i];
         }
 
         return $player;
@@ -219,6 +212,7 @@ class Player
     public $FileCreated;
     public $FileUpdated;
     public $TribeId;
+    public $TribeName;
 }
 
 class Tribe

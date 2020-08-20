@@ -69,6 +69,7 @@ for ($i=0;$i<count($dir);$i++) {
                 $json_user[$z]['FileCreated'] = $Players->FileCreated;
                 $json_user[$z]['FileUpdated'] = $Players->FileUpdated;
                 $json_user[$z]['TribeId'] = $Players->TribeId;
+                $json_user[$z]['TribeName'] = $Players->TribeName;
                 $z++;
             }
 
@@ -123,7 +124,8 @@ for ($i=0;$i<count($dir);$i++) {
                         `FirstSpawned` = '".$v["FirstSpawned"]."', 
                         `FileCreated` = '".$v["FileCreated"]."', 
                         `FileUpdated` = '".$v["FileUpdated"]."', 
-                        `TribeId` = '".$v["TribeId"]."'
+                        `TribeId` = '".$v["TribeId"]."',
+                        `TribeName` = '".$v["TribeName"]."'
                     WHERE total_id = '". $row['total_id'] ."';";
                     }
                     else {
@@ -141,7 +143,8 @@ for ($i=0;$i<count($dir);$i++) {
                         '".$v["FirstSpawned"]."', 
                         '".$v["FileCreated"]."', 
                         '".$v["FileUpdated"]."', 
-                        '".$v["TribeId"]."'
+                        '".$v["TribeId"]."', 
+                        '".$v["TribeName"]."'
                     );";
                     }
                     if($query !=  null) $mycon->query($query);
