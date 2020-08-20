@@ -181,7 +181,7 @@ $dir_arr = scandir($serv->dir_save());
 $player_save = $tribe_save = array();
 
 foreach ($dir_arr as $file) {
-    if($file_name != "." && $file_name != ".") {
+    if($file != "." && $file != ".") {
         $file_path = $serv->dir_save()."/$file";
         $file_info = pathinfo($file_path);
         $ext = $file_info["extension"];

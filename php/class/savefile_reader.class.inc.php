@@ -46,7 +46,7 @@ class PlayerFileParser
         $player = new Player();
         $player->Id = PlayerFileParser::GetId($data);
         $player->SteamId = PlayerFileParser::GetSteamId($data);
-        $player->SteamName = BinaryHelper::GetString($data, 'PlayerName');
+        $player->SteamName = null;
         $player->CharacterName = BinaryHelper::GetString($data, 'PlayerCharacterName');
         $player->TribeId = pathinfo($path)["basename"];
         $player->TribeName = "";

@@ -60,7 +60,6 @@ for ($i=0;$i<count($dir);$i++) {
             {
                 $json_user[$z]['Id'] = $Players->Id;
                 $json_user[$z]['SteamId'] = $Players->SteamId;
-                $json_user[$z]['SteamName'] = $Players->SteamName;
                 $json_user[$z]['CharacterName'] = $Players->CharacterName;
                 $json_user[$z]['Level'] = $Players->Level;
                 $json_user[$z]['ExperiencePoints'] = $Players->ExperiencePoints;
