@@ -270,7 +270,9 @@ class Template {
             '#\[tr](.*?)\[\/tr\]#si',
             '#\[td="(.*?)"](.*?)\[\/td\]#si',
             '#\[tr](.*?)\[\/tr\]#si',
-            '#\[a="(.*?)"](.*?)\[\/a\]#si'
+            '#\[a="(.*?)"](.*?)\[\/a\]#si',
+            '#\[ico="(.*?)"]\[\/ico\]#si',
+            '#\[img="(.*?)"]\[\/img\]#si'
         );
         $r = array(
             "<span class=\"$1\">$2</span>",
@@ -289,6 +291,8 @@ class Template {
             "<td class=\"$1\">$2</td>",
             "<td>$1</td>",
             "<a href=\"$1\">$2</a>",
+            "<i class=\"$1\"></i>",
+            "<img src=\"$1\" />"
         );
         $this->file = preg_replace($s, $r, $this->file);
     }

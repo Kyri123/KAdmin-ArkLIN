@@ -84,12 +84,14 @@ if (isset($_POST["add"])) {
     }
 }
 
+// Entfernen von Server
 if (isset($_POST["del"])) {
     $serv = new server($_POST["cfg"]);
     $opt = array();
     if (isset($_POST["opt"])) $opt = $_POST["opt"];
     $server = $serv->name();
 
+    // Setze Vars
     $path = "app/json/serverinfo/$server.json";
     $data = $helper->file_to_json($path);
     $arkservdir = $serv->cfg_read("arkserverroot");
@@ -101,17 +103,27 @@ if (isset($_POST["del"])) {
     $jobs->set($serv->name());
     if (file_exists($path_cfg) && ($serverstate == 0 || $serverstate == 3)) {
         if (unlink($path_cfg)) {
+            // Entferne alle Dateien von dem Server
             if (file_exists("app/json/serverinfo/$server.json")) unlink("app/json/serverinfo/$server.json");
             if (file_exists("app/json/saves/tribes_$server.json")) unlink("app/json/saves/tribes_$server.json");
             if (file_exists("app/json/serverinfo/pl_$server.players")) unlink("app/json/serverinfo/pl_$server.players");
             if (file_exists("app/json/serverinfo/chat_$server.log")) unlink("app/json/serverinfo/chat_$server.log");
             if (file_exists("app/json/serverinfo/player_$server.json")) unlink("app/json/serverinfo/player_$server.json");
             if (file_exists("app/json/servercfg/jobs_$server.json")) unlink("app/json/servercfg/jobs_$server.json");
+
+            // Wenn gewünscht entferne Verzeichnisse vom Server
             if (in_array('deinstall', $opt)) {
                 $jobs->shell("rm -R ".$arkservdir);
                 $jobs->shell("rm -R ".$arklogdir);
                 $jobs->shell("rm -R ".$arkbkdir);
             }
+
+            // Lösche Datensätze aus der DB
+            $mycon->query("DELETE FROM `ArkAdmin_player` WHERE `server`='".$serv->name()."'");
+            $mycon->query("DELETE FROM `ArkAdmin_shell` WHERE `server`='".$serv->name()."'");
+            $mycon->query("DELETE FROM `ArkAdmin_jobs` WHERE `server`='".$serv->name()."'");
+            $mycon->query("DELETE FROM `ArkAdmin_tribe` WHERE `server`='".$serv->name()."'");
+
             $alert->code = 101;
             $alert->overwrite_text = "{::lang::php::scc::serverremoved}";
             $resp = $alert->re();

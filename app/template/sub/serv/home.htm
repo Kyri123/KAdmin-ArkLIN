@@ -385,12 +385,12 @@
                                 }, "JSON");
                         });
 
-                        getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide', "filter", "mods", "home");
+                        getlog('app/data/shell_resp/log/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide', "filter", "mods", "home");
                         getlog('{lchatlog}', '{cfg}', 'lchatlog', 'max', 'hide', "filter", "mods", "home");
                         getlog('{rconlog}', '{cfg}', 'rconlog', 'max', 'hide', "filter", "mods", "home");
 
                         setInterval(function() {
-                            getlog('sh/resp/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide', "filter", "mods", "home");
+                            getlog('app/data/shell_resp/log/{cfg}/last.log', '{cfg}', 'livelog', 'max', 'hide', "filter", "mods", "home");
                         }, 1000);
 
                         setInterval(function() {

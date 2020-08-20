@@ -64,7 +64,7 @@ if (isset($_POST["savepanel"])) {
             $resp = $alert->rd(1);
         }
         if ($link1 && $link2) {
-            header("Location: /install.php/3");
+            header("Location: /install.php/4");
             exit;
         } else {
             $resp = $alert->rd(30);

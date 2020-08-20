@@ -27,16 +27,28 @@ for ($i=0;$i<count($dir);$i++) {
         if(file_exists($path_tolog) && is_dir($path_tolog)) {
             $dirlog = scandir($path_tolog);
             asort($dirlog);
-            var_dump($dirlog);
             $log = null;
 
-            // hole alle Logs und füge sie an dem String
+            // hole alle Logs und speicher die zwischen
+            $files = array(); $z = 0;
             foreach($dirlog as $v) {
                 if(strpos($v, "ServerGame") !== false) {
-                    $file = $path_tolog.$v; 
-                    $log .= file_get_contents($file);
+                    $files[$z]["path"] = $path_tolog.$v;
+                    $files[$z]["time"] = filemtime($path_tolog.$v);
+
+                    $z++;
                 }
-            } 
+            }
+
+            // Sortiere die Dateien
+            usort($files, function($Item1, $Item2) {
+                return $Item1['time'] - $Item2['time'];
+            });
+
+            // füge sie an dem String zusammen
+            foreach($files as $k => $v) {
+                $log .= file_get_contents($v["path"]);
+            }
             
             // Speicher Log
             $log_file = $path_tolog.'ServerPanel.log';

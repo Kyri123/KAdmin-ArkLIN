@@ -46,7 +46,9 @@ if ($url[1] == "" || $url[1] == "favicon.ico") {
 // Connent to MYSQL
 include('php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
-if($mycon->is) include('php/inc/auto_update_sql_DB.inc.php');
+
+$check_json = $helper->file_to_json("app/data/sql_check.json");
+if($mycon->is && !$check_json["checked"]) include('php/inc/auto_update_sql_DB.inc.php');
 
 // Include functions
 include('php/functions/allg.func.inc.php');
@@ -63,6 +65,13 @@ include('php/class/steamAPI.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/jobs.class.inc.php');
 
+// Sende Daten an Server
+$array["dbhost"] = $dbhost;
+$array["dbuser"] = $dbuser;
+$array["dbpass"] = $dbpass;
+$array["dbname"] = $dbname;
+$helper->savejson_create($array, "arkadmin_server/config/mysql.json");
+
 //create class_var
 $alert = new alert();
 $steamapi = new steamapi();
@@ -78,11 +87,21 @@ $servlocdir = $ckonfig['servlocdir'];
 $expert = $user->expert();
 $jobs = new jobs();
 
-//check is user banned
+//Prüfe ob der Benutzer gebant ist
 if ($user->read("ban") > 0) {
     $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
     $mycon->query($query);
     session_destroy();
+}
+
+// Prüfe ob der Nutzer noch exsistiert
+if(isset($_SESSION["id"])) {
+    $query = "SELECT * FROM `ArkAdmin_users` WHERE (`id`='".$_SESSION["id"]."')";
+    if (!($mycon->query($query)->numRows() > 0)) {
+        session_destroy();
+        header("Location: /login");
+        exit;
+    }
 }
 
 if (isset($_SESSION["id"])) {

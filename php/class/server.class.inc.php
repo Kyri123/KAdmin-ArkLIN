@@ -166,10 +166,9 @@ class server extends Rcon {
             return false;
         }
         $doc = $_SERVER['DOCUMENT_ROOT'];
-        $log = $doc.'/sh/resp/'.$this->name().'/last.log';
-        $doc_state_file = 'sh/serv/jobs_ID_'.$this->name().'.state';
+        $log = $doc.'/app/data/shell_resp/log/'.$this->name().'/last.log';
+        $doc_state_file = 'app/data/shell_resp/state/'.$this->name().'.state';
         $doc_state = $doc.'/'.$doc_state_file;
-        $doc = $doc.'/sh/serv/sub_jobs_ID_'.$this->name().'.sh';
         $command = 'arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
         $command = str_replace("\r", null, $command);
 

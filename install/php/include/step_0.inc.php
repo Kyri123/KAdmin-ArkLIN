@@ -66,7 +66,6 @@ foreach($servercfg as $key => $value) {
 
 $sitetpl->r ("modal", $modals);
 $sitetpl->r ("list_opt", $list_opt);
-$sitetpl->rif ("ifallok", $check->check_all());
 
 $title = "{::lang::install::step0::title}";
 $content = $sitetpl->load_var();

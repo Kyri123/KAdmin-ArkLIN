@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS `ArkAdmin_tribe`;
+create table ArkAdmin_tribe (total_id int auto_increment, server text null, Id bigint null, tribeName text null, OwnerId bigint null, FileCreated bigint null, FileUpdated bigint null, Members longtext null, constraint ArkAdmin_tribe_pk primary key (total_id));

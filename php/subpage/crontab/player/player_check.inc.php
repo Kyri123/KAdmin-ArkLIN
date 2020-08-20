@@ -32,6 +32,7 @@ for ($i=0;$i<count($dir);$i++) {
 
             // lade Spielstände & Informationen
             $path = $serv->dir_save();
+            $servname = $serv->name();
             $container = null;
             $container = new Container();
             $container->LoadDirectory($path);
@@ -71,9 +72,81 @@ for ($i=0;$i<count($dir);$i++) {
                 $z++;
             }
 
-            // Speicher Informationen / encode
-            if ($json_user_enc = json_encode($json_user, JSON_INVALID_UTF8_SUBSTITUTE)) file_put_contents('app/json/saves/tribes_'.$serv->name().'.json', $json_user_tribe);
-            if ($json_user_tribe = json_encode($json_tribe, JSON_INVALID_UTF8_SUBSTITUTE)) file_put_contents('app/json/saves/player_'.$serv->name().'.json', $json_user_enc);
+            // Lese Stämme um diese in die Datenbank einzutragen
+            if(is_array($json_tribe) && is_countable($json_tribe)) {
+                foreach($json_tribe as $k => $v) {
+                    $query = null;
+                    $mycon->query("SELECT * FROM `ArkAdmin_tribe` WHERE `Id`='". $v["Id"] ."' AND  `server`='$servname'");
+                    if($mycon->numRows() > 0) {
+                        $row = $mycon->fetchArray();
+                        $query = "UPDATE `ArkAdmin_tribe` SET 
+                        `Id` = '".$v["Id"]."', 
+                        `tribeName` = '".$v["Name"]."', 
+                        `OwnerId` = '".$v["OwnerId"]."', 
+                        `FileCreated` = '".$v["FileCreated"]."', 
+                        `FileUpdated` = '".$v["FileUpdated"]."', 
+                        `Members` = '".json_encode($v["Members"])."'
+                    WHERE total_id = '". $row['total_id'] ."';";
+                    }
+                    else {
+                        $query = "INSERT INTO `ArkAdmin_tribe` VALUES
+                    (
+                        null, 
+                        '$servname', 
+                        '".$v["Id"]."', 
+                        '".$v["Name"]."', 
+                        '".$v["OwnerId"]."', 
+                        '".$v["FileCreated"]."', 
+                        '".$v["FileUpdated"]."', 
+                        '".json_encode($v["Members"])."'
+                    );";
+                    }
+                    if($query !=  null) $mycon->query($query);
+                }
+            }
+
+            // Lese Spieler um diese in die Datenbank einzutragen
+            if(is_array($json_user) && is_countable($json_user)) {
+                foreach($json_user as $k => $v) {
+                    $query = null;
+                    $mycon->query("SELECT * FROM `ArkAdmin_players` WHERE `id`='". $v["Id"] ."' AND  `server`='$servname'");
+                    if($mycon->numRows() > 0) {
+                        $row = $mycon->fetchArray();
+                        $query = "UPDATE `ArkAdmin_players` SET 
+                        `id` = '".$v["Id"]."', 
+                        `SteamId` = '".$v["SteamId"]."', 
+                        `SteamName` = '".$v["SteamName"]."', 
+                        `CharacterName` = '".$v["CharacterName"]."', 
+                        `Level` = '".$v["Level"]."', 
+                        `ExperiencePoints` = '".$v["ExperiencePoints"]."', 
+                        `TotalEngramPoints` = '".$v["TotalEngramPoints"]."', 
+                        `FirstSpawned` = '".$v["FirstSpawned"]."', 
+                        `FileCreated` = '".$v["FileCreated"]."', 
+                        `FileUpdated` = '".$v["FileUpdated"]."', 
+                        `TribeId` = '".$v["TribeId"]."'
+                    WHERE total_id = '". $row['total_id'] ."';";
+                    }
+                    else {
+                        $query = "INSERT INTO `ArkAdmin_players` VALUES
+                    (
+                        null, 
+                        '$servname', 
+                        '".$v["Id"]."', 
+                        '".$v["SteamId"]."', 
+                        '".$v["SteamName"]."', 
+                        '".$v["CharacterName"]."', 
+                        '".$v["Level"]."', 
+                        '".$v["ExperiencePoints"]."', 
+                        '".$v["TotalEngramPoints"]."', 
+                        '".$v["FirstSpawned"]."', 
+                        '".$v["FileCreated"]."', 
+                        '".$v["FileUpdated"]."', 
+                        '".$v["TribeId"]."'
+                    );";
+                    }
+                    if($query !=  null) $mycon->query($query);
+                }
+            }
         }
         // lösche inhalt von vars
         $container = $json_user = $json_tribe = null;

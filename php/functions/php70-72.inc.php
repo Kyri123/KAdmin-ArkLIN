@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 
-// Prüft ob die Aktuelle PHP version unter 7.3 ist
+// Prüft ob die Aktuelle PHP version unter 7.3 ist wenn ja füge eine function is_countable ein um 7.0-7.3 errors zu entfernen
 if(PHP_VERSION_ID < 70300) {
     function is_countable($arr) {
         return is_array($arr);

@@ -15,7 +15,6 @@ $setsidebar = false;
 $cfglist = null;
 $pagename = "{::lang::php::userpanel::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
-$user = new userclass();
 
 //tpl
 $tpl = new Template('tpl.htm', $tpl_dir);

@@ -52,10 +52,11 @@ for ($i=0;$i<count($dir);$i++) {
             $server['run'] = ($server['run'] === true) ? "Yes" : "No";
 
             // lese Status für die Ausführung von Aktionen
-            if (!file_exists('sh/serv/jobs_ID_'.$serv->name().'.state')) file_put_contents('sh/serv/jobs_ID_'.$serv->name().'.state', 'TRUE');
-            $serv_state = trim(file_get_contents('sh/serv/jobs_ID_'.$serv->name().'.state'));
-            $log = 'sh/resp/'.$serv->name().'/last.log';
-            if ($serv_state == 'TRUE' && timediff($log, ($webserver['config']['ShellIntervall'] / 1000 + 3))) {
+            $statefile = 'app/data/shell_resp/state/'.$serv->name().'.state';
+            if (!file_exists($statefile)) file_put_contents($statefile, 'TRUE');
+            $serv_state = trim(file_get_contents($statefile));
+            $log = 'app/data/shell_resp/log/'.$serv->name().'/last.log';
+            if ($serv_state == 'TRUE' || !timediff($log, ($webserver['config']['ShellIntervall'] / 1000 + 3))) {
                 $server['next'] = 'FALSE';
             }
             else {
