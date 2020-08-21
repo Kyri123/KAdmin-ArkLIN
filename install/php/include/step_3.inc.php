@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 $resp = null;
-$sitetpl= new Template("step2.htm", $tpl_dir);
+$sitetpl= new Template("step3.htm", $dirs["tpl"]);
 $sitetpl->load();
 $complete = false;
 $ppath = "php/inc/custom_konfig.json";
@@ -64,7 +64,7 @@ if (isset($_POST["savepanel"])) {
             $resp = $alert->rd(1);
         }
         if ($link1 && $link2) {
-            header("Location: /install.php/3");
+            header("Location: /install.php/4");
             exit;
         } else {
             $resp = $alert->rd(30);

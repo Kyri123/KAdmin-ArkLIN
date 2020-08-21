@@ -12,7 +12,7 @@
 $tpl_dir = 'app/template/core/scc/';
 $tpl_dir_all = 'app/template/all/';
 $setsidebar = false;
-$cfglist = null;
+$cfglist = $cfgmlist = null;
 $pagename = "{::lang::php::scc::pagename}";
 $urltop = '<li class="breadcrumb-item">Server Controll Center</li>';
 $serv = new server("tiamat");
@@ -30,12 +30,13 @@ if (isset($_POST["add"])) {
             break;
         }
     }
+
     $arkserverroot = $servlocdir."server_ID_".$name;
     $logdir = $servlocdir."server_ID_".$name."_logs";
     $arkbackupdir = $servlocdir."server_ID_".$name."_backups";
-    $ark_QueryPort = $_POST["port"];
-    $ark_Port = $ark_QueryPort+2;
-    $ark_RCONPort = $ark_QueryPort+4;
+    $ark_QueryPort = $_POST["port"][1];
+    $ark_Port = $_POST["port"][0];
+    $ark_RCONPort = $_POST["port"][2];
 
     $cfg = file_get_contents('app/data/template.cfg');
     $find = array(
@@ -57,28 +58,40 @@ if (isset($_POST["add"])) {
         md5(rndbit(10))
     );
     $cfg = str_replace($find, $repl, $cfg);
-    if (!file_exists($path) && $ark_QueryPort > 1000) {
-        if (file_put_contents($path, $cfg)) {
-            $alert->code = 100;
-            $resp = $alert->re();
-            $serv = new server($name);
-            $serv->cfg_save();
+    if(
+        ($_POST["port"][0] != "" && is_numeric($_POST["port"][0])) && 
+        ($_POST["port"][1] != "" && is_numeric($_POST["port"][1])) && 
+        ($_POST["port"][2] != "" && is_numeric($_POST["port"][2]))
+    ) {
+        if (!file_exists($path) && $ark_QueryPort > 1000) {
+            if (file_put_contents($path, $cfg)) {
+                $alert->code = 100;
+                $resp = $alert->re();
+                $serv = new server($name);
+                $serv->cfg_save();
+            } else {
+                $alert->code = 1;
+                $resp = $alert->re();
+            }
         } else {
-            $alert->code = 1;
+            $alert->code = 5;
             $resp = $alert->re();
         }
-    } else {
-        $alert->code = 5;
+    }
+    else {
+        $alert->code = 2;
         $resp = $alert->re();
     }
 }
 
+// Entfernen von Server
 if (isset($_POST["del"])) {
     $serv = new server($_POST["cfg"]);
     $opt = array();
     if (isset($_POST["opt"])) $opt = $_POST["opt"];
     $server = $serv->name();
 
+    // Setze Vars
     $path = "app/json/serverinfo/$server.json";
     $data = $helper->file_to_json($path);
     $arkservdir = $serv->cfg_read("arkserverroot");
@@ -90,17 +103,27 @@ if (isset($_POST["del"])) {
     $jobs->set($serv->name());
     if (file_exists($path_cfg) && ($serverstate == 0 || $serverstate == 3)) {
         if (unlink($path_cfg)) {
+            // Entferne alle Dateien von dem Server
             if (file_exists("app/json/serverinfo/$server.json")) unlink("app/json/serverinfo/$server.json");
             if (file_exists("app/json/saves/tribes_$server.json")) unlink("app/json/saves/tribes_$server.json");
             if (file_exists("app/json/serverinfo/pl_$server.players")) unlink("app/json/serverinfo/pl_$server.players");
             if (file_exists("app/json/serverinfo/chat_$server.log")) unlink("app/json/serverinfo/chat_$server.log");
             if (file_exists("app/json/serverinfo/player_$server.json")) unlink("app/json/serverinfo/player_$server.json");
             if (file_exists("app/json/servercfg/jobs_$server.json")) unlink("app/json/servercfg/jobs_$server.json");
+
+            // Wenn gewünscht entferne Verzeichnisse vom Server
             if (in_array('deinstall', $opt)) {
                 $jobs->shell("rm -R ".$arkservdir);
                 $jobs->shell("rm -R ".$arklogdir);
                 $jobs->shell("rm -R ".$arkbkdir);
             }
+
+            // Lösche Datensätze aus der DB
+            $mycon->query("DELETE FROM `ArkAdmin_player` WHERE `server`='".$serv->name()."'");
+            $mycon->query("DELETE FROM `ArkAdmin_shell` WHERE `server`='".$serv->name()."'");
+            $mycon->query("DELETE FROM `ArkAdmin_jobs` WHERE `server`='".$serv->name()."'");
+            $mycon->query("DELETE FROM `ArkAdmin_tribe` WHERE `server`='".$serv->name()."'");
+
             $alert->code = 101;
             $alert->overwrite_text = "{::lang::php::scc::serverremoved}";
             $resp = $alert->re();

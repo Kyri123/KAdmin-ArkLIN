@@ -17,72 +17,76 @@
         <step>Schritt:</step>
         <installer>Installer</installer>
 
+        <allg>
+            <showinfos>Informationen</showinfos>
+            <close>Schließen</close>
+            <done>Installation Abschließen</done>
+            <texttitle>Willkommen beim Arkadmin-Installer</texttitle>
+            <text>[b]Kostet die Benutzung etwas?[/b]
+                Natürlich ist dies 100% kostenlos und open Source!
+
+                [b]Kann ich das Panel auch für andere Spiele wie Atlas verwenden?[/b]
+                Nein</text>
+        </allg>
+
+        <info>
+            <curl>[b]Für Ubuntu Linux[/b]
+                    Folge diesen Link: [a="https://linuxconfig.org/how-to-enable-and-disable-php-curl-module-with-apache-on-ubuntu-linux"]Klick Mich![/a]
+
+                    [b]Für Debian[/b]
+                    Folge diesen Link: [a="https://stackoverflow.com/questions/20073676/how-do-i-install-php-curl-on-linux-debian/20073810"]Klick Mich![/a]
+
+                    [b]Für Plesk Benutzer[/b]
+                    Folge diesen Link:[a="https://support.plesk.com/hc/en-us/articles/360002194613-PHP-application-in-Plesk-cannot-use-cURL-CURL-is-not-available-on-your-web-server"]Klick Mich![/a]</curl>
+
+            <mod_rewrite>[b]Für Ubuntu Linux[/b]
+                    Folge diesen Link: [a="http://www.iasptk.com/enable-apache-mod_rewrite-ubuntu-14-04-lts/"]Klick Mich![/a]
+
+                    [b]Für Debian[/b]
+                    Folge diesen Link: [a="https://www.digitalocean.com/community/tutorials/how-to-rewrite-urls-with-mod-rewrite-for-apache-on-debian-9"]Klick Mich![/a]</mod_rewrite>
+            
+            <os>[b]Ohje...[/b]
+                    Da du Windows benutzt muss ich dich leider Enttäuschen. Das Panel ist für Linux Benutzer gebaut...</os>
+            
+            <am>[b]Für Linux Allgemein[/b]
+                    Folge diesen Link: [a="https://github.com/FezVrasta/ark-server-tools"]Klick Mich![/a]</am>
+            
+            <screen>[b]Ohje...[/b]
+                Bitte installiere screen mit : [b]apt install screen[/b], [b]yum install screen[/b] oder [b]apt-get install screen[/b]</screen>
+
+            <aa>[b]Ohje...[/b]
+                Bitte starte den ArkAdmin-Server (Alle infos unter Readme) oder stelle diesen richtig ein!</aa>
+            
+            <mysqli>[b]Ohje...[/b]
+                Deiner PHP-Version fehlt das Modul MySQLi... Bitte folge diesen Link: [a="https://stackoverflow.com/questions/35424982/how-can-i-enable-the-mysqli-extension-in-php-7"]Klick Mich![/a]</mysqli>
+            
+            <php>[b]ACHTUNG![/b]
+                Der Webserver hat nicht die PHP-Version 7.3 oder höher... Bitte folge diesen Link: [a="https://www.it-swarm.dev/de/php/php-versionen-auf-kommandozeile-ubuntu-16.04-umstellen/831459516/"]Klick Mich![/a]</php>
+        </info>
+
         <step0>
-            <title>Schritt 1: Überprüfung</title>
-            <next>Weiter zu Schritt 2</next>
-            <section>
-                <main>
-                    <title>Willkommen beim Arkadmin-Installer</title>
-                    <text>[b]Kostet die Benutzung etwas?[/b]
-                        Natürlich ist dies 100% kostenlos und open Source!
-
-                        [b]Kann ich das Panel auch für andere Spiele wie Atlas verwenden?[/b]
-                        Nein [hr][b]So aber nun zum Panel![/b]
-                        Zu aller erst Prüfen wir ob das System für das Panel bereit ist
-                        Sollte der Button "Weiter zu Schritt 2" auftauchen so Wählt diesen aus. Sollte dies nicht der Fall sein so Folge den Beschreibungen!
-                        Beachte: das Panel wurde auf der [b]PHP-Version 7.3+[/b] gebaut und getestet Versionen darunter werden daher nicht Supportet!</text>
-                </main>
-                
-                <curl>
-                    <title>Modul cURL fehlt...</title>
-                    <text>[b]Für Ubuntu Linux[/b]
-                        Folge diesen Link: [a="https://linuxconfig.org/how-to-enable-and-disable-php-curl-module-with-apache-on-ubuntu-linux"]Klick Mich![/a]
-
-                        [b]Für Debian[/b]
-                        Folge diesen Link: [a="https://stackoverflow.com/questions/20073676/how-do-i-install-php-curl-on-linux-debian/20073810"]Klick Mich![/a]
-
-                        [b]Für Plesk Benutzer[/b]
-                        Folge diesen Link:[a="https://support.plesk.com/hc/en-us/articles/360002194613-PHP-application-in-Plesk-cannot-use-cURL-CURL-is-not-available-on-your-web-server"]Klick Mich![/a]</text>
-                </curl>
-                
-                <mod>
-                    <title>Modul mod_rewrite fehlt...</title>
-                    <text>[b]Für Ubuntu Linux[/b]
-                        Folge diesen Link: [a="http://www.iasptk.com/enable-apache-mod_rewrite-ubuntu-14-04-lts/"]Klick Mich![/a]
-
-                        [b]Für Debian[/b]
-                        Folge diesen Link: [a="https://www.digitalocean.com/community/tutorials/how-to-rewrite-urls-with-mod-rewrite-for-apache-on-debian-9"]Klick Mich![/a]</text>
-                </mod>
-                
-                <os>
-                    <title>Falsches OS</title>
-                    <text>[b]Ohje...[/b]
-                        Da du Windows benutzt muss ich dich leider Enttäuschen. Das Panel ist für Linux Benutzer gebaut...</text>
-                </os>
-                
-                <am>
-                    <title>Arkmanager Fehlt...</title>
-                    <text>[b]Für Linux Allgemein[/b]
-                        Folge diesen Link: [a="https://github.com/FezVrasta/ark-server-tools"]Klick Mich![/a]</text>
-                </am>
-                
-                <aa>
-                    <title>ArkAdmin-Server Offline...</title>
-                    <text>Bitte starte den ArkAdmin-Server (Alle infos unter Readme) oder stelle diesen richtig ein!</text>
-                    </aa>
-            </section>
+            <title>Schritt 1: ArkAdmin-Server</title>
+            <subtitle>Stelle den Server ein</subtitle>
+            <next>Speichern und weiter zu Schritt 2</next>
+            <text>Speichern und weiter zu Schritt 2</text>
         </step0>
+
+        <step1>
+            <title>Schritt 2: Überprüfung</title>
+            <subtitle>Prüfe die bnötigten Module und Programme</subtitle>
+            <next>Weiter zu Schritt 3</next>
+            <text>[b]Modul Überprüfung[/b]
+                Nun Prüfen wir ob das System für das Panel bereit ist.
+                Sollte der Button "Weiter zu Schritt 2" auftauchen so Wählt diesen aus. Sollte dies nicht der Fall sein so Folge den Beschreibungen!
+                Beachte: das Panel wurde auf der [b]PHP-Version 7.3+[/b] gebaut und getestet. Versionen darunter werden daher nicht Supportet!</text>
+        </step1>
 
             
 
-        <step1>
-            <title>Schritt 2: MySQL</title>
-
-            <main>
-                <text>[b]Nun zur Datenbank[/b]
-                    Gebe die Logindaten deiner MySQL-Datenbank ein das System macht den rest!</text>
-            </main>
-
+        <step2>
+            <title>Schritt 3: MySQL</title>
+            <text>[b]Nun zur Datenbank[/b]
+                Gebe die Logindaten deiner MySQL-Datenbank ein das System macht den rest!</text>
             <form>
                 <title>MySQL Daten</title>
                 <host>Host Adresse</host>
@@ -91,24 +95,19 @@
                 <base>Database</base>
                 <btn_send>Absenden</btn_send>
             </form>
-        </step1>
+        </step2>
 
             
 
-        <step2>
-            <title>Schritt 3: Benutzer Konfiguration</title>
+        <step3>
+            <title>Schritt 4: Benutzer Konfiguration</title>
             <true>Ja</true>
             <false>Nein</false>
-
-            <main>
-                <title>Benutzer Konfiguration</title>
-                <text>[b]Einstellungen[/b]
-                    Stelle alles ein wie du willst
-                    Sorge bitte dafür dass der Webserver zugriff die die Ordner hat!
-                    [a="https://blog.ha-com.com/2011/07/11/open_basedir-php-apache-documentroot/"]open_basedir Allgemein Apache[/a] | [a="https://blog.ha-com.com/2011/07/11/open_basedir-php-apache-documentroot/"]open_basedir Plesk[/a]
-                    Den Steam API key bekommst du [a="https://steamcommunity.com/dev/apikey"]HIER![/a]</text>
-            </main>
-
+            <text>[b]Einstellungen[/b]
+                Stelle alles ein wie du willst
+                Sorge bitte dafür dass der Webserver zugriff die die Ordner hat!
+                [a="https://blog.ha-com.com/2011/07/11/open_basedir-php-apache-documentroot/"]open_basedir Allgemein Apache[/a] | [a="https://blog.ha-com.com/2011/07/11/open_basedir-php-apache-documentroot/"]open_basedir Plesk[/a]
+                Den Steam API key bekommst du [a="https://steamcommunity.com/dev/apikey"]HIER![/a]</text>
             <form>
                 <title>Panel Einstellen</title>
                 <uninstallmods>Deinstalliere Mods beim Entfernen</uninstallmods>
@@ -119,22 +118,16 @@
                 <restartoncchange>Starte Clusterserver neu wenn Optionen geändert werden</restartoncchange>
                 <btn_send>Speichern und weiter zum nächsten Schritt</btn_send>
             </form>
-        </step2>
-
-            
-
-        <step3>
-            <title>Schritt 4: Crontab und Regestrierung</title>
-
-            <main>
-                <title>Crontab und Regestrierung</title>
-                <text>[b]Crontab[/b]
-                    Stelle sicher dass der ArkAdmin-Server richtig eingestellt ist.
-                    Wenn der Crontab abgerufen wird wird der Abschluss der Installation freigeben [hr][b]Regestrierung[/b]
-                    Erstelle nun ein Account: [a="/registration"]Klick mich![/a]
-                    Dein Code lautet: [b]{code}[/b]</text>
-            </main>
         </step3>
+
+        <step4>
+            <title>Schritt 5: Crontab und Regestrierung</title>
+            <text>[b]Crontab[/b]
+                Stelle sicher dass der ArkAdmin-Server richtig eingestellt ist.
+                Wenn der Crontab abgerufen wird wird der Abschluss der Installation freigeben [hr][b]Regestrierung[/b]
+                Erstelle nun ein Account: [a="/registration"]Klick mich![/a]
+                Dein Code lautet: [b]{code}[/b]</text>
+        </step4>
 
     </install>
 </lang>

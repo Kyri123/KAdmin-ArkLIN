@@ -7,12 +7,13 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+
 // hide errors
 include('php/inc/config.inc.php');
-
 include('php/class/helper.class.inc.php');
 $helper = new helper();
 $ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
+$site_name = $content = null;
 
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
@@ -45,11 +46,16 @@ if ($url[1] == "" || $url[1] == "favicon.ico") {
 // Connent to MYSQL
 include('php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
-if($mycon->is) include('php/inc/auto_update_sql_DB.inc.php');
+
+$check_json = $helper->file_to_json("app/data/sql_check.json");
+if($mycon->is && !$check_json["checked"]) include('php/inc/auto_update_sql_DB.inc.php');
 
 // Include functions
 include('php/functions/allg.func.inc.php');
 include('php/functions/check.func.inc.php');
+include('php/functions/modify.func.inc.php');
+include('php/functions/traffic.func.inc.php');
+include('php/functions/util.func.inc.php');
 
 // include classes
 include('php/class/xml_helper.class.php');
@@ -62,15 +68,25 @@ include('php/class/steamAPI.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/jobs.class.inc.php');
 
+// Sende Daten an Server
+$array["dbhost"] = $dbhost;
+$array["dbuser"] = $dbuser;
+$array["dbpass"] = $dbpass;
+$array["dbname"] = $dbname;
+$helper->savejson_create($array, "arkadmin_server/config/mysql.json");
+
 //create class_var
 $alert = new alert();
 $steamapi = new steamapi();
 $user = new userclass();
 if(isset($_SESSION["id"])) $user->setid($_SESSION['id']);
 
+// Allgemein SteamAPI Arrays
+$steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();
+$steamapi_user = (file_exists("app/json/steamapi/user.json")) ? $helper->file_to_json("app/json/steamapi/user.json", true) : array();
+
 // include util
 include('php/inc/session.inc.php');
-include('php/inc/auto_update_sql_DB.inc.php');
 
 //create globals vars
 $API_Key = $ckonfig['apikey'];
@@ -78,11 +94,21 @@ $servlocdir = $ckonfig['servlocdir'];
 $expert = $user->expert();
 $jobs = new jobs();
 
-//check is user banned
-if ($user->ban() > 0) {
+//Prüfe ob der Benutzer gebant ist
+if ($user->read("ban") > 0) {
     $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
     $mycon->query($query);
     session_destroy();
+}
+
+// Prüfe ob der Nutzer noch exsistiert
+if(isset($_SESSION["id"])) {
+    $query = "SELECT * FROM `ArkAdmin_users` WHERE (`id`='".$_SESSION["id"]."')";
+    if (!($mycon->query($query)->numRows() > 0)) {
+        session_destroy();
+        header("Location: /login");
+        exit;
+    }
 }
 
 if (isset($_SESSION["id"])) {
@@ -126,28 +152,27 @@ if ($page == "login" || $page == "registration") {
 
 //tmp Force Update
 $btns .= '
-    <div class="d-sm-inline-block ">
-        <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-info btn-icon-split rounded-0 ml-1" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
-            <span class="icon text-white-50">
-                <i class="fa fa-refresh"></i>
-            </span>
-        </a>
-    </div>
+    <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-info rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
+        <span class="icon text-white-50">
+            <i class="fa fa-cloud-download"></i>
+        </span>
+    </a>
 ';
 
 // replace
 $tpl_h->r('time', time());
 
+$path_webhelper = "app/check/webhelper";
 $tpl_b->r('pagename', $pagename);
 $tpl_b->r('pageicon', $pageicon);
 $tpl_h->r('pagename', $pagename);
 $tpl_b->r('aa_version', $version);
-$tpl_b->r('lastcheck_webhelper', converttime($helper->gethelpertime(), true));
-$tpl_b->r('user', $user->name());
-$tpl_b->r('rank', $user->rang());
+$tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path_webhelper)) ? intval(file_get_contents($path_webhelper)) : time()), true));
+$tpl_b->r('user', $user->read("username"));
+$tpl_b->r('rank', $user->read("rang"));
 $tpl_b->r('content', $content);
 $tpl_b->r('site_name', $site_name);
-$tpl_b->r('btns', $btns);
+$tpl_b->r('btns', "<div class=\"d-sm-inline-block\">$btns</div>");
 $tpl_b->r('urltop', $urltop);
 $tpl_b->r('g_alert', $g_alert);
 $tpl_b->rif ('if_g_alert', $g_alert_bool);
@@ -156,11 +181,17 @@ $tpl_b->r("langlist", get_lang_list());
 // Server Traffics
 $all = $helper->file_to_json("app/json/serverinfo/all.json");
 $tpl_b->r('count_server', count($all["cfgs"]));
+$tpl_b->r('curr_server', $all["onserv"]);
+$tpl_b->r('off_server', (count($all["cfgs"]) - $all["onserv"]));
+$tpl_b->r('count_server_perc', perc($all["onserv"], count($all["cfgs"])));
 $tpl_b->r('cpu_perc', cpu_perc());
 $tpl_b->r('free', bitrechner(disk_free_space("remote/serv"), "B", "GB"));
+$tpl_b->r('free_max', bitrechner(disk_total_space("remote/serv"), "B", "GB"));
 $tpl_b->r('ram_used', str_replace("MB", "GB", bitrechner(mem_array()[1], "B", "GB")));
 $tpl_b->r('ram_max', str_replace("MB", "GB", bitrechner(mem_array()[0], "B", "GB")));
 $tpl_b->r('ram_perc', mem_perc());
+$tpl_b->r('free_perc', (100 - perc(disk_free_space("remote/serv"), disk_total_space("remote/serv"))));
+$tpl_b->r('perc_on', perc(1, 9));
 $ifnot_traffic = false;
 $check = array("changelog", "404");
 if (in_array($page, $check)) $ifnot_traffic = true;

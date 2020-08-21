@@ -2,7 +2,7 @@
 
     <div class="wrapper">
 
-        <nav class="main-header navbar navbar-expand navbar-dark border-dark elevation-2">
+        <nav class="main-header navbar navbar-expand navbar-dark border-dark">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
@@ -38,12 +38,12 @@
 
 
 
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary">
             <a href="/" class="brand-link elevation-5">
                 <span class="brand-text font-weight-light">Arkadmin {aa_version}</span>
                 <div class="ribbon-wrapper">
-                    <div class="ribbon bg-danger">
-                        Alpha
+                    <div class="ribbon bg-success">
+                        Beta
                     </div>
                 </div>
             </a>
@@ -172,87 +172,88 @@
 
         <div class="content-wrapper d-flex flex-column" style="min-height: 1416.81px;">
 
-            <section class="content mt-1">
+            <!-- Beginne eigentl. seite -->
+            <section class="content mt-0">
+                <nav class="navbar navbar-light navbar-expand border-dark elevation-2 m-0 mb-4 pl-4" style="margin-right: -7.5px!important;;margin-left: -7.5px!important;">
+                    <a class="navbar-brand" href="#">{pageicon} {pagename}</a>
+
+                    <ol class="breadcrumb ml-auto m-0 bg-light">
+                        <li class="breadcrumb-item"><a href="/">ArkAdmin 2</a></li>
+                        {urltop}
+                    </ol>
+                </nav>
+
                 <div class="container-fluid">
-                    <section class="content-header" style="padding-bottom: 0px;">
-                        <div class="row mb-2">
-                            <div class="col-sm-6" style="padding-left: 20px;">
-                                <h1 class="text-dark">{pageicon} {pagename}</h1>
-                            </div>
-                            <div class="col-sm-6" style="padding-right: 20px;">
-                                <ol class="breadcrumb float-sm-right">
-                                    <li class="breadcrumb-item"><a href="/">ArkAdmin 2</a></li>
-                                    {urltop}
-                                </ol>
-                            </div>
-                        </div>
-                    </section>
-                    {if_g_alert}
-                    <section class="content">
-                        <div class="container-fluid">{g_alert}</div>
-                    </section>
-                    {/if_g_alert}
-                    <!-- TODO: Dataserver Messages -->
-                    <!--{if_g_data_alert}
-				<section class="content">
-					<div class="container-fluid">{g_data_alert}</div>
-				</section>
-				{/if_g_data_alert}-->
+
                     <section class="content">
                         <div class="container-fluid">
-                            {!ifchangelog}
-                            <div class="row">
-                                <!-- CPU -->
-                                <div class="col-12 col-sm-6 col-md-3">
-                                    <div class="info-box">
-                                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-microchip"></i></span>
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">{::lang::allg::traffic::cpu}</span>
-                                            <span class="info-box-number">
-											{cpu_perc}
-											<small>%</small>
-										</span>
+                        <!-- Traffic -->
+                        <div class="row mb-3">
+                            <!-- CPU -->
+                            <div class="col-12 col-sm-6 col-md-3">
+                                <div class="info-box mb-0 p-0" style="height: 100%">
+                                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-microchip"></i></span>
+                                    <div class="info-box-content pt-2 pl-3">
+                                        <span class="info-box-text">{::lang::allg::traffic::cpu}</span>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-info" style="width: {cpu_perc}%"></div>
                                         </div>
+                                        <span class="info-box-number">
+                                                {cpu_perc}
+                                                <small>%</small>
+                                            </span>
                                     </div>
                                 </div>
-                                <!-- RAM -->
-                                <div class="col-12 col-sm-6 col-md-3">
-                                    <div class="info-box">
-                                        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-memory"></i></span>
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">{::lang::allg::traffic::ram}</span>
-                                            <span class="info-box-number">
-											{ram_used} / {ram_max} ({ram_perc} <small>%</small>)
-										</span>
+                            </div>
+                            <!-- RAM -->
+                            <div class="col-12 col-sm-6 col-md-3">
+                                <div class="info-box mb-0 p-0" style="height: 100%">
+                                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-memory"></i></span>
+                                    <div class="info-box-content pt-2 pl-3">
+                                        <span class="info-box-text">{::lang::allg::traffic::ram}</span>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-primary" style="width: {ram_perc}%"></div>
                                         </div>
+                                        <span class="info-box-number">
+                                                {ram_used} / {ram_max}
+                                            </span>
                                     </div>
                                 </div>
-                                <div class="clearfix hidden-md-up"></div>
-                                <!-- SPEICHER -->
-                                <div class="col-12 col-sm-6 col-md-3">
-                                    <div class="info-box">
-                                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-hdd"></i></span>
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">{::lang::allg::traffic::mem}</span>
-                                            <span class="info-box-number">
-											{free}
-										</span>
+                            </div>
+                            <div class="clearfix hidden-md-up"></div>
+                            <!-- SPEICHER -->
+                            <div class="col-12 col-sm-6 col-md-3">
+                                <div class="info-box mb-0 p-0" style="height: 100%">
+                                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-hdd"></i></span>
+                                    <div class="info-box-content pt-2 pl-3">
+                                        <span class="info-box-text">{::lang::allg::traffic::mem}</span>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-danger" style="width: {free_perc}%"></div>
                                         </div>
+                                        <span class="info-box-number">
+                                                {free} / {free_max}
+                                            </span>
                                     </div>
                                 </div>
-                                <!-- SERV -->
-                                <div class="col-12 col-sm-6 col-md-3">
-                                    <div class="info-box">
-                                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-server"></i></span>
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">{::lang::allg::traffic::serv}</span>
-                                            <span class="info-box-number">
-											{count_server}
-										</span>
+                            </div>
+                            <!-- SERV -->
+                            <div class="col-12 col-sm-6 col-md-3">
+                                <div class="info-box mb-0 p-0" style="height: 100%">
+                                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-server"></i></span>
+                                    <div class="info-box-content pt-2 pl-3">
+                                        <span class="info-box-text">{::lang::allg::traffic::serv}</span>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" style="width: {count_server_perc}%"></div>
                                         </div>
+                                        <span class="info-box-number">
+                                        <span class="text-success">{curr_server}</span> / <span class="text-danger">{off_server}</span> / <span class="text-primary">{count_server}</span>
+                                            </span>
                                     </div>
                                 </div>
-                            </div>{/!ifchangelog} {content}
+                            </div>
+                        </div>
+
+                        {if_g_alert}{g_alert}{/if_g_alert} {content}
                         </div>
                     </section>
                 </div>

@@ -10,12 +10,8 @@
 
 //check SQL for Cookie_user
 $table = "ArkAdmin_user_cookies";
-$query = "SHOW TABLES LIKE '".$table."'";
 $query_file = "app/sql/cookie_login.sql";
-$mycon->query($query);
-if ($mycon->numRows() == 1) {
-    null;
-} else {
+if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
     $query_file = file($query_file);
     foreach ($query_file as $query) {
         $mycon->query($query);
@@ -24,12 +20,8 @@ if ($mycon->numRows() == 1) {
 
 //check SQL for jobs
 $table = "ArkAdmin_jobs";
-$query = "SHOW TABLES LIKE '".$table."'";
 $query_file = "app/sql/jobs.sql";
-$mycon->query($query);
-if ($mycon->numRows() == 1) {
-    null;
-} else {
+if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
     $query_file = file($query_file);
     foreach ($query_file as $query) {
         $mycon->query($query);
@@ -38,22 +30,34 @@ if ($mycon->numRows() == 1) {
 
 //check SQL for jobs
 $table = "ArkAdmin_shell";
-$query = "SHOW TABLES LIKE '".$table."'";
 $query_file = "app/sql/shell.sql";
-$mycon->query($query);
-if ($mycon->numRows() == 1) {
-    null;
-} else {
+if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
     $query_file = file($query_file);
     foreach ($query_file as $query) {
         $mycon->query($query);
     }
 }
 
-// Sende Daten an Server
-$array["dbhost"] = $dbhost;
-$array["dbuser"] = $dbuser;
-$array["dbpass"] = $dbpass;
-$array["dbname"] = $dbname;
-$helper->savejson_create($array, "arkadmin_server/config/mysql.json");
+//check SQL for players
+$table = "ArkAdmin_players";
+$query_file = "app/sql/players.sql";
+if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
+    $query_file = file($query_file);
+    foreach ($query_file as $query) {
+        $mycon->query($query);
+    }
+}
+
+//check SQL for tribes
+$table = "ArkAdmin_tribe";
+$query_file = "app/sql/tribe.sql";
+if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
+    $query_file = file($query_file);
+    foreach ($query_file as $query) {
+        $mycon->query($query);
+    }
+}
+
+$check_json["checked"] = true;
+$helper->savejson_create($check_json, "app/data/sql_check.json");
 ?>

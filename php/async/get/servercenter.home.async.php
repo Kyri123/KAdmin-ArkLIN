@@ -20,109 +20,56 @@ switch ($case) {
         $serv = new server($cfg);
         $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
         $file = file($whitelistfile);
-        $arr = [];
+        $arr = []; $adminlist_admin = null;
 
         if (is_array($file)) {
             for ($i = 0; $i < count($file); $i++) {
-                $find = array("\n", "\r", " ");
-                $file[$i] = str_replace($find, null, $file[$i]);
+                $file[$i] = trim($file[$i]);
                 if($file[$i] != "0" && $file[$i] != "" && $file[$i] != null) $arr[] = $file[$i];
             }
         }
-        
-        $steamapi->getsteamprofile_list("whitelist_".$serv->name(), $arr, 0);
-        $file = $helper->file_to_json('app/json/steamapi/profile_whitelist_'.$serv->name().'.json', true)["response"]["players"];
+        if(is_countable($arr) && is_array($arr) && count($arr) > 0) {
+            for ($i=0;$i<count($arr);$i++) {
+                $list_tpl = new Template('whitelist.htm', 'app/template/lists/serv/jquery/');
+                $list_tpl->load();
 
-        for ($i=0;$i<count($file);$i++) {
+                $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$arr[$i]."'";
+                $query = $mycon->query($query);
+
+                if($query->numRows() > 0) {
+                    $row = $query->fetchArray();
+                    $list_tpl->r("name", $steamapi_user[$arr[$i]]["personaname"] . " (". $row["CharacterName"] .")");
+                }
+                else {
+                    $list_tpl->r("name", $steamapi_user[$arr[$i]]["personaname"]);
+                }
+
+                $list_tpl->r("sid", $steamapi_user[$arr[$i]]["steamid"]);
+                $list_tpl->r("url", $steamapi_user[$arr[$i]]["profileurl"]);
+                $list_tpl->r("cfg", $serv->name());
+                $list_tpl->r("rndb", rndbit(25));
+                $list_tpl->r("img", $steamapi_user[$arr[$i]]["avatarmedium"]);
+                $list_tpl->rif("hidebtn", false);
+
+                $adminlist_admin .= $list_tpl->load_var();
+            }
+        }
+        else {
             $list_tpl = new Template('whitelist.htm', 'app/template/lists/serv/jquery/');
             $list_tpl->load();
 
-            $list_tpl->r("sid", $file[$i]["steamid"]);
-            $list_tpl->r("url", $file[$i]["profileurl"]);
+            $list_tpl->r("sid", 0);
+            $list_tpl->r("name", "{::lang::allg::default::noplayer}");
             $list_tpl->r("cfg", $serv->name());
             $list_tpl->r("rndb", rndbit(25));
-            $list_tpl->r("name", $file[$i]["personaname"]);
-            $list_tpl->r("img", $file[$i]["avatarmedium"]);
+            $list_tpl->r("img", "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
+            $list_tpl->rif("hidebtn", true);
 
             $adminlist_admin .= $list_tpl->load_var();
         }
         echo $adminlist_admin;
     break;
-
-
-    // CASE: Chat LOG
-    case "livechat":
-        $tpl = new Template('chat.htm', 'app/template/lists/serv/jquery/');
-        $tpl->load();
-        $serv = new server($_GET['cfg']);
-        $path = 'app/json/saves/chat_'.$serv->name().'.log';
-        if (file_exists($path)) {
-            $filearray = file($path);
-            $resp = null;
-            $z = count($filearray)-1;
-            $ib = 0;
-            for ($i=0;$i<count($filearray);$i++) {
-                if ($filearray[$z] != null) {
-                    $exp = explode('(-/-)', $filearray[$z]);
-                    $tpl = new Template('chat.htm', 'app/template/lists/serv/jquery/');
-                    $tpl->load();
-                    $tpl->r('msg', $exp[1]);
-                    $tpl->r('time', date('d.m.Y - H:i:s', $exp[0]));
-                    $tpl->r('i', $ib);
-                    $resp .= $tpl->load_var();
-                }
-                $z--;
-                $ib++;
-                if ($ib>99) break;
-            }
-        }
-        if ($resp == null) $resp = '<tr><td>{::lang::php::async::get::all::getlog::no_log_found}</i></td></tr>';
-
-        $tpl = new Template("content.htm", "app/template/universally/default/");
-        $tpl->load();
-        $tpl->r("content", $resp);
-        $tpl->echo();
-    break;
-
-    case "load":
-        $list = new Template("load_list.htm", "app/template/universally/jquery/");
-        $list->load();
-        $list->echo();
-    break;
-
-    // CASE: RCON LOG
-    case "rconlog":
-        $tpl = new Template('chat.htm', 'app/template/lists/serv/jquery/');
-        $tpl->load();
-        $serv = new server($_GET['cfg']);
-        $path = 'app/json/saves/rconlog_'.$serv->name().'.txt';
-        $resp = null;
-        if (file_exists($path)) {
-            $filearray = file($path);
-            $z = count($filearray)-1;
-            $ib = 0;
-            for ($i=0;$i<count($filearray);$i++) {
-                if ($filearray[$z] != null) {
-                    $exp = explode('(-/-)', $filearray[$z]);
-                    $tpl = new Template('chat.htm', 'app/template/lists/serv/jquery/');
-                    $tpl->load();
-                    $tpl->r('msg', $exp[1]);
-                    $tpl->r('time', date('d.m.Y - H:i:s', $exp[0]));
-                    $tpl->r('i', $ib);
-                    $resp .= $tpl->load_var();
-                }
-                $z--;
-                $ib++;
-                if ($ib>99) break;
-            }
-        }
-        if ($resp == null) $resp = '<tr><td>{::lang::php::async::get::all::getlog::no_log_found}</i></td></tr>';
-
-        $tpl = new Template("content.htm", "app/template/universally/default/");
-        $tpl->load();
-        $tpl->r("content", $resp);
-        $tpl->echo();
-        break;
+    
     default:
         echo "Case not found";
         break;

@@ -11,18 +11,29 @@
 chdir('../../../');
 include("php/functions/php70-72.inc.php");
 include('php/inc/config.inc.php');
+include('php/class/helper.class.inc.php');
 
-ini_set('display_errors', $display_error);
-ini_set('display_startup_errors', $display_error);
+$helper = new helper();
+$ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
 
+ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
+ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
+//error_reporting(E_ALL);
+
+// Starte Session
 session_start();
-
-date_default_timezone_set('Europe/Amsterdam');
 
 include('php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 
-include('php/class/helper.class.inc.php');
+// Importiere Funktionen
+include('php/functions/allg.func.inc.php');
+include('php/functions/check.func.inc.php');
+include('php/functions/modify.func.inc.php');
+include('php/functions/traffic.func.inc.php');
+include('php/functions/util.func.inc.php');
+
+// Importiere Klassen
 include('php/class/user.class.inc.php');
 include('php/class/steamAPI.class.inc.php');
 include('php/class/savefile_reader.class.inc.php');
@@ -30,12 +41,16 @@ include('php/class/Template.class.inc.php');
 include('php/class/rcon.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/alert.class.inc.php');
-include('php/functions/allg.func.inc.php');
 
+// Define vars
+date_default_timezone_set('Europe/Amsterdam');
 $steamapi = new steamapi();
-$helper = new helper();
 $user = new userclass();
 $user->setid($_SESSION["id"]);
 $jhelper = new player_json_helper();
 $alert = new alert();
+
+// Allgemein SteamAPI Arrays
+$steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();
+$steamapi_user = (file_exists("app/json/steamapi/user.json")) ? $helper->file_to_json("app/json/steamapi/user.json", true) : array();
 ?>

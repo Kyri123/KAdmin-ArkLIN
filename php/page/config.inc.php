@@ -17,6 +17,7 @@ $pagename = "{::lang::php::config::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 $syslpath = "remote/steamcmd";
 $workshop = "$syslpath/steamapps/workshop/appworkshop_346110.acf";
+$limit = $helper->file_to_json("app/json/panel/aas_min.json", true);
 
 $ppath = "php/inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
@@ -66,17 +67,24 @@ if (isset($_POST["savewebhelper"])) {
     $filter_bool = array("install_mod","uninstall_mod");
     $filter_link = array("servlocdir","arklocdir");
 
+    $allok = true;
     for ($i=0;$i<count($a_key);$i++) {
-        $json[$a_key[$i]] = $a_value[$i];
+        if(isset($limit[$a_key[$i]])) {
+            if(!(intval($limit[$a_key[$i]]) <= intval($a_value[$i]))) $allok = false;
+        }
+        $jsons[$a_key[$i]] = $a_value[$i];
     }
 
-    $json_str = $helper->json_to_str($json);
-    if (file_put_contents($wpath, $json_str)) {
-        $alert->code = 102;
-        $resp .= $alert->re();
-    } else {
-        $alert->code = 1;
-        $resp .= $alert->re();
+    $json_str = $helper->json_to_str($jsons);
+    if($allok) {
+        if (file_put_contents($wpath, $json_str)) {
+            $resp .= $alert->rd(102);
+        } else {
+            $resp .= $alert->rd(1);
+        }
+    }
+    else {
+        $resp .= $alert->rd(2);
     }
 }
 
@@ -93,19 +101,19 @@ if (isset($_POST["savepanel"])) {
         if (in_array($a_key[$i], $filter_link)) {
             if ($a_key[$i] == "servlocdir" && readlink("remote/serv") != $a_value[$i]) {
                 $loc = "remote/serv";
-                if (file_exists($loc)) unlink($loc);
+                if (is_link($loc) || file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
             }
             elseif ($a_key[$i] == "arklocdir" && readlink("remote/arkmanager") != $a_value[$i]) {
                 $loc = "remote/arkmanager";
-                if (file_exists($loc)) unlink($loc);
+                if (is_link($loc) || file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
             }
             elseif ($a_key[$i] == "steamcmddir" && (readlink("remote/steamcmd") != $a_value[$i] || !file_exists("remote/steamcmd"))) {
                 $loc = "remote/steamcmd";
-                if (file_exists($loc)) unlink($loc);
+                if (is_link($loc) || file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
             }
@@ -198,16 +206,17 @@ foreach($servercfg as $key => $value) {
     $list->rif ("ifbool", false);
     $list->rif ("ifnum", is_numeric($value));
     $list->rif ("iftxt", !is_numeric($value));
+    $list->rif("ifmin", isset($limit[$key]));
     $list->r("key", $key);
-    $key = str_replace($find, $repl, $key);
     $list->r("keym", $key);
     $list->r("value", $value);
+    $list->r("min", ((isset($limit[$key])) ? $limit[$key] : 0));
     $option_server .= $list->load_var();
 }
 
 
 // steamcmd
-$cachelink = null;
+$cachelink = $cachetext = null;
 if(file_exists($syslpath) && is_link($syslpath)) {
     $steamcmd_exsists = true;
     $steamcmd_workshop_exsists = file_exists($workshop);

@@ -26,7 +26,7 @@ for ($i=0;$i<count($dir);$i++) {
         $json = file_get_contents('app/json/serverinfo/'.$dir[$i].'.json');
         $json = json_decode($json, true);
 
-        $json["online"] = (isset($json["online"])) ? filtersh($json["online"]) : "NO";
+        $json["online"] = (isset($json["online"])) ? filtersh($json["online"]) : "No";
 
         $servername = $data['ark_SessionName'];
         $subline = "{::lang::php::server::subline}";
@@ -35,7 +35,7 @@ for ($i=0;$i<count($dir);$i++) {
             $state = 'bg-success';
             $count_serv_1++;
         }
-        elseif ($json["online"] == 'NO') {
+        elseif ($json["online"] == 'No') {
             $state = 'bg-danger';
         } else {
             $state = 'bg-warning';
@@ -51,8 +51,8 @@ for ($i=0;$i<count($dir);$i++) {
         $tpl_serv->r('state', $state);
         $tpl_serv->r('serv_pid', null);
         $tpl_serv->rif ('ifin', $serv->cluster_in());
-        $tpl_serv->r('clustername', (($serv->cluster_in) ? $serv->cluster_name() : null));
-        $tpl_serv->r("typestr", $clustertype[$serv->cluster_type()]);
+        $tpl_serv->r('clustername', (($serv->cluster_in()) ? $serv->cluster_name() : null));
+        $tpl_serv->r("typestr", (($serv->cluster_in()) ? $clustertype[$serv->cluster_type()] : null));
         $tpl_serv->r('subline', $subline);
         $tpl_serv->r('servername', $servername);
         $tpl_serv->r('cfg', $dir[$i]);

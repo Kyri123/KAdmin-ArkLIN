@@ -8,6 +8,9 @@
  * *******************************************************************************************
 */
 
+/**
+ * Class Template
+ */
 class Template {
     
     private $filepath;
@@ -23,6 +26,11 @@ class Template {
     private $langfrom = array();
     private $langto = array();
 
+    /**
+     * Template constructor.
+     * @param $file
+     * @param $path
+     */
     public function __construct($file, $path) {
         if(isset($_COOKIE["lang"])) $this->lang = $_COOKIE["lang"];
         if (file_exists($path.$file)) {
@@ -33,10 +41,18 @@ class Template {
         $this->file_str = $file;
     }
 
+    /**
+     * (De-)Aktiviert Debug
+     *
+     * @param bool $bool
+     */
     public function debug(bool $bool) {
         $this->debug = $bool;
     }
 
+    /**
+     * Läd alle Daten von dem Template
+     */
     public function load() {
         if ($this->filepath != null) {
             $this->file = file_get_contents($this->filepath);
@@ -51,6 +67,14 @@ class Template {
         }
     }
 
+    /**
+     * Fügt Daten hinzu die ersetzt werden sollten
+     * - Format in der HTML: {daten}
+     *
+     * @param $from
+     * @param $to
+     * @return bool
+     */
     public function r($from, $to) {
         if (!$this->load) {
             echo "<p>Template not Loaded ' . $this->file_str . ' </p>";
@@ -63,6 +87,15 @@ class Template {
         return true;
     }
 
+    /**
+     * Fügt Daten hinzu die ersetzt werden sollten
+     * - Format in der HTML:
+     * -- true: {daten}...{/daten}
+     * -- !true: {!daten}...{/!daten}
+     * @param $key
+     * @param $boolean
+     * @return bool
+     */
     public function rif ($key, $boolean) {
         if (!$this->load) {
             echo "<p>Template not Loaded ' . $this->file_str . ' </p>";
@@ -73,6 +106,12 @@ class Template {
         return true;
     }
 
+    /**
+     * Verarbeitet Session Ränge
+     * Todo: Am neuen Rängesystem was kommt anpassen
+     *
+     * @return null
+     */
     public function session() {
         if (!$this->load) {
             echo "<p>Template not Loaded ' . $this->file_str . ' </p>";
@@ -100,6 +139,11 @@ class Template {
         }
     }
 
+    /**
+     * Ausgabe kann ein eine Variable gelesen werden
+     *
+     * @return null
+     */
     public function load_var() {
         if ($this->load) {
             $this->final();
@@ -109,6 +153,9 @@ class Template {
         }
     }
 
+    /**
+     * Ausgabe wird direk ausgegeben und kann nicht in eine Variable gelesen werden
+     */
     public function echo() {
         if ($this->load) {
             $this->final();
@@ -118,34 +165,36 @@ class Template {
         }
     }
 
+    /**
+     * Verarbeitet Replace und IfReplace
+     */
     private function rintern() {
-        $this->file = str_replace($this->rfrom, $this->rto, $this->file);
-        $i = 0;
-        foreach ($this->rifkey as $key) {
-            if ($this->rifbool[$i] === true) {
-                $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", '\\1', $this->file);
-                $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", null, $this->file);
-            } else {
-                $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", null, $this->file);
-                $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", '\\1', $this->file);
-            }
-            $i++;
+        if(is_array($this->rfrom) && is_array($this->rto)) {
+            $this->file = str_replace($this->rfrom, $this->rto, $this->file);
+            $i = 0;
+            foreach ($this->rifkey as $key) {
+                if ($this->rifbool[$i] === true) {
+                    $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", '\\1', $this->file);
+                    $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", null, $this->file);
+                } else {
+                    $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", null, $this->file);
+                    $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", '\\1', $this->file);
+                }
+                $i++;
+            } 
         }
     }
 
+    /**
+     * Finale verarbeitung des Templates (Sprachdateien usw)
+     */
     private function final() {
         $langfile = "app/lang/$this->lang/";
         if (!file_exists($langfile)) $langfile = "app/lang/de_de/";
-        if (file_exists($langfile.'htm.xml') && file_exists($langfile.'php.xml') && file_exists($langfile.'install.xml')) {
-            $this->load_xml($langfile.'htm.xml');
-            $this->load_xml($langfile.'php.xml');
-            $this->load_xml($langfile.'install.xml');
-            $this->load_xml($langfile.'alert.xml');
-        } else {
-            $this->load_xml("app/lang/de_de/htm.xml");
-            $this->load_xml("app/lang/de_de/php.xml");
-            $this->load_xml("app/lang/de_de/install.xml");
-            $this->load_xml("app/lang/de_de/alert.xml");
+
+        $arr = scandir($langfile);
+        foreach ($arr as $item) {
+            if($item != "." && $item != "..") $this->load_xml($langfile.$item);
         }
         
         $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
@@ -157,13 +206,22 @@ class Template {
         $this->bb_codes();
     }
 
-    // Private :: Lang
+    /**
+     * Verarbeitet die Sprachdateien
+     *
+     * @return string|string[]|null
+     */
     private function rlang() {
         // ersetzte im Template
         $this->file = str_replace($this->langfrom, $this->langto, $this->file);
         return $this->file;
     }
 
+    /**
+     * Lade Sprachdateien aus der XML
+     *
+     * @param $langfile
+     */
     private function load_xml($langfile) {
         global $helper;
         // mache XML zu einem Array
@@ -174,6 +232,12 @@ class Template {
         $this->read_xml($xml, "::lang");
     }
 
+    /**
+     * Verarbeitet die Sprachdateien
+     *
+     * @param $array
+     * @param $key
+     */
     private function read_xml($array, $key) {
         foreach ($array as $k => $v) {
             $mkey = $key."::$k";
@@ -186,6 +250,9 @@ class Template {
         }
     }
 
+    /**
+     * BBCodes für die Sprachdateien (XML)
+     */
     private function bb_codes() {
         $s = array(
             '#\[cl="(.*?)"\](.*?)\[\/c\]#si',
@@ -203,7 +270,9 @@ class Template {
             '#\[tr](.*?)\[\/tr\]#si',
             '#\[td="(.*?)"](.*?)\[\/td\]#si',
             '#\[tr](.*?)\[\/tr\]#si',
-            '#\[a="(.*?)"](.*?)\[\/a\]#si'
+            '#\[a="(.*?)"](.*?)\[\/a\]#si',
+            '#\[ico="(.*?)"]\[\/ico\]#si',
+            '#\[img="(.*?)"]\[\/img\]#si'
         );
         $r = array(
             "<span class=\"$1\">$2</span>",
@@ -222,6 +291,8 @@ class Template {
             "<td class=\"$1\">$2</td>",
             "<td>$1</td>",
             "<a href=\"$1\">$2</a>",
+            "<i class=\"$1\"></i>",
+            "<img src=\"$1\" />"
         );
         $this->file = preg_replace($s, $r, $this->file);
     }

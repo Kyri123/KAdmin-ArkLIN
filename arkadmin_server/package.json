@@ -1,10 +1,11 @@
 {
     "name": "arkadmin2-server",
-    "version": "0.3.0",
-    "description": "server fuer das Webpanel von Arkadmin",
+    "version": "0.4.0.7",
+    "description": "server fuer das Webpanel von Arkadmin2",
     "main": "server.js",
     "scripts": {
-        "test": "test"
+        "test": "test",
+        "start": "node server.js"
     },
     "repository": {
         "type": "git",
@@ -21,7 +22,10 @@
     "homepage": "https://github.com/Kyri123/arkadmin#readme",
     "dependencies": {
         "dateformat": "^3.0.3",
+        "gamedig": "^2.0.22",
+        "ini": "^1.3.5",
         "ip": "^1.1.5",
+        "is-running": "^2.1.0",
         "md5": "^2.3.0",
         "mysql": "^2.18.1",
         "node-ssh": "^10.0.2",

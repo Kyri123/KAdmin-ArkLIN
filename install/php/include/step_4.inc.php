@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 
-$sitetpl= new Template("step3.htm", $tpl_dir);
+$sitetpl= new Template("step4.htm", $dirs["tpl"]);
 $sitetpl->load();
 $complete = false;
 $ppath = "php/inc/custom_konfig.json";
@@ -16,7 +16,6 @@ $ppath = "php/inc/custom_konfig.json";
 
 
 
-$sitetpl->r("code", "7c90c6595f7cb4d2aa0e");
 $sitetpl->r("error", $resp);
 $title = "{::lang::install::step3::title}";
 $content = $sitetpl->load_var();

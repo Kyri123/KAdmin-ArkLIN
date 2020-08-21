@@ -15,17 +15,21 @@ $page_tpl = new Template('mods.htm', 'app/template/sub/serv/');
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::saves::urltop}</li>';
 
+// Wenn Modsupport deaktiviert ist leitet direkt zu ServerCenter Startseite des Servers
 if(!$serv->mod_support()) {
     header('Location: /servercenter/'.$url[2].'/home'); exit;
 }
 
+// Mods Hinzufügen
 if (isset($_POST['addmod'])) {
     $urler = $_POST['url'];
     foreach($urler as $k => $urle) {
+        // Prüfe ob wert eine ID oder eine URL ist
         $int = is_numeric($urle);
         if ((strpos($urle, 'steamcommunity.com/sharedfiles/filedetails') || $int === true) && $urle != "") {
             if (strpos($urle, 'id=') || $int === true) {
                 $modid = $urle;
+                // Wenn es eine URL ist filtere ID aus der URL
                 if (!$int) {
                     $urle = parse_url($urle);
                     $query = $urle['query'];
@@ -45,11 +49,12 @@ if (isset($_POST['addmod'])) {
                     }
                 }
     
-                $steamapi->modid = $modid;
-                if ($steamapi->check_mod()) {
+                // Hole Informationen von der SteamAPI & Prüfe ob es ein Gültiger Inhalt ist
+                if ($steamapi->check_mod($modid)) {
                     $mod_cfg = $serv->cfg_read('ark_GameModIds');
                     $mods = explode(',', $mod_cfg);
                     if (count($mods) > 1 || $mods[0] > 0) {
+                        // Schau ob diese Mod bereits exsistiert
                         $exsists = false;
                         for ($i=0;$i<count($mods);$i++) {
                             if ($mods[$i] == $modid) {
@@ -58,6 +63,7 @@ if (isset($_POST['addmod'])) {
                             }
                         }
                         if ($exsists === false) {
+                            // Installiere Mod wenn dies in der Konfig gewünscht ist
                             if ($ckonfig['install_mod'] == 1) {
                                 $jobs->set($serv->name());
                                 $jobs->arkmanager('installmod ' . $modid);
@@ -65,31 +71,39 @@ if (isset($_POST['addmod'])) {
                             $i = count($mods)+1;
                             $mods[$i] = $modid;
                             $save_data = implode(',', $mods);
+                            // Speicher Mods
                             $serv->cfg_write('ark_GameModIds', $save_data);
                             $serv->cfg_save();
+                            // Leite dich wieder zur Startseite
                             header('Location: '.$urls);
                             exit;
                         }
                         else {
+                            // Melde: Mod Exsistiert
                             $resp = $alert->rd(5);
                         }
                     }
                     else {
+                        // Speicher Mod
                         $serv->cfg_write('ark_GameModIds', $modid);
                         $serv->cfg_save();
                     }
                 } else {
+                    // Melde kein Gültiger Inhalt
                     $resp = $alert->rd(20);
                 }
             } else {
+                // Melde: Keine Gültige URL bzw ID
                 $resp = $alert->rd(19);
             }
         } else {
+            // Melde: Workshop URL falsch
             $resp = $alert->rd(18);
         }
     }
 }
 
+// Entferne von Installierten Mods
 if (isset($url[4]) && isset($url[5]) && $url[4] == 'removelocal') {
     $path = $serv->dir_main()."/ShooterGame/Content/Mods/".$url[5];
     $resp = $alert->rd(1);
@@ -97,15 +111,17 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == 'removelocal') {
     if (file_exists($path)) {
         $jobs = new jobs();
         $jobs->set($serv->name());
+        // Deinstalliere Mod
         $jobs->arkmanager("uninstallmod ".$url[5]);
-        $mod = $steamapi->getmod_class($url[5]);
 
+        // Melde Locale Mod deinstalliert
         $alert->overwrite_text = "{::lang::php::sc::page::mods::mod_removed_dir}";
-        $alert->r("name", $mod->title);
+        $alert->r("name", $steamapi->getmod_class($id, 0, true)->title);
         $resp = $alert->rd(100);
     }
 }
 
+// Entfernen | Moven von Mods
 if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot' || $url[4] == 'top')) {
     $action = $url[4];
     $modid = $url[5];
@@ -115,6 +131,7 @@ if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot'
     // replacer
     for ($i=0;$i<count($mods);$i++) {
         if ($mods[$i] == $modid) {
+            // Move Mod nach oben
             if ($action == 'bot') {
                 $iafter = $i+1;
                 $modid_after = $mods[$iafter];
@@ -122,6 +139,7 @@ if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot'
                 $mods[$i] = $modid_after;
                 break;
             }
+            // Move Mod nach unten
             if ($action == 'top') {
                 $ibefore = $i-1;
                 $modid_before = $mods[$ibefore];
@@ -129,6 +147,7 @@ if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot'
                 $mods[$i] = $modid_before;
                 break;
             }
+            // Setzte mod die Entfernt werden soll
             if ($action == 'remove') {
                 $id = $mods[$i];
                 $mods[$i] = 'removed';
@@ -136,7 +155,7 @@ if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot'
             }
         }
     }
-    // builder
+    // Modlist Builder
     for ($i=0;$i<count($mods);$i++) {
         if ($mods[$i] == 'removed') {
             if ($ckonfig['uninstall_mod'] == 1) {
@@ -145,7 +164,9 @@ if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot'
             }
             unset($mods[$i]);
             $alert->overwrite_text = "{::lang::php::sc::page::mods::mod_removed}";
-            $alert->r("name", $steamapi->getmod_class($id)->title);
+
+            // Melde: Mod entfernt
+            $alert->r("name", $steamapi->getmod_class($id, 0, true)->title);
             $resp = $alert->rd(100);
             break;
         }

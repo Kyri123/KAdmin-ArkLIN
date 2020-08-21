@@ -8,6 +8,10 @@
  * *******************************************************************************************
 */
 
+/**
+ * Prüft ob der ArkAdmin-Server Online ist
+ * @return bool
+ */
 function check_server()
 {
     global $webserver;
@@ -15,19 +19,11 @@ function check_server()
     return is_array($header);
 }
 
-function check_curl() {
-    return (in_array  ('curl', get_loaded_extensions())) ? true : false;
-}
-
-function check_rew() {
-    return array_key_exists('HTTP_MOD_REWRITE', $_SERVER);
-}
-
-function check_cmd($cmd = "arkmanager") {
-    $return = shell_exec(sprintf("which %s", escapeshellarg($cmd)));
-    return !empty($return);
-}
-
+/**
+ * Prüft ob der Browser IE ist
+ *
+ * @return bool
+ */
 function isie() {
     if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
         return true;
@@ -41,6 +37,11 @@ function isie() {
     return false;
 }
 
+/**
+ * Prüft den Arkadmin-Serber
+ *
+ * @return bool
+ */
 function check_webhelper() {
     global $webserver;
     if(!check_server()) {
@@ -53,6 +54,12 @@ function check_webhelper() {
     }
 }
 
+/**
+ * Prüft daten vom Arkadmin-Server
+ *
+ * @param $key
+ * @return bool
+ */
 function check_server_json_bool($key) {
     global $webserver;
     if(!check_server()) {

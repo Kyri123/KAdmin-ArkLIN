@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 $resp = null;
-$sitetpl= new Template("step1.htm", $tpl_dir);
+$sitetpl= new Template("step2.htm", $dirs["tpl"]);
 $sitetpl->load();
 $complete = false;
 $resp = null;
@@ -38,7 +38,7 @@ if (isset($_POST["send"])) {
             $array["dbpass"] = $dbpass;
             $array["dbname"] = $dbname;
             if ($helper->savejson_create($array, "arkadmin_server/config/mysql.json")) {
-                header("Location: /install.php/2");
+                header("Location: /install.php/3");
                 exit;
             }
             else {

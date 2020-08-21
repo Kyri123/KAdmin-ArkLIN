@@ -1,0 +1,33 @@
+[{
+    "name": "CURL",
+    "php_case": "curl",
+    "lang": "{::lang::install::info::curl}"
+}, {
+    "name": "Rewrite",
+    "php_case": "mod_rewrite",
+    "lang": "{::lang::install::info::mod_rewrite}"
+}, {
+    "name": "Linux",
+    "php_case": "os",
+    "lang": "{::lang::install::info::os}"
+}, {
+    "name": "Arkmanager",
+    "php_case": "am",
+    "lang": "{::lang::install::info::am}"
+}, {
+    "name": "ArkAdmin-Server",
+    "php_case": "aa",
+    "lang": "{::lang::install::info::aa}"
+}, {
+    "name": "Screen",
+    "php_case": "screen",
+    "lang": "{::lang::install::info::screen}"
+}, {
+    "name": "MySQLi",
+    "php_case": "mysqli",
+    "lang": "{::lang::install::info::mysqli}"
+}, {
+    "name": "PHP 7.3+ (7.0+)",
+    "php_case": "php",
+    "lang": "{::lang::install::info::php}"
+}]

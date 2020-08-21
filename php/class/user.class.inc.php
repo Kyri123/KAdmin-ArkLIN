@@ -8,21 +8,35 @@
  * *******************************************************************************************
 */
 
+/**
+ * Class userclass
+ */
 class userclass extends helper
 {
 
     private $id;
     private $mycon;
     private $myconisset;
-    private $frech;
+    public $frech;
 
-    function __construct()
+    /**
+     * userclass constructor.
+     * @param int $id
+     */
+    function __construct(int $id = 0)
     {
         global $mycon;
         $this->mycon = $mycon;
         $this->myconisset = false;
+        if($id != 0) $this->setid($id);
     }
 
+    /**
+     * Setzte die ID des Users um die MYSQL auszuführen und die Daten zu holen
+     *
+     * @param int $id
+     * @return bool
+     */
     public function setid(int $id)
     {
         $this->id = $id;
@@ -36,77 +50,28 @@ class userclass extends helper
         return false;
     }
 
-    public function name()
-    {
+    /**
+     * Gibt einen gewünschten Wert aus
+     *
+     * @param String $key
+     * @return string
+     */
+    public function read(String $key) {
         if ($this->myconisset) {
             $frech = $this->frech;
-            return $frech['username'];
+            return $frech[$key];
         } else {
             return 'Account nicht gefunden oder gesetzt!';
         }
     }
 
-    public function lasttime()
-    {
-        if ($this->myconisset) {
-            $frech = $this->frech;
-            return $frech['lastlogin'];
-        } else {
-            return 'Account nicht gefunden oder gesetzt!';
-        }
-    }
-
-    public function regtime()
-    {
-        if ($this->myconisset) {
-            $frech = $this->frech;
-            return $frech['registerdate'];
-        } else {
-            return 'Account nicht gefunden oder gesetzt!';
-        }
-    }
-
-    public function rang()
-    {
-        if ($this->myconisset) {
-            $frech = $this->frech;
-            return $frech['rang'];
-        } else {
-            return 'Account nicht gefunden oder gesetzt!';
-        }
-    }
-
-    public function ban()
-    {
-        if ($this->myconisset) {
-            $frech = $this->frech;
-            return $frech['ban'];
-        } else {
-            return 'Account nicht gefunden oder gesetzt!';
-        }
-    }
-
-    public function email()
-    {
-        if ($this->myconisset) {
-            $frech = $this->frech;
-            return $frech['email'];
-        } else {
-            return 'Account nicht gefunden oder gesetzt!';
-        }
-    }
-
-    public function pw()
-    {
-        if ($this->myconisset) {
-            $frech = $this->frech;
-            return $frech['password'];
-        } else {
-            return 'Account nicht gefunden oder gesetzt!';
-        }
-    }
-
-    //write user_data
+    /**
+     * Schreibt einen Wert des Users
+     *
+     * @param String $key
+     * @param String $value
+     * @return bool
+     */
     public function write(String $key, String $value) {
         $id = $this->id;
         $query = 'UPDATE `ArkAdmin_users` SET `'.$key.'`=\''.$value.'\'  WHERE `id` = \''.$id.'\'';
@@ -118,7 +83,11 @@ class userclass extends helper
         return false;
     }
 
-    // sende expert modus
+    /**
+     * Prüfe ob der Expertenmodus aktiv ist
+     *
+     * @return bool
+     */
     public function expert()
     {
         $id = md5($this->id);
@@ -136,7 +105,12 @@ class userclass extends helper
         }
     }
 
-    // sende modus
+    /**
+     * Liest einen wert aus der user.json
+     *
+     * @param String $mode
+     * @return bool
+     */
     public function show_mode(String $mode)
     {
         $id = md5($this->id);

@@ -8,6 +8,10 @@
  * *******************************************************************************************
 */
 
+/**
+ * alert
+ * - Zur Ausgabe von Meldungen
+ */
 class alert extends helper {
 
     public $code = null;
@@ -15,8 +19,8 @@ class alert extends helper {
     public $overwrite_text = null;
     public $overwrite_icon = null;
     public $overwrite_title = null;
-    public $overwrite_style = 1;
-    public $overwrite_mb = -1;
+    public $overwrite_style = 3;
+    public $overwrite_mb = 3;
     public $overwrite_ml = -1;
     public $overwrite_mt = -1;
     public $overwrite_mr = -1;
@@ -24,18 +28,34 @@ class alert extends helper {
     private $tpl;
     private $from;
     private $to;
-
+    
+    /**
+     * __construct 
+     * - Keine Ausgabe
+     * - Keine Eingabe
+     * @return void
+     */
     public function __construct()
     {
         $this->from = array();
         $this->to = array();
     }
-
+    
+    /**
+     * Prüft ob ein Code gesetzt ist
+     *
+     * @return bool
+     */
     private function check_code() {
         if ($this->code != null && is_int($this->code)) return true;
         return false;
     }
-
+    
+    /**
+     * Inizalisiert die ausgabe von einem Allert
+     *
+     * @return void
+     */
     private function inz() {
         $this->tpl = new Template("tpl.htm", "app/template/universally/alert/");
         $this->tpl->load();
@@ -79,7 +99,12 @@ class alert extends helper {
         $this->tpl->rif ("style2", $s2);
         $this->tpl->rif ("style3", $s3);
     }
-
+    
+    /**
+     * Setzte alle werte auf den Standartwert
+     *
+     * @return void
+     */
     private function default() {
         $this->from = null;
         $this->to = null;
@@ -88,20 +113,40 @@ class alert extends helper {
         $this->overwrite_icon = null;
         $this->overwrite_text = null;
         $this->overwrite_title = null;
-        $this->overwrite_style = false;
-        $this->overwrite_mb = -1;
+        $this->overwrite_style = 3;
+        $this->overwrite_mb = 3;
         $this->overwrite_mr = -1;
         $this->overwrite_mt = -1;
         $this->overwrite_ml = -1;
     }
-
+    
+    /**
+     * Ersetzte ein Wert ({...}) im String des Alerts
+     *
+     * @param  string $from - Wert der Ersetzt ersetzt werden soll
+     * @param  string $to - Wert der gesetzt werden soll
+     * @return bool
+     */
     public function r(String $from, String $to) {
         array_push($this->from, '{'.$from.'}');
         array_push($this->to, $to);
         return true;
     }
-
-    public function rd(Int $code, Int $style = 1, Int $mt = -1, Int $mr = -1, Int $mb = -1, Int $ml = -1, String $icon = null, String $color = null) {
+    
+    /**
+     * Gibt direkt ein Alert zurück (Code muss gesetzt sein)
+     *
+     * @param  int $code - Alert nummer (alert.htm)
+     * @param  int $style - Style nummer (1-3)
+     * @param  int $mt - margin-top in Pixel
+     * @param  int $mr - margin-right in Pixel 
+     * @param  int $mb - margin-bottom in Pixel 
+     * @param  int $ml - margin-left in Pixel 
+     * @param  string $icon - überschreibe das Icon 
+     * @param  string $color - überschreibe die Farbe (alle boostrap classe ...-XXX)
+     * @return mixed
+     */
+    public function rd(Int $code, Int $style = 3, Int $mt = -1, Int $mr = -1, Int $mb = 3, Int $ml = -1, String $icon = null, String $color = null) {
         $this->overwrite_style = $style;
         $this->overwrite_mb = $mb;
         $this->overwrite_mr = $mr;
@@ -120,7 +165,12 @@ class alert extends helper {
             return false;
         }
     }
-
+    
+    /**
+     * Gibt den Alert zurück wenn der Code gesetzt wurde
+     *
+     * @return mixed
+     */
     public function re() {
         if ($this->check_code()) {
             $this->inz();

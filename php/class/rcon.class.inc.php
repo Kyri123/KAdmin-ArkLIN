@@ -2,10 +2,10 @@
 /**
  * See https://developer.valvesoftware.com/wiki/Source_RCON_Protocol for
  * more information about Source RCON Packets
- * :: entnommen da ich keine Erfahung in RCON habe.
  * @copyright 2013 Chris Churchwell
  *
- * TODO: Eigene Klasse erstellen
+ * :: entnommen da ich keine Erfahung in RCON habe.
+ * TODO: Eigene Klasse erstellen???
  */
 class Rcon {
     private $host;

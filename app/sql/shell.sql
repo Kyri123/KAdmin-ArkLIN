@@ -1,2 +1,1 @@
-DROP TABLE IF EXISTS `ArkAdmin_shell`;
 CREATE TABLE `ArkAdmin_shell` (`id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,`server` text,`command` text,PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=4036 DEFAULT CHARSET=utf8;

@@ -45,7 +45,7 @@
 
         <!-- DANGER | allready exsists -->
         <c_5>
-            <title>Error</title>
+            <title>Anzahl Fehler</title>
             <text>Es kann nur einmal Existieren</text>
         </c_5>
 
@@ -184,7 +184,7 @@
 
         <!-- DANGER | session_createacc::wrong email/username -->
         <c_28>
-            <title>Account Fehler</title>
+            <title>Input Fehler</title>
             <text>Bitte fülle alle Felder aus!</text>
         </c_28>
 
@@ -209,7 +209,7 @@
         <!-- DANGER | path !dir -->
         <c_32>
             <title>Type Error</title>
-            <text>Pfad ist keine Ordner</text>
+            <text>Pfad ist kein Ordner</text>
         </c_32>
 
         <!-- DANGER | path !file -->
@@ -269,7 +269,7 @@
         <!-- Success | added -->
         <c_104>
             <title>Erfolgreich hinzugefügt!</title>
-            <text>wurde {} hinzufügt.</text>
+            <text>wurde {text} hinzufügt.</text>
         </c_104>
 
         <!-- Success | executed [rcon] -->
@@ -335,6 +335,12 @@
             <text>Achtung Whitelist ist nicht aktiv - Aktiviere: [b]exclusivejoin[/b]</text>
         </c_202>
 
+        <!-- Warning | Kein Master gesetzt -->
+        <c_203>
+            <title>Master Warnung</title>
+            <text>Achtung es wurde kein Master oder Server gefunden! Bitte Prüfe dies.</text>
+        </c_203>
+
 
         <!-- INFO -->
         <!-- INFO | syncmode - admin -->
@@ -372,8 +378,8 @@
             <title>RCON Info</title>
             <text>Achtung RCON ist nicht aktiv (Rcon = False oder Kein Admin Passwort oder Server Offline)
 
-                - Live Chat Deaktivitert
-                - Rcon-Konsole Deaktivitert
+                - Live Chat Deaktiviert
+                - Rcon-Konsole Deaktiviert
             </text>
         </c_305>
 
@@ -388,5 +394,17 @@
             <title>SteamCMD Info</title>
             <text>Diese Optionen sind WIP und werden bald Erweitert</text>
         </c_307>
+
+        <!-- INFO | Live-Chat deaktiviert -->
+        <c_308>
+            <title>Live-Chat Info</title>
+            <text>Achtung Live-Chat ist nicht aktiv! Folgende Flaggen müssen gesetzt sein:
+
+                - Servergamelog
+                - servergameloginincludestribelog
+                - ServerRCONOutouTribeLog
+                - logs
+            </text>
+        </c_308>
     </alert>
 </lang>

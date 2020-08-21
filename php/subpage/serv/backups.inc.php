@@ -15,31 +15,34 @@ $page_tpl->debug(true);
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::backup::urltop}</li>';
 
-$user = new userclass();
-$user->setid($_SESSION['id']);
 $page_tpl->r('cfg' ,$url[2]);
-$page_tpl->r('SESSION_USERNAME' ,$user->name());
+$page_tpl->r('SESSION_USERNAME' ,$user->read("username"));
 
 $dir_array = dirToArray($serv->dir_backup());
 $y = 0; $list = null;
 
+// entferne ein Backup verzeichnis
 if (isset($url[4]) && isset($url[5]) && $url[4] == "removemain") {
     $key = $url[5];
     $path = $serv->dir_backup()."/".$key;
     if (file_exists($path)) {
         if (del_dir($path)) {
+            // Melde: Abschluss
             $alert->code = 101;
             $resp = $alert->re();
         } else {
+            // Melde: Lese/Schreib fehler
             $alert->code = 1;
             $resp = $alert->re();
         }
     } else {
+        // Melde: Lese/Schreib fehler
         $alert->code = 1;
         $resp = $alert->re();
     }
 }
 
+// entferne ein Backup
 if (isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove") {
     $key = $url[5];
     $i = $url[6];
@@ -47,32 +50,40 @@ if (isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove") {
     $filename = $dir_array[$key][$i];
     if (file_exists($path)) {
         if (unlink($path)) {
+            // Melde: Abschluss
             $alert->code = 101;
             $resp = $alert->re();
         } else {
+            // Melde: Lese/Schreib fehler
             $alert->code = 1;
             $resp = $alert->re();
         }
     } else {
+        // Melde: Lese/Schreib fehler
         $alert->code = 1;
         $resp = $alert->re();
     }
 }
 
+// Spiele Backup ein
 if (isset($_POST["playthisin"])) {
     $key = $_POST["key"];
     $i = $_POST["i"];
     $opt = array();
     if (isset($_POST["opt"])) $opt = $_POST["opt"];
+
     $path = $serv->dir_backup()."/".$key."/".$dir_array[$key][$i];
     $spath = $serv->dir_save();
     $state = $serv->statecode();
     $cpath = $serv->dir_save(true)."/Config/LinuxServer/";
+
     try {
+        // Entpacke Tar
         $phar = new PharData($path);
         $phar->extractTo('cache');
         $cont = true;
     } catch (Exception $e) {
+        // Melde: Datei konnte nicht Entpackt werden
         $alert->code = 17;
         $resp = $alert->re();
         $cont = false;
@@ -93,6 +104,7 @@ if (isset($_POST["playthisin"])) {
             $info = pathinfo($path.$dir_array[$i]);
             $ending = $info["extension"];
 
+            // Spiele wenn gewünscht Welten ein
             if (in_array("world", $opt) && $ending == "ark") {
                 if (file_exists($spath."/".$dir_array[$i])) unlink($spath."/".$dir_array[$i]);
                 rename($path.$dir_array[$i], $spath."/".$dir_array[$i]);
@@ -101,6 +113,7 @@ if (isset($_POST["playthisin"])) {
                 unlink($path.$dir_array[$i]);
             }
 
+            // Spiele wenn gewünscht Inis ein
             if (in_array("ini", $opt) && $ending == "ini") {
                 if (file_exists($cpath.$dir_array[$i])) unlink($cpath.$dir_array[$i]);
                 rename($path.$dir_array[$i], $cpath.$dir_array[$i]);
@@ -109,6 +122,7 @@ if (isset($_POST["playthisin"])) {
                 unlink($path.$dir_array[$i]);
             }
 
+            // Spiele wenn gewünscht Profile & Stämme ein
             if (in_array("playerandtribes", $opt) && ($ending == "arkprofile" || $ending == "arktribe")) {
                 if (file_exists($spath."/".$dir_array[$i])) unlink($spath."/".$dir_array[$i]);
                 rename($path.$dir_array[$i], $spath."/".$dir_array[$i]);
@@ -118,15 +132,18 @@ if (isset($_POST["playthisin"])) {
             }
         }
         rmdir($path);
+        // Melde: Backup eingespielt
         $alert->code = 106;
         $resp = $alert->re();
     } else {
+        // Melde: Server muss Offline sein
         $alert->code = 7;
         $resp = $alert->re();
     }
 }
 
 
+// Suche nach Backupordener
 $dir_array = dirToArray($serv->dir_backup());
 foreach ($dir_array as $key => $value) {
     $list2 = null;
@@ -137,6 +154,8 @@ foreach ($dir_array as $key => $value) {
     $listtpl->r("title", $key);
     $listtpl->r("i", count($dir_array[$key]));
     $listtpl->r("y", $y);
+
+    // Suche nach Backups
     for ($i=0;$i<count($dir_array[$key]);$i++) {
         $list2tpl = new Template('backup_sub.htm', 'app/template/lists/serv/backups/');
         $list2tpl->load();
@@ -153,6 +172,7 @@ foreach ($dir_array as $key => $value) {
 
         $list2 .= $list2tpl->load_var();
     }
+    
     $listtpl->r("list", $list2);
     $listtpl->r("cfg", $serv->name());
     $listtpl->r("key", $key);
@@ -162,6 +182,7 @@ foreach ($dir_array as $key => $value) {
 
 }
 if ($list == null) {
+    // Gebe aus dass keine Backups gefunden wurden
     $listtpl = new Template('backup.htm', 'app/template/lists/serv/backups/');
     $listtpl->load();
     $listtpl->rif ("ifemtpy", true);

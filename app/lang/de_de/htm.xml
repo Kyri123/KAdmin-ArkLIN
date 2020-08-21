@@ -10,6 +10,12 @@
 
     <allg>
 
+        <default>
+            <noplayer>Kein Spieler Gefunden</noplayer>
+            <noadmin>Kein Admin Gefunden</noadmin>
+            <notinapimod>Wurde noch nicht in die API geladen</notinapimod>
+        </default>
+
         <force_update>Erzwinge Panel Update</force_update>
         <force_update_text>Führt sofort ein Panel Update aus. Dies wird auch getan wenn Auto-Updates deaktiert ist</force_update_text>
 
@@ -22,6 +28,7 @@
 
 
         <send_done>Gesendet</send_done>
+        <send_done_chat>Gesendet (Es kann ein paar Sekunden dauern bis es angezeigt wird)</send_done_chat>
         <send_fail>Fehler</send_fail>
         <pick_lang>Sprache wählen</pick_lang>
 

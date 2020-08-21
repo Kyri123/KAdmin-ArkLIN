@@ -1,4 +1,3 @@
-<?php
 /*
  * *******************************************************************************************
  * @author:  Oliver Kaufmann (Kyri123)
@@ -6,8 +5,14 @@
  * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
-*/
+ */
 
-if (file_exists("../../app/data/checked")) echo "<a href='/install.php/4' target='_blank' class='btn btn-success rounded-0' style='width: 100%'>Done!</a>";
-?>
+const fs = require("fs");
 
+// Speicher in Logdatei
+exports.log = (text) => {
+    var addtext = '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] ' + text + '\n';
+    fs.appendFile('data/server.log', addtext, function(err) {
+        if (err) throw err;
+    });
+};

@@ -107,3 +107,21 @@
         text-overflow: ellipsis;
     }
 }*/
+
+.right {
+    position: absolute;
+    right: 1rem;
+    top: .7rem;
+}
+
+.right-no-top {
+    position: absolute;
+    right: 0rem;
+}
+
+.breadcrumb-item a {
+    color: color: rgb(60, 141, 188) !important;
+}
+.breadcrumb-item a:hover {
+    color: #092328 !important;
+}

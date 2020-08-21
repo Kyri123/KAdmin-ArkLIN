@@ -1,0 +1,33 @@
+<form action="#" method="post" class="card">
+    <div class="card-header border-transparent bg-dark">
+        <h3 class="card-title">{::lang::install::step0::subtitle}</h3>
+
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table m-0">
+                <thead>
+                    <tr>
+                        <th>{::lang::servercenter::config::th_config}</th>
+                        <th>{::lang::servercenter::config::th_input}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {list_opt}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-12">
+            <button type="submit" name="savewebhelper" class="btn-success btn rounded-0" style="width: 100%">{::lang::install::step0::next}</button>
+        </div>
+    </div>
+</form>

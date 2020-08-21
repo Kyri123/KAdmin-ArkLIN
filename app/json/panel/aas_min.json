@@ -1,0 +1,7 @@
+{
+    "WebIntervall": 5000,
+    "CHMODIntervall": 60000,
+    "ShellIntervall": 10000,
+    "StatusIntervall": 5000,
+    "autoupdater_intervall": 120000
+}

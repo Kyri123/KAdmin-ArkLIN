@@ -1,6 +1,6 @@
 <?php
 //from: https://gist.github.com/Sp1rit/d8776427620d01a61f3c6c453541febd
-//Modifiziert: Oliver
+//Modifiziert: Kyri123 (Oliver Kaufmann)
 class Container
 {
     public $Players = array();
@@ -18,26 +18,20 @@ class Container
                 array_push($this->Tribes, TribeFileParser::Parse($fileinfo->getPathName()));
             }
         }
+
+        if($linkPlayerTribes) $this->LinkPlayersAndTribes();
     }
 
     function LinkPlayersAndTribes()
     {
-        foreach($this->Players as $player)
+        foreach($this->Players as $k => $player)
         {
             $player->OwnedTribes = [];
             foreach($this->Tribes as $tribe)
             {
-                if ($tribe->Members === null) {
-                    $tribe->Members = [];
-                }
-
-                if ($tribe->Id == $player->TribeId) {
-                    $player->Tribe = $tribe;
-                    array_push($tribe->Members, $player);
-                }
-                if ($tribe->OwnerId == $player->Id) {
-                    $tribe->Owner = $player;
-                    array_push($player->OwnedTribes, $tribe);
+                if (in_array($player->CharacterName, $tribe->Members)) {
+                    $this->Players[$k]->TribeId = $tribe->Id;
+                    $this->Players[$k]->TribeName = $tribe->Name;
                 }
             }
         }
@@ -53,10 +47,11 @@ class PlayerFileParser
 
         $player = new Player();
         $player->Id = PlayerFileParser::GetId($data);
-        $player->SteamId = PlayerFileParser::GetSteamId($data);
-        $player->SteamName = BinaryHelper::GetString($data, 'PlayerName');
+        $player->SteamId = pathinfo($path)["basename"];
+        $player->SteamName = null;
         $player->CharacterName = BinaryHelper::GetString($data, 'PlayerCharacterName');
-        $player->TribeId = BinaryHelper::GetInt($data, 'TribeID');
+        $player->TribeId = 0;
+        $player->TribeName = "";
         $player->Level = BinaryHelper::GetUInt16($data, 'CharacterStatusComponent_ExtraCharacterLevel');
         $player->ExperiencePoints = BinaryHelper::GetFloat($data, 'CharacterStatusComponent_ExperiencePoints');
         $player->TotalEngramPoints = BinaryHelper::GetInt($data, 'PlayerState_TotalEngramPoints');
@@ -99,7 +94,7 @@ class TribeFileParser
         $data = fread($handle, filesize($path));
 
         $tribe = new Tribe();
-        $tribe->Id = BinaryHelper::GetInt($data, 'TribeID');
+        $tribe->Id = str_replace(".arktribe", null, pathinfo($path)["basename"]);
         $tribe->Name = BinaryHelper::GetString($data, 'TribeName');
         $tribe->OwnerId = TribeFileParser::GetOwnerId($data);
         // Experimentell! {
@@ -133,7 +128,7 @@ class TribeFileParser
                 $found = false;
             }
 
-            if ($found) $player[count($player)] = $exp[$i];
+            if ($found && $exp[$i] != "StrProperty") $player[count($player)] = $exp[$i];
         }
 
         return $player;
@@ -219,6 +214,7 @@ class Player
     public $FileCreated;
     public $FileUpdated;
     public $TribeId;
+    public $TribeName;
 }
 
 class Tribe

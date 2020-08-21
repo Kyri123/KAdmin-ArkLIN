@@ -8,6 +8,9 @@
  * *******************************************************************************************
 */
 
+/**
+ * Class server
+ */
 class server extends Rcon {
 
     private $serv;
@@ -18,6 +21,11 @@ class server extends Rcon {
     private $loadedcluster = false;
     public $cluster_data;
 
+    /**
+     * server constructor.
+     *
+     * @param String $serv Konfigname des Servers
+     */
     public function __construct(String $serv) {
         $this->serv = $serv;
         if (file_exists('remote/arkmanager/instances/'.$serv.'.cfg')) {
@@ -30,18 +38,27 @@ class server extends Rcon {
         }
     }
 
-    // Gibt cfg namen wieder
+    /**
+     * Gibt den Konfignamen des Servers wieder
+     *
+     * @return String
+     */
     public function name() {
         return $this->serv;
     }
 
-    // Prüfe ob der Server installiert ist
+    /**
+     * Gibt aus ob der Server installiert ist
+     *
+     * @param bool $bool gibt an ob als String (false) oder als Bool (true) ausgegeben werden soll
+     * @return bool|string
+     */
     public function isinstalled(bool $bool = false) {
         $dir = $this->cfg_read('arkserverroot');
         $dir = str_replace('/data/ark_serv_dir/', 'remote/serv/', $dir);
         $dir = $dir.'/ShooterGame/Binaries/Linux/ShooterGameServer';
         if (file_exists($dir)) {
-            if ($bool) return false;
+            if ($bool) return true;
             return 'TRUE';
         } else {
             if ($bool) return false;
@@ -49,7 +66,11 @@ class server extends Rcon {
         }
     }
 
-    // Bekomme Main Dir
+    /**
+     * Gibt die hauptverzeichnis des Servers wieder
+     *
+     * @return string
+     */
     public function dir_main() {
         global $servlocdir;
         
@@ -59,7 +80,11 @@ class server extends Rcon {
         return $path;
     }
 
-    // Bekomme Cluster Dir
+    /**
+     * Gibts das Verzeichnis der Clusterdateien wieder
+     *
+     * @return string
+     */
     public function dir_cluster() {
 
         $dir = $this->cfg_read('arkserverroot');
@@ -76,7 +101,11 @@ class server extends Rcon {
         return $dirp.'cluster/';
     }
 
-    // Bekomme Backup dir
+    /**
+     * Gibt das Verzeichnis der Backups wieder
+     *
+     * @return string
+     */
     public function dir_backup() {
         global $servlocdir;
 
@@ -86,7 +115,12 @@ class server extends Rcon {
         return $path;
     }
 
-    // Bekomme Save Dir
+    /**
+     * Gibt das Verzeichnis der Spielstände
+     *
+     * @param bool $getmaindir Hauptverzeichnis der Speicherdateien (true) oder Unterverzeichnis der Speicherdateien (false)
+     * @return string
+     */
     public function dir_save(bool $getmaindir = false) {
 
         $path = $this->dir_main();
@@ -102,7 +136,11 @@ class server extends Rcon {
         return $path;
     }
 
-    // Bekomme Konfig Dir
+    /**
+     * Gibt das Verzeichnis der Konfig wieder
+     *
+     * @return string
+     */
     public function dir_konfig() {
 
         if ($this->cfg_read('ark_AltSaveDirectoryName') != "" && $this->cfg_read('ark_AltSaveDirectoryName') != " ") {
@@ -114,18 +152,24 @@ class server extends Rcon {
         return $path;
     }
 
-    // Erstelle Shell mit Log
+    /**
+     * Sendet eine Aktion an die MYSQL Datenbank um diese dann im ArkAdmin-Server zu verarbeiten
+     *
+     * @param String $shell
+     * @param bool $force Definiert ob dieser Befehl erzwingen wird (überspringt die prüfung ob eine Aktion derzeit läuft)
+     * @return bool
+     */
     public function send_action(String $shell, bool $force = false) {
         global $mycon;
+        global $helper;
 
         if ($this->status()->next == 'TRUE' && !$force) {
             return false;
         }
         $doc = $_SERVER['DOCUMENT_ROOT'];
-        $log = $doc.'/sh/resp/'.$this->name().'/last.log';
-        $doc_state_file = 'sh/serv/jobs_ID_'.$this->name().'.state';
+        $log = $doc.'/app/data/shell_resp/log/'.$this->name().'/last.log';
+        $doc_state_file = 'app/data/shell_resp/state/'.$this->name().'.state';
         $doc_state = $doc.'/'.$doc_state_file;
-        $doc = $doc.'/sh/serv/sub_jobs_ID_'.$this->name().'.sh';
         $command = 'arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
         $command = str_replace("\r", null, $command);
 
@@ -139,19 +183,43 @@ class server extends Rcon {
             'screen -dm bash -c \'".$command."\''
         )";
 
-        if ($mycon->query($query)) return true;
+        if ($mycon->query($query)) {
+            file_put_contents($doc_state_file, "FALSE");
+
+            $path = "app/json/serverinfo/" . $this->name() . ".json";
+            $data = $helper->file_to_json($path);
+            $data["next"] = 'TRUE';
+            $helper->savejson_create($data, $path);
+
+            return true;
+        }
         return false;
     }
 
-    // Arkmanager.cfg
+    /**
+     * Gibt die Arkmanager.cfg des Server als String aus
+     *
+     * @return false|string
+     */
     public function cfg_get_str() {
         return file_get_contents('remote/arkmanager/instances/'.$this->serv.'.cfg');
     }
 
+    /**
+     * Gibt die Arkmanager.cfg des Server als Array aus
+     *
+     * @return array|false
+     */
     public function cfg_get() {
         return $this->cfg;
     }
 
+    /**
+     * Prüft ob eine Optioen ($key) in der Konfig gesetzt ist
+     *
+     * @param String $key
+     * @return bool
+     */
     public function cfg_check(String $key) {
         if (isset($this->cfg[$key])) {
             return true;
@@ -159,52 +227,72 @@ class server extends Rcon {
         return false;
     }
 
+    /**
+     * Liest ein werte einer Option aus der CFG
+     *
+     * @param String $key
+     * @return mixed|null
+     */
     public function cfg_read(String $key) {
-        return $this->cfg[$key];
+        return ($this->cfg_check($key)) ? $this->cfg[$key] : null;
     }
 
+    /**
+     * Schreibt ein werte einer Option aus der CFG
+     *
+     * @param String $key
+     * @param String $value
+     * @return array|false
+     */
     public function cfg_write(String $key, String $value) {
         $this->cfg[$key] = $value;
         return $this->cfg;
     }
 
+    /**
+     * Entfernt ein werte einer Option aus der CFG
+     *
+     * @param String $key
+     * @return array|false
+     */
     public function cfg_remove(String $key) {
         if (isset($this->cfg[$key])) unset($this->cfg[$key]);
         return $this->cfg;
     }
 
+    /**
+     * Speichert die CFG ab
+     *
+     * @return bool
+     */
     public function cfg_save() {
 
         if ($this->cfg_check("arkserverroot") && $this->cfg_check("logdir") && $this->cfg_check("arkbackupdir")) {
             $this->write_ini_file($this->cfg, 'remote/arkmanager/instances/'.$this->serv.'.cfg');
-        } else {
-            return false;
-        }
-    }
-
-    public function mod_support() {
-        return (!$this->cfg_check("arkflag_crossplay") && !$this->cfg_check("arkflag_epiconly"));
-    }
-
-    // Job funktionen
-    public function jobs_dir() {
-        return 'sh/serv/sub_jobs_ID_' . $this->name() . '.sh';
-    }
-
-    public function jobs_file() {
-        $str = file_get_contents('sh/serv/sub_jobs_ID_' . $this->name() . '.sh');
-        return $str;
-    }
-
-    public function jobs_write(String $str) {
-        if (file_put_contents('sh/serv/sub_jobs_ID_' . $this->name() . '.sh', $str)) {
             return true;
         } else {
             return false;
         }
     }
 
-    // Bekomme Statuscode
+    /**
+     * Gibt an ob Mods mit der einstellung unterstützt werden
+     *
+     * @return bool
+     */
+    public function mod_support() {
+        return (!$this->cfg_check("arkflag_crossplay") && !$this->cfg_check("arkflag_epiconly"));
+    }
+
+    /**
+     * Gibt den Statuscode des Server an
+     * - 0 = Offline
+     * - 1 = Startet
+     * - 2 = Online
+     * - 3 = Nicht Installiert
+     *
+     * @return int
+     */
     public function statecode() {
         global $helper;
 
@@ -218,10 +306,10 @@ class server extends Rcon {
         elseif ($data["listening"] == "Yes" && $data["online"] == "Yes" && $data["run"] == "Yes") {
             $serverstate = 2;
         }
-        elseif ($data["listening"] == "No" && $data["online"] == "NO" && $data["run"] == "Yes") {
+        elseif ($data["listening"] == "No" && $data["online"] == "No" && $data["run"] == "Yes") {
             $serverstate = 1;
         }
-        elseif ($data["listening"] == "Yes" && $data["online"] == "NO" && $data["run"] == "Yes") {
+        elseif ($data["listening"] == "Yes" && $data["online"] == "No" && $data["run"] == "Yes") {
             $serverstate = 1;
         }
         elseif ($data["listening"] == "No" && $data["online"] == "Yes" && $data["run"] == "Yes") {
@@ -230,7 +318,11 @@ class server extends Rcon {
         return $serverstate;
     }
 
-    // Daten aus dem Arkmanager
+    /**
+     * Gibt die daten aus der server.json zurück
+     *
+     * @return data_server
+     */
     public function status() {
         global $helper;
 
@@ -238,30 +330,32 @@ class server extends Rcon {
         $data = $helper->file_to_json($path);
         $class = new data_server();
 
-        $class->warning_count = $data["warning_count"];
-        $class->error_count = $data["error_count"];
-        $class->error = $data["error"];
-        $class->warning = $data["warning"];
-        $class->online = $data["online"];
         $class->aplayers = $data["aplayers"];
         $class->players = $data["players"];
-        $class->pid = $data["pid"];
-        $class->run = $data["run"];
         $class->listening = $data["listening"];
-        $class->installed = $data["installed"];
+        $class->online = $data["online"];
         $class->cfg = $data["cfg"];
-        $class->bid = $data["bid"];
-        $class->ARKServers = $data["ARKServers"];
-        $class->next = $data["next"];
+        $class->ServerMap = $data["ServerMap"];
         $class->ServerName = $data["ServerName"];
-        $class->version = $data["version"];
+        $class->ARKServers = $data["ARKServers"];
         $class->connect = $data["connect"];
+        $class->run = $data["run"];
+        $class->pid = $data["pid"];
+        $class->aplayersarr = $data["aplayersarr"];
+        $class->version = $data["version"];
 
         return $class;
     }
 
     // Inis
 
+    /**
+     * Läd eine bestimmte ini in die Klasse
+     *
+     * @param String $ini
+     * @param bool $group
+     * @return bool
+     */
     public function ini_load(String $ini, bool $group = false) {
 
         $path = $this->dir_main();
@@ -275,27 +369,82 @@ class server extends Rcon {
         }
     }
 
+    /**
+     * Gibt die geladene ini als String wieder
+     *
+     * @return false|string
+     */
     public function ini_get_str() {
         return file_get_contents($this->inipath);
     }
 
+    /**
+     * Gibt den gesamten Pfad zur Konfig (ini) zurück
+     *
+     * @return mixed
+     */
     public function ini_get_path() {
         return $this->inipath;
     }
 
+    /**
+     * Gibt die ini als Array aus
+     *
+     * @return mixed
+     */
     public function ini_get() {
         return $this->ini;
     }
 
+    /**
+     * liest einen bestimmten Wert aus der Ini
+     *
+     * @param $key
+     * @return mixed
+     */
     public function ini_read($key) {
-        return $this->ini[$key];
+        return ($this->ini_isset($key)) ? $this->ini[$key] : false;
     }
 
+    /**
+     * Prüft ob eine Option gesetzt ist
+     *
+     * @param $key
+     * @return bool
+     */
+    public function ini_isset($key) {
+        return isset($this->ini[$key]);
+    }
+
+    /**
+     * Schreibt einen bestimmten Wert in der Ini um
+     *
+     * @param $key
+     * @param $value
+     * @return array|false
+     */
     public function ini_write($key, $value) {
         $this->ini[$key] = $value;
         return $this->cfg;
     }
 
+    /**
+     * Löscht einen bestimmten Wert aus der Ini
+     *
+     * @param $key
+     * @return bool
+     */
+    public function ini_remove($key) {
+        $bool = (isset($this->ini[$key])) ? true : false;
+        if($bool) unset($this->ini[$key]);
+        return $bool;
+    }
+
+    /**
+     * Speichert die werte in die Ini
+     *
+     * @return bool
+     */
     public function ini_save()
     {
         $this->safefilerewrite($this->inipath, $this->ini);
@@ -303,6 +452,10 @@ class server extends Rcon {
     }
 
     //Cluster
+
+    /**
+     * Läd Cluster Daten
+     */
     public function cluster_load() {
         global $helper;
         $clusterjson_path = "app/json/panel/cluster_data.json";
@@ -333,58 +486,111 @@ class server extends Rcon {
         $this->cluster_data = $infos;
     }
 
+    /**
+     * Gibt gesamten Daten zum Cluster als Array wieder
+     *
+     * @return mixed
+     */
     public function cluster_array() {
         if ($this->loadedcluster) return $this->cluster_data;
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
     }
 
+    /**
+     * Gibt aus ob der Server in einem Cluster ist
+     *
+     * @return mixed
+     */
     public function cluster_in() {
         if ($this->loadedcluster) return $this->cluster_data["in"];
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
     }
 
+    /**
+     * Gibt die Cluster ID wieder
+     *
+     * @return mixed|string
+     */
     public function cluster_clusterid() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["clusterid"];
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
         if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
+    /**
+     * Gibt den namen des Clusters wieder
+     *
+     * @return mixed|string
+     */
     public function cluster_name() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["name"];
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
         if (!$this->cluster_data["in"]) return "{::lang::php::class::notincluster}";
     }
 
+    /**
+     * Gibt den Cluster Schlüssel wieder
+     *
+     * @return mixed|string
+     */
     public function cluster_key() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["key"];
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
         if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
+    /**
+     * Gibt aus ob der Cluster Mods Syncronisiert
+     *
+     * @return mixed|string
+     */
     public function cluster_mods() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["mods"];
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
         if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
+
+    /**
+     * Gibt aus ob der Cluster Konfigs Syncronisiert
+     *
+     * @return mixed|string
+     */
     public function cluster_konfig() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["konfig"];
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
         if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
+
+    /**
+     * Gibt aus ob der Cluster Admins Syncronisiert
+     *
+     * @return mixed|string
+     */
     public function cluster_admin() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["admin"];
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
         if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
+
+    /**
+     * Gibt aus ob der Cluster Whitelisten Syncronisiert
+     *
+     * @return mixed|string
+     */
     public function cluster_whitelist() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return (isset($this->cluster_data["whitelist"])) ? $this->cluster_data["whitelist"] : false;
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
         if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
     }
 
+    /**
+     * Gibt aus ob der server ein "Slave" oder "Master" ist
+     *
+     * @return mixed|string
+     */
     public function cluster_type() {
         if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["type"];
         if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
@@ -392,15 +598,22 @@ class server extends Rcon {
     }
 
     // RCON Funktionen
+
+    /**
+     * Prüft ob der Server eine RCON verbindung überhaupt aufbauen könnte
+     *
+     * @return bool
+     */
     public function check_rcon() {
-        return ($this->status()->online == 'Yes' && $this->cfg_read('ark_RCONEnabled') == 'True' && $this->cfg_read('ark_ServerAdminPassword') != '');
+        return ($this->statecode() == 2 && $this->cfg_read('ark_RCONEnabled') == 'True' && $this->cfg_read('ark_ServerAdminPassword') != '');
     }
 
-    public function check_cfg_rcon()
-    {
-        return ($this->cfg_read('ark_RCONEnabled') == 'True' && $this->cfg_read('ark_ServerAdminPassword') != '');
-    }
-
+    /**
+     * Führt einen RCON command aus
+     *
+     * @param String $commmand
+     * @return int
+     */
     public function exec_rcon(String $commmand = "") {
         if ($this->check_rcon()) {
             $re = 12;
@@ -431,6 +644,12 @@ class server extends Rcon {
 
     // Private Functions
 
+    /**
+     * Schreibe eine ini (Wandelt wieder in einen String um und ersetzte falsche Zeichen)
+     *
+     * @param array $array
+     * @param String $file
+     */
     private function write_ini_file(Array $array, String $file)
     {
         $res = array();
@@ -443,6 +662,10 @@ class server extends Rcon {
         $this->safefilerewrite($file, implode("\n", $res));
     }
 
+    /**
+     * @param String $fileName
+     * @param String $dataToSave
+     */
     private function safefilerewrite(String $fileName, String $dataToSave)
     {
         if ($fp = fopen($fileName, 'w')) {
@@ -464,24 +687,22 @@ class server extends Rcon {
 
 }
 
-
+/**
+ * Class data_server (Erweiterung für Class server)
+ */
 class data_server {
-    public $warning_count;
-    public $error_count;
+    public $aplayersarr;
+    public $ServerName;
     public $error;
-    public $warning;
     public $online;
     public $aplayers;
     public $players;
     public $pid;
     public $run;
     public $listening;
-    public $installed;
     public $cfg;
-    public $bid;
     public $ARKServers;
     public $next;
-    public $ServerName;
     public $version;
     public $connect;
 }

@@ -37,19 +37,21 @@ include("$subpage/allgemein/dir_create.inc.php");
 
 if (!file_exists("app/data/checked")) file_put_contents("app/data/checked", "checked"); // Schreibe dass der Crontab abgerufen wurde
 
-//Für Serverstatus
-// Todo: Remove
-//if ($job == "status") {
-    //include("$subpage/status/shell.inc.php");
-//}
-
-//Für Spielerliste & Auswertung von Server Status
+// Für Spielerliste
 elseif ($job == "player") {
     include("$subpage/player/player_check.inc.php");
 }
+// Auswertung von Server Status & Chatlog
+elseif ($job == "status") {
+    include("$subpage/status/chatlog.inc.php");
+    include("$subpage/status/status.inc.php");
+}
 
-include("$subpage/allgemein/chat_fixer.inc.php");
+// Syncronisiere Clusterinformationen
 include("$subpage/allgemein/cluster.inc.php");
+
+// Lade alle Dateien aus der SteamAPI
+include("$subpage/allgemein/steamapi.inc.php");
 
 $tpl_crontab->r('re', $re);
 ?>

@@ -15,10 +15,8 @@ $page_tpl->debug(true);
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::jobs::urltop}</li>';
 
-$user = new userclass();
-$user->setid($_SESSION['id']);
 $page_tpl->r('cfg' ,$url[2]);
-$page_tpl->r('SESSION_USERNAME' ,$user->name());
+$page_tpl->r('SESSION_USERNAME' ,$user->read("username"));
 
 // Cronjobs aktualisieren (AutoUpdate/AutoBackup)
 if (isset($_POST['set'])) {
@@ -34,17 +32,21 @@ if (isset($_POST['set'])) {
             $json['option'][$key]['intervall'] = $intervall;
             $json['option'][$key]['para'] = $_POST['parameter'];
             if ($helper->savejson_exsists($json, $cpath)) {
+                // Melde: Erfolg
                 $alert->code = 102;
                 $resp = $alert->re();
             } else {
+                // Melde: Lese/Schreib Fehler
                 $alert->code = 1;
                 $resp = $alert->re();
             }
         } else {
+            // Melde: Zeitformat Fehler
             $alert->code = 15;
             $resp = $alert->re();
         }
     } else {
+        // Melde: Format Fehler
         $alert->code = 14;
         $resp = $alert->re();
     }
@@ -81,33 +83,39 @@ if (isset($_POST['addjob'])) {
                         '$name'
                     )";
                     if ($mycon->query($query)) {
+                        // Melde Erfolg
                         $alert->code = 100;
                         $resp = $alert->re();
                     }
                     else {
+                        // Melde Datenebank Fehler
                         $alert->code = 3;
                         $resp = $alert->re();
                     }
                 }
                 else {
+                    // Melde Zeitformat Fehler
                     $alert->code = 15;
                     $resp = $alert->re();
                 }
             } else {
+                // Melde Format Fehler
                 $alert->code = 14;
                 $resp = $alert->re();
             }
         } else {
+            // Melde Input Error
             $alert->code = 2;
             $resp = $alert->re();
         }
     } else {
+        // Melde Input Error
         $alert->code = 2;
         $resp = $alert->re();
     }
 }
 
-// Cronjob erstellen
+// Cronjob Bearbeiten
 if (isset($_POST['edit'])) {
     $id = $_POST['id'];
     $name = $_POST['name'];
@@ -128,33 +136,39 @@ if (isset($_POST['edit'])) {
                         `name` = '$name'
                     WHERE `id` = '$id';";
                     if ($mycon->query($query)) {
+                        // Melde Erfolg
                         $alert->code = 102;
                         $resp = $alert->re();
                     }
                     else {
-                        $alert->code = 4;
+                        // Melde Datenbank Fehler
+                        $alert->code = 3;
                         $resp = $alert->re();
                     }
                 }
                 else {
+                    // Melde Zeitformat Fehler
                     $alert->code = 15;
                     $resp = $alert->re();
                 }
             } else {
+                // Melde Inputformat Fehler
                 $alert->code = 14;
                 $resp = $alert->re();
             }
         } else {
+            // Melde Input Error
             $alert->code = 2;
             $resp = $alert->re();
         }
     } else {
+        // Melde Input Error
         $alert->code = 2;
         $resp = $alert->re();
     }
 }
 
-//Remove Jobs
+// Entferne Jobs
 if (isset($url[4]) && isset($url[5]) && $url[4] == "delete") {
     $i = $url[5];
     $i = intval($i);
@@ -162,20 +176,22 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "delete") {
     if($mycon->query($query)->numRows() > 0) {
         $query = 'DELETE FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';
         if ($mycon->query($query)) {
+            // Melde Erfolg
             $alert->code = 101;
             $resp = $alert->re();
         } else {
+            // Melde Lese/Schreib Fehler
             $alert->code = 1;
             $resp = $alert->re();
         }
     } else {
+        // Melde Werte Error
         $alert->code = 16;
         $resp = $alert->re();
     }
 }
 
-
-//Erstelle Grund Jobs
+//Erstelle Job (Update & Backup btn)
 if (isset($url[4]) && isset($url[5]) && $url[4] == "create") {
     echo 1;
     $type = $url[5];
@@ -222,13 +238,14 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "create") {
             exit;
         }
         else {
+            // Melde Datenbank Fehler
             $alert->code = 3;
             $resp = $alert->re();
         }
     }
 }
 
-
+// (De-)Aktivieren von Jobs
 if (isset($url[4]) && isset($url[5]) && $url[4] == "toggle") {
     $i = $url[5];
     $i = intval($i);
@@ -245,19 +262,23 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "toggle") {
 
         $query = 'UPDATE `ArkAdmin_jobs` SET `active` = \''.$set.'\' WHERE `id` = \''.$i.'\'';
         if ($mycon->query($query)) {
+            // Melde Erfolg
             $alert->code = 100;
             $alert->overwrite_text = $txt;
             $resp = $alert->re();
         } else {
+            // Melde Lese/Schreibfehler
             $alert->code = 1;
             $resp = $alert->re();
         }
     } else {
+        // Melde Werte Fehler
         $alert->code = 16;
         $resp = $alert->re();
     }
 }
 
+// Lese Jobs und liste sie
 $commands = array("start", "restart", "stop", "installmods", "uninstallmods", "saveworld", "update", "backup");
 $json = $jobs = $jobs_modal = null;
 $query = 'SELECT * FROM `ArkAdmin_jobs` WHERE `server` = \''.$serv->name().'\'';
@@ -301,7 +322,6 @@ if($mycon->query($query)->numRows() > 0) {
         $jobs .= $list->load_var();
     } 
 } 
-
 
 $query_backup = 'SELECT * FROM `ArkAdmin_jobs` WHERE `server` = \''.$serv->name().'\' AND `job` = \'backup\'';
 $query_update = 'SELECT * FROM `ArkAdmin_jobs` WHERE `server` = \''.$serv->name().'\' AND `job` = \'update\'';
