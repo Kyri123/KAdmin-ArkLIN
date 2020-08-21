@@ -56,9 +56,7 @@ foreach ($cfg_json["cfgs"] as $v) {
 }
 
 $query = "SELECT * FROM ArkAdmin_players";
-$myli = $mycon->open_connection;
-$arr = $myli->query($query)->fetch_all();
-var_dump($arr);
+$arr = $mycon->query($query)->fetchAll();
 
 foreach ($arr as $v) {
     if(!in_array($v["SteamId"], $sid_array)) $sid_array[] = $v["SteamId"];
