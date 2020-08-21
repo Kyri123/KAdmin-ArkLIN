@@ -7,6 +7,8 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+$start_time = microtime(true);
+
 // hide errors
 include('php/inc/config.inc.php');
 include('php/class/helper.class.inc.php');
@@ -259,3 +261,4 @@ if ($page != "login" && $page != "registration" && $page != "crontab" && isset($
 //close mysql
 $mycon->close();
 ?>
+________________________________<?php echo(number_format(microtime(true) - $start_time, 2)); ?> Sekunden.
