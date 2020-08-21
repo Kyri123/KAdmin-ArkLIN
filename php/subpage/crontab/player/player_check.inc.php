@@ -59,7 +59,7 @@ for ($i=0;$i<count($dir);$i++) {
             foreach($container->Players as $Players)
             {
                 $json_user[$z]['Id'] = $Players->Id;
-                $json_user[$z]['SteamId'] = str_replace(".arkprofile", null, $Players->SteamId);
+                $json_user[$z]['SteamId'] = intval($Players->SteamId);
                 $json_user[$z]['SteamName'] = null;
                 $json_user[$z]['CharacterName'] = $Players->CharacterName;
                 $json_user[$z]['Level'] = $Players->Level;
