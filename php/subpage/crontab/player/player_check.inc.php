@@ -7,7 +7,7 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
-echo "test";
+
 $ipath = 'remote/arkmanager/instances/';
 $dir = scandir($ipath);
 for ($i=0;$i<count($dir);$i++) {
@@ -82,7 +82,6 @@ for ($i=0;$i<count($dir);$i++) {
             if(is_array($json_tribe) && is_countable($json_tribe)) {
                 foreach($json_tribe as $k => $v) {
                     $query = null;
-                    echo $v["Id"];
                     $mycon->query("SELECT * FROM `ArkAdmin_tribe` WHERE `Id`='". $v["Id"] ."' AND  `server`='$servname'");
                     if($mycon->numRows() > 0) {
                         $row = $mycon->fetchArray();
@@ -108,7 +107,7 @@ for ($i=0;$i<count($dir);$i++) {
                         '".json_encode($v["Members"])."'
                     );";
                     }
-                    if($query !=  null) echo $query."<hr>"; //$mycon->query($query);
+                    if($query !=  null) $mycon->query($query);
                 }
             }
 
@@ -116,7 +115,6 @@ for ($i=0;$i<count($dir);$i++) {
             if(is_array($json_user) && is_countable($json_user)) {
                 foreach($json_user as $k => $v) {
                     $query = null;
-                    echo $v["Id"];
                     $mycon->query("SELECT * FROM `ArkAdmin_players` WHERE `id`='". $v["Id"] ."' AND  `server`='$servname'");
                     if($mycon->numRows() > 0) {
                         $row = $mycon->fetchArray();
@@ -154,7 +152,7 @@ for ($i=0;$i<count($dir);$i++) {
                         '".$v["TribeName"]."'
                     );";
                     }
-                    if($query !=  null) echo $query."<hr>"; //$mycon->query($query);
+                    if($query !=  null) $mycon->query($query);
                 }
             }
         }
