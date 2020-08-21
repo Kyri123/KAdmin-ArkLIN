@@ -61,8 +61,6 @@ $arr = $mycon->query($query)->fetchAll();
 foreach ($arr as $v) {
     if(!in_array($v["SteamId"], $sid_array)) $sid_array[] = $v["SteamId"];
 }
-var_dump($sid_array);
-var_dump($modid_array);
 
 $json = $steamapi->getsteamprofile_list("allg", $sid_array, 360)->response->players;
 var_dump($json);
