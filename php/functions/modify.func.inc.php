@@ -267,6 +267,7 @@ function alog($str) {
             $str .= ' | <span class="text-success">Done!</span>';
         }
     }
+    /*
     if (strpos($str, 'Performing ARK update') !== false) {
         //$modid = str_replace('Performing ARK update ', null, $str);
         //$modid = str_replace(" ", null, $modid);
@@ -279,7 +280,7 @@ function alog($str) {
         if ($txt[1] > 0) {
             $str .= ' | <span class="text-success">Done! New build: <b>'.$txt[1].'</b></span>';
         }
-    }
+    }*/
     return $str;
 }
 

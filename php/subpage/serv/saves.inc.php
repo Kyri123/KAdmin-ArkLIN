@@ -273,7 +273,6 @@ if(is_countable($tribe_save)) {
             $playerlist = null;
             $ct=0;
 
-            $member = $tribe_json[$i]->Members;
             if(is_countable($tplayer)) {
                 foreach ($tplayer as $item) {
 

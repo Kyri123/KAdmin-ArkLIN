@@ -20,7 +20,7 @@ switch ($case) {
         $serv = new server($cfg);
         $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
         $file = file($whitelistfile);
-        $arr = [];
+        $arr = []; $adminlist_admin = null;
 
         if (is_array($file)) {
             for ($i = 0; $i < count($file); $i++) {

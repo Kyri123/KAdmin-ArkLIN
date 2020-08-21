@@ -163,6 +163,7 @@ function bitrechner( $size, $sourceUnit = 'bit', $targetUnit = 'MB' ) {
 
 function strpos_arr($haystack, array $array)
 {
+    $bool = false;
     foreach($array as $str) {
         if(!is_array($str)) {
             if(strpos($haystack, $str) === false) {
