@@ -63,7 +63,6 @@ foreach ($arr as $v) {
 }
 
 $json = $steamapi->getsteamprofile_list("allg", $sid_array, 360)->response->players;
-var_dump($json);
 $i = 0;
 foreach ($json as $key => $item) {
     $sid = intval($item->steamid);
@@ -74,7 +73,6 @@ foreach ($json as $key => $item) {
 }
 
 $json = $steamapi->getmod_list("allg", $modid_array, 360)->response->publishedfiledetails;
-var_dump($json);
 $i = 0;
 foreach ($json as $key => $item) {
     $sid = intval($item->publishedfileid);
