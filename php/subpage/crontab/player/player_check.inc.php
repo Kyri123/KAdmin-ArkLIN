@@ -107,7 +107,7 @@ for ($i=0;$i<count($dir);$i++) {
                         '".json_encode($v["Members"])."'
                     );";
                     }
-                    if($query !=  null) $mycon->query($query);
+                    if($query !=  null) echo $query."<hr>"; //$mycon->query($query);
                 }
             }
 
@@ -152,7 +152,7 @@ for ($i=0;$i<count($dir);$i++) {
                         '".$v["TribeName"]."'
                     );";
                     }
-                    if($query !=  null) $mycon->query($query);
+                    if($query !=  null) echo $query."<hr>"; //$mycon->query($query);
                 }
             }
         }
