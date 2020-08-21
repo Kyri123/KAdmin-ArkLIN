@@ -12,6 +12,7 @@ class mysql {
     
     protected $connection;
     protected $query;
+    public $open_connection;
     public $query_count = 0;
     public $is;
     
@@ -23,6 +24,7 @@ class mysql {
             $this->is = true;
         }
         $this->connection->set_charset($charset);
+        $this->open_connection = $this->connection;
     }
     
     public function query($query) {
