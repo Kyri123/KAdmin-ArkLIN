@@ -19,7 +19,7 @@ class alert extends helper {
     public $overwrite_text = null;
     public $overwrite_icon = null;
     public $overwrite_title = null;
-    public $overwrite_style = 1;
+    public $overwrite_style = 3;
     public $overwrite_mb = 3;
     public $overwrite_ml = -1;
     public $overwrite_mt = -1;
@@ -113,7 +113,7 @@ class alert extends helper {
         $this->overwrite_icon = null;
         $this->overwrite_text = null;
         $this->overwrite_title = null;
-        $this->overwrite_style = false;
+        $this->overwrite_style = 3;
         $this->overwrite_mb = 3;
         $this->overwrite_mr = -1;
         $this->overwrite_mt = -1;
@@ -146,7 +146,7 @@ class alert extends helper {
      * @param  string $color - überschreibe die Farbe (alle boostrap classe ...-XXX)
      * @return mixed
      */
-    public function rd(Int $code, Int $style = 1, Int $mt = -1, Int $mr = -1, Int $mb = 3, Int $ml = -1, String $icon = null, String $color = null) {
+    public function rd(Int $code, Int $style = 3, Int $mt = -1, Int $mr = -1, Int $mb = 3, Int $ml = -1, String $icon = null, String $color = null) {
         $this->overwrite_style = $style;
         $this->overwrite_mb = $mb;
         $this->overwrite_mr = $mr;
