@@ -5,18 +5,17 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 # Wichtig
 
 - [Dev-Tree] Benutzten auf eigene GEFAHR (Debugs, Tests usw.)
-- Es ist eine Alpha bitte verzeiht Schreibfehler & Bugs und Meldet alles..
+- Derzeitiger Status: *Beta*
 - Discord: https://discord.gg/ykGnw49
 - Unterstützt kein "Docker"
-- Der Port `30000` muss Frei sein für den ArkAdmin-Server
+- Der Port `30000` muss Frei sein für den ArkAdmin-Server (bzw. der gesetzte Port)
 
 # Installation
 
 - Lade die letzte Version runter und Lade die Dateien in deinen Webserver
-- Stelle den ArkAdmin-Server ein `arkadmin_server/config/server.json` (Siehe unten Config.Properties)
 - Installiere alle Node.JS Module `cd arkadmin_server` > `npm install`
-- Starte nun den ArkAdmin-Server: `cd arkadmin_server` > `screen -mdS ArkAdmin node server.js`
 - Rufe die Webseite auf und folge der Installation
+- (Nach Schritt 1) Starte nun den ArkAdmin-Server: `cd arkadmin_server` > `screen -mdS ArkAdmin node server.js`
 
 # Update
 
@@ -24,12 +23,12 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 `Wichtig für Update von -0.8.1 auf +0.8.2 der neue ArkAdmin-Server muss eingestellt werden & Node.JS wird nun benötigt`
 `Wichtig für Update von -0.10.1 auf +0.11.0 der ArkAdmin-Server muss neu Konfiguriert werden`
 
-- Lade die letzte Version runter
-- lade alle Dateien außer `Install` & `Install.php` auf den Webserver
-- Denkt dran die Config des ArkAdmin-Server nicht zu überschreiben! (Sonst muss die Konfiguration neu vorgenommen werden!)
-- Installiere alle Node.JS Module `cd arkadmin_server` > `npm install`
-- Starte den ArkAdmin-Server neu
-- Fertig
+### Ist das Autoupdate nicht Aktiviert:
+- Geh in das Panel und Erzwinge ein Autoupdate mit dem oben vorgegebenen Button.
+- Es Öffnet sich ein Fenster mit der Aktuellen version & MySQL Status des ArkAdmin-Servers. Dies kann wieder geschlossen werden.
+
+### Ist das Autoupdate Aktiviert:
+- Warten bis das Panel das Update selbst ausführt
 
 # Config.json
 
@@ -69,7 +68,7 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 
 - `Node.JS` Version => 12.0.0
 - `Node.JS` NPM
-- `PHP` Version => 7.3 (=> 7.0 wird bedingt unterstützt)
+- `PHP` Version => 7.3
 - `PHP` mod_rewrite
 - `PHP` cURL
 - `PHP` MySQLi
