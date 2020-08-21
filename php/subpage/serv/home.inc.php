@@ -107,7 +107,7 @@ if ($serv->isinstalled()) {
             }
             else {
                 $list_tpl->r("stname", $steamapi_user[$arr[$i]]["personaname"]);
-                $list_tpl->r("stname", null);
+                $list_tpl->r("igname", "{::lang::allg::default::noadmin}");
             }
 
             $list_tpl->r("stid", $steamapi_user[$arr[$i]]["steamid"]);
