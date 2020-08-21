@@ -26,10 +26,8 @@ switch ($case) {
         $mods = explode(',', $serv->cfg_read("ark_GameModIds"));
         $y = 1;
 
-        $mods = json_decode(json_encode($steamapi->getmod_list($cfg, $mods, 0, true)), true)["response"]["publishedfiledetails"];
-
         $total_count = (is_countable($mods)) ? count($mods) : 0;
-        if ($total_count > 1 || $mods[0] > 0) {
+        if ($total_count > 1) {
             for ($i=0;$i<count($mods);$i++) {
                 $tpl = new Template('mods.htm', 'app/template/lists/serv/jquery/');
                 $tpl->load();
@@ -50,12 +48,21 @@ switch ($case) {
                     $tpl->rif ('ifup', true);
                     $tpl->rif ('ifdown', false);
                 }
-                $tpl->r('modid', $mods[$i]["publishedfileid"]);
+
+                if(isset($steamapi_mods[$mods[$i]])) {
+                    $tpl->r('img', $steamapi_mods[$mods[$i]]["preview_url"]);
+                    $tpl->r('title', $steamapi_mods[$mods[$i]]["title"]);
+                    $tpl->r('lastupdate', date('d.m.Y - H:i', $steamapi_mods[$mods[$i]]["time_updated"]));
+                }
+                else {
+                    $tpl->r('img', "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
+                    $tpl->r('title', "{::lang::allg::default::notinapimod}");
+                    $tpl->r('lastupdate', date('d.m.Y - H:i', time()));
+                }
+
+                $tpl->r('modid', $mods[$i]);
                 $tpl->rif ('empty', true);
-                $tpl->r('img', $mods[$i]["preview_url"]);
                 $tpl->r('cfg', $cfg);
-                $tpl->r('title', $mods[$i]["title"]);
-                $tpl->r('lastupdate', date('d.m.Y - H:i', $mods[$i]["time_updated"]));
                 $tpl->rif ("ifcmods", $ifcmods);
                 $resp .= $tpl->load_var();
                 $tpl = null;
@@ -98,11 +105,9 @@ switch ($case) {
             }
         }
 
-        $mods_arr = json_decode(json_encode($steamapi->getmod_list($cfg, $mod_arr, 0, true)), true)["response"]["publishedfiledetails"];
+        $mods_arr = json_decode(json_encode($steamapi->getmod_list($cfg."_installed", $mod_arr, 0, true)), true)["response"]["publishedfiledetails"];
          
         foreach($mods_arr as $key => $value) {
-            $mod = $api->getmod_class($key);
-
             $tpl = new Template('mods_local.htm', 'app/template/lists/serv/jquery/');
             $tpl->load();
             $btns= null;

@@ -13,6 +13,7 @@
         <default>
             <noplayer>Kein Spieler Gefunden</noplayer>
             <noadmin>Kein Admin Gefunden</noadmin>
+            <notinapimod>Wurde noch nicht in die API geladen</notinapimod>
         </default>
 
         <force_update>Erzwinge Panel Update</force_update>

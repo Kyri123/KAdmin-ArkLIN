@@ -50,8 +50,7 @@ if (isset($_POST['addmod'])) {
                 }
     
                 // Hole Informationen von der SteamAPI & Prüfe ob es ein Gültiger Inhalt ist
-                $steamapi->modid = $modid;
-                if ($steamapi->check_mod()) {
+                if ($steamapi->check_mod($modid)) {
                     $mod_cfg = $serv->cfg_read('ark_GameModIds');
                     $mods = explode(',', $mod_cfg);
                     if (count($mods) > 1 || $mods[0] > 0) {
@@ -114,11 +113,10 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == 'removelocal') {
         $jobs->set($serv->name());
         // Deinstalliere Mod
         $jobs->arkmanager("uninstallmod ".$url[5]);
-        $mod = $steamapi->getmod_class($url[5]);
 
         // Melde Locale Mod deinstalliert
         $alert->overwrite_text = "{::lang::php::sc::page::mods::mod_removed_dir}";
-        $alert->r("name", $mod->title);
+        $alert->r("name", $steamapi->getmod_class($id, 0, true)->title);
         $resp = $alert->rd(100);
     }
 }
@@ -168,7 +166,7 @@ if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot'
             $alert->overwrite_text = "{::lang::php::sc::page::mods::mod_removed}";
 
             // Melde: Mod entfernt
-            $alert->r("name", $steamapi->getmod_class($id)->title);
+            $alert->r("name", $steamapi->getmod_class($id, 0, true)->title);
             $resp = $alert->rd(100);
             break;
         }

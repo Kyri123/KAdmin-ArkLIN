@@ -10,7 +10,6 @@
 
 file_put_contents("app/check/done", "true");
 
-if (!file_exists("app/data/mods")) mkdir("app/data/mods");
 if (!file_exists("app/json/saves")) mkdir("app/json/saves");
 if (!file_exists("app/data/serv")) mkdir("app/data/serv");
 if (!file_exists("app/data/config")) mkdir("app/data/config");
