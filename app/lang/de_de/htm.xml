@@ -10,6 +10,11 @@
 
     <allg>
 
+        <default>
+            <noplayer>Kein Spieler Gefunden</noplayer>
+            <noadmin>Kein Admin Gefunden</noadmin>
+        </default>
+
         <force_update>Erzwinge Panel Update</force_update>
         <force_update_text>Führt sofort ein Panel Update aus. Dies wird auch getan wenn Auto-Updates deaktiert ist</force_update_text>
 

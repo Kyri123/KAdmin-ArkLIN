@@ -24,25 +24,46 @@ switch ($case) {
 
         if (is_array($file)) {
             for ($i = 0; $i < count($file); $i++) {
-                $find = array("\n", "\r", " ");
-                $file[$i] = str_replace($find, null, $file[$i]);
+                $file[$i] = trim($file[$i]);
                 if($file[$i] != "0" && $file[$i] != "" && $file[$i] != null) $arr[] = $file[$i];
             }
         }
-        
-        $steamapi->getsteamprofile_list("whitelist_".$serv->name(), $arr, 0);
-        $file = $helper->file_to_json('app/json/steamapi/profile_whitelist_'.$serv->name().'.json', true)["response"]["players"];
+        if(is_countable($arr) && is_array($arr) && count($arr) > 0) {
+            for ($i=0;$i<count($arr);$i++) {
+                $list_tpl = new Template('whitelist.htm', 'app/template/lists/serv/jquery/');
+                $list_tpl->load();
 
-        for ($i=0;$i<count($file);$i++) {
+                $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$arr[$i]."'";
+                $query = $mycon->query($query);
+
+                if($query->numRows() > 0) {
+                    $row = $query->fetchArray();
+                    $list_tpl->r("name", $steamapi_user[$arr[$i]]["personaname"] . " (". $row["CharacterName"] .")");
+                }
+                else {
+                    $list_tpl->r("name", $steamapi_user[$arr[$i]]["personaname"]);
+                }
+
+                $list_tpl->r("sid", $steamapi_user[$arr[$i]]["steamid"]);
+                $list_tpl->r("url", $steamapi_user[$arr[$i]]["profileurl"]);
+                $list_tpl->r("cfg", $serv->name());
+                $list_tpl->r("rndb", rndbit(25));
+                $list_tpl->r("img", $steamapi_user[$arr[$i]]["avatarmedium"]);
+                $list_tpl->rif("hidebtn", false);
+
+                $adminlist_admin .= $list_tpl->load_var();
+            }
+        }
+        else {
             $list_tpl = new Template('whitelist.htm', 'app/template/lists/serv/jquery/');
             $list_tpl->load();
 
-            $list_tpl->r("sid", $file[$i]["steamid"]);
-            $list_tpl->r("url", $file[$i]["profileurl"]);
+            $list_tpl->r("sid", 0);
+            $list_tpl->r("name", "{::lang::allg::default::noplayer}");
             $list_tpl->r("cfg", $serv->name());
             $list_tpl->r("rndb", rndbit(25));
-            $list_tpl->r("name", $file[$i]["personaname"]);
-            $list_tpl->r("img", $file[$i]["avatarmedium"]);
+            $list_tpl->r("img", "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
+            $list_tpl->rif("hidebtn", true);
 
             $adminlist_admin .= $list_tpl->load_var();
         }

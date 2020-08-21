@@ -75,7 +75,8 @@ for ($i=0;$i<count($dir);$i++) {
                 $z++;
             }
 
-            var_dump($json_user); echo "<hr>"; var_dump($json_tribe); echo "<hr>";
+            // Debug
+            // var_dump($json_user); echo "<hr>"; var_dump($json_tribe); echo "<hr>";
 
             // Lese Stämme um diese in die Datenbank einzutragen
             if(is_array($json_tribe) && is_countable($json_tribe)) {

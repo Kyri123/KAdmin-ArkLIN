@@ -55,17 +55,13 @@ if (isset($_POST["addadmin"])) {
 // Entfernte von Adminliste
 if (isset($url[4]) && isset($url[5]) && $url[4] == 'rm') {
     $id = $url[5];
-    for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$i = $ix; break;};
     $content = file_get_contents($cheatfile);
     // Prüfe ob die ID exsistent ist
     if (substr_count($content, $id) > 0) {
         $content = str_replace($id, null, $content);
         if (file_put_contents($cheatfile, $content)) {
             // Melde: Erfolgreich
-            $alert->code = 101;
-            $alert->r("name", $playerjs[$i]["personaname"]);
-            $alert->overwrite_text = "{::lang::php::sc::page::home::remove_admin}";
-            $resp = $alert->re();
+            $resp = $alert->rd(101, 3);
         } else {
             // Melde: Lese/Schreib Fehler
             $alert->code = 1;
@@ -84,66 +80,72 @@ if (!is_array($tribe_json)) $tribe_json = array();
 
 // Liste Admins auf
 if ($serv->isinstalled()) {
+
     if (!file_exists($cheatfile)) file_put_contents($cheatfile, "");
-    $jhelper = new player_json_helper();
-    $userlist_admin = null;
-    $player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.json', false);
-    if (!is_array($player_json)) $player_json = array();
-
     $file = file($cheatfile);
+    $arr = [];
 
-    for ($i=0;$i<count($file);$i++) {
-        $find = array("\n", "\r", " ");
-        $file[$i] = str_replace($find, null, $file[$i]);
-        if (is_numeric($file[$i])) {
+    if (is_array($file)) {
+        for ($i = 0; $i < count($file); $i++) {
+            $file[$i] = trim($file[$i]);
+            if($file[$i] != "0" && $file[$i] != "" && $file[$i] != null) $arr[] = $file[$i];
+        }
+    }
+
+    if(is_countable($arr) && is_array($arr) && count($arr) > 0) {
+        for ($i=0;$i<count($arr);$i++) {
             $list_tpl = new Template('user_admin.htm', 'app/template/lists/serv/home/');
             $list_tpl->load();
 
-            $found = false;
-            for ($p=0;$p<count($player_json);$p++) {
-                $pl = $jhelper->player($player_json, $p);
-                $id = $pl->SteamId;
-                if ($id === $file[$i]) {
-                    $found = true;
-                    break;
-                }
+            $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$arr[$i]."'";
+            $query = $mycon->query($query);
+
+            if($query->numRows() > 0) {
+                $row = $query->fetchArray();
+                $list_tpl->r("stname", $steamapi_user[$arr[$i]]["personaname"]);
+                $list_tpl->r("igname", $row["CharacterName"]);
+            }
+            else {
+                $list_tpl->r("stname", $steamapi_user[$arr[$i]]["personaname"]);
+                $list_tpl->r("stname", null);
             }
 
-            if ($found) {
-                for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$ix = $ix; break;};
-                $list_tpl->r("igname", $pl->CharacterName);
-            } else {
-                $list_tpl->r("igname", "{::lang::php::sc::page::home::unknown_name}");
-            }
-
-            $list_tpl->r("stid", $playerjs[$ix]["steamid"]);
-            $list_tpl->r("url", $playerjs[$ix]["profileurl"]);
+            $list_tpl->r("stid", $steamapi_user[$arr[$i]]["steamid"]);
+            $list_tpl->r("url", $steamapi_user[$arr[$i]]["profileurl"]);
             $list_tpl->r("cfg", $serv->name());
             $list_tpl->r("rndb", rndbit(25));
-            $list_tpl->r("stname", $playerjs[$ix]["personaname"]);
-            $list_tpl->r("img", $playerjs[$ix]["avatarmedium"]);
+            $list_tpl->r("img", $steamapi_user[$arr[$i]]["avatarmedium"]);
+            $list_tpl->rif("hidebtn", false);
 
             $adminlist_admin .= $list_tpl->load_var();
         }
     }
+    else {
+        $list_tpl = new Template('whitelist.htm', 'app/template/lists/serv/jquery/');
+        $list_tpl->load();
 
-    if (is_array($player_json)) {
-        for ($i=0;$i<count($player_json);$i++) {
-            $pl = $jhelper->player($player_json, $i);
-            $id = $pl->SteamId;
-            $name = $pl->SteamName;
-            $ig_name = $pl->CharacterName;
-            $not = true;
-            for ($p=0;$p<count($file);$p++) {
-                if (intval($file[$p]) == $id) {
-                    $not = false;
-                    break;
-                }
-            }
+        $list_tpl->r("sid", 0);
+        $list_tpl->r("name", "{::lang::allg::default::noadmin}");
+        $list_tpl->r("cfg", $serv->name());
+        $list_tpl->r("rndb", rndbit(25));
+        $list_tpl->r("img", "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
+        $list_tpl->rif("hidebtn", true);
 
-            if ($not) $userlist_admin .= "<option value='$id'>$name - $ig_name</option>";
-        }
+        $adminlist_admin .= $list_tpl->load_var();
     }
+
+    $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."'";
+    $query = $mycon->query($query);
+
+    if($query->numRows() > 0) {
+
+        $row = $query->fetchAll();
+        foreach ($row as $item) {
+            if (!in_array($item["SteamId"], $arr)) $userlist_admin .= "<option value='". $item["SteamId"] ."'>". $steamapi_user[$item["SteamId"]]["personaname"] ." - ".$item["CharacterName"]."</option>";
+        }
+
+    }
+
 } 
 
 // Meldung wenn Clusterseitig Admin & Whitelist deaktiviert ist
@@ -165,8 +167,7 @@ $alert->code = 202;
 $alert->overwrite_style = 3;
 $alert->overwrite_mb = 0;
 $white_alert = $alert->re();
-
-$page_tpl->rif ("installed", $serv->isinstalled());
+$page_tpl->rif ("installed", $serv->isinstalled(true));
 $page_tpl->rif ('ifwhitelist', $ifwhitelist);
 $page_tpl->rif ('rcon', $serv->check_rcon());
 $page_tpl->rif ('lchatactive', $lchatactive);

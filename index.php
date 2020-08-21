@@ -9,7 +9,6 @@
 */
 // hide errors
 include('php/inc/config.inc.php');
-
 include('php/class/helper.class.inc.php');
 $helper = new helper();
 $ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
@@ -53,6 +52,9 @@ if($mycon->is && !$check_json["checked"]) include('php/inc/auto_update_sql_DB.in
 // Include functions
 include('php/functions/allg.func.inc.php');
 include('php/functions/check.func.inc.php');
+include('php/functions/modify.func.inc.php');
+include('php/functions/traffic.func.inc.php');
+include('php/functions/util.func.inc.php');
 
 // include classes
 include('php/class/xml_helper.class.php');

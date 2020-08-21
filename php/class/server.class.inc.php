@@ -58,7 +58,7 @@ class server extends Rcon {
         $dir = str_replace('/data/ark_serv_dir/', 'remote/serv/', $dir);
         $dir = $dir.'/ShooterGame/Binaries/Linux/ShooterGameServer';
         if (file_exists($dir)) {
-            if ($bool) return false;
+            if ($bool) return true;
             return 'TRUE';
         } else {
             if ($bool) return false;
