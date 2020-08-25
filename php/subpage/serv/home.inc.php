@@ -179,7 +179,6 @@ $page_tpl->r("userlist_admin", $userlist_admin);
 $page_tpl->r("adminlist_admin", $adminlist_admin);
 $page_tpl->r("whitelist_admin", $adminlist_admin);
 $page_tpl->r("pick_whitelist", $serv->cfg_check("exclusivejoin"));
-$page_tpl->session();
 $panel = $page_tpl->load_var();
 
 ?>

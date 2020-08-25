@@ -56,7 +56,6 @@ for ($i=0;$i<count($dir);$i++) {
         $tpl_serv->r('subline', $subline);
         $tpl_serv->r('servername', $servername);
         $tpl_serv->r('cfg', $dir[$i]);
-        $tpl_serv->session();
         $servers .= $tpl_serv->load_var();
     }
 }
