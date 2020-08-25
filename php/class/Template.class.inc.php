@@ -108,7 +108,6 @@ class Template {
 
     /**
      * Verarbeitet Session Ränge
-     * Todo: Am neuen Rängesystem was kommt anpassen
      *
      * @return null
      */
