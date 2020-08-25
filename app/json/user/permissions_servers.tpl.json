@@ -1,5 +1,6 @@
 {
   "{cfg}": {
+    "is_server_admin": 0,
     "show": 1,
     "actions": 0,
     "show_players": 0,
