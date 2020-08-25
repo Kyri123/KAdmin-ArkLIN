@@ -36,22 +36,22 @@
         <!-- config.inc.php -->
         <cfg>
             <action>
-                <_0>Installieren</_0>
-                <_1>Starten</_1>
-                <_2>Update</_2>
-                <_3>Neustarten</_3>
-                <_4>Stoppen</_4>
-                <_5>Backup</_5>
-                <_6>Checkupdate</_6>
-                <_7>Checkmodupdate</_7>
-                <_8>Installmods</_8>
-                <_9>Uninstallmods</_9>
-                <_10>Speichern</_10>
-                <_11>Status</_11>
-                <_12>Liste alle Mods auf</_12>
-                <_13>Spiele letztes Backup ein</_13>
-                <_14>Zeige Prozzess ID</_14>
-                <_15>Breche Runterfahren ab</_15>
+                <install>Installieren</install>
+                <start>Starten</start>
+                <update>Update</update>
+                <restart>Neustarten</restart>
+                <stop>Stoppen</stop>
+                <backup>Backup</backup>
+                <checkupdate>Checkupdate</checkupdate>
+                <checkmodupdate>Checkmodupdate</checkmodupdate>
+                <installmods>Installmods</installmods>
+                <uninstallmods>Uninstallmods</uninstallmods>
+                <saveworld>Speichern</saveworld>
+                <status>Status</status>
+                <list-mods>Liste alle Mods auf</list-mods>
+                <restore>Spiele letztes Backup ein</restore>
+                <getpid>Zeige Prozzess ID</getpid>
+                <cancelshutdown>Breche Runterfahren ab</cancelshutdown>
             </action>
         </cfg>
         
@@ -109,14 +109,40 @@
         <config>
             <pagename>Konfiguration</pagename>
             <key>
-                <uninstallmod>Deinstalliere Mods beim Entfernen</uninstallmod>
-                <installmod>Installiere Mods beim Hinzufügen</installmod>
-                <clusterestart>Starte Clusterserver neu wenn Optionen geändert werden</clusterestart>
-                <servlocdir>Server-verzeichnis</servlocdir>
-                <arklocdir>Arkmanager-verzeichnis</arklocdir>
-                <apikey_found_here>finde ich Hier</apikey_found_here>
-                <show_err>Zeige PHP Error</show_err>
-                <steamcmddir>SteamCMD Verzeichnis</steamcmddir>
+                <panel>
+                    <uninstall_mod>Deinstalliere Mods beim Entfernen</uninstall_mod>
+                    <install_mod>Installiere Mods beim Hinzufügen</install_mod>
+                    <clusterestart>Starte Clusterserver neu wenn Optionen geändert werden</clusterestart>
+                    <servlocdir>Server-verzeichnis</servlocdir>
+                    <arklocdir>Arkmanager-verzeichnis</arklocdir>
+                    <apikey>Steam-API Key [a="https://steamcommunity.com/dev/apikey"](klicke Hier)[/a]</apikey>
+                    <show_err>[b][Debug][/b] Zeige PHP Error</show_err>
+                    <steamcmddir>SteamCMD Verzeichnis</steamcmddir>
+                </panel>
+                <aa>
+                    <HTTP>Weblink zum Arkadmin</HTTP>
+                    <WebPath>Ordnerpfad wo Arkadmin installiert ist (Webverzeichnis)</WebPath>
+                    <AAPath>Ordnerpfad wo sich Arkmanager befindet</AAPath>
+                    <ServerPath>Ordnerpfad wo die Server gespeichert werden</ServerPath>
+                    <SteamPath>Ordnerpfad wo die SteamCMD liegt</SteamPath>
+                    <WebIntervall>Intervall für das abrufen des Crontabs
+                        (in ms | min: 5000)</WebIntervall>
+                    <CHMODIntervall>Intervall für das überschreiben der Rechte
+                        (in ms | min: 60000)</CHMODIntervall>
+                    <ShellIntervall>Intervall für das abrufen der Shell Dateien
+                        (in ms | min: 10000)</ShellIntervall>
+                    <StatusIntervall>Intervall für das abrufen von dem Status des Servers
+                        (in ms | min: 5000)</StatusIntervall>
+                    <autoupdater_intervall>Intervall für das abrufen des Automatischen Updates
+                        (in ms | min: 120000)</autoupdater_intervall>
+                    <CHMOD>Berechtigung für die Dateien (777 z.B. ist komplett offen)
+                        [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ]</CHMOD>
+                    <use_ssh>Aktiviere/Deaktivere SHH (1: an;0: aus) benötigt konfiguration in ssh.js</use_ssh>
+                    <port>Port den der ArkAdmin-Server benutzten soll</port>
+                    <autoupdater_active>Soll der Updater aktiv sein
+                        (1: an | 0: aus)</autoupdater_active>
+                    <autoupdater_branch>Welche Github Branch soll dafür verwendet werden</autoupdater_branch>
+                </aa>
             </key>
         </config>
 

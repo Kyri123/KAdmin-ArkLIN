@@ -152,7 +152,7 @@ class Template {
                 else {
                     foreach ($v as $sk => $sv) {
                         $skey = $key."::$sk";
-                        if (boolval($sv) || boolval($json["all"]["is_admin"] || boolval($json["all"][$sk]["is_server_admin"])) {
+                        if (boolval($sv) || boolval($json["all"]["is_admin"]) || boolval($json["all"][$sk]["is_server_admin"])) {
                             $this->file = preg_replace("/\{".$skey."\}(.*)\\{\/".$skey."\}/Uis", '\\1', $this->file);
                             $this->file = preg_replace("/\{!".$skey."\}(.*)\\{\/!".$skey."\}/Uis", null, $this->file);
                         } else {
