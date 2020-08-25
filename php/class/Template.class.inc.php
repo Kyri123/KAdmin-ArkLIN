@@ -125,7 +125,7 @@ class Template {
             foreach ($json as $k => $v) {
                 $key = "permissions::$k";
                 if(!is_array($v)) {
-                    if (boolval($v)) {
+                    if (boolval($v) || boolval($json["all"]["is_admin"])) {
                         $this->file = preg_replace("/\{".$key."\}(.*)\\{\/".$key."\}/Uis", '\\1', $this->file);
                         $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", null, $this->file);
                     } else {
@@ -135,7 +135,7 @@ class Template {
                 }
                 foreach ($v as $sk => $sv) {
                     $skey = $key."::$sk";
-                    if (boolval($sv)) {
+                    if (boolval($sv) || boolval($json["all"]["is_admin"])) {
                         $this->file = preg_replace("/\{".$skey."\}(.*)\\{\/".$skey."\}/Uis", '\\1', $this->file);
                         $this->file = preg_replace("/\{!".$skey."\}(.*)\\{\/!".$skey."\}/Uis", null, $this->file);
                     } else {
