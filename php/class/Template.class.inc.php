@@ -119,8 +119,19 @@ class Template {
         global $_SESSION;
         global $helper;
 
+        $json_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
         $json = (isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json("app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json("app/json/user/permissions.tpl.json");
 
+        foreach ($json_default as $k => $v) {
+            if(!is_array($v)) {
+                if(!isset($json[$k])) $json[$k] = $v;
+            }
+            else {
+                foreach ($v as $sk => $sv) {
+                    if(!isset($json[$k][$sk])) $json[$k][$sk] = $sv;
+                }
+            }
+        }
         if(is_array($json)) {
             foreach ($json as $k => $v) {
                 $key = "permissions::$k";
@@ -133,14 +144,16 @@ class Template {
                         $this->file = preg_replace("/\{!".$key."\}(.*)\\{\/!".$key."\}/Uis", '\\1', $this->file);
                     }
                 }
-                foreach ($v as $sk => $sv) {
-                    $skey = $key."::$sk";
-                    if (boolval($sv) || boolval($json["all"]["is_admin"])) {
-                        $this->file = preg_replace("/\{".$skey."\}(.*)\\{\/".$skey."\}/Uis", '\\1', $this->file);
-                        $this->file = preg_replace("/\{!".$skey."\}(.*)\\{\/!".$skey."\}/Uis", null, $this->file);
-                    } else {
-                        $this->file = preg_replace("/\{".$skey."\}(.*)\\{\/".$skey."\}/Uis", null, $this->file);
-                        $this->file = preg_replace("/\{!".$skey."\}(.*)\\{\/!".$skey."\}/Uis", '\\1', $this->file);
+                else {
+                    foreach ($v as $sk => $sv) {
+                        $skey = $key."::$sk";
+                        if (boolval($sv) || boolval($json["all"]["is_admin"])) {
+                            $this->file = preg_replace("/\{".$skey."\}(.*)\\{\/".$skey."\}/Uis", '\\1', $this->file);
+                            $this->file = preg_replace("/\{!".$skey."\}(.*)\\{\/!".$skey."\}/Uis", null, $this->file);
+                        } else {
+                            $this->file = preg_replace("/\{".$skey."\}(.*)\\{\/".$skey."\}/Uis", null, $this->file);
+                            $this->file = preg_replace("/\{!".$skey."\}(.*)\\{\/!".$skey."\}/Uis", '\\1', $this->file);
+                        }
                     }
                 }
             }
