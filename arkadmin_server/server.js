@@ -178,6 +178,8 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
 // Code Meldungen
 process.on('exit', function(code) {
+    con.destroy();
+
     // Exit: Konfiguration enthält Default informationen
     if (code == 2) {
         logger.log("Beendet: Bitte stelle die Konfiguration ein! (config/server.json)");
