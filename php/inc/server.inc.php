@@ -13,6 +13,7 @@ $count_serv_1 = 0;
 $count_serv_max = 0;
 
 
+echo "_________________________________________________2_1_____________".(microtime(true) - $stime)."<br>";
 $dir = dirToArray('remote/arkmanager/instances/');
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
@@ -59,6 +60,7 @@ for ($i=0;$i<count($dir);$i++) {
         $servers .= $tpl_serv->load_var();
     }
 }
+echo "_________________________________________________2_2_____________".(microtime(true) - $stime)."<br>";
 
 $tpl_b->r('servers', $servers);
 $tpl_b->r('count_serv_1', $count_serv_1);

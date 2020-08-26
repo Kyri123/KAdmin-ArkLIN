@@ -9,12 +9,13 @@
 */
 
 // hide errors
+$stime = microtime(true);
+echo "_______________________________________________________________1__".(microtime(true) - $stime)."<br>";
 include('php/inc/config.inc.php');
 include('php/class/helper.class.inc.php');
 $helper = new helper();
 $ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
 $site_name = $content = null;
-
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 //error_reporting(E_ALL);
@@ -27,11 +28,13 @@ if (!file_exists("app/check/subdone")) {
     header('Location: /install.php');
     exit;
 }
+echo "______________________________________________________________2__".(microtime(true) - $stime)."<br>";
 
 // Define vars
 date_default_timezone_set('Europe/Amsterdam');
 $pagename = $pageimg = $titlename = $sidebar = $btns = $urltop = $g_alert = $pageicon = $tpl = null;
 $setsidebar = $g_alert_bool = false;
+echo "_____________________________________________________________3__".(microtime(true) - $stime)."<br>";
 
 //start Session
 session_start();
@@ -42,6 +45,7 @@ if ($url[1] == "" || $url[1] == "favicon.ico") {
     header('Location: /home');
     exit;
 }
+echo "____________________________________________________________4___".(microtime(true) - $stime)."<br>";
 
 // Connent to MYSQL
 include('php/class/mysql.class.inc.php');
@@ -49,6 +53,7 @@ $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 
 $check_json = $helper->file_to_json("app/data/sql_check.json");
 if($mycon->is && !$check_json["checked"]) include('php/inc/auto_update_sql_DB.inc.php');
+echo "___________________________________________________________5____".(microtime(true) - $stime)."<br>";
 
 // Include functions
 include('php/functions/allg.func.inc.php');
@@ -56,6 +61,7 @@ include('php/functions/check.func.inc.php');
 include('php/functions/modify.func.inc.php');
 include('php/functions/traffic.func.inc.php');
 include('php/functions/util.func.inc.php');
+echo "__________________________________________________________6_____".(microtime(true) - $stime)."<br>";
 
 // include classes
 include('php/class/xml_helper.class.php');
@@ -67,32 +73,30 @@ include('php/class/user.class.inc.php');
 include('php/class/steamAPI.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/jobs.class.inc.php');
-
-// Sende Daten an Server
-$array["dbhost"] = $dbhost;
-$array["dbuser"] = $dbuser;
-$array["dbpass"] = $dbpass;
-$array["dbname"] = $dbname;
-$helper->savejson_create($array, "arkadmin_server/config/mysql.json");
+echo "______________________________________________________7_________".(microtime(true) - $stime)."<br>";
 
 //create class_var
 $alert = new alert();
 $steamapi = new steamapi();
 $user = new userclass();
 if(isset($_SESSION["id"])) $user->setid($_SESSION['id']);
+echo "____________________________________________________8___________".(microtime(true) - $stime)."<br>";
 
 // Allgemein SteamAPI Arrays
 $steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();
 $steamapi_user = (file_exists("app/json/steamapi/user.json")) ? $helper->file_to_json("app/json/steamapi/user.json", true) : array();
+echo "__________________________________________________9_____________".(microtime(true) - $stime)."<br>";
 
 // include util
 include('php/inc/session.inc.php');
+echo "__________________________________________________10_____________".(microtime(true) - $stime)."<br>";
 
 //create globals vars
 $API_Key = $ckonfig['apikey'];
 $servlocdir = $ckonfig['servlocdir'];
 $expert = $user->expert();
 $jobs = new jobs();
+echo "________________________________________________11_______________".(microtime(true) - $stime)."<br>";
 
 // lade Permissions
 $permissions_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
@@ -104,6 +108,7 @@ if(
 ) $helper->savejson_create($permissions_default, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
 $permissions = (isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json("app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json("app/json/user/permissions.tpl.json");
 
+echo "__________________________________________________12_____________".(microtime(true) - $stime)."<br>";
 // Prüft die user.permissions
 foreach ($permissions_default as $k => $v) {
     if(!is_array($v)) {
@@ -116,6 +121,7 @@ foreach ($permissions_default as $k => $v) {
     }
 }
 
+echo "__________________________________________________________13_____".(microtime(true) - $stime)."<br>";
 //Prüfe ob der Benutzer gebant ist
 if ($user->read("ban") > 0) {
     $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
@@ -123,6 +129,7 @@ if ($user->read("ban") > 0) {
     session_destroy();
 }
 
+echo "________________________________________________________14_______".(microtime(true) - $stime)."<br>";
 // Prüfe ob der Nutzer noch exsistiert
 if(isset($_SESSION["id"])) {
     $query = "SELECT * FROM `ArkAdmin_users` WHERE (`id`='".$_SESSION["id"]."')";
@@ -133,8 +140,9 @@ if(isset($_SESSION["id"])) {
     }
 }
 
+echo "_______________________________________________________15________".(microtime(true) - $stime)."<br>";
 if (isset($_SESSION["id"])) {
-    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE (`id`=\''.$_SESSION["id"].'\')';
+    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`=\''.$_SESSION["id"].'\'';
     $mycon->query($query);
 } 
 
@@ -147,6 +155,7 @@ if (file_exists('php/page/'.$page.'.inc.php')) {
     header("Location: /404");
     exit;
 }
+echo "_______________________________________________16________________".(microtime(true) - $stime)."<br>";
 
 // Website
 // Load template
@@ -159,6 +168,7 @@ $tpl_b->load();
 $tpl_f = new Template("foother.htm", "app/template/core/index/");
 $tpl_f->load();
 
+echo "_________________________________________________17______________".(microtime(true) - $stime)."<br>";
 // lade Global_Alerts
 include('php/inc/global_alert.inc.php');
 
@@ -166,12 +176,14 @@ include('php/inc/global_alert.inc.php');
 include('php/inc/server.inc.php');
 include('php/inc/nav_curr.inc.php');
 
+echo "_________________________________________________4_1_____________".(microtime(true) - $stime)."<br>";
 // Define pagename for login & registration
 if ($page == "login" || $page == "registration") {
     $pagename = '{::lang::php::index::pagename_reg}';
     if ($page == "login") $pagename = '{::lang::php::index::pagename_login}';
 }
 
+echo "__________________________________________________18_____________".(microtime(true) - $stime)."<br>";
 //tmp Force Update
 if($user->perm("all/force_update")) $btns .= '
     <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-info rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
@@ -181,6 +193,7 @@ if($user->perm("all/force_update")) $btns .= '
     </a>
 ';
 
+echo "_________________________________________________19______________".(microtime(true) - $stime)."<br>";
 // replace
 $tpl_h->r('time', time());
 
@@ -218,6 +231,9 @@ $ifnot_traffic = false;
 $check = array("changelog", "404");
 if (in_array($page, $check)) $ifnot_traffic = true;
 $tpl_b->rif ("ifchangelog", $ifnot_traffic);
+
+echo "______________________________________________________20_________".(microtime(true) - $stime)."<br>";
+$tpl_b->r("ltime", round((microtime(true) - $stime), 2));
 
 // Site Builder
 if ($page != "login" && $page != "registration" && $page != "crontab" && isset($_SESSION['id']) && file_exists("app/check/done")) {
@@ -278,6 +294,7 @@ if ($page != "login" && $page != "registration" && $page != "crontab" && isset($
         }
     }
 }
+echo "________________________________________________________21______".(microtime(true) - $stime)."<br>";
 
 //close mysql
 $mycon->close();

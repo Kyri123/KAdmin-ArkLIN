@@ -76,7 +76,7 @@ $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 
 
-$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 300);
+$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 3600);
 
 if (isset($json['file'])) {
     echo 'error error';

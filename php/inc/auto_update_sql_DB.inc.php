@@ -72,6 +72,12 @@ if($query = $mycon->query($query)) {
     }
 }
 
+// Sende Daten an Server
+$array["dbhost"] = $dbhost;
+$array["dbuser"] = $dbuser;
+$array["dbpass"] = $dbpass;
+$array["dbname"] = $dbname;
+$helper->savejson_create($array, "arkadmin_server/config/mysql.json");
 
 $check_json["checked"] = true;
 $helper->savejson_create($check_json, "app/data/sql_check.json");

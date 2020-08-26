@@ -17,8 +17,9 @@ foreach ($dir as $k => $v) {
         $tpl_b->r("_$sitename", $visit);
     }
 }
+echo "_________________________________________________3_1_____________".(microtime(true) - $stime)."<br>";
 
-$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json');
+$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 3600);
 $c = true;
 for ($i=count($json)-1;$i>-1;$i--) {
     if ($version == $json[$i]['version']) {
@@ -26,6 +27,7 @@ for ($i=count($json)-1;$i>-1;$i--) {
         break;
     }
 }
+echo "_________________________________________________3_2_____________".(microtime(true) - $stime)."<br>";
 
 $n_changelog = null;
 for ($i=count($json)-1;$i>-1;$i--) {
@@ -49,6 +51,7 @@ for ($i=count($json)-1;$i>-1;$i--) {
         if ($version != $json[$i]['version']) $n_changelog = '<span class="badge badge-success">{::lang::php::c::newchangelog}</span>';
     }
 }
+echo "_________________________________________________3_3_____________".(microtime(true) - $stime)."<br>";
 
 
 
@@ -58,6 +61,7 @@ $tpl_b->r('curr_changelog_css', (($n_changelog != null) ? "aa_update_active" : n
 
 
 
+echo "_________________________________________________3_4_____________".(microtime(true) - $stime)."<br>";
 
 // Speicher Sprache in einer user.json
 if(isset($_SESSION["id"]) && isset($_COOKIE["lang"])) {
@@ -79,6 +83,7 @@ if(isset($_SESSION["id"]) && isset($_COOKIE["lang"])) {
         $helper->savejson_create($json, $path);
     }
 }
+echo "_________________________________________________3_5_____________".(microtime(true) - $stime)."<br>";
 
 
 
