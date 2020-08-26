@@ -35,7 +35,7 @@ for ($i=0;$i<count($dir);$i++) {
 
         $tpl_serv->r('aplayers', $serv->status()->aplayers);
         $tpl_serv->r('ark_MaxPlayers', $serv->cfg_read('ark_MaxPlayers'));
-        $tpl_serv->r('serv_version', $json["version"]);
+        $tpl_serv->r('serv_version', $serv->status()->version);
         $tpl_serv->r('state', $status["color"]);
         $tpl_serv->r('serv_pid', null);
         $tpl_serv->rif ('ifin', $serv->cluster_in());
