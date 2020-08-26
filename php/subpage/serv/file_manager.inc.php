@@ -19,6 +19,7 @@ $fdir = null;
 
 $page_tpl->r("path", $dir);
 $page_tpl->r("cfg", $serv->name());
+$page_tpl->session();
 $panel = $page_tpl->load_var();
 
 ?>

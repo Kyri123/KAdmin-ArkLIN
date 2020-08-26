@@ -19,7 +19,6 @@
         <force_update>Erzwinge Panel Update</force_update>
         <force_update_text>Führt sofort ein Panel Update aus. Dies wird auch getan wenn Auto-Updates deaktiert ist</force_update_text>
 
-        <pageload>Die Seite wurde in {ltime} Sekunden geladen</pageload>
         <navigation>Navigation</navigation>
         <save>Speichern</save>
         <delete>Löschen</delete>
@@ -41,7 +40,6 @@
         </traffic>
 
         <nav>
-            <hello_user>Hallo,</hello_user>
             <donate>Spenden</donate>
             <home>Dashboard</home>
             <scc>ServerControllCenter</scc>

@@ -363,6 +363,7 @@ $page_tpl->r('cp', $c_pl);
 $page_tpl->r('ct', $c_t);
 $page_tpl->r('cw', $w_t);
 $page_tpl->r('resp', $resp);
+$page_tpl->session();
 $panel = $page_tpl->load_var();
 
 $player = null;

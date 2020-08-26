@@ -66,7 +66,7 @@ foreach ($a_cfg as $key => $value) {
 
 
 // Changelogs
-$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 3600);
+$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 300);
 
 if (isset($json['file'])) {
     echo 'error error';

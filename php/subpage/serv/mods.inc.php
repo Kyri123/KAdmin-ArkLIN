@@ -183,6 +183,7 @@ if ($ifcadmin) {
 $page_tpl->load();
 $page_tpl->r('cfg' ,$url[2]);
 $page_tpl->r('urls' ,$urls);
+$page_tpl->session();
 $panel = $page_tpl->load_var();
 
 

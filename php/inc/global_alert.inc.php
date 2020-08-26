@@ -2,7 +2,7 @@
 
 if(check_server()) {
     // check is ArkAdmin-Server newest version
-    if(!check_server_json_bool("db_connect")) {
+    if(!check_server_json_bool("db_conntect")) {
         $alert->code = 35;
         $alert->overwrite_style = 3;
         $g_alert .= $alert->re();

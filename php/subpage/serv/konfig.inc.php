@@ -393,5 +393,6 @@ $page_tpl->r('eventlist', $eventlist);
 $page_tpl->r('amcfg', file_get_contents('remote/arkmanager/instances/'.$url[2].'.cfg'));
 $page_tpl->rif('expert', $user->expert());
 $page_tpl->rif('show', $show);
+$page_tpl->session();
 $panel = $page_tpl->load_var();
 ?>
