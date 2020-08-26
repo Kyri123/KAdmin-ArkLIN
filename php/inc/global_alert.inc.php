@@ -1,6 +1,5 @@
 <?php
 
-echo "_________________________________________________1_1_____________".(microtime(true) - $stime)."<br>";
 if(check_server()) {
     // check is ArkAdmin-Server newest version
     if(!check_server_json_bool("db_connect")) {
@@ -31,7 +30,6 @@ else {
     $g_alert_bool = true;
 }
 
-echo "_________________________________________________1_2_____________".(microtime(true) - $stime)."<br>";
 // check is PHP version
 if(PHP_VERSION_ID < 70300) {
     $alert->code = 303;
@@ -40,7 +38,6 @@ if(PHP_VERSION_ID < 70300) {
     $g_alert_bool = true;
 }
 
-echo "_________________________________________________1_3_____________".(microtime(true) - $stime)."<br>";
 //prüfe ob IE
 if (isie()) {
     $alert->code = 200;
@@ -48,5 +45,4 @@ if (isie()) {
     $g_alert .= $alert->re();
     $g_alert_bool = true;
 }
-echo "_________________________________________________1_4_____________".(microtime(true) - $stime)."<br>";
 ?>
