@@ -13,7 +13,7 @@ $count_serv_1 = 0;
 $count_serv_max = 0;
 
 
-$dir = dirToArray('remote/arkmanager/instances/');
+$dir = $helper->file_to_json("app/json/serverinfo/all.json")["cfgs"];
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
         $serv = new server($dir[$i]);
@@ -22,33 +22,21 @@ for ($i=0;$i<count($dir);$i++) {
         $tpl_serv = new Template("item_list.htm", "app/template/core/serv/");
         $tpl_serv->load();
 
-        $data = parse_ini_file('remote/arkmanager/instances/'.$dir[$i].'.cfg');
-        $json = file_get_contents('app/json/serverinfo/'.$dir[$i].'.json');
-        $json = json_decode($json, true);
+        $status = convertstate($serv->statecode());
 
-        $json["online"] = (isset($json["online"])) ? filtersh($json["online"]) : "No";
-
-        $servername = $data['ark_SessionName'];
+        $servername = $serv->cfg_read('ark_SessionName');
         $subline = "{::lang::php::server::subline}";
         $map = $serv->cfg_read("serverMap");
-        if ($json["online"] == 'Yes') {
-            $state = 'bg-success';
-            $count_serv_1++;
-        }
-        elseif ($json["online"] == 'No') {
-            $state = 'bg-danger';
-        } else {
-            $state = 'bg-warning';
-        }
+
         $l = strlen($servername); $lmax = 18;
         if ($l > $lmax) {
             $servername = substr($servername, 0 , $lmax) . " ...";
         }
 
         $tpl_serv->r('aplayers', $json["aplayers"]);
-        $tpl_serv->r('ark_MaxPlayers', $data['ark_MaxPlayers']);
+        $tpl_serv->r('ark_MaxPlayers', $serv->cfg_read('ark_MaxPlayers'));
         $tpl_serv->r('serv_version', $json["version"]);
-        $tpl_serv->r('state', $state);
+        $tpl_serv->r('state', $status["color"]);
         $tpl_serv->r('serv_pid', null);
         $tpl_serv->rif ('ifin', $serv->cluster_in());
         $tpl_serv->r('clustername', (($serv->cluster_in()) ? $serv->cluster_name() : null));
