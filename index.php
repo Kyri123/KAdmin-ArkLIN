@@ -94,6 +94,22 @@ $servlocdir = $ckonfig['servlocdir'];
 $expert = $user->expert();
 $jobs = new jobs();
 
+// lade Permissions
+$permissions_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
+$permissions = (isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json("app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json("app/json/user/permissions.tpl.json");
+
+// Prüft die user.permissions
+foreach ($permissions_default as $k => $v) {
+    if(!is_array($v)) {
+        if(!isset($json[$k])) $permissions[$k] = $v;
+    }
+    else {
+        foreach ($v as $sk => $sv) {
+            if(!isset($permissions[$k][$sk])) $permissions[$k][$sk] = $sv;
+        }
+    }
+}
+
 //Prüfe ob der Benutzer gebant ist
 if ($user->read("ban") > 0) {
     $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
