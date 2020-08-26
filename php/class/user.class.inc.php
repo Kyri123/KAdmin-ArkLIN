@@ -127,6 +127,41 @@ class userclass extends helper
             return false;
         }
     }
+
+    /**
+     * Gibt aus ob der Benutzer die Rechte zu der jeweiligen aktion hat
+     *
+     * @param String $key schlüssel zur permissions (multi array ist mit / zu trennen)
+     * @return bool
+     */
+    public function perm(String $key)
+    {
+        // lade Permissions
+        global $permissions;
+
+        // Prüfe das Format
+        if(!($key = explode("/", $key))) return false;
+
+        // werte Permissions aus
+        $found = true;
+        $value = $permissions;
+        foreach ($key as $item) {
+            if(!isset($value[$item])) {
+                $found = false;
+            }
+            else {
+                $value = $value[$item];
+            }
+        }
+
+
+        // gebe bool aus
+        return (
+            ($found && boolval($value)) ||
+            (($key[0] != "server") ? false : boolval($permissions["server"][$key[1]]["is_server_admin"])) ||
+            boolval($permissions["all"]["is_admin"])
+        );
+    }
 }
 
 ?>

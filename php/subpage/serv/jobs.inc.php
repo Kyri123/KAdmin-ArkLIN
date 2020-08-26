@@ -333,7 +333,6 @@ $page_tpl->r('backup_url', "/servercenter/".$serv->name()."/jobs/create/backup/"
 $page_tpl->r('listmodal', $jobs_modal);
 $page_tpl->r('listmodal', $jobs_modal);
 $page_tpl->r('list', $jobs);
-$page_tpl->session();
 $panel = $page_tpl->load_var();
 
 

@@ -18,7 +18,7 @@ foreach ($dir as $k => $v) {
     }
 }
 
-$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json');
+$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 3600);
 $c = true;
 for ($i=count($json)-1;$i>-1;$i--) {
     if ($version == $json[$i]['version']) {
@@ -50,14 +50,8 @@ for ($i=count($json)-1;$i>-1;$i--) {
     }
 }
 
-
-
 $tpl_b->r('curr_changelog', $n_changelog);
 $tpl_b->r('curr_changelog_css', (($n_changelog != null) ? "aa_update_active" : null));
-
-
-
-
 
 // Speicher Sprache in einer user.json
 if(isset($_SESSION["id"]) && isset($_COOKIE["lang"])) {

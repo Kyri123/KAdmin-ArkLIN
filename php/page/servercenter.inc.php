@@ -157,8 +157,7 @@ if ($player == null) {
 
 $action_list = "<option value=\"\">Aktion wählen...</option>"; $i = 0;
 foreach ($action_opt as $key) {
-    $array[$key] = array();
-    $action_list .= "<option value=\"$key\">".$action_str[$i]."</option>";
+    $action_list .= "<option value=\"$key\">{::lang::php::cfg::action::$key}</option>";
     $i++;
 }
 

@@ -14,11 +14,11 @@ include('pconfig.inc.php');
 #allgmeine
 $sitename = "ArkAdmin";
 $sitename_short = "AA";
-$version = '1.0.0';
+$version = '1.1.0';
 $ip = $_SERVER['SERVER_ADDR'];
 
 #Webserver
-$webserver['url'] = 'http://data.chiraya.de/';
+$webserver['url'] = 'https://data.chiraya.de/';
 $webserver['changelog'] = $webserver['url'].'changelog.json';
 $webserver['config'] = json_decode(file_get_contents("arkadmin_server/config/server.json") ,true);
 $webserver['config']["port"] = (isset($webserver['config']["port"])) ? $webserver['config']["port"] : 30000;
@@ -42,29 +42,7 @@ $action_opt = array(
     "getpid",
     "cancelshutdown"
 );
-$action_str = array(
-    "{::lang::php::cfg::action::_0}",
-    "{::lang::php::cfg::action::_1}",
-    "{::lang::php::cfg::action::_2}",
-    "{::lang::php::cfg::action::_3}",
-    "{::lang::php::cfg::action::_4}",
-    "{::lang::php::cfg::action::_5}",
-    "{::lang::php::cfg::action::_6}",
-    "{::lang::php::cfg::action::_7}",
-    "{::lang::php::cfg::action::_8}",
-    "{::lang::php::cfg::action::_9}",
-    "{::lang::php::cfg::action::_10}",
-    "{::lang::php::cfg::action::_11}",
-    "{::lang::php::cfg::action::_12}",
-    "{::lang::php::cfg::action::_13}",
-    "{::lang::php::cfg::action::_14}",
-    "{::lang::php::cfg::action::_15}",
-    "{::lang::php::cfg::action::_16}",
-    "{::lang::php::cfg::action::_17}",
-    "{::lang::php::cfg::action::_18}",
-    "{::lang::php::cfg::action::_19}",
-    "{::lang::php::cfg::action::_20}"
-);
+
 $clustertype = array(
   "Slave",
   "Master"

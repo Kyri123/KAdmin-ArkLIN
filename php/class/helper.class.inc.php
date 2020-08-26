@@ -35,27 +35,35 @@ class helper {
      * @return void
      */
     public function remotefile_to_json(String $path, String $filename, int $differ = 0, Bool $array = true) {
-        $filename = 'cache/'.$filename;
+        $filename = 'app/cache/'.$filename;
         $diff = 0;
         $string = null;
+
         if (file_exists($filename)) {
             $filetime = filemtime($filename);
             $diff = time()-$filetime;
         }
-        if (file_get_contents($path) && $diff > $differ && file_exists($filename)) {
-            $string = file_get_contents($path);
-            file_put_contents($filename, $string);
-            return json_decode($string, $array);
+        if ($diff > $differ && file_exists($filename)) {
+            if($string = file_get_contents($path)) {
+                file_put_contents($filename, $string);
+                return json_decode($string, $array);
+            }
+            else {
+                return (!file_exists($filename)) ? false : json_decode(file_get_contents($filename), $array);
+            }
         }
-        elseif (file_get_contents($path) && !file_exists($filename)) {
-            $string = file_get_contents($path);
-            $handle = fopen($filename, 'w');
-            fclose($handle);
-            file_put_contents($filename, $string);
-            return json_decode($string, $array);
+        elseif (!file_exists($filename)) {
+            if($string = file_get_contents($path)) {
+                $handle = fopen($filename, 'w');
+                fclose($handle);
+                file_put_contents($filename, $string);
+                return json_decode($string, $array);
+            }
+            else {
+                return (!file_exists($filename)) ? false : json_decode(file_get_contents($filename), $array);
+            }
         } else {
-            return json_decode(file_get_contents($filename), $array);
-            file_put_contents($filename, $string);
+            return (!file_exists($filename)) ? false : json_decode(file_get_contents($filename), $array);
         }
     }
         

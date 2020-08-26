@@ -1,0 +1,102 @@
+{
+  "all": {
+    "is_admin": 0,
+    "force_update": 0,
+    "show_traffic": 1
+  },
+  "servercontrollcenter": {
+    "show": 1,
+    "create": 0,
+    "delete": 0
+  },
+  "userpanel": {
+    "show": 1,
+    "create_code": 0,
+    "delete_code": 0,
+    "delete_user": 0,
+    "delete_ban": 0,
+    "edit_permissions": 0
+  },
+  "cluster": {
+    "show": 1,
+    "create": 0,
+    "toogle_master": 0,
+    "remove_server": 0,
+    "add_server": 0,
+    "edit_options": 0,
+    "edit_sync": 0,
+    "delete": 0
+  },
+  "config": {
+    "show": 1,
+    "panel_show": 1,
+    "panel_save": 0,
+    "aa_show": 1,
+    "aa_restart": 0,
+    "aa_save": 0,
+    "am_show": 1,
+    "am_save": 0,
+    "scmd_show": 1,
+    "scmd_save": 0
+  },
+  "usersettings": {
+    "expert": 1
+  },
+  "server": {
+    "example": {
+      "is_server_admin": 0,
+      "show": 1,
+      "actions": 0,
+      "show_players": 0,
+      "use_log_opt": 0,
+      "home": {
+        "livechat_show": 1,
+        "livechat_send": 0,
+        "rcon_show": 0,
+        "rcon_send": 0,
+        "admin_show": 0,
+        "admin_send": 0,
+        "whitelist_show": 0,
+        "whitelist_send": 0
+      },
+      "mods": {
+        "show": 1,
+        "changeplace": 0,
+        "remove": 0,
+        "add": 0
+      },
+      "konfig": {
+        "show": 1,
+        "gus": 0,
+        "game": 0,
+        "engine": 0,
+        "arkmanager": 0
+      },
+      "logs": {
+        "show": 1
+      },
+      "backup": {
+        "show": 1,
+        "remove": 0,
+        "playin": 0,
+        "download": 0
+      },
+      "filebrowser": {
+        "show": 1,
+        "remove": 0,
+        "download": 0
+      },
+      "saves": {
+        "show": 1,
+        "download": 0,
+        "add": 0
+      },
+      "jobs": {
+        "show": 1,
+        "add": 0,
+        "remove": 0,
+        "edit": 0
+      }
+    }
+  }
+}

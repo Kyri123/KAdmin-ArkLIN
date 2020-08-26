@@ -190,7 +190,6 @@ if ($list == null) {
 }
 
 $page_tpl->r("backups_liste", $list);
-$page_tpl->session();
 $panel = $page_tpl->load_var();
 
 

@@ -9,12 +9,12 @@
 */
 
 // hide errors
+$stime = microtime(true);
 include('php/inc/config.inc.php');
 include('php/class/helper.class.inc.php');
 $helper = new helper();
 $ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
 $site_name = $content = null;
-
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 //error_reporting(E_ALL);
@@ -68,13 +68,6 @@ include('php/class/steamAPI.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/jobs.class.inc.php');
 
-// Sende Daten an Server
-$array["dbhost"] = $dbhost;
-$array["dbuser"] = $dbuser;
-$array["dbpass"] = $dbpass;
-$array["dbname"] = $dbname;
-$helper->savejson_create($array, "arkadmin_server/config/mysql.json");
-
 //create class_var
 $alert = new alert();
 $steamapi = new steamapi();
@@ -94,6 +87,28 @@ $servlocdir = $ckonfig['servlocdir'];
 $expert = $user->expert();
 $jobs = new jobs();
 
+// lade Permissions
+$permissions_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
+// todo: 1.2.0 remove $check_json["checked"]
+if(
+    !file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json") &&
+    $check_json["checked"] &&
+    isset($_SESSION["id"])
+) $helper->savejson_create($permissions_default, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
+$permissions = (isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json("app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json("app/json/user/permissions.tpl.json");
+
+// Prüft die user.permissions
+foreach ($permissions_default as $k => $v) {
+    if(!is_array($v)) {
+        if(!isset($json[$k])) $permissions[$k] = $v;
+    }
+    else {
+        foreach ($v as $sk => $sv) {
+            if(!isset($permissions[$k][$sk])) $permissions[$k][$sk] = $sv;
+        }
+    }
+}
+
 //Prüfe ob der Benutzer gebant ist
 if ($user->read("ban") > 0) {
     $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
@@ -112,7 +127,7 @@ if(isset($_SESSION["id"])) {
 }
 
 if (isset($_SESSION["id"])) {
-    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE (`id`=\''.$_SESSION["id"].'\')';
+    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`=\''.$_SESSION["id"].'\'';
     $mycon->query($query);
 } 
 
@@ -151,7 +166,7 @@ if ($page == "login" || $page == "registration") {
 }
 
 //tmp Force Update
-$btns .= '
+if($user->perm("all/force_update")) $btns .= '
     <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-info rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
         <span class="icon text-white-50">
             <i class="fa fa-cloud-download"></i>
@@ -196,6 +211,8 @@ $ifnot_traffic = false;
 $check = array("changelog", "404");
 if (in_array($page, $check)) $ifnot_traffic = true;
 $tpl_b->rif ("ifchangelog", $ifnot_traffic);
+
+$tpl_b->r("ltime", round((microtime(true) - $stime), 2));
 
 // Site Builder
 if ($page != "login" && $page != "registration" && $page != "crontab" && isset($_SESSION['id']) && file_exists("app/check/done")) {

@@ -18,6 +18,7 @@ $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 $syslpath = "remote/steamcmd";
 $workshop = "$syslpath/steamapps/workshop/appworkshop_346110.acf";
 $limit = $helper->file_to_json("app/json/panel/aas_min.json", true);
+$maxi = $helper->file_to_json("app/json/panel/aas_max.json", true);
 
 $ppath = "php/inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
@@ -139,27 +140,6 @@ foreach($panelconfig as $key => $value) {
     $list = new Template("opt.htm", $tpl_dir);
     $list->load();
 
-    $find = array(
-        "uninstall_mod",
-        "install_mod",
-        "clusterestart",
-        "servlocdir",
-        "arklocdir",
-        "apikey",
-        "show_err",
-        "steamcmddir"
-    );
-    $repl = array(
-        "{::lang::php::config::key::uninstallmod}",
-        "{::lang::php::config::key::installmod}",
-        "{::lang::php::config::key::clusterestart}",
-        "{::lang::php::config::key::servlocdir}",
-        "{::lang::php::config::key::arklocdir}",
-        "Steam-API Key <a href='https://steamcommunity.com/dev/apikey' target='_blank'>({::lang::php::config::key::apikey_found_here})</a>",
-        "<b>[Debug]</b> {::lang::php::config::key::show_err}",
-        "{::lang::php::config::key::steamcmddir}"
-    );
-
     $bool = array("uninstall_mod", "install_mod", "clusterestart", "expert", "show_err");
     if (in_array($key, $bool)) {
         $list->rif ("ifbool", true);
@@ -171,24 +151,21 @@ foreach($panelconfig as $key => $value) {
             $list->r("true", "null");
         }
         $list->r("key", $key);
-        $key = str_replace($find, $repl, $key);
-        $list->r("keym", $key);
+        $list->r("keym", "panel::$key");
     }
     elseif (is_numeric($value)) {
         $list->rif ("ifbool", false);
         $list->rif ("ifnum", true);
         $list->rif ("iftxt", false);
         $list->r("key", $key);
-        $key = str_replace($find, $repl, $key);
-        $list->r("keym", $key);
+        $list->r("keym", "panel::$key");
         $list->r("value", $value);
     } else {
         $list->rif ("ifbool", false);
         $list->rif ("ifnum", false);
         $list->rif ("iftxt", true);
         $list->r("key", $key);
-        $key = str_replace($find, $repl, $key);
-        $list->r("keym", $key);
+        $list->r("keym", "panel::$key");
         $list->r("value", $value);
     }
     $option_panel .= $list->load_var();
@@ -207,10 +184,12 @@ foreach($servercfg as $key => $value) {
     $list->rif ("ifnum", is_numeric($value));
     $list->rif ("iftxt", !is_numeric($value));
     $list->rif("ifmin", isset($limit[$key]));
+    $list->rif("ifmax", isset($maxi[$key]));
     $list->r("key", $key);
-    $list->r("keym", $key);
+    $list->r("keym", "aa::$key");
     $list->r("value", $value);
     $list->r("min", ((isset($limit[$key])) ? $limit[$key] : 0));
+    $list->r("max", ((isset($maxi[$key])) ? $maxi[$key] : 0));
     $option_server .= $list->load_var();
 }
 

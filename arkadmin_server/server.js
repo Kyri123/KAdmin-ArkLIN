@@ -15,7 +15,7 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.4.0.7";
+const version = "0.4.0.8";
 const mysql = require("mysql");
 const http = require('http');
 const updater = require("./packages/src/updater");
@@ -157,12 +157,12 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             if (req.headers.referer != undefined) {
                 if (ref.includes("update") && ref.includes(md5(ip.address()))) {
                     updater.auto();
-                    resp = '{"version":"' + version + '","db_conntect":"' + iscon + '","update":"running"}';
+                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '","update":"running"}';
                 } else {
-                    resp = '{"version":"' + version + '","db_conntect":"' + iscon + '"}';
+                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
                 }
             } else {
-                resp = '{"version":"' + version + '","db_conntect":"' + iscon + '"}';
+                resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
             }
             res.write(resp);
             res.end();
@@ -178,6 +178,8 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
 // Code Meldungen
 process.on('exit', function(code) {
+    con.destroy();
+
     // Exit: Konfiguration enthält Default informationen
     if (code == 2) {
         logger.log("Beendet: Bitte stelle die Konfiguration ein! (config/server.json)");
