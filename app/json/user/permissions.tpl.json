@@ -1,7 +1,7 @@
 {
   "all": {
     "is_admin": 0,
-    "force_update": 1,
+    "force_update": 0,
     "show_traffic": 1
   },
   "servercontrollcenter": {

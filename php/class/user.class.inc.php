@@ -136,14 +136,13 @@ class userclass extends helper
      */
     public function perm(String $key)
     {
+        // lade Permissions
         global $permissions;
-        if(strpos("/", $key) !== false) {
-            $key = explode("/", $key);
-        }
-        else {
-            return false;
-        }
 
+        // Prüfe das Format
+        if(!($key = explode("/", $key))) return false;
+
+        // werte Permissions aus
         $found = true;
         $value = $permissions;
         foreach ($key as $item) {
@@ -155,6 +154,8 @@ class userclass extends helper
             }
         }
 
+
+        // gebe bool aus
         return (
             ($found && boolval($value)) ||
             (($key[0] != "server") ? false : boolval($permissions["server"][$key[1]]["is_server_admin"])) ||

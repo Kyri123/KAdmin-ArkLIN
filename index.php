@@ -96,6 +96,12 @@ $jobs = new jobs();
 
 // lade Permissions
 $permissions_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
+// todo: 1.2.0 remove $check_json["checked"]
+if(
+    !file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json") &&
+    $check_json["checked"] &&
+    isset($_SESSION["id"])
+) $helper->savejson_create($permissions_default, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
 $permissions = (isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json("app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json("app/json/user/permissions.tpl.json");
 
 // Prüft die user.permissions
@@ -167,7 +173,7 @@ if ($page == "login" || $page == "registration") {
 }
 
 //tmp Force Update
-$btns .= '
+if($user->perm("all/force_update")) $btns .= '
     <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-info rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
         <span class="icon text-white-50">
             <i class="fa fa-cloud-download"></i>
