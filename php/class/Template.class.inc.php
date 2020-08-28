@@ -109,44 +109,28 @@ class Template {
     /**
      * Verarbeitet Session Ränge
      *
-     * @return null
+     * @param $array
+     * @param $key
      */
-    private function session() {
-        if (!$this->load) {
-            echo "<p>Template not Loaded ' . $this->file_str . ' </p>";
-            return null;
-        }
-        // Hole globale vars
-        global $_SESSION;
+    private function session($array, $key, $isserver = false) {
         global $permissions;
 
-        // geht über das Template drüber um alle inhalte zu ersetzten
-        if(is_array($permissions)) {
-            foreach ($permissions as $kp => $kv) {
-                $key = "permissions::$kp";
-                foreach ($kv as $k => $v) {
-                    $mkey = "$key::$k";
-                    if(!is_array($v)) {
-                        if (boolval($v) || boolval($permissions["all"]["is_admin"])) {
-                            $this->file = preg_replace("/\{".$mkey."\}(.*)\\{\/".$mkey."\}/Uis", '\\1', $this->file);
-                            $this->file = preg_replace("/\{!".$mkey."\}(.*)\\{\/!".$mkey."\}/Uis", null, $this->file);
-                        } else {
-                            $this->file = preg_replace("/\{".$mkey."\}(.*)\\{\/".$mkey."\}/Uis", null, $this->file);
-                            $this->file = preg_replace("/\{!".$mkey."\}(.*)\\{\/!".$mkey."\}/Uis", '\\1', $this->file);
-                        }
-                    }
-                    else {
-                        foreach ($v as $sk => $sv) {
-                            $skey = "$mkey::$sk";
-                            if (boolval($sv) || boolval($permissions["all"]["is_admin"]) || boolval($permissions["server"][$sk]["is_server_admin"])) {
-                                $this->file = preg_replace("/\{".$skey."\}(.*)\\{\/".$skey."\}/Uis", '\\1', $this->file);
-                                $this->file = preg_replace("/\{!".$skey."\}(.*)\\{\/!".$skey."\}/Uis", null, $this->file);
-                            } else {
-                                $this->file = preg_replace("/\{".$skey."\}(.*)\\{\/".$skey."\}/Uis", null, $this->file);
-                                $this->file = preg_replace("/\{!".$skey."\}(.*)\\{\/!".$skey."\}/Uis", '\\1', $this->file);
-                            }
-                        }
-                    }
+        foreach ($array as $k => $v) {
+            $mkey = $key."::$k";
+            if (is_array($v)) {
+                $this->session($v, $mkey, (strpos("server", $mkey) !== false));
+            } else {
+                $sk = "example";
+                $exp = explode("::", $mkey);
+                if(strpos("server", $mkey) !== false && isset($exp[2])) {
+                    $sk = $exp[2];
+                }
+                if (boolval($v) || boolval($permissions["all"]["is_admin"]) || ($isserver && $permissions["server"][$sk]["is_server_admin"])) {
+                    $this->file = preg_replace("/\{".$mkey."\}(.*)\\{\/".$mkey."\}/Uis", '\\1', $this->file);
+                    $this->file = preg_replace("/\{!".$mkey."\}(.*)\\{\/!".$mkey."\}/Uis", null, $this->file);
+                } else {
+                    $this->file = preg_replace("/\{".$mkey."\}(.*)\\{\/".$mkey."\}/Uis", null, $this->file);
+                    $this->file = preg_replace("/\{!".$mkey."\}(.*)\\{\/!".$mkey."\}/Uis", '\\1', $this->file);
                 }
             }
         }
@@ -202,17 +186,19 @@ class Template {
      * Finale verarbeitung des Templates (Sprachdateien usw)
      */
     private function final() {
+        global $permissions;
+
         $langfile = "app/lang/$this->lang/";
         if (!file_exists($langfile)) $langfile = "app/lang/de_de/";
 
         $arr = scandir($langfile);
         foreach ($arr as $item) {
-            if($item != "." && $item != "..") $this->load_xml($langfile.$item);
+            if ($item != "." && $item != "..") $this->load_xml($langfile . $item);
         }
         
-        $this->rlang(); $this->rintern(); $this->session(); // 3x um {xxx{xxx}} aus der XML zu verwenden
-        $this->rlang(); $this->rintern(); $this->session(); // 3x um {xxx{xxx}} aus der XML zu verwenden
-        $this->rlang(); $this->rintern(); $this->session(); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
 
         //Todo: nochmals mit der Standartsprachdatei drüber gehen?
 
