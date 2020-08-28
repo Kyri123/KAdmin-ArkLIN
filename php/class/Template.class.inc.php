@@ -120,15 +120,11 @@ class Template {
         global $_SESSION;
         global $permissions;
 
-        var_dump($permissions); echo "<br />";
-
         // geht über das Template drüber um alle inhalte zu ersetzten
         if(is_array($permissions)) {
             foreach ($permissions as $kp => $kv) {
-                var_dump($kv); echo "<br />";
                 $key = "permissions::$kp";
                 foreach ($kv as $k => $v) {
-                    var_dump($v); echo "<br />";
                     $mkey = "$key::$k";
                     if(!is_array($v)) {
                         if (boolval($v) || boolval($permissions["all"]["is_admin"])) {
@@ -141,7 +137,6 @@ class Template {
                     }
                     else {
                         foreach ($v as $sk => $sv) {
-                            var_dump($sv); echo "<br />";
                             $skey = "$mkey::$sk";
                             if (boolval($sv) || boolval($permissions["all"]["is_admin"]) || boolval($permissions["server"][$sk]["is_server_admin"])) {
                                 $this->file = preg_replace("/\{".$skey."\}(.*)\\{\/".$skey."\}/Uis", '\\1', $this->file);
