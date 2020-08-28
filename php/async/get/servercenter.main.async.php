@@ -92,13 +92,7 @@ switch ($case) {
         $action = $_GET["action"];
         $alert->code = 300;
         $i = 0;
-        foreach ($action_opt as $key) {
-            if($key == $action) {
-                $alert->overwrite_title = $action_str[$i];
-                break;
-            }  
-            $i++;
-        }
+        $alert->overwrite_title = "{::lang::php::cfg::action::$action}";
         $alert->overwrite_text = "{::lang::servercenter::infoaction::$action}";
         $alert->overwrite_style = 3;
         if($action != "") echo $alert->re();

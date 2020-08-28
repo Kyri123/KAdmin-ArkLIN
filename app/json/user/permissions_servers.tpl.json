@@ -1,7 +1,7 @@
 {
   "{cfg}": {
     "is_server_admin": 0,
-    "show": 1,
+    "show": 0,
     "actions": 0,
     "show_players": 0,
     "use_log_opt": 0,
