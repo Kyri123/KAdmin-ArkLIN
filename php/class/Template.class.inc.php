@@ -187,6 +187,7 @@ class Template {
      */
     private function final() {
         global $permissions;
+        global $_SESSION;
 
         $langfile = "app/lang/$this->lang/";
         if (!file_exists($langfile)) $langfile = "app/lang/de_de/";
