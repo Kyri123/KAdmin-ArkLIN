@@ -196,9 +196,9 @@ class Template {
             if ($item != "." && $item != "..") $this->load_xml($langfile . $item);
         }
         
-        $this->rlang(); $this->rintern(); $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
-        $this->rlang(); $this->rintern(); $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
-        $this->rlang(); $this->rintern(); $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); if(isset($_SESSION["id"])) $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); if(isset($_SESSION["id"])) $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); if(isset($_SESSION["id"])) $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
 
         //Todo: nochmals mit der Standartsprachdatei drüber gehen?
 
