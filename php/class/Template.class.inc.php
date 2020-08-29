@@ -196,13 +196,13 @@ class Template {
         foreach ($arr as $item) {
             if ($item != "." && $item != "..") $this->load_xml($langfile . $item);
         }
-        
-        $this->rlang(); $this->rintern(); if(isset($_SESSION["id"]) && is_array($permissions)) $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
-        $this->rlang(); $this->rintern(); if(isset($_SESSION["id"]) && is_array($permissions)) $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
-        $this->rlang(); $this->rintern(); if(isset($_SESSION["id"]) && is_array($permissions)) $this->session($permissions, "permissions::"); // 3x um {xxx{xxx}} aus der XML zu verwenden
 
-        //Todo: nochmals mit der Standartsprachdatei drüber gehen?
-
+        // verarbeite Sprache, Permissions & Eingaben
+        if(isset($_SESSION["id"]) && is_array($permissions)) $this->session($permissions, "permissions::");
+        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        // Wende BB-Codes an
         $this->bb_codes();
     }
 
@@ -271,6 +271,7 @@ class Template {
             '#\[td="(.*?)"](.*?)\[\/td\]#si',
             '#\[tr](.*?)\[\/tr\]#si',
             '#\[a="(.*?)"](.*?)\[\/a\]#si',
+            '#\[a="(.*?)" blank](.*?)\[\/a\]#si',
             '#\[ico="(.*?)"]\[\/ico\]#si',
             '#\[img="(.*?)"]\[\/img\]#si'
         );
@@ -291,6 +292,7 @@ class Template {
             "<td class=\"$1\">$2</td>",
             "<td>$1</td>",
             "<a href=\"$1\">$2</a>",
+            "<a href=\"$1\" target=\"_blank\">$2</a>",
             "<i class=\"$1\"></i>",
             "<img src=\"$1\" />"
         );

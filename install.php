@@ -24,8 +24,16 @@ if(!file_exists("app/cache")) mkdir("app/cache");
 include('php/class/helper.class.inc.php');
 include('php/class/xml_helper.class.php');
 include('php/class/Template.class.inc.php'); 
-include('php/class/alert.class.inc.php'); 
-include("php/functions/allg.func.inc.php");
+include('php/class/alert.class.inc.php');
+
+// Include functions
+include('php/functions/allg.func.inc.php');
+include('php/functions/check.func.inc.php');
+include('php/functions/modify.func.inc.php');
+include('php/functions/traffic.func.inc.php');
+include('php/functions/util.func.inc.php');
+
+// MySQL
 include("php/class/mysql.class.inc.php");
 
 // Installer Klassen
