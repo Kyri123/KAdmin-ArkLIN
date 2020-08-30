@@ -14,17 +14,18 @@
 class Template {
     
     private $filepath;
+    private $file_str;
     private $file = null;
     private $debug = false;
     private $load = false;
-    private $file_str = false;
-    public $lang = "de_de";
-    public $rfrom = array();
-    public $rto = array();
-    public $rifkey = array();
-    public $rifbool = array();
+    private $rfrom = array();
+    private $rto = array();
+    private $rifkey = array();
+    private $rifbool = array();
     private $langfrom = array();
     private $langto = array();
+
+    public $lang = "de_de";
 
     /**
      * Template constructor.

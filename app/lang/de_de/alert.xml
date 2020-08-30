@@ -236,6 +236,12 @@
             <text>Es wurden keine Dateien erkannt die in die Zip datei gelegt werden konnten</text>
         </c_36>
 
+        <!-- DANGER | Fehlende Rechte -->
+        <c_99>
+            <title>Fehlende Rechte</title>
+            <text>Dir Fehlt die Berechtigung dafür.</text>
+        </c_99>
+
         
 
 

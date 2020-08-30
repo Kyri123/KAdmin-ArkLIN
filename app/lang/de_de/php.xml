@@ -78,6 +78,8 @@
         <!-- userpanel -->
         <userpanel>
             <pagename>Benutzer</pagename>
+            <user>Benutzer</user>
+            <admin>Admin</admin>
             <btn-regcode>Codes</btn-regcode>
             <nocodefound>Kein Code gefunden</nocodefound>
             <banned>Gebannt</banned>

@@ -350,9 +350,6 @@ if(is_countable($dirarr)) {
     }
 }
 
-
-
-
 $page_tpl->load();
 $page_tpl->r('cfg' ,$url[2]);
 $page_tpl->r('urls' ,$urls);

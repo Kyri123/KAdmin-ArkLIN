@@ -123,8 +123,8 @@ class alert extends helper {
     /**
      * Ersetzte ein Wert ({...}) im String des Alerts
      *
-     * @param  string $from - Wert der Ersetzt ersetzt werden soll
-     * @param  string $to - Wert der gesetzt werden soll
+     * @param  string $from - [Pflicht] Wert der Ersetzt ersetzt werden soll
+     * @param  string $to - [Pflicht] Wert der gesetzt werden soll
      * @return bool
      */
     public function r(String $from, String $to) {
@@ -136,14 +136,14 @@ class alert extends helper {
     /**
      * Gibt direkt ein Alert zurück (Code muss gesetzt sein)
      *
-     * @param  int $code - Alert nummer (alert.htm)
-     * @param  int $style - Style nummer (1-3)
-     * @param  int $mt - margin-top in Pixel
-     * @param  int $mr - margin-right in Pixel 
-     * @param  int $mb - margin-bottom in Pixel 
-     * @param  int $ml - margin-left in Pixel 
-     * @param  string $icon - überschreibe das Icon 
-     * @param  string $color - überschreibe die Farbe (alle boostrap classe ...-XXX)
+     * @param  int $code - [Pflicht] Alert nummer (alert.htm)
+     * @param  int $style - [Optional] Style nummer (1-3)
+     * @param  int $mt - [Optional] margin-top in Pixel
+     * @param  int $mr - [Optional] margin-right in Pixel
+     * @param  int $mb - [Optional] margin-bottom in Pixel
+     * @param  int $ml - [Optional] margin-left in Pixel
+     * @param  string $icon - [Optional] überschreibe das Icon
+     * @param  string $color - [Optional] überschreibe die Farbe (alle boostrap classe ...-XXX)
      * @return mixed
      */
     public function rd(Int $code, Int $style = 3, Int $mt = -1, Int $mr = -1, Int $mb = 3, Int $ml = -1, String $icon = null, String $color = null) {

@@ -184,7 +184,6 @@ $tpl_h->r('pagename', $pagename);
 $tpl_b->r('aa_version', $version);
 $tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path_webhelper)) ? intval(file_get_contents($path_webhelper)) : time()), true));
 $tpl_b->r('user', $user->read("username"));
-$tpl_b->r('rank', $user->read("rang"));
 $tpl_b->r('content', $content);
 $tpl_b->r('site_name', $site_name);
 $tpl_b->r('btns', "<div class=\"d-sm-inline-block\">$btns</div>");
@@ -192,6 +191,7 @@ $tpl_b->r('urltop', $urltop);
 $tpl_b->r('g_alert', $g_alert);
 $tpl_b->rif ('if_g_alert', $g_alert_bool);
 $tpl_b->r("langlist", get_lang_list());
+$tpl_b->r("rank", "<span class='text-".((!$user->perm("allg/is_admin")) ? "success" : "danger")."'>{::lang::php::userpanel::".((!$user->perm("allg/is_admin")) ? "user" : "admin")."}</span>");
 
 // Server Traffics
 $all = $helper->file_to_json("app/json/serverinfo/all.json");

@@ -8,6 +8,11 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if(!$user->perm("userpanel/userpanel")) {
+    header("Location: /404"); exit;
+}
+
 // Vars
 $tpl_dir = 'app/template/core/userpanel/';
 $tpl_dir_all = 'app/template/all/';
@@ -20,7 +25,7 @@ $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 // Code hinzufügen
-if (isset($_POST["add"])) {
+if (isset($_POST["add"]) && $user->perm("userpanel/create_code")) {
     $code = rndbit(10);
     $query = "INSERT INTO `ArkAdmin_reg_code` (`code`, `used`, `time`) VALUES ('".$code."', '0', '0')";
     if ($mycon->query($query)) {
@@ -28,13 +33,15 @@ if (isset($_POST["add"])) {
         $alert->overwrite_text = '<div class="input-group m"><input type="text" class="form-control rounded-0" readonly="true" value="'.$code.'" id="'.$code.'"><span class="input-group-append"><button onclick="copythis(\''.$code.'\')" class="btn btn-primary btn-flat"><i class="fas fa-copy" aria-hidden="true"></i></button></span></div>';
         $resp = $alert->re();
     } else {
-        $alert->code = 3;
-        $resp = $alert->re();
+        $resp = $alert->rd(3);
     }
+}
+elseif(isset($_POST["add"]))  {
+    $resp = $alert->rd(99);
 }
 
 // Code löschen
-if (isset($url[3]) && $url[2] == "rmcode") {
+if (isset($url[3]) && $url[2] == "rmcode" && $user->perm("userpanel/delete_code")) {
     $id = $url[3];
     $query = "DELETE FROM `ArkAdmin_reg_code` WHERE (`id`='".$id."')";
     if ($mycon->query($query)) {
@@ -46,9 +53,12 @@ if (isset($url[3]) && $url[2] == "rmcode") {
         $resp = $alert->re();
     }
 }
+elseif (isset($url[3]) && $url[2] == "rmcode") {
+    $resp = $alert->rd(99);
+}
 
 // Benutzer löschen
-if (isset($_POST["del"])) {
+if (isset($_POST["del"]) && $user->perm("userpanel/delete_user")) {
     $id = $_POST["userid"];
     $user->setid($id);
     $tpl->r("del_username", $user->read("username"));
@@ -62,9 +72,12 @@ if (isset($_POST["del"])) {
         $resp = $alert->re();
     }
 }
+elseif (isset($_POST["del"])) {
+    $resp = $alert->rd(99);
+}
 
 // Benutzer (ent-)bannen
-if (isset($url[4]) && $url[2] == "tban") {
+if (isset($url[4]) && $url[2] == "tban" && $user->perm("userpanel/delete_ban")) {
     $uid = $url[3];
     $set = $url[4];
     if ($set == 0) {
@@ -86,6 +99,9 @@ if (isset($url[4]) && $url[2] == "tban") {
         $resp = $alert->re();
     }
 }
+elseif (isset($url[4]) && $url[2] == "tban") {
+    $resp = $alert->rd(99);
+}
 
 // Benutzer Liste
 $query = 'SELECT * FROM `ArkAdmin_users`';
@@ -101,6 +117,7 @@ for ($i=1;$i<count($userarray);$i++) {
     $registerdate = $userarray[$i]["registerdate"];
     $rang = $userarray[$i]["rang"];
     $ban = $userarray[$i]["ban"];
+    $kuser = new userclass($id);
 
 
 
@@ -118,6 +135,7 @@ for ($i=1;$i<count($userarray);$i++) {
     $list->r("lastlogin", converttime($lastlogin));
     $list->r("email", $email);
     $list->r("uid", $id);
+    $list->r("rank", "<span class='text-".((!$kuser->perm("allg/is_admin")) ? "success" : "danger")."'>{::lang::php::userpanel::".((!$kuser->perm("allg/is_admin")) ? "user" : "admin")."}</span>");
     $list->r("username", $username);
 
     $list->rif ("ifmodal", false);
@@ -135,28 +153,30 @@ for ($i=1;$i<count($userarray);$i++) {
     $userlist_modal .= $list->load_var();
 }
 
-// Count Email
-$query = 'SELECT * FROM `ArkAdmin_reg_code` WHERE `used` = \'0\'';
-$mycon->query($query);
-$codearray = $mycon->fetchAll();
+// Liste Codes auf
 $list_codes = null;
-if (count($codearray)>0) {
-    for ($i=0;$i<count($codearray);$i++) {
+if($user->perm("userpanel/show_codes")) {
+    $query = 'SELECT * FROM `ArkAdmin_reg_code` WHERE `used` = \'0\'';
+    $mycon->query($query);
+    $codearray = $mycon->fetchAll();
+    if (count($codearray)>0) {
+        for ($i=0;$i<count($codearray);$i++) {
+            $list = new Template("codes.htm", $tpl_dir);
+            $list->load();
+            $list->r("id", "<span class='text-".(($codearray[$i]["time"] == 0) ? "success" : "danger")."'>{::lang::php::userpanel::".(($codearray[$i]["time"] == 0) ? "user" : "admin")."}</span>");
+            $list->r("code", $codearray[$i]["code"]);
+            $list->rif ("ifemtpy", false);
+
+            $list_codes .= $list->load_var();
+        }
+    } else {
         $list = new Template("codes.htm", $tpl_dir);
         $list->load();
-        $list->r("id", $codearray[$i]["id"]);
-        $list->r("code", $codearray[$i]["code"]);
-        $list->rif ("ifemtpy", false);
+        $list->r("code", "{::lang::php::userpanel::nocodefound}");
+        $list->rif ("ifemtpy", true);
 
         $list_codes .= $list->load_var();
     }
-} else {
-    $list = new Template("codes.htm", $tpl_dir);
-    $list->load();
-    $list->r("code", "{::lang::php::userpanel::nocodefound}");
-    $list->rif ("ifemtpy", true);
-
-    $list_codes .= $list->load_var();
 }
 
 // lade in TPL

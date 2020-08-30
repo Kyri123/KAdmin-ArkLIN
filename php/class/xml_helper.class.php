@@ -13,9 +13,9 @@
  */
 class xml_helper extends helper {
 
-    private $xml_path = null;
-    private $find = false;
-    private $xml_string;
+    public $xml_path;
+    public $xml_string;
+    public $find;
 
     /**
      * xml_helper constructor.
