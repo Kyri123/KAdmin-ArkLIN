@@ -60,8 +60,11 @@ exports.auto = () => {
                             // Installiere Module
                             'npm install ; ' +
                             'sleep 2s ; ' +
+                            // überschreibe Rechte
+                            'chmod 777 -R ./../ ; ' +
+                            'sleep 2s ; ' +
                             // Starte Server wieder
-                            'screen -mdS ArkAdmin node server.js ;' +
+                            'screen -mdS ArkAdmin ./start.sh ;' +
                             'screen -wipe ;' +
                             'exit;\'';
                         // Beginne Update
