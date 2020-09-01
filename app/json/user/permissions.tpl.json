@@ -15,7 +15,7 @@
     "create_code": 0,
     "delete_code": 0,
     "delete_user": 0,
-    "delete_ban": 0,
+    "ban_user": 0,
     "edit_permissions": 0
   },
   "cluster": {

@@ -24,16 +24,24 @@ $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 //tpl
 $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
+
 // Code hinzufügen
 if (isset($_POST["add"]) && $user->perm("userpanel/create_code")) {
     $code = rndbit(10);
-    $query = "INSERT INTO `ArkAdmin_reg_code` (`code`, `used`, `time`) VALUES ('".$code."', '0', '0')";
-    if ($mycon->query($query)) {
-        $alert->code = 100;
-        $alert->overwrite_text = '<div class="input-group m"><input type="text" class="form-control rounded-0" readonly="true" value="'.$code.'" id="'.$code.'"><span class="input-group-append"><button onclick="copythis(\''.$code.'\')" class="btn btn-primary btn-flat"><i class="fas fa-copy" aria-hidden="true"></i></button></span></div>';
-        $resp = $alert->re();
-    } else {
-        $resp = $alert->rd(3);
+    $rank = $_POST["rank"];
+    
+    if(is_numeric($rank)) {
+        $query = "INSERT INTO `ArkAdmin_reg_code` (`code`, `used`, `time`) VALUES ('$code', '0', '$rank')";
+        if ($mycon->query($query)) {
+            $alert->code = 100;
+            $alert->overwrite_text = '<div class="input-group m"><input type="text" class="form-control rounded-0" readonly="true" value="'.$code.'" id="'.$code.'"><span class="input-group-append"><button onclick="copythis(\''.$code.'\')" class="btn btn-primary btn-flat"><i class="fas fa-copy" aria-hidden="true"></i></button></span></div>';
+            $resp = $alert->re();
+        } else {
+            $resp = $alert->rd(3);
+        }
+    }
+    else {
+        $resp = $alert->rd(2);
     }
 }
 elseif(isset($_POST["add"]))  {
@@ -163,8 +171,9 @@ if($user->perm("userpanel/show_codes")) {
         for ($i=0;$i<count($codearray);$i++) {
             $list = new Template("codes.htm", $tpl_dir);
             $list->load();
-            $list->r("id", "<span class='text-".(($codearray[$i]["time"] == 0) ? "success" : "danger")."'>{::lang::php::userpanel::".(($codearray[$i]["time"] == 0) ? "user" : "admin")."}</span>");
+            $list->r("rank", "<span class='text-".(($codearray[$i]["time"] == 0) ? "success" : "danger")."'>{::lang::php::userpanel::".(($codearray[$i]["time"] == 0) ? "user" : "admin")."}</span>");
             $list->r("code", $codearray[$i]["code"]);
+            $list->r("id", $codearray[$i]["id"]);
             $list->rif ("ifemtpy", false);
 
             $list_codes .= $list->load_var();

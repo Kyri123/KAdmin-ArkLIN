@@ -12,6 +12,9 @@
                             {::lang::userpanel::tableheader::username}
                         </th>
                         <th>
+                            {::lang::userpanel::tableheader::rank}
+                        </th>
+                        <th>
                             {::lang::userpanel::tableheader::mail}
                         </th>
                         <th>
@@ -60,9 +63,6 @@
                             <th>
                                 {::lang::userpanel::modal::codes::tableheader::code}
                             </th>
-                            <th>
-                                {::lang::userpanel::modal::codes::tableheader::action}
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,9 +70,14 @@
                     </tbody>
                 </table>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::userpanel::modal::codes::btn-cancel}</button>
-                <button type="submit" class="btn btn-success" name="add">{::lang::userpanel::modal::codes::btn-create}</button>
+            <div class="modal-footer input-group">
+                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="{::lang::userpanel::modal::codes::btn-cancel}">
+                <select class="form-control m-1" name="rank" required>
+                    <option>{::lang::allg::default::select}</option>
+                    <option value="0">{::lang::php::userpanel::user}</option>
+                    <option value="1">{::lang::php::userpanel::admin}</option>
+                </select>
+                <input type="submit" class="btn btn-success" name="add" value="{::lang::userpanel::modal::codes::btn-create}">
             </div>
         </div>
     </div>

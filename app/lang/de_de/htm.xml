@@ -9,8 +9,8 @@
      -->
 
     <allg>
-
         <default>
+            <select>Bitte Wählen</select>
             <noplayer>Kein Spieler Gefunden</noplayer>
             <noadmin>Kein Admin Gefunden</noadmin>
             <notinapimod>Wurde noch nicht in die API geladen</notinapimod>
@@ -407,16 +407,6 @@
                     <custom_action_ph>start --alwaysstart</custom_action_ph>
                 </send_command>
 
-                <danger>
-                    <title></title>
-                    <btn_close>Schließen</btn_close>
-                </danger>
-
-                <warning>
-                    <title>Lister aller Warnungen</title>
-                    <btn_close>Schließen</btn_close>
-                </warning>
-
                 <err>
                     <title>Lister aller Fehler</title>
                     <btn_close>Schließen</btn_close>
@@ -560,7 +550,6 @@
 
                 <admin>
                     <player>Benutzer:</player>
-                    <default>Bitte Wählen</default>
                     <info>Der User muss zuerst auf dem Server gewesen sein um als Spieler aufgelistet zu werden. (Änderungen werden erst nach einem Neustart wirksam)</info>
                     <btn_add>Hinzufügen</btn_add>
                 </admin>

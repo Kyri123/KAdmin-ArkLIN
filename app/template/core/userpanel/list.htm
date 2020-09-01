@@ -1,7 +1,10 @@
 {!ifmodal}
 <tr>
     <td>
-        {rank} {username}
+        {username}
+    </td>
+    <td>
+        {rank}
     </td>
     <td>
         {email}
@@ -17,24 +20,31 @@
         <span class="badge badge-success">{::lang::userpanel::list::notbanned}</span>{/!ifban}
     </td>
     <td class="project-actions text-right">
-        {!self}
+        <a class="btn btn-info btn-sm" href="#" onclick="$('#permissions_{username}').toggle()">
+            </i> {::lang::userpanel::list::show_permissions}
+        </a>
+        {!self}{permissions??userpanel??ban_user}
         <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#remove{username}">
             <i class="fas fa-trash">
             </i> {::lang::userpanel::list::remove}
-        </a>
-        {ifban}
+        </a>{/permissions}
+        {permissions??userpanel??delete_user}{ifban}
         <a class="btn btn-danger btn-sm" href="/userpanel/tban/{uid}/0">
             <i class="fa fa-check">
             </i> {::lang::userpanel::list::unban}
-        </a>
-        {/ifban} {!ifban}
+        </a>{/permissions}
+        {/ifban} {!ifban}{permissions??userpanel??delete_user}
         <a class="btn btn-danger btn-sm" href="/userpanel/tban/{uid}/1">
             <i class="fa fa-times">
             </i> {::lang::userpanel::list::ban}
-        </a>
+        </a>{/permissions}
         {/!ifban}{/!self}
     </td>
 </tr>
+<tr style="display: none" id="permissions_{username}">
+    <td></td>
+</tr>
+<tr style="display: none"></tr>
 {/!ifmodal}{ifmodal}
 <!-- Modal -->
 <form class="modal fade" id="remove{username}" tabindex="-1" method="post" action="/userpanel">
