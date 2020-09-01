@@ -29,7 +29,7 @@ $tpl->load();
 if (isset($_POST["add"]) && $user->perm("userpanel/create_code")) {
     $code = rndbit(10);
     $rank = $_POST["rank"];
-    
+
     if(is_numeric($rank)) {
         $query = "INSERT INTO `ArkAdmin_reg_code` (`code`, `used`, `time`) VALUES ('$code', '0', '$rank')";
         if ($mycon->query($query)) {
