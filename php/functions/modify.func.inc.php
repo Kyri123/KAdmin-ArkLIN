@@ -302,19 +302,17 @@ function perm_to_htm(array $array, $keys = null) {
         if(is_array($item)) {
             if($keys == "[server]") {
                 if(file_exists("remote/arkmanager/instances/$key.cfg")) {
-                    $keys = $keys."[$key]";
-                    $tpl->r("keys", $keys);
+                    $keyw = $keys."[$key]";
+                    $tpl->r("keys", $keyw);
                     $str .= $tpl->load_var();
-                    $str .= perm_to_htm($item, $keys);
-                    $keys = null;
+                    $str .= perm_to_htm($item, $keyw);
                 }
             }
             else {
-                $keys = $keys."[$key]";
-                $tpl->r("keys", $keys);
+                $keyw = $keys."[$key]";
+                $tpl->r("keys", $keyw);
                 $str .= $tpl->load_var();
-                $str .= perm_to_htm($item, $keys);
-                $keys = null;
+                $str .= perm_to_htm($item, $keyw);
             }
         }
         else {
