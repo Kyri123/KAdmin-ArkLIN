@@ -1,0 +1,16 @@
+{is_array}
+<tr>
+    <td colspan="2" class="bg-dark pl-3">{::lang::php::userpanel::permissions::{key}} <span class="text-sm">{keys}</span></td>
+</tr>
+{/is_array}
+{!is_array}
+<tr>
+    <td class="p-1 pl-3">{::lang::php::userpanel::permissions::{key}}</td>
+    <td class="p-1">
+        <select class="form-control form-control-sm" name="permissions{keys}">
+            <option {active}selected{/active} value="1">{::lang::config::opt::true}</option>
+            <option {!active}selected{/!active} value="0">{::lang::config::opt::false}</option>
+        </select>
+    </td>
+</tr>
+{/!is_array}

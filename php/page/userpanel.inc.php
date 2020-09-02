@@ -14,12 +14,13 @@ if(!$user->perm("userpanel/userpanel")) {
 }
 
 // Vars
-$tpl_dir = 'app/template/core/userpanel/';
-$tpl_dir_all = 'app/template/all/';
-$setsidebar = false;
-$cfglist = null;
-$pagename = "{::lang::php::userpanel::pagename}";
-$urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
+$tpl_dir        = 'app/template/core/userpanel/';
+$tpl_dir_all    = 'app/template/all/';
+$setsidebar     = false;
+$cfglist        = null;
+$pagename       = "{::lang::php::userpanel::pagename}";
+$urltop         = "<li class=\"breadcrumb-item\">$pagename</li>";
+$kuser          = new userclass();
 
 //tpl
 $tpl = new Template('tpl.htm', $tpl_dir);
@@ -48,6 +49,21 @@ elseif(isset($_POST["add"]))  {
     $resp = $alert->rd(99);
 }
 
+// Permission bearbeiten
+if (isset($_POST["editperm"])) {
+    $perm = $_POST["permissions"];
+    $userid = $_POST["userid"];
+    if($helper->savejson_create($perm, "app/json/user/".md5($userid).".permissions.json")) {
+        $resp = $alert->rd(102);
+    }
+    else {
+        $resp = $alert->rd(1);
+    }
+}
+elseif (isset($_POST["editperm"])) {
+    $resp = $alert->rd(99);
+}
+
 // Code löschen
 if (isset($url[3]) && $url[2] == "rmcode" && $user->perm("userpanel/delete_code")) {
     $id = $url[3];
@@ -68,7 +84,7 @@ elseif (isset($url[3]) && $url[2] == "rmcode") {
 // Benutzer löschen
 if (isset($_POST["del"]) && $user->perm("userpanel/delete_user")) {
     $id = $_POST["userid"];
-    $user->setid($id);
+    $kuser->setid($id);
     $tpl->r("del_username", $user->read("username"));
     $query = "DELETE FROM `ArkAdmin_users` WHERE (`id`='".$id."')";
     if ($mycon->query($query)) {
@@ -93,7 +109,7 @@ if (isset($url[4]) && $url[2] == "tban" && $user->perm("userpanel/delete_ban")) 
     } else {
         $to = "{::lang::php::userpanel::notbanned}";
     }
-    $user->setid($uid);
+    $kuser->setid($uid);
     $tpl->r("ban_username", $user->read("username"));
     $tpl->r("ban_uid", $uid);
     $tpl->r("ban_to", $to);
@@ -112,42 +128,48 @@ elseif (isset($url[4]) && $url[2] == "tban") {
 }
 
 // Benutzer Liste
-$query = 'SELECT * FROM `ArkAdmin_users`';
-$mycon->query($query);
-$userarray = $mycon->fetchAll();
-$dir = dirToArray('remote/arkmanager/instances/');
-$userlist = null; $userlist_modal = null;
+$query      = 'SELECT * FROM `ArkAdmin_users`';
+$dir        = dirToArray('remote/arkmanager/instances/');
+$userarray  = $mycon->query($query)->fetchAll();
+$userlist   = null; $userlist_modal = null;
 for ($i=1;$i<count($userarray);$i++) {
-    $id = $userarray[$i]["id"];
-    $username = $userarray[$i]["username"];
-    $email = $userarray[$i]["email"];
-    $lastlogin = $userarray[$i]["lastlogin"];
-    $registerdate = $userarray[$i]["registerdate"];
-    $rang = $userarray[$i]["rang"];
-    $ban = $userarray[$i]["ban"];
-    $kuser = new userclass($id);
+    // Setzte User in der Klasse
+    $kuser->setid($userarray[$i]["id"]);
 
-
+    // Vars
+    $user_permissions   = null;
+    $id                 = $kuser->read("id");
+    $username           = $kuser->read("username");
+    $email              = $kuser->read("email");
+    $lastlogin          = $kuser->read("lastlogin");
+    $registerdate       = $kuser->read("registerdate");
+    $rang               = $kuser->read("rang");
+    $ban                = $kuser->read("ban");
 
     // Kein Modal
     $list = new Template("list.htm", $tpl_dir);
     $list->load();
 
-    if ($ban < 1) {
-        $list->rif ("ifban", false);
-    } else {
-        $list->rif ("ifban", true);
+    // Lese rechte zum Bearbeiten
+    if($user->perm("userpanel/edit_permissions")) {
+        $user_permissions = perm_to_htm($kuser->permissions);
     }
 
+    // Schreibe infos in das Template
     $list->r("regdate", converttime($registerdate));
     $list->r("lastlogin", converttime($lastlogin));
     $list->r("email", $email);
     $list->r("uid", $id);
     $list->r("rank", "<span class='text-".((!$kuser->perm("allg/is_admin")) ? "success" : "danger")."'>{::lang::php::userpanel::".((!$kuser->perm("allg/is_admin")) ? "user" : "admin")."}</span>");
     $list->r("username", $username);
+    $list->r("user_permissions", $user_permissions);
 
+    // prüfe ob der User gebant ist, deaktivere Modal & prüfe ob die ID man selbst ist
+    $list->rif ("ifban", boolval($ban));
     $list->rif ("ifmodal", false);
     $list->rif ("self", ($id == $_SESSION["id"]));
+
+    // Schreibe Template in var
     $userlist .= $list->load_var();
 
     // Modal

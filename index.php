@@ -96,16 +96,21 @@ if(
     isset($_SESSION["id"])
 ) $helper->savejson_create($permissions_default, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
 $permissions = (isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json("app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json("app/json/user/permissions.tpl.json");
+$permissions = array_replace_recursive($permissions_default, $permissions);
 
-// Prüft die user.permissions
-foreach ($permissions_default as $k => $v) {
-    if(!is_array($v)) {
-        if(!isset($json[$k])) $permissions[$k] = $v;
+// gehe Rechte der Server durch
+$servers_perm = array();
+$file = 'app/json/serverinfo/all.json';
+$server = $helper->file_to_json($file, true)["cfgs_only_name"];
+foreach ($server as $item) {
+    $perm_file = file_get_contents("app/json/user/permissions_servers.tpl.json");
+    $perm_file = str_replace("{cfg}", $item, $perm_file);
+    $default = $helper->str_to_json($perm_file);
+    if(isset($permissions["server"][$item])) {
+        $permissions["server"][$item] = array_replace_recursive($default[$item], $permissions["server"][$item]);
     }
     else {
-        foreach ($v as $sk => $sv) {
-            if(!isset($permissions[$k][$sk])) $permissions[$k][$sk] = $sv;
-        }
+        $permissions["server"] += $default;
     }
 }
 

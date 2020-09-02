@@ -284,4 +284,47 @@ function alog($str) {
     return $str;
 }
 
+
+/**
+ * Wandelt eine Array rekursiv in ein HTML editor
+ *
+ * @param  array $array
+ * @param  string $str
+ * @return void
+ */
+function perm_to_htm(array $array, $keys = null) {
+    $str = null;
+    foreach ($array as $key => $item) {
+        $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
+        $tpl->load();
+        $tpl->rif("is_array", is_array($item));
+        $tpl->r("key", $key);
+        if(is_array($item)) {
+            if($keys == "[server]") {
+                if(file_exists("remote/arkmanager/instances/$key.cfg")) {
+                    $keys = $keys."[$key]";
+                    $tpl->r("keys", $keys);
+                    $str .= $tpl->load_var();
+                    $str .= perm_to_htm($item, $keys);
+                    $keys = null;
+                }
+            }
+            else {
+                $keys = $keys."[$key]";
+                $tpl->r("keys", $keys);
+                $str .= $tpl->load_var();
+                $str .= perm_to_htm($item, $keys);
+                $keys = null;
+            }
+        }
+        else {
+            $keyw = $keys."[$key]";
+            $tpl->r("keys", $keyw);
+            $tpl->rif("active", boolval($item));
+            $str .= $tpl->load_var();
+        }
+    }
+    return $str;
+}
+
 ?>
