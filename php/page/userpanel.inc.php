@@ -50,7 +50,7 @@ elseif(isset($_POST["add"]))  {
 }
 
 // Permission bearbeiten
-if (isset($_POST["editperm"])) {
+if (isset($_POST["editperm"]) && $user->perm("all/is_admin")) {
     $perm = $_POST["permissions"];
     $userid = $_POST["userid"];
     if($helper->savejson_create($perm, "app/json/user/".md5($userid).".permissions.json")) {
@@ -151,7 +151,7 @@ for ($i=1;$i<count($userarray);$i++) {
     $list->load();
 
     // Lese rechte zum Bearbeiten
-    if($user->perm("userpanel/edit_permissions")) {
+    if($user->perm("all/is_admin")) {
         $user_permissions = perm_to_htm($kuser->permissions);
     }
 

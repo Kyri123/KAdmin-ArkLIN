@@ -87,6 +87,75 @@
             <removed_code>Code Gelöscht</removed_code>
             <removed_user>Benutzer {del_username} Gelöscht</removed_user>
             <changed_ban>Benutzer [{ban_uid}] {ban_username} -> {ban_to}</changed_ban>
+
+            <permissions>
+                <!-- Titel -->
+                <all>ArkAdmin2 (Allgemein)</all>
+                <servercontrollcenter>ServerControllCenter</servercontrollcenter>
+                <userpanel>Benutzer und Rechte</userpanel>
+                <cluster>Cluster System</cluster>
+                <config>Konfiguration</config>
+                <usersettings>Benutzer Einstellungen</usersettings>
+                <server>Server</server>
+                <home>Startseite / Home</home>
+                <mods>Modifikationen</mods>
+                <konfig>Konfiguration</konfig>
+                <logs>Logs</logs>
+                <backup>Backups</backup>
+                <filebrowser>File System</filebrowser>
+                <saves>Spielstände</saves>
+                <jobs>Aufgaben</jobs>
+
+                <!-- Optionen -->
+                <show>Darf Sehen / Aufrufen</show>
+                <create>Darf Erstellen</create>
+                <delete>Darf Löschen</delete>
+                <is_admin>Ist Admin (hat Rechte auf ALLES)</is_admin>
+                <force_update>Darf Panel Updates erzwingen</force_update>
+                <show_traffic>Darf Server Traffics sehen</show_traffic>
+                <show_codes>Darf Codes sehen</show_codes>
+                <create_code>Darf Codes Erstellen</create_code>
+                <delete_code>Darf Codes Löschen</delete_code>
+                <delete_user>Darf Benutzer Löschen</delete_user>
+                <ban_user>Darf Benutzer Bannen</ban_user>
+                <toogle_master>Darf Master / Slaves ändern</toogle_master>
+                <remove_server>Darf Server vom Cluster entfernen</remove_server>
+                <add_server>Darf Server zu einem Cluster hinzufügen</add_server>
+                <edit_options>Darf Cluster Optionen bearbeiten</edit_options>
+                <edit_sync>Darf Syncronisationen ändern</edit_sync>
+                <panel_show>Darf Panel Optionen sehen</panel_show>
+                <panel_save>Darf Panel Optionen speichern / bearbeiten</panel_save>
+                <aa_show>Darf ArkAdmin-Server sehen</aa_show>
+                <aa_restart>Darf Panel ArkAdmin-Server neustarten</aa_restart>
+                <aa_save>Darf ArkAdmin-Server speichern / bearbeiten</aa_save>
+                <am_show>Darf Arkmanager sehen</am_show>
+                <am_save>Darf Arkmanager speichern / bearbeiten</am_save>
+                <scmd_show>Darf SteamCMD sehen</scmd_show>
+                <scmd_save>Darf SteamCMD speichern / bearbeiten</scmd_save>
+                <expert>Darf Expertenmodus verwenden bzw ändern</expert>
+                <is_server_admin>Ist Admin für den Server (kann alles auf dem Server ändern und Anpassen innerhalb vom ServerCenter)</is_server_admin>
+                <actions>Darf Aktionen an den Server senden</actions>
+                <show_players>Darf sehen welche Spieler Online sind</show_players>
+                <use_log_opt>Dark Log Optionen benutzen (Filter, ...)</use_log_opt>
+                <livechat_show>Darf Livechat sehen</livechat_show>
+                <livechat_send>Darf Livechat benutzten</livechat_send>
+                <rcon_show>Darf Rcon sehen</rcon_show>
+                <rcon_send>Darf Rcon benutzten</rcon_send>
+                <admin_show>Darf Administratoren sehen</admin_show>
+                <admin_send>Darf Administratoren hinzufügen</admin_send>
+                <whitelist_show>Darf die Whitelist sehen</whitelist_show>
+                <whitelist_send>Darf Spieler zur Whitelist hinzufügen</whitelist_send>
+                <changeplace>Dark Position der Mods ändern</changeplace>
+                <gus>Darf GameUserSettings bearbeiten</gus>
+                <game>Darf Game bearbeiten</game>
+                <engine>Darf Engine bearbeiten</engine>
+                <arkmanager>Darf Arkmanager bearbeiten</arkmanager>
+                <remove>Darf Entfernen</remove>
+                <playin>Darf Aufspielen</playin>
+                <download>Darf Runterladen</download>
+                <edit>Darf Bearbeiten</edit>
+                <add>Darf Hinzufügen</add>
+            </permissions>
         </userpanel>
 
         <!-- servercontrollcenter -->

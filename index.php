@@ -68,6 +68,9 @@ include('php/class/steamAPI.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/jobs.class.inc.php');
 
+// include inz
+include('php/inc/template_preinz.inc.php');
+
 //create class_var
 $alert = new alert();
 $steamapi = new steamapi();

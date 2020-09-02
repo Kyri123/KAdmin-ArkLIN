@@ -42,6 +42,9 @@ include('php/class/rcon.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/alert.class.inc.php');
 
+// include inz
+include('php/inc/template_preinz.inc.php');
+
 // Define vars
 date_default_timezone_set('Europe/Amsterdam');
 $steamapi = new steamapi();

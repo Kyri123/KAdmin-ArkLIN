@@ -46,7 +46,7 @@
             <home>Dashboard</home>
             <scc>ServerControllCenter</scc>
             <cluster>Cluster System</cluster>
-            <userpanel>Benutzer</userpanel>
+            <userpanel>Benutzer und Rechte</userpanel>
             <config>Konfiguration</config>
             <changelog>Changelogs</changelog>
             <btn_createserver>Server Erstellen</btn_createserver>

@@ -298,10 +298,11 @@ function perm_to_htm(array $array, $keys = null) {
         $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
         $tpl->load();
         $tpl->rif("is_array", is_array($item));
-        $tpl->r("key", $key);
         if(is_array($item)) {
             if($keys == "[server]") {
                 if(file_exists("remote/arkmanager/instances/$key.cfg")) {
+                    $serv = new server($key);
+                    $tpl->r("key", $serv->cfg_read("ark_SessionName"));
                     $keyw = $keys."[$key]";
                     $tpl->r("keys", $keyw);
                     $str .= $tpl->load_var();
@@ -310,6 +311,7 @@ function perm_to_htm(array $array, $keys = null) {
             }
             else {
                 $keyw = $keys."[$key]";
+                $tpl->r("key", "{::lang::php::userpanel::permissions::$key}");
                 $tpl->r("keys", $keyw);
                 $str .= $tpl->load_var();
                 $str .= perm_to_htm($item, $keyw);
@@ -317,6 +319,7 @@ function perm_to_htm(array $array, $keys = null) {
         }
         else {
             $keyw = $keys."[$key]";
+            $tpl->r("key", "{::lang::php::userpanel::permissions::$key}");
             $tpl->r("keys", $keyw);
             $tpl->rif("active", boolval($item));
             $str .= $tpl->load_var();

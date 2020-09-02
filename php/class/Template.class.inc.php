@@ -22,8 +22,6 @@ class Template {
     private $rto = array();
     private $rifkey = array();
     private $rifbool = array();
-    private $langfrom = array();
-    private $langto = array();
 
     public $lang = "de_de";
 
@@ -190,14 +188,6 @@ class Template {
         global $permissions;
         global $_SESSION;
 
-        $langfile = "app/lang/$this->lang/";
-        if (!file_exists($langfile)) $langfile = "app/lang/de_de/";
-
-        $arr = scandir($langfile);
-        foreach ($arr as $item) {
-            if ($item != "." && $item != "..") $this->load_xml($langfile . $item);
-        }
-
         // verarbeite Sprache, Permissions & Eingaben
         if(isset($_SESSION["id"]) && is_array($permissions)) $this->session($permissions, "permissions");
         $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
@@ -213,42 +203,11 @@ class Template {
      * @return string|string[]|null
      */
     private function rlang() {
+        global $langfrom, $langto;
+
         // ersetzte im Template
-        $this->file = str_replace($this->langfrom, $this->langto, $this->file);
+        $this->file = str_replace($langfrom, $langto, $this->file);
         return $this->file;
-    }
-
-    /**
-     * Lade Sprachdateien aus der XML
-     *
-     * @param $langfile
-     */
-    private function load_xml($langfile) {
-        global $helper;
-        // mache XML zu einem Array
-        $xml = simplexml_load_file($langfile);
-        $xml = $helper->str_to_json($helper->json_to_str($xml), true);
-
-        //splite array um ein im Template einzubinden
-        $this->read_xml($xml, "::lang");
-    }
-
-    /**
-     * Verarbeitet die Sprachdateien
-     *
-     * @param $array
-     * @param $key
-     */
-    private function read_xml($array, $key) {
-        foreach ($array as $k => $v) {
-            $mkey = $key."::$k";
-            if (is_array($v)) {
-                $this->read_xml($v, $mkey);
-            } else {
-                array_push($this->langfrom, "{".$mkey."}");
-                array_push($this->langto, nl2br($v));
-            }
-        }
     }
 
     /**

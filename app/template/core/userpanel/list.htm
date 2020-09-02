@@ -34,14 +34,14 @@
             </i> {::lang::userpanel::list::ban}
         </a>{/permissions}
         {/!ifban}{/!self}
-        {permissions??userpanel??edit_permissions}
+        {permissions??all??is_admin}
         <a class="btn btn-info btn-sm" href="#" onclick="$('#permissions_{username}').toggle()">
             </i> {::lang::userpanel::list::show_permissions}
         </a>
         {/permissions}
     </td>
 </tr>
-{permissions??userpanel??edit_permissions}
+{permissions??all??is_admin}
     <tr style="display: none" id="permissions_{username}">
         <td class="m-0 p-0" colspan="6">
             <form action="#" method="post">
