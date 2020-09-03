@@ -45,7 +45,7 @@ function read_xml($array, $key) {
     }
 }
 
-$langfile = "app/lang".$_COOKIE["lang"]."/";
+$langfile = "app/lang".(isset($_COOKIE["lang"]) ? $_COOKIE["lang"] : "de_de")."/";
 if (!file_exists($langfile)) $langfile = "app/lang/de_de/";
 
 // Lade Sprachdateien
