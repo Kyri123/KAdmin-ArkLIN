@@ -89,6 +89,7 @@ $API_Key = $ckonfig['apikey'];
 $servlocdir = $ckonfig['servlocdir'];
 $expert = $user->expert();
 $jobs = new jobs();
+$all = $helper->file_to_json("app/json/serverinfo/all.json");
 
 // lade Permissions
 $permissions_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
@@ -104,7 +105,7 @@ $permissions = array_replace_recursive($permissions_default, $permissions);
 // gehe Rechte der Server durch
 $servers_perm = array();
 $file = 'app/json/serverinfo/all.json';
-$server = $helper->file_to_json($file, true)["cfgs_only_name"];
+$server = $all["cfgs_only_name"];
 foreach ($server as $item) {
     $perm_file = file_get_contents("app/json/user/permissions_servers.tpl.json");
     $perm_file = str_replace("{cfg}", $item, $perm_file);
@@ -202,7 +203,6 @@ $tpl_b->r("langlist", get_lang_list());
 $tpl_b->r("rank", "<span class='text-".((!$user->perm("allg/is_admin")) ? "success" : "danger")."'>{::lang::php::userpanel::".((!$user->perm("allg/is_admin")) ? "user" : "admin")."}</span>");
 
 // Server Traffics
-$all = $helper->file_to_json("app/json/serverinfo/all.json");
 $tpl_b->r('count_server', count($all["cfgs"]));
 $tpl_b->r('curr_server', $all["onserv"]);
 $tpl_b->r('off_server', (count($all["cfgs"]) - $all["onserv"]));

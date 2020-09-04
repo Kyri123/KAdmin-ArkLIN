@@ -236,6 +236,12 @@
             <text>Es wurden keine Dateien erkannt die in die Zip datei gelegt werden konnten</text>
         </c_36>
 
+        <!-- DANGER | Maximale Server Anzahl -->
+        <c_37>
+            <title>Server Fehler</title>
+            <text>Es kann kein Weiterer Server erstellt werden die maximal Anzahl ist [b]{max_server}[/b]</text>
+        </c_37>
+
         <!-- DANGER | Fehlende Rechte -->
         <c_99>
             <title>Fehlende Rechte</title>

@@ -18,22 +18,22 @@
         {lastlogin}
     </td>
     <td class="project-actions text-right">
-        {!self}{permissions??userpanel??ban_user}
+        {!self}{permissions??userpanel??delete_user}
         <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#remove{username}">
             <i class="fas fa-trash">
             </i> {::lang::userpanel::list::remove}
         </a>{/permissions}
-        {permissions??userpanel??delete_user}{ifban}
+        {permissions??userpanel??ban_user}{ifban}
         <a class="btn btn-danger btn-sm" href="/userpanel/tban/{uid}/0">
             <i class="fa fa-check">
             </i> {::lang::userpanel::list::unban}
-        </a>{/permissions}
-        {/ifban} {!ifban}{permissions??userpanel??delete_user}
+        </a>
+        {/ifban}{!ifban}
         <a class="btn btn-danger btn-sm" href="/userpanel/tban/{uid}/1">
             <i class="fa fa-times">
             </i> {::lang::userpanel::list::ban}
-        </a>{/permissions}
-        {/!ifban}{/!self}
+        </a>
+        {/!ifban}{/permissions}{/!self}
         {permissions??all??is_admin}
         <a class="btn btn-info btn-sm" href="#" onclick="$('#permissions_{username}').toggle()">
             </i> {::lang::userpanel::list::show_permissions}

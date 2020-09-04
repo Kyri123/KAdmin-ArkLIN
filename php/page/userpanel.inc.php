@@ -9,8 +9,8 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if(!$user->perm("userpanel/userpanel")) {
-    header("Location: /404"); exit;
+if(!$user->perm("userpanel/show")) {
+    header("Location: /401"); exit;
 }
 
 // Vars
@@ -31,18 +31,23 @@ if (isset($_POST["add"]) && $user->perm("userpanel/create_code")) {
     $code = rndbit(10);
     $rank = $_POST["rank"];
 
-    if(is_numeric($rank)) {
-        $query = "INSERT INTO `ArkAdmin_reg_code` (`code`, `used`, `time`) VALUES ('$code', '0', '$rank')";
-        if ($mycon->query($query)) {
-            $alert->code = 100;
-            $alert->overwrite_text = '<div class="input-group m"><input type="text" class="form-control rounded-0" readonly="true" value="'.$code.'" id="'.$code.'"><span class="input-group-append"><button onclick="copythis(\''.$code.'\')" class="btn btn-primary btn-flat"><i class="fas fa-copy" aria-hidden="true"></i></button></span></div>';
-            $resp = $alert->re();
-        } else {
-            $resp = $alert->rd(3);
+    if(($rank == 1 && $user->perm("all/is_admin")) || $rank == 0) {
+        if(is_numeric($rank)) {
+            $query = "INSERT INTO `ArkAdmin_reg_code` (`code`, `used`, `time`) VALUES ('$code', '0', '$rank')";
+            if ($mycon->query($query)) {
+                $alert->code = 100;
+                $alert->overwrite_text = '<div class="input-group m"><input type="text" class="form-control rounded-0" readonly="true" value="'.$code.'" id="'.$code.'"><span class="input-group-append"><button onclick="copythis(\''.$code.'\')" class="btn btn-primary btn-flat"><i class="fas fa-copy" aria-hidden="true"></i></button></span></div>';
+                $resp = $alert->re();
+            } else {
+                $resp = $alert->rd(3);
+            }
+        }
+        else {
+            $resp = $alert->rd(2);
         }
     }
-    else {
-        $resp = $alert->rd(2);
+    else  {
+        $resp = $alert->rd(99);
     }
 }
 elseif(isset($_POST["add"]))  {
@@ -101,21 +106,21 @@ elseif (isset($_POST["del"])) {
 }
 
 // Benutzer (ent-)bannen
-if (isset($url[4]) && $url[2] == "tban" && $user->perm("userpanel/delete_ban")) {
+if (isset($url[4]) && $url[2] == "tban" && $user->perm("userpanel/ban_user")) {
     $uid = $url[3];
     $set = $url[4];
-    if ($set == 0) {
+    if (!$set == 0) {
         $to = "{::lang::php::userpanel::banned}";
     } else {
         $to = "{::lang::php::userpanel::notbanned}";
     }
     $kuser->setid($uid);
-    $tpl->r("ban_username", $user->read("username"));
+    $tpl->r("ban_username", $kuser->read("username"));
     $tpl->r("ban_uid", $uid);
     $tpl->r("ban_to", $to);
     $query = "UPDATE `ArkAdmin_users` SET `ban`='".$set."' WHERE (`id`='".$uid."')";
     if ($mycon->query($query)) {
-        $alert->code = 101;
+        $alert->code = 102;
         $alert->overwrite_text = '{::lang::php::userpanel::changed_ban}';
         $resp = $alert->re();
      } else {
@@ -217,7 +222,7 @@ $tpl->r("list_codes", $list_codes);
 $tpl->r("resp", $resp);
 $pageicon = "<i class=\"fa fa-users\" aria-hidden=\"true\"></i>";
 $content = $tpl->load_var();
-$btns = '<a href="#" class="btn btn-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
+if($user->perm("userpanel/create_code")) $btns = '<a href="#" class="btn btn-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
             <span class="icon text-white-50">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>

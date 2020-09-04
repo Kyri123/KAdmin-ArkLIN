@@ -83,10 +83,10 @@
             <btn-regcode>Codes</btn-regcode>
             <nocodefound>Kein Code gefunden</nocodefound>
             <banned>Gebannt</banned>
-            <notbanned>Frei</notbanned>
+            <notbanned>Offen</notbanned>
             <removed_code>Code Gelöscht</removed_code>
             <removed_user>Benutzer {del_username} Gelöscht</removed_user>
-            <changed_ban>Benutzer [{ban_uid}] {ban_username} -> {ban_to}</changed_ban>
+            <changed_ban>Benutzer [{ban_uid}] {ban_username} > {ban_to}</changed_ban>
 
             <permissions>
                 <!-- Titel -->
