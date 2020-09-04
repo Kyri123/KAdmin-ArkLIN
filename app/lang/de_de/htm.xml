@@ -332,6 +332,15 @@
         <btn-back>Zurück zum Dashboard</btn-back>
     </err404>
 
+    <!-- Error401 Seite -->
+    <err401>
+        <maintitle>Error </maintitle>
+        <title>Ohnein! Fehlende Berechtigungen</title>
+        <line1>Die Seite konnte nicht aufgerufen werden da du nicht die nötige Berechtigung hast</line1>
+        <line2>...</line2>
+        <btn-back>Zurück zum Dashboard</btn-back>
+    </err401>
+
     <!-- servercenter -->
     <servercenter>
         <load>Lade...</load>
