@@ -5,6 +5,7 @@
     "StatusIntervall": 5000,
     "autoupdater_intervall": 120000,
     "autoupdater_active": 0,
+    "autorestart": 0,
     "use_ssh": 0,
     "CHMOD": 777
 }

@@ -8,6 +8,7 @@
     "CHMODIntervall": 60000,
     "ShellIntervall": 10000,
     "StatusIntervall": 5000,
+    "autorestart": 1,
     "autoupdater_intervall": 120000,
     "autoupdater_active": 0,
     "autoupdater_branch": "master",

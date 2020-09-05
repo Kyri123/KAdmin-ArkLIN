@@ -45,6 +45,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         if (config.autoupdater_active == undefined) config.autoupdater_active = 0;
         if (config.autoupdater_branch == undefined) config.autoupdater_branch = "master";
         if (config.autoupdater_intervall == undefined) config.autoupdater_intervall = 120000;
+        if (config.autorestart == undefined) config.autorestart = 1;
 
         // prüfe Minimal werte
         if (config.WebIntervall < 5000) process.exit(4);
@@ -170,6 +171,23 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         logger.log("Gestartet: Webserver");
 
         console.log('\x1b[36m%s\x1b[0m', "------------------------------------------------------");
+
+
+        setInterval(() => {
+            if (config.autorestart > 0) {
+                var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
+                    'sleep 2s ; ' +
+                    'screen -S ArkAdmin -p 0 -X quit ; ' +
+                    'sleep 2s ; ' +
+                    'screen -mdS ArkAdmin ./start.sh ;' +
+                    'screen -wipe ;' +
+                    'exit;\'';
+                // Beginne Restart
+                if(shell.exec(command, config.use_ssh, 'Auto-Restarter', true, 'wird Neugestartet')) {
+                    logger.log("Auto-Restarter: ArkAdmin-Server wird Neugestartet \n");
+                }
+            }
+        }, 3600000);
     } else {
         console.log("cannot read config/server.json");
     }

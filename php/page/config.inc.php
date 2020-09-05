@@ -173,9 +173,11 @@ foreach($panelconfig as $key => $value) {
 
 $servercfg = $helper->file_to_json($wpath, true);
 if(!isset($servercfg["port"])) $servercfg["port"] = 30000;
+if(!isset($servercfg["autorestart"])) $servercfg["autorestart"] = 1;
 if(!isset($servercfg["autoupdater_active"])) $servercfg["autoupdater_active"] = 0;
 if(!isset($servercfg["autoupdater_branch"])) $servercfg["autoupdater_branch"] = "master";
 if(!isset($servercfg["autoupdater_intervall"])) $servercfg["autoupdater_intervall"] = 60000;
+
 $option_server = null;
 foreach($servercfg as $key => $value) {
     $list = new Template("opt.htm", $tpl_dir);
