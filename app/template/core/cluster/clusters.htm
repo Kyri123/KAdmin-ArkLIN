@@ -15,9 +15,9 @@
                                 <i class="fas fa-wrench"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" role="menu">
-                                <a href="javascript:void()" data-toggle="modal" data-target="#options{clusterid}" class="dropdown-item">{::lang::cluster::list::clusters::dropdown::settings}</a>
-                                <a href="javascript:void()" data-toggle="modal" data-target="#addservtocluster{clusterid}" class="dropdown-item">{::lang::cluster::list::clusters::dropdown::add}</a>
-                                <a href="javascript:void()" data-toggle="modal" data-target="#remove{clusterid}" class="dropdown-item text-danger">{::lang::cluster::list::clusters::dropdown::remove}</a>
+                                {permissions??cluster??edit}<a href="javascript:void()" data-toggle="modal" data-target="#options{clusterid}" class="dropdown-item">{::lang::cluster::list::clusters::dropdown::settings}</a>{/permissions}
+                                {permissions??cluster??add_server}<a href="javascript:void()" data-toggle="modal" data-target="#addservtocluster{clusterid}" class="dropdown-item">{::lang::cluster::list::clusters::dropdown::add}</a>{/permissions}
+                                {permissions??cluster??delete}<a href="javascript:void()" data-toggle="modal" data-target="#remove{clusterid}" class="dropdown-item text-danger">{::lang::cluster::list::clusters::dropdown::remove}</a>{/permissions}
                             </div>
                         </div>
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -68,7 +68,7 @@
         </div>
     </div>
 </div>
-
+{permissions??cluster??add_server}
 <!-- Modal Server hinzufügen -->
 <form class="modal fade" id="addservtocluster{clusterid}" tabindex="-1" method="post" action="#">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
@@ -99,8 +99,9 @@
         </div>
     </div>
 </form>
+{/permissions}
 
-
+{permissions??cluster??edit}
 <!-- Modal Einstellenungen -->
 <form class="modal fade" id="options{clusterid}" tabindex="-1" method="post" action="#">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
@@ -261,8 +262,9 @@
         </div>
     </div>
 </form>
+{/permissions}
 
-
+{permissions??cluster??delete}
 <!-- Remove Modal -->
 <form class="modal fade" id="remove{clusterid}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
@@ -286,3 +288,4 @@
         </div>
     </div>
 </form>
+{/permissions}

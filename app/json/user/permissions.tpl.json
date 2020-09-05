@@ -23,8 +23,7 @@
     "toogle_master": 0,
     "remove_server": 0,
     "add_server": 0,
-    "edit_options": 0,
-    "edit_sync": 0,
+    "edit": 0,
     "delete": 0
   },
   "config": {

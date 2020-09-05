@@ -5,9 +5,9 @@
     <td class="text-{color}">{state}</td>
     <td class="text-{color_type}"><b>{type}</b></td>
     <td>
-        {!ifmaster}<a data-toggle="tooltip" data-original-title="{::lang::cluster::list::serv::tooltip::promote}" href="/cluster/settype/{key}/{cfgkey}/1" class="btn btn-primary btn-sm"><i class="fas fa-angle-double-up"></i></a>{/!ifmaster}
-        {ifmaster}<a data-toggle="tooltip" data-original-title="{::lang::cluster::list::serv::tooltip::depromote}" href="/cluster/settype/{key}/{cfgkey}/0" class="btn btn-primary btn-sm"><i class="fas fa-angle-double-down"></i></a>{/ifmaster}
-        <a data-toggle="tooltip" data-original-title="{::lang::cluster::list::serv::tooltip::remove}" href="/cluster/remove/{key}/{cfg}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+        {permissions??cluster??toogle_master}{!ifmaster}<a data-toggle="tooltip" data-original-title="{::lang::cluster::list::serv::tooltip::promote}" href="/cluster/settype/{key}/{cfgkey}/1" class="btn btn-primary btn-sm"><i class="fas fa-angle-double-up"></i></a>{/!ifmaster}
+        {ifmaster}<a data-toggle="tooltip" data-original-title="{::lang::cluster::list::serv::tooltip::depromote}" href="/cluster/settype/{key}/{cfgkey}/0" class="btn btn-primary btn-sm"><i class="fas fa-angle-double-down"></i></a>{/ifmaster}{/permissions}
+        {permissions??cluster??remove_server}<a data-toggle="tooltip" data-original-title="{::lang::cluster::list::serv::tooltip::remove}" href="/cluster/remove/{key}/{cfg}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>{/permissions}
     </td>
 </tr>
 {/ifserver}
