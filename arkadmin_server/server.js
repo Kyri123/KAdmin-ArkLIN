@@ -46,12 +46,14 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         if (config.autoupdater_branch == undefined) config.autoupdater_branch = "master";
         if (config.autoupdater_intervall == undefined) config.autoupdater_intervall = 120000;
         if (config.autorestart == undefined) config.autorestart = 1;
+        if (config.autorestart_intervall == undefined) config.autorestart_intervall = 1800000;
 
         // prüfe Minimal werte
         if (config.WebIntervall < 5000) process.exit(4);
         if (config.CHMODIntervall < 60000) process.exit(5);
         if (config.ShellIntervall < 10000) process.exit(6);
         if (config.StatusIntervall < 5000) process.exit(7);
+        if (config.autorestart_intervall < 1800000) process.exit(7);
         if (config.autoupdater_intervall < 120000) process.exit(8);
 
         // hole aller 60 Sekunden die Konfigurationsdaten neu
@@ -59,8 +61,6 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             fs.readFile("config/server.json", 'utf8', (err, data) => {
                 if (err == undefined) {
                     config = JSON.parse(data, config);
-                    if (config.autoupdater_active == undefined) config.autoupdater_active = 0;
-                    if (config.autoupdater_branch == undefined) config.autoupdater_branch = "master";
                 }
             });
         }, 60000);
@@ -187,7 +187,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                     logger.log("Auto-Restarter: ArkAdmin-Server wird Neugestartet \n");
                 }
             }
-        }, 3600000);
+        }, config.autorestart_intervall);
     } else {
         console.log("cannot read config/server.json");
     }

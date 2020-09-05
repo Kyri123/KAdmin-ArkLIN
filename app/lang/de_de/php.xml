@@ -212,6 +212,7 @@
                         (1: an | 0: aus)</autoupdater_active>
                     <autoupdater_branch>Welche Github Branch soll dafür verwendet werden</autoupdater_branch>
                     <autorestart>Soll der ArkAdmin Server aller 60 Minuten neustarten?</autorestart>
+                    <autorestart_intervall>Inverall vom Neustart (in ms | min: 1800000)</autorestart_intervall>
                 </aa>
             </key>
         </config>

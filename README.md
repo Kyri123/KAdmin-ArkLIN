@@ -49,7 +49,8 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 | `CHMODIntervall` | `in Millisekunden` Intervall für das überschreiben der Rechte (Mindestens: *60000*) |
 | `ShellIntervall` | `in Millisekunden` Intervall für das abrufen der Shell Dateien (Mindestens: *10000*) |
 | `StatusIntervall` | `in Millisekunden` Intervall für das abrufen von dem Status des Servers (Mindestens: *5000*) |
-| `autorestart` | Soll der ArkAdmin Server aller 60 Minuten neustarten? (1: an;0: aus) |
+| `autorestart` | Soll der ArkAdmin Server Automatisch neustarten? (1: an;0: aus) |
+| `autorestart_intervall` | Wie oft soll er neustarten (Mindestens: *1800000*) |
 | `autoupdater_intervall` | `in Millisekunden` Intervall für das abrufen des Automatischen Updates (Mindestens: *120000*) |
 | `autoupdater_branch` | Welche Github Branch soll dafür verwendet werden |
 | `autoupdater_active` | Soll der Updater aktiv sein (1: an;0: aus)  |
