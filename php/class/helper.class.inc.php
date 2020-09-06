@@ -32,7 +32,7 @@ class helper {
      * @param  string $filename Dateiname wie sie im Cache gespeichert werden soll
      * @param  int $differ wie groß soll die Differnz zwischen der Remote und der Localen Datei sein?
      * @param  bool $array Soll es als Array ausgebene werden (true) oder als Object (false)
-     * @return void
+     * @return false|void
      */
     public function remotefile_to_json(String $path, String $filename, int $differ = 0, Bool $array = true) {
         $filename = 'app/cache/'.$filename;
@@ -72,7 +72,7 @@ class helper {
      *
      * @param  string $path- Pfad zur Datei
      * @param  bool $array Soll es als Array ausgebene werden (true) oder als Object (false)
-     * @return string
+     * @return array|string
      */
     public function file_to_json(String $path, Bool $array = true) {
         if (file_exists($path)) {

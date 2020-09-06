@@ -436,7 +436,7 @@ class server extends Rcon {
      * @return bool
      */
     public function ini_remove($key) {
-        $bool = (isset($this->ini[$key])) ? true : false;
+        $bool = isset($this->ini[$key]);
         if($bool) unset($this->ini[$key]);
         return $bool;
     }

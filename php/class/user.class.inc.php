@@ -120,7 +120,7 @@ class userclass extends helper
         if (file_exists($path)) {
             $json = parent::file_to_json($path, true);
             if(isset($json["expert"])) {
-                return ($json["expert"] == 1 && $this->perm("usersettings/expert")) ? true : false;
+                return $json["expert"] == 1 && $this->perm("usersettings/expert");
             }
             else {
                 return false;
@@ -143,7 +143,7 @@ class userclass extends helper
         if (file_exists($path)) {
             $json = parent::file_to_json($path, true);
             if(isset($json[$mode])) {
-                return ($json[$mode] == 1) ? true : false;
+                return $json[$mode] == 1;
             }
             else {
                 return false;

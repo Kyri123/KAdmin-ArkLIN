@@ -17,6 +17,7 @@ $pagename = "{::lang::php::config::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 $syslpath = "remote/steamcmd";
 $workshop = "$syslpath/steamapps/workshop/appworkshop_346110.acf";
+$resp = null;
 $limit = $helper->file_to_json("app/json/panel/aas_min.json", true);
 $maxi = $helper->file_to_json("app/json/panel/aas_max.json", true);
 
@@ -39,19 +40,20 @@ $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 
 // Arkmanager.cfg
-if (isset($_POST["savearkmanager"])) {
+if (isset($_POST["savearkmanager"]) && $user->perm("config/am_save")) {
     $content = ini_save_rdy($_POST["text"]);
     if (file_put_contents($apath, $content)) {
-        $alert->code = 102;
-        $resp .= $alert->re();
+        $resp .= $alert->rd(102);
     } else {
-        $alert->code = 1;
-        $resp .= $alert->re();
+        $resp .= $alert->rd(1);
     }
+}
+elseif(isset($_POST["savearkmanager"])) {
+    $resp .= $alert->rd(99);
 }
 
 //remove cache
-if (isset($url[2]) && isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamcmd') {
+if (isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamcmd' && $user->perm("config/scmd_clear")) {
     if(file_exists($workshop)) {
         file_put_contents($workshop, "\"AppWorkshop\" {}");
         header("Location: /config"); exit;
@@ -60,14 +62,18 @@ if (isset($url[2]) && isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamc
         header("Location: /config"); exit;
     }
 }
+elseif(isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamcmd') {
+    $resp .= $alert->rd(99);
+}
 
 // save Webhelper
-if (isset($_POST["savewebhelper"])) {
+if (isset($_POST["savewebhelper"]) && $user->perm("config/aa_save")) {
     $a_key = $_POST["key"];
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");
     $filter_link = array("servlocdir","arklocdir");
 
+    // Prüfe minimalwerte
     $allok = true;
     for ($i=0;$i<count($a_key);$i++) {
         if(isset($limit[$a_key[$i]])) {
@@ -76,6 +82,7 @@ if (isset($_POST["savewebhelper"])) {
         $jsons[$a_key[$i]] = $a_value[$i];
     }
 
+    // Speichern
     $json_str = $helper->json_to_str($jsons);
     if($allok) {
         if (file_put_contents($wpath, $json_str)) {
@@ -88,9 +95,12 @@ if (isset($_POST["savewebhelper"])) {
         $resp .= $alert->rd(2);
     }
 }
+elseif(isset($_POST["savewebhelper"])) {
+    $resp .= $alert->rd(99);
+}
 
 //Panel CFG
-if (isset($_POST["savepanel"])) {
+if (isset($_POST["savepanel"]) && $user->perm("config/panel_save")) {
     $a_key = $_POST["key"];
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");
@@ -132,6 +142,9 @@ if (isset($_POST["savepanel"])) {
         $alert->code = 1;
         $resp .= $alert->re();
     }
+}
+elseif(isset($_POST["savepanel"])) {
+    $resp .= $alert->rd(99);
 }
 
 $panelconfig = $helper->file_to_json($ppath, true);

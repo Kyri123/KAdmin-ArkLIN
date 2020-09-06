@@ -28,14 +28,14 @@
   },
   "config": {
     "show": 1,
-    "panel_show": 1,
     "panel_save": 0,
     "aa_show": 1,
     "aa_save": 0,
     "am_show": 1,
     "am_save": 0,
     "scmd_show": 1,
-    "scmd_save": 0
+    "scmd_save": 0,
+    "scmd_clear": 0
   },
   "usersettings": {
     "expert": 1

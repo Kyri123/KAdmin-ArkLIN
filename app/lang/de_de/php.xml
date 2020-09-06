@@ -121,14 +121,14 @@
                 <toogle_master>Darf Master / Slaves ändern</toogle_master>
                 <remove_server>Darf Server vom Cluster entfernen</remove_server>
                 <add_server>Darf Server zu einem Cluster hinzufügen</add_server>
-                <panel_show>Darf Panel Optionen sehen</panel_show>
                 <panel_save>Darf Panel Optionen speichern / bearbeiten</panel_save>
                 <aa_show>Darf ArkAdmin-Server sehen</aa_show>
                 <aa_save>Darf ArkAdmin-Server speichern / bearbeiten</aa_save>
                 <am_show>Darf Arkmanager sehen</am_show>
                 <am_save>Darf Arkmanager speichern / bearbeiten</am_save>
                 <scmd_show>Darf SteamCMD sehen</scmd_show>
-                <scmd_save>Darf SteamCMD speichern / bearbeiten</scmd_save>
+                <scmd_save>Darf SteamCMD speichern / bearbeiten (Platzhalter)</scmd_save>
+                <scmd_clear>Darf SteamCMD Workshop cache leeren</scmd_clear>
                 <expert>Darf Expertenmodus verwenden bzw ändern</expert>
                 <is_server_admin>Ist Admin für den Server (kann alles auf dem Server ändern und Anpassen innerhalb vom ServerCenter)</is_server_admin>
                 <actions>Darf Aktionen an den Server senden</actions>
