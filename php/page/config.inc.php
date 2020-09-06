@@ -8,6 +8,11 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if(!$user->perm("config/show")) {
+    header("Location: /401"); exit;
+}
+
 // Vars
 $tpl_dir = 'app/template/core/konfig/';
 $tpl_dir_all = 'app/template/all/';
