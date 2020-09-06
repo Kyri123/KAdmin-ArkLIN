@@ -124,7 +124,6 @@
                 <panel_show>Darf Panel Optionen sehen</panel_show>
                 <panel_save>Darf Panel Optionen speichern / bearbeiten</panel_save>
                 <aa_show>Darf ArkAdmin-Server sehen</aa_show>
-                <aa_restart>Darf Panel ArkAdmin-Server neustarten</aa_restart>
                 <aa_save>Darf ArkAdmin-Server speichern / bearbeiten</aa_save>
                 <am_show>Darf Arkmanager sehen</am_show>
                 <am_save>Darf Arkmanager speichern / bearbeiten</am_save>
@@ -211,7 +210,7 @@
                     <autoupdater_active>Soll der Updater aktiv sein
                         (1: an | 0: aus)</autoupdater_active>
                     <autoupdater_branch>Welche Github Branch soll dafür verwendet werden</autoupdater_branch>
-                    <autorestart>Soll der ArkAdmin Server aller 60 Minuten neustarten?</autorestart>
+                    <autorestart>Soll der ArkAdmin Server automatisch neustarten?</autorestart>
                     <autorestart_intervall>Inverall vom Neustart (in ms | min: 1800000)</autorestart_intervall>
                 </aa>
             </key>
