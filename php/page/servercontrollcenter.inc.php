@@ -75,6 +75,24 @@ if (isset($_POST["add"]) && $user->perm("servercontrollcenter/create")) {
                     $resp = $alert->rd(100);
                     $serv = new server($name);
                     $serv->cfg_save();
+
+                    // Speicher Rechte für den Benutzer
+                    if(isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json"))) {
+                        $perm_file = file_get_contents("app/json/user/permissions_servers.tpl.json");
+                        $perm_file = str_replace("{cfg}", $name, $perm_file);
+                        $default = $helper->str_to_json($perm_file);
+                        $default[$name]["is_server_admin"] = 1;
+
+                        $user_permissions = $user->permissions;
+                        if(isset($user_permissions["server"][$name])) {
+                            $user_permissions["server"][$name] = array_replace_recursive($default[$name], $user_permissions["server"][$name]);
+                        }
+                        else {
+                            $user_permissions["server"] += $default;
+                        }
+
+                        $helper->savejson_create($user_permissions, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
+                    }
                 } else {
                     $resp = $alert->rd(1);
                 }
