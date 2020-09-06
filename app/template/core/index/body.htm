@@ -20,7 +20,9 @@
                         <span class="dropdown-item dropdown-footer bg-primary">ServerCenter</span>
                         <div class="dropdown-divider"></div>
                         {servers}
-                        <a href="/servercontrollcenter" class="dropdown-item dropdown-footer bg-success">{::lang::allg::nav::btn_createserver}</a>
+                        {permissions??servercontrollcenter??show}
+                            <a href="/servercontrollcenter" class="dropdown-item dropdown-footer bg-success">{::lang::allg::nav::btn_createserver}</a>
+                        {/permissions}
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -91,38 +93,38 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item has-treeview">
+                        {permissions??servercontrollcenter??show}<li class="nav-item has-treeview">
                             <a href="/servercontrollcenter" class="nav-link {_servercontrollcenter}">
                                 <i class="nav-icon fa fa-server"></i>
                                 <p>
                                     {::lang::allg::nav::scc}
                                 </p>
                             </a>
-                        </li>
-                        <li class="nav-item has-treeview">
+                        </li>{/permissions}
+                        {permissions??cluster??show}<li class="nav-item has-treeview">
                             <a href="/cluster" class="nav-link {_cluster}">
                                 <i class="nav-icon fas fa-random"></i>
                                 <p>
                                     {::lang::allg::nav::cluster}
                                 </p>
                             </a>
-                        </li>
-                        <li class="nav-item has-treeview">
+                        </li>{/permissions}
+                        {permissions??userpanel??show}<li class="nav-item has-treeview">
                             <a href="/userpanel" class="nav-link {_userpanel}">
                                 <i class="nav-icon fa fa-users"></i>
                                 <p>
                                     {::lang::allg::nav::userpanel}
                                 </p>
                             </a>
-                        </li>
-                        <li class="nav-item has-treeview">
+                        </li>{/permissions}
+                        {permissions??config??show}<li class="nav-item has-treeview">
                             <a href="/config" class="nav-link {_config}">
                                 <i class="nav-icon fa fa-edit"></i>
                                 <p>
                                     {::lang::allg::nav::config}
                                 </p>
                             </a>
-                        </li>
+                        </li>{/permissions}
                         <li class="nav-item has-treeview">
                             <a href="/changelog" class="nav-link {_changelog} {curr_changelog_css} ">
                                 <i class="nav-icon fa fa-book"></i>

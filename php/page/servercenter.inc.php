@@ -22,6 +22,12 @@ $serv = new server($url[2]);
 $serv->cluster_load();
 $txt_alert = $site_name = $player = null;
 
+$perm = "server/".$serv->name();
+
+if(!$user->perm("$perm/show")) {
+    header("Location: /401"); exit;
+}
+
 //erstelle SteamAPI von OnlineSpieler
 $pl_json = $helper->file_to_json('app/json/saves/pl_' . $serv->name() . '.players', false);
 $arr_pl = array();

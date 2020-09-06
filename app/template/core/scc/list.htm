@@ -25,11 +25,11 @@
         {/!ifincluster}
     </td>
     <td class="project-actions text-right">
-        <a class="btn btn-primary btn-sm" href="/servercenter/{cfg}" target="_blank">
+        {permissions??server??{cfg}??show}<a class="btn btn-primary btn-sm" href="/servercenter/{cfg}" target="_blank">
             <i class="fas fa-folder">
             </i>
             ServerCenter
-        </a>
+        </a>{/permissions}
         {permissions??servercontrollcenter??delete}<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#remove{cfg}">
             <i class="fas fa-trash">
             </i>

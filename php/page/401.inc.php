@@ -18,6 +18,6 @@ $tpl = new Template("401.htm", $tpl_dir);
 $tpl->load();
 
 $content = $tpl->load_var();
-$pagename = "{::lang::php::err404::maintitle} 404";
+$pagename = "{::lang::php::err404::maintitle} 401";
 $pageicon = "<i class=\"fas fa-exclamation-triangle text-danger\" aria-hidden=\"true\"></i>";
 ?>

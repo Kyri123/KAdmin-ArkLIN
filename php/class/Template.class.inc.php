@@ -128,7 +128,7 @@ class Template {
                     $this->file = preg_replace("/\{".$mkey."\}(.*)\\{\/permissions\}/Uis", '\\1', $this->file);
                     $this->file = preg_replace("/\{!".$mkey."\}(.*)\\{\/!permissions\}/Uis", null, $this->file);
                 } else {
-                    $this->file = preg_replace("/\{".$mkey."\}(.*)\\{\/permissions\}/Uis", null, $this->file);
+                    $this->file = preg_replace("/\{".$mkey."\}(.*){\/permissions\}/Uis", null, $this->file);
                     $this->file = preg_replace("/\{!".$mkey."\}(.*)\\{\/!permissions\}/Uis", '\\1', $this->file);
                 }
             }
@@ -189,10 +189,11 @@ class Template {
         global $_SESSION;
 
         // verarbeite Sprache, Permissions & Eingaben
+        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
         if(isset($_SESSION["id"]) && is_array($permissions)) $this->session($permissions, "permissions");
-        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
-        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
-        $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
+
         // Wende BB-Codes an
         $this->bb_codes();
     }
