@@ -77,7 +77,7 @@ if (isset($_POST["add"]) && $user->perm("servercontrollcenter/create")) {
                     $serv->cfg_save();
 
                     // Speicher Rechte für den Benutzer
-                    if(isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json"))) {
+                    if(isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) {
                         $perm_file = file_get_contents("app/json/user/permissions_servers.tpl.json");
                         $perm_file = str_replace("{cfg}", $name, $perm_file);
                         $default = $helper->str_to_json($perm_file);
