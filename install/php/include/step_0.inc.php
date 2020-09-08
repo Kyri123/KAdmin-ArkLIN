@@ -15,6 +15,7 @@ $tpl_dir = 'app/template/core/konfig/';
 
 $wpath = 'arkadmin_server/config/server.json';
 $limit = $helper->file_to_json("app/json/panel/aas_min.json", true);
+$maxi = $helper->file_to_json("app/json/panel/aas_max.json", true);
 $json = $check->json;
 
 // Speicher ArkAdmin-Server Einstellungen
@@ -48,18 +49,20 @@ if (isset($_POST["savewebhelper"])) {
 }
 
 // Lese Konfig und gebe sie zum bearbeiten frei
-$servercfg = $helper->file_to_json($wpath, true);
+$servercfg = $helper->file_to_json('arkadmin_server/config/server.json', true);
 foreach($servercfg as $key => $value) {
-    $list = new Template("opt.htm", $tpl_dir);
+    $list = new Template("opt.htm", 'app/template/core/konfig/');
     $list->load();
     $list->rif ("ifbool", false);
     $list->rif ("ifnum", is_numeric($value));
     $list->rif ("iftxt", !is_numeric($value));
     $list->rif("ifmin", isset($limit[$key]));
+    $list->rif("ifmax", isset($maxi[$key]));
     $list->r("key", $key);
-    $list->r("keym", $key);
+    $list->r("keym", "aa::$key");
     $list->r("value", $value);
     $list->r("min", ((isset($limit[$key])) ? $limit[$key] : 0));
+    $list->r("max", ((isset($maxi[$key])) ? $maxi[$key] : 0));
     $list_opt .= $list->load_var();
 }
 
