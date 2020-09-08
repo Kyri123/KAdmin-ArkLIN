@@ -117,10 +117,10 @@ class Template {
         foreach ($array as $k => $v) {
             $mkey = $key."\?\?$k";
             if (is_array($v)) {
-                $this->session($v, $mkey, (strpos("server", $mkey) !== false));
+                $this->session($v, $mkey, ($isserver || $k == "server"));
             } else {
-                $exp = explode("\?\?", $mkey);
-                if (boolval($v) || boolval($permissions["all"]["is_admin"]) || (isset($permissions["server"][$exp[2]]["is_server_admin"]) && boolval($permissions["server"][$exp[2]]["is_server_admin"]))) {
+                $exp = $isserver ? (isset(explode("\?\?", $mkey)[2]) ? explode("\?\?", $mkey)[2] : "example") : "example";
+                if (boolval($v) || boolval($permissions["all"]["is_admin"]) || (isset($permissions["server"][$exp]["is_server_admin"]) && boolval($permissions["server"][$exp]["is_server_admin"]))) {
                     $this->file = preg_replace("/\{".$mkey."\}(.*)\\{\/permissions\}/Uis", '\\1', $this->file);
                     $this->file = preg_replace("/\{!".$mkey."\}(.*)\\{\/!permissions\}/Uis", null, $this->file);
                 } else {
