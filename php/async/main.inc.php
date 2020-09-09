@@ -52,6 +52,7 @@ $user = new userclass();
 $user->setid($_SESSION["id"]);
 $jhelper = new player_json_helper();
 $alert = new alert();
+$permissions = $user->permissions;
 
 // Allgemein SteamAPI Arrays
 $steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();

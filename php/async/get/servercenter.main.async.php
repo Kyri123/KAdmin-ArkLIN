@@ -78,6 +78,8 @@ switch ($case) {
         $tpl->r("action_btntxt", $action_btntxt);
         $tpl->r("action_modal", $action_modal);
 
+        $tpl->r("cfg", $serv->name());
+
         $map_path = "app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
         if (!file_exists($map_path)) $map_path = "app/dist/img/igmap/ark.png";
 
