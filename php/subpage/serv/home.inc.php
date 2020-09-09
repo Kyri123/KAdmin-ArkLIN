@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if (!$user->perm("$perm/home/show")) {
+    header("Location: /401");
+    exit;
+}
+
 $pagename = '{::lang::php::sc::page::home::pagename}';
 $page_tpl = new Template('home.htm', 'app/template/sub/serv/');
 $page_tpl->load();
