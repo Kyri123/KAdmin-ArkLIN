@@ -1,6 +1,6 @@
 {
     "name": "arkadmin2-server",
-    "version": "0.4.0.9",
+    "version": "0.4.1.0",
     "description": "server fuer das Webpanel von Arkadmin2",
     "main": "server.js",
     "scripts": {

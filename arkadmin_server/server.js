@@ -15,9 +15,10 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.4.0.9";
+const version = "0.4.1.0";
 const mysql = require("mysql");
 const http = require('http');
+const url = require('url');
 const updater = require("./packages/src/updater");
 const ip = require("ip");
 const md5 = require('md5');
@@ -41,12 +42,12 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         }
 
         // setzte nicht default werte
-        if (config.port == undefined) config.port = 30000;
-        if (config.autoupdater_active == undefined) config.autoupdater_active = 0;
-        if (config.autoupdater_branch == undefined) config.autoupdater_branch = "master";
-        if (config.autoupdater_intervall == undefined) config.autoupdater_intervall = 120000;
-        if (config.autorestart == undefined) config.autorestart = 1;
-        if (config.autorestart_intervall == undefined) config.autorestart_intervall = 1800000;
+        if (config.port === undefined) config.port = 30000;
+        if (config.autoupdater_active === undefined) config.autoupdater_active = 0;
+        if (config.autoupdater_branch === undefined) config.autoupdater_branch = "master";
+        if (config.autoupdater_intervall === undefined) config.autoupdater_intervall = 120000;
+        if (config.autorestart === undefined) config.autorestart = 1;
+        if (config.autorestart_intervall === undefined) config.autorestart_intervall = 1800000;
 
         // prüfe Minimal werte
         if (config.WebIntervall < 5000) process.exit(4);
@@ -154,17 +155,42 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Server (Webserver): \x1b[36mhttp://' + ip.address() + ':' + config.port + '/');
         // Webserver für Abrufen des Server Status
         http.createServer((req, res) => {
-            var ref = req.headers.referer;
-            if (req.headers.referer != undefined) {
-                if (ref.includes("update") && ref.includes(md5(ip.address()))) {
+            let response = url.parse(req.url, true).query;
+            var hcode = 0;
+
+            if(response.update) {
+                if(response.code === md5(ip.address())) {
                     updater.auto();
                     resp = '{"version":"' + version + '","db_connect":"' + iscon + '","update":"running"}';
-                } else {
+                }
+                else {
                     resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
                 }
-            } else {
+            }
+            else if(response.restart) {
+                if(response.code === md5(ip.address())) {
+                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '","restart":"running"}';
+                    var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
+                        'sleep 2s ; ' +
+                        'screen -S ArkAdmin -p 0 -X quit ; ' +
+                        'sleep 2s ; ' +
+                        'screen -mdR ArkAdmin ./start.sh ;' +
+                        'screen -wipe ;' +
+                        'exit;\'';
+                    // Beginne Restart
+                    if (shell.exec(command, config.use_ssh, 'Auto-Restarter', true, 'wird Neugestartet')) {
+                        logger.log("Restarter: ArkAdmin-Server wird Neugestartet \n");
+                    }
+                }
+                else {
+                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
+                }
+            }
+            else {
                 resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
             }
+
+            res.writeHead(200, {'Content-Type': 'text/json'});
             res.write(resp);
             res.end();
         }).listen(config.port);
@@ -183,7 +209,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                     'screen -wipe ;' +
                     'exit;\'';
                 // Beginne Restart
-                if(shell.exec(command, config.use_ssh, 'Auto-Restarter', true, 'wird Neugestartet')) {
+                if (shell.exec(command, config.use_ssh, 'Auto-Restarter', true, 'wird Neugestartet')) {
                     logger.log("Auto-Restarter: ArkAdmin-Server wird Neugestartet \n");
                 }
             }
@@ -206,7 +232,7 @@ process.on('exit', function(code) {
     }
 
     // Exit: Es konnte zu SSH2 keine Verbingung aufgebaut werden
-    if (code == 3) {
+    if (code === 3) {
         logger.log("Beendet: Keine Verbindung zum SSH2 Server");
         logger.log("Beendet: ArkAdmin-Server \n");
         return console.log(`\x1b[91mKeine Verbindung zum SSH2 Server`);
@@ -214,19 +240,19 @@ process.on('exit', function(code) {
 
     // Exit: Minimalwert von X ist unterschritten
     if (code >= 4 && code <= 8) {
-        if (code == 4) {
+        if (code === 4) {
             parameter = "WebIntervall";
             wert = 5000;
-        } else if (code == 5) {
+        } else if (code === 5) {
             parameter = "CHMODIntervall";
             wert = 60000;
-        } else if (code == 6) {
+        } else if (code === 6) {
             parameter = "ShellIntervall";
             wert = 10000;
-        } else if (code == 7) {
+        } else if (code === 7) {
             parameter = "StatusIntervall";
             wert = 5000;
-        } else if (code == 8) {
+        } else if (code === 8) {
             parameter = "autoupdater_intervall";
             wert = 120000;
         }

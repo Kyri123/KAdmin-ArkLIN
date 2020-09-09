@@ -227,7 +227,7 @@
         <!-- DANGER | ArkAdmin-Server -->
         <c_35>
             <title>ArkAdmin-Server Warnung</title>
-            <text>Der ArkAdmin-Server hat keine Verbdinung zum MySQL_Server!</text>
+            <text>Der ArkAdmin-Server hat keine Verbindung zum MySQL_Server!</text>
         </c_35>
 
         <!-- DANGER | ArkAdmin-Server -->
