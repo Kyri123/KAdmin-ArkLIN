@@ -20,6 +20,7 @@ switch ($case) {
         // def. Vars
         $errorMSG = "";
         $cfg = $_POST["cfg"];
+        $_POST["custom"] = saveshell($_POST["custom"]);
         $serv = new server($cfg);
         $para = $_POST["para"];
         $para_txt = (isset($_POST["txt"])) ? $_POST["txt"] : "";
@@ -31,7 +32,7 @@ switch ($case) {
             if (empty($_POST["action"]) && $_POST["custom"] == "") {
                 $errorMSG = $alert->rd(2);
             } else {
-                $action = $_POST["action"];
+                $action = saveshell($_POST["action"]);
             }
 
             // erstelle parameter [Type=0]

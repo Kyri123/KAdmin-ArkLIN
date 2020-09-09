@@ -81,6 +81,7 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 - `PHP` mod_rewrite
 - `PHP` cURL
 - `PHP` MySQLi
+- `PHP` XML
 - `Linux` Root rechte (bzw Rechte um chmod 777, screen & arkmanager zu benutzten)
 - `Linux` Screen
 - `Linux` Arkmanager (https://github.com/arkmanager/ark-server-tools)

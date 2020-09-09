@@ -383,4 +383,15 @@ function perm_to_htm(array $array, $keys = null) {
     return $str;
 }
 
+/**
+ * Modifiziert die Shell anfrage um sie zu sichern
+ *
+ * @param  mixed $command
+ * @return void
+ */
+function saveshell($command) {
+    $forbitten = array(";", "?", "|", "OR", "AND", "passwd", "reboot", "shutdown", "service", "apt", "sudo");
+    return str_replace($forbitten, null, $command);
+}
+
 ?>

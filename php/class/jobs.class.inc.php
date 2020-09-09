@@ -45,7 +45,7 @@ class jobs extends helper
 
         // Füge Kommand zur DB hinzu
         global $mycon;
-        $command = 'arkmanager ' . $shell . ' @' . $serv->name() . '; exit';
+        $command = 'arkmanager ' . saveshell($shell) . ' @' . saveshell($serv->name()) . '; exit';
         $query = "INSERT INTO `ArkAdmin_shell` 
         (
             `server`, 
@@ -70,7 +70,7 @@ class jobs extends helper
 
         // Füge Kommand zur DB hinzu
         global $mycon;
-        $command = $shell . '; exit';
+        $command = saveshell($shell) . '; exit';
         $query = "INSERT INTO `ArkAdmin_shell` 
         (
             `server`, 
