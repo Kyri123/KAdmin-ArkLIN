@@ -134,7 +134,6 @@
                 <is_server_admin>Ist Admin für den Server (kann alles auf dem Server ändern und Anpassen innerhalb vom ServerCenter)</is_server_admin>
                 <actions>Darf Aktionen an den Server senden</actions>
                 <show_players>Darf sehen welche Spieler Online sind</show_players>
-                <use_log_opt>Dark Log Optionen benutzen (Filter, ...)</use_log_opt>
                 <livechat_show>Darf Livechat sehen</livechat_show>
                 <livechat_send>Darf Livechat benutzten</livechat_send>
                 <rcon_show>Darf Rcon sehen</rcon_show>

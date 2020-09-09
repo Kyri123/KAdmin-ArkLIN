@@ -89,7 +89,7 @@ $player_online = $serv->status()->aplayersarr;
 
 
 // Spieler
-if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0) {
+if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0 && $user->perm("$perm/show_players")) {
     for ($i = 0; $i < count($pl_json); $i++) {
         $list_tpl = new Template('user.htm', 'app/template/lists/serv/main/');
         $list_tpl->load();
