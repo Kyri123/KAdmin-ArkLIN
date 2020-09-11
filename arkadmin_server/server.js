@@ -158,39 +158,25 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             let response = url.parse(req.url, true).query;
             var hcode = 0;
 
-            if(response.update) {
-                if(response.code === md5(ip.address())) {
+            if (response.update) {
+                if (response.code === md5(ip.address())) {
                     updater.auto();
                     resp = '{"version":"' + version + '","db_connect":"' + iscon + '","update":"running"}';
-                }
-                else {
+                } else {
                     resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
                 }
-            }
-            else if(response.restart) {
-                if(response.code === md5(ip.address())) {
+            } else if (response.restart) {
+                if (response.code === md5(ip.address())) {
                     resp = '{"version":"' + version + '","db_connect":"' + iscon + '","restart":"running"}';
-                    var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
-                        'sleep 2s ; ' +
-                        'screen -S ArkAdmin -p 0 -X quit ; ' +
-                        'sleep 2s ; ' +
-                        'screen -mdR ArkAdmin ./start.sh ;' +
-                        'screen -wipe ;' +
-                        'exit;\'';
-                    // Beginne Restart
-                    if (shell.exec(command, config.use_ssh, 'Auto-Restarter', true, 'wird Neugestartet')) {
-                        logger.log("Restarter: ArkAdmin-Server wird Neugestartet \n");
-                    }
-                }
-                else {
+                    updater.restarter(false);
+                } else {
                     resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
                 }
-            }
-            else {
+            } else {
                 resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
             }
 
-            res.writeHead(200, {'Content-Type': 'text/json'});
+            res.writeHead(200, { 'Content-Type': 'text/json' });
             res.write(resp);
             res.end();
         }).listen(config.port);
@@ -201,17 +187,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
         setInterval(() => {
             if (config.autorestart > 0) {
-                var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
-                    'sleep 2s ; ' +
-                    'screen -S ArkAdmin -p 0 -X quit ; ' +
-                    'sleep 2s ; ' +
-                    'screen -mdS ArkAdmin ./start.sh ;' +
-                    'screen -wipe ;' +
-                    'exit;\'';
-                // Beginne Restart
-                if (shell.exec(command, config.use_ssh, 'Auto-Restarter', true, 'wird Neugestartet')) {
-                    logger.log("Auto-Restarter: ArkAdmin-Server wird Neugestartet \n");
-                }
+                updater.restarter(true);
             }
         }, config.autorestart_intervall);
     } else {

@@ -84,3 +84,17 @@ exports.auto = () => {
         }
     });
 };
+
+exports.restarter = (auto) => {
+    var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
+        'sleep 2s ; ' +
+        'screen -S ArkAdmin -p 0 -X quit ; ' +
+        'sleep 2s ; ' +
+        'screen -mdR ArkAdmin ./start.sh ;' +
+        'screen -wipe ;' +
+        'exit;\'';
+    // Beginne Restart
+    if (shell.exec(command, config.use_ssh, auto ? 'Auto-Restarter' : 'Restarter', true, 'wird Neugestartet')) {
+        logger.log("Restarter: " + (auto ? 'Auto-Restarter' : 'Restarter') + " wird Neugestartet \n");
+    }
+};

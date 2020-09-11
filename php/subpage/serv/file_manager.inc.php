@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if (!$user->perm("$perm/filebrowser/show")) {
+    header("Location: /401");
+    exit;
+}
+
 $pagename = '{::lang::php::sc::page::file_manager::pagename}';
 $page_tpl = new Template('file_manager.htm', 'app/template/sub/serv/');
 $page_tpl->load();

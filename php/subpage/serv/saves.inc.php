@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if (!$user->perm("$perm/saves/show")) {
+    header("Location: /401");
+    exit;
+}
+
 $pagename = '{::lang::php::sc::page::mods::pagename}';
 $page_tpl = new Template('saves.htm', 'app/template/sub/serv/');
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';

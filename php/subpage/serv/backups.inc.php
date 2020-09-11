@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if (!$user->perm("$perm/backup/show")) {
+    header("Location: /401");
+    exit;
+}
+
 $pagename = '{::lang::php::sc::page::backup::pagename}';
 $page_tpl = new Template('backup.htm', 'app/template/sub/serv/');
 $page_tpl->load();
