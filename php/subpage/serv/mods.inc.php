@@ -131,6 +131,7 @@ elseif(isset($url[4]) && isset($url[5]) && $url[4] == 'removelocal') {
 
 // Entfernen | Moven von Mods
 if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot' || $url[4] == 'top')) {
+    $removed = $cancel = false;
     $action = $url[4];
     $modid = $url[5];
     // change order
@@ -146,6 +147,10 @@ if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot'
                 // Move Mod nach oben
                 if ($action == 'bot') {
                     $iafter = $i+1;
+                    if(!isset($mods[$iafter])) {
+                        $cancel = true;
+                        break;
+                    }
                     $modid_after = $mods[$iafter];
                     $mods[$iafter] = $modid;
                     $mods[$i] = $modid_after;
@@ -154,6 +159,10 @@ if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot'
                 // Move Mod nach unten
                 if ($action == 'top') {
                     $ibefore = $i-1;
+                    if(!isset($mods[$ibefore])) {
+                        $cancel = true;
+                        break;
+                    }
                     $modid_before = $mods[$ibefore];
                     $mods[$ibefore] = $modid;
                     $mods[$i] = $modid_before;
@@ -174,19 +183,21 @@ if (isset($url[4]) && isset($url[5]) && ($url[4] == 'remove' || $url[4] == 'bot'
                     $jobs->set($serv->name());
                     $jobs->arkmanager('uninstallmod ' . $id);
                 }
+                $removed = true;
                 unset($mods[$i]);
-                $alert->overwrite_text = "{::lang::php::sc::page::mods::mod_removed}";
-    
-                // Melde: Mod entfernt
-                $alert->r("name", $steamapi->getmod_class($id, 0, true)->title);
-                $resp = $alert->rd(100);
                 break;
             }
         }
         $mod_builder = implode(',', $mods);
         // saver
+        
         $serv->cfg_write('ark_GameModIds', $mod_builder);
-        $serv->cfg_save();
+        if(!$cancel) {
+            $resp = $alert->rd($serv->cfg_save() ? ($removed ? 101 : 102) : 1);
+        }
+        else {
+            $resp = $alert->rd(16);
+        }
     }
     elseif($action == "remove" || $url[4] == 'bot' || $url[4] == 'top') {
         $resp = $alert->rd(99);
