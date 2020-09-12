@@ -29,6 +29,7 @@ $maxi = $helper->file_to_json("app/json/panel/aas_max.json", true);
 $ppath = "php/inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
 $wpath = 'arkadmin_server/config/server.json';
+$tpath = 'app/data/template.cfg';
 $array = $helper->file_to_json($ppath, true);
 if (!isset($array["clusterestart"])) $array["clusterestart"] = 0;
 if (!isset($array["uninstall_mod"])) $array["uninstall_mod"] = 0;
@@ -54,6 +55,19 @@ if (isset($_POST["savearkmanager"]) && $user->perm("config/am_save")) {
     }
 }
 elseif(isset($_POST["savearkmanager"])) {
+    $resp .= $alert->rd(99);
+}
+
+// Template.cfg
+if (isset($_POST["savetemplate"]) && $user->perm("config/edit_default")) {
+    $content = ini_save_rdy($_POST["ini"]);
+    if (file_put_contents($tpath, $content)) {
+        $resp .= $alert->rd(102);
+    } else {
+        $resp .= $alert->rd(1);
+    }
+}
+elseif(isset($_POST["savetemplate"])) {
     $resp .= $alert->rd(99);
 }
 
@@ -233,14 +247,14 @@ else {
 }
 
 
-$content_arkmanager = file_get_contents($apath);
 $tpl->r("steamcmd_info", (($steamcmd_exsists) ? null : $alert->rd(306, 3, 0, 0, 0, 0)));
 $tpl->r("info_CMD", $alert->rd(307, 3, 0, 0, 0, 0));
 $tpl->rif("steamcmdsys", $steamcmd_exsists);
 $tpl->rif("steamfile", $steamcmd_workshop_exsists);
 $tpl->r("cache_link", $cachelink);
 $tpl->r("cache_text", $cachetext);
-$tpl->r("arkmanager", $content_arkmanager);
+$tpl->r("arkmanager", (file_exists($apath)) ? file_get_contents($apath) : "");
+$tpl->r("templatecfg", (file_exists($tpath)) ? file_get_contents($tpath) : "");
 $tpl->r("option_panel", $option_panel);
 $tpl->r('webhelper', $option_server);
 $tpl->r("resp", $resp);

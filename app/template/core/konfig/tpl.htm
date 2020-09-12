@@ -9,13 +9,17 @@
             <li class="list-group-item">
                 <a id="pills-panel-tab" data-toggle="pill" href="#pills-panel" role="tab" aria-controls="pills-panel" aria-selected="true">Panel</a>
             </li>
-            {permissions??config??aa_show}<li class="list-group-item">
+            {permissions??config??show_default}
+            <li class="list-group-item">
+                <a id="pills-templatecfg-tab" data-toggle="pill" href="#pills-templatecfg" role="tab" aria-controls="pills-templatecfg" aria-selected="false">Template.cfg</a>
+            </li>{/permissions} {permissions??config??aa_show}
+            <li class="list-group-item">
                 <a id="pills-config-tab" data-toggle="pill" href="#pills-config" role="tab" aria-controls="pills-config" aria-selected="false">ArkAdmin-Server</a>
-            </li>{/permissions}
-            {permissions??config??am_show}<li class="list-group-item">
+            </li>{/permissions} {permissions??config??am_show}
+            <li class="list-group-item">
                 <a id="pills-aa-tab" data-toggle="pill" href="#pills-aa" role="tab" aria-controls="pills-aa" aria-selected="false">ArkManager</a>
-            </li>{/permissions}
-            {permissions??config??scmd_show}<li class="list-group-item">
+            </li>{/permissions} {permissions??config??scmd_show}
+            <li class="list-group-item">
                 <a id="pills-steamcmd-tab" data-toggle="pill" href="#pills-steamcmd" role="tab" aria-controls="pills-steamcmd" aria-selected="false">SteamCMD</a>
             </li>{/permissions}
         </ul>
@@ -45,26 +49,37 @@
                         </tbody>
                     </table>
                 </form>
-
-                {permissions??config??aa_show}
-                <!-- ArkAdmin-Server -->
+                {permissions??config??show_default}
+                <!-- Template.cfg -->
+                <form action="#templatecfg" method="post" class="tab-pane fade" id="pills-templatecfg" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="list-group-item bg-dark">
+                        <h4>Template.cfg</h4>
+                        {permissions??config??edit_default}
+                        <div class="right">
+                            <input type="submit" class="btn btn-primary" name="savetemplate" value="{::lang::allg::save}">
+                        </div>{/permissions}
+                    </div>
+                    <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 500px;max-height: 500px;" id="ini">{templatecfg}</textarea>
+                </form>
+                {/permissions} {permissions??config??am_show}
+                <!-- ArkManager -->
                 <form action="#save" method="post" class="tab-pane fade" id="pills-aa" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="list-group-item bg-dark">
                         <h4>ArkManager</h4>
-                        {permissions??config??aa_save}<div class="right">
+                        {permissions??config??aa_save}
+                        <div class="right">
                             <input type="submit" class="btn btn-primary" name="savearkmanager" value="{::lang::allg::save}">
                         </div>{/permissions}
                     </div>
                     <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 500px;max-height: 500px;" id="text_game">{arkmanager}</textarea>
                 </form>
-                {/permissions}
-
-                {permissions??config??am_show}
-                <!-- ArkManager -->
+                {/permissions} {permissions??config??aa_show}
+                <!-- ArkAdmin-Server -->
                 <form action="#save" method="post" class="tab-pane fade" id="pills-config" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="list-group-item bg-dark">
                         <h4>ArkAdmin-Server</h4>
-                        {permissions??config??am_save}<div class="right">
+                        {permissions??config??am_save}
+                        <div class="right">
                             <input type="submit" class="btn btn-primary" name="savewebhelper" value="{::lang::allg::save}">
                         </div>{/permissions}
                     </div>
@@ -80,14 +95,13 @@
                         </tbody>
                     </table>
                 </form>
-                {/permissions}
-
-                {permissions??config??scmd_show}
+                {/permissions} {permissions??config??scmd_show}
                 <!-- SteamCMD -->
                 <form action="#steamcmd" method="post" class="tab-pane fade" id="pills-steamcmd" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="list-group-item bg-dark">
                         <h4>SteamCMD</h4>
-                        {steamcmdsys}{steamfile}{permissions??config??scmd_clear}<div class="right">
+                        {steamcmdsys}{steamfile}{permissions??config??scmd_clear}
+                        <div class="right">
                             <a href="/config/clear/steamcmd" class="btn btn-primary">{::lang::config::clear}</a>
                         </div>{/permissions}{/steamfile}{/steamcmdsys}
                     </div>
