@@ -90,9 +90,12 @@ elseif (isset($url[3]) && $url[2] == "rmcode") {
 if (isset($_POST["del"]) && $user->perm("userpanel/delete_user")) {
     $id = $_POST["userid"];
     $kuser->setid($id);
-    $tpl->r("del_username", $user->read("username"));
+    $tpl->r("del_username", $kuser->read("username"));
     $query = "DELETE FROM `ArkAdmin_users` WHERE (`id`='".$id."')";
     if ($mycon->query($query)) {
+        if(file_exists("app/json/user/".md5($id).".permissions.json")) unlink("app/json/user/".md5($id).".permissions.json");
+        if(file_exists("app/json/user/".md5($id).".json")) unlink("app/json/user/".md5($id).".json");
+        $mycon->query("DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$id."')");
         $alert->code = 101;
         $alert->overwrite_text = '{::lang::php::userpanel::removed_user}';
         $resp = $alert->re();
