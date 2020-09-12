@@ -296,7 +296,7 @@ function alog($str) {
 function perm_to_htm(array $array, $keys = null) {
     $fullarray = $array;
     $str = null;
-    if($fullarray["all"]["is_admin"] == 1) {
+    if(isset($fullarray["all"]["is_admin"]) && $fullarray["all"]["is_admin"] == 1) {
         // Erstelle Head
         $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
         $tpl->load();
@@ -326,7 +326,7 @@ function perm_to_htm(array $array, $keys = null) {
             if(is_array($item)) {
                 if($keys == "[server]") {
                     if(file_exists("remote/arkmanager/instances/$key.cfg")) {
-                        if($item["is_server_admin"] == 1) {
+                        if(isset($item["is_server_admin"]) && $item["is_server_admin"] == 1) {
                             $serv = new server($key);
 
                             // Erstelle Head

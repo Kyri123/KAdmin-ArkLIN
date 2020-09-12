@@ -82,10 +82,10 @@
                                         </div>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr>{/permissions}
 
                         </table>
-                        <button type="submit" class="btn btn-primary mb-0" name="addjob" style="width:100%">{::lang::servercenter::jobs::section::allg::btn_save}</button>{/permissions}
+                        {permissions??server??{cfg}??jobs??add}<button type="submit" class="btn btn-primary mb-0" name="addjob" style="width:100%">{::lang::servercenter::jobs::section::allg::btn_save}</button>{/permissions}
                     </form>
                     <ul class="list-group" id="livelog">
                         {list}
