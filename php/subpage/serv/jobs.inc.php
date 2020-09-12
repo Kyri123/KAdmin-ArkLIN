@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if (!$user->perm("$perm/jobs/show")) {
+    header("Location: /401");
+    exit;
+}
+
 $pagename = '{::lang::php::sc::page::jobs::pagename}';
 $page_tpl = new Template('jobs.htm', 'app/template/sub/serv/');
 $page_tpl->load();
@@ -18,42 +24,8 @@ $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::jobs::urltop}</l
 $page_tpl->r('cfg' ,$url[2]);
 $page_tpl->r('SESSION_USERNAME' ,$user->read("username"));
 
-// Cronjobs aktualisieren (AutoUpdate/AutoBackup)
-if (isset($_POST['set'])) {
-    $key = $_POST['key'];
-    $intervall = $_POST['intervall'];
-    $datetime = $_POST['time'];
-    $datetime = strtotime($datetime);
-    $json = $helper->file_to_json($cpath, true);
-    if ($intervall != null && is_numeric($intervall) && $intervall > 0) {
-        if ($datetime != null) {
-            $json['option'][$key]['active'] = $_POST['active'];
-            $json['option'][$key]['datetime'] = $datetime;
-            $json['option'][$key]['intervall'] = $intervall;
-            $json['option'][$key]['para'] = $_POST['parameter'];
-            if ($helper->savejson_exsists($json, $cpath)) {
-                // Melde: Erfolg
-                $alert->code = 102;
-                $resp = $alert->re();
-            } else {
-                // Melde: Lese/Schreib Fehler
-                $alert->code = 1;
-                $resp = $alert->re();
-            }
-        } else {
-            // Melde: Zeitformat Fehler
-            $alert->code = 15;
-            $resp = $alert->re();
-        }
-    } else {
-        // Melde: Format Fehler
-        $alert->code = 14;
-        $resp = $alert->re();
-    }
-}
-
 // Cronjob erstellen
-if (isset($_POST['addjob'])) {
+if (isset($_POST['addjob']) && $user->perm("$perm/jobs/add")) {
     $name = $_POST['name'];
     $action = $_POST['action'];
     $parameter = $_POST['parameter'];
@@ -84,39 +56,36 @@ if (isset($_POST['addjob'])) {
                     )";
                     if ($mycon->query($query)) {
                         // Melde Erfolg
-                        $alert->code = 100;
-                        $resp = $alert->re();
+                        $resp = $alert->rd(100);
                     }
                     else {
                         // Melde Datenebank Fehler
-                        $alert->code = 3;
-                        $resp = $alert->re();
+                        $resp = $alert->rd(3);
                     }
                 }
                 else {
                     // Melde Zeitformat Fehler
-                    $alert->code = 15;
-                    $resp = $alert->re();
+                    $resp = $alert->rd(15);
                 }
             } else {
                 // Melde Format Fehler
-                $alert->code = 14;
-                $resp = $alert->re();
+                $resp = $alert->rd(14);
             }
         } else {
             // Melde Input Error
-            $alert->code = 2;
-            $resp = $alert->re();
+            $resp = $alert->rd(2);
         }
     } else {
         // Melde Input Error
-        $alert->code = 2;
-        $resp = $alert->re();
+        $resp = $alert->rd(2);
     }
+}
+elseif(isset($_POST['addjob'])) {
+    $reps = $alert->rd(99);
 }
 
 // Cronjob Bearbeiten
-if (isset($_POST['edit'])) {
+if (isset($_POST['edit']) && $user->perm("$perm/jobs/edit")) {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $action = $_POST['action'];
@@ -137,39 +106,36 @@ if (isset($_POST['edit'])) {
                     WHERE `id` = '$id';";
                     if ($mycon->query($query)) {
                         // Melde Erfolg
-                        $alert->code = 102;
-                        $resp = $alert->re();
+                        $resp = $alert->rd(102);
                     }
                     else {
                         // Melde Datenbank Fehler
-                        $alert->code = 3;
-                        $resp = $alert->re();
+                        $resp = $alert->rd(3);
                     }
                 }
                 else {
                     // Melde Zeitformat Fehler
-                    $alert->code = 15;
-                    $resp = $alert->re();
+                    $resp = $alert->rd(15);
                 }
             } else {
                 // Melde Inputformat Fehler
-                $alert->code = 14;
-                $resp = $alert->re();
+                $resp = $alert->rd(14);
             }
         } else {
             // Melde Input Error
-            $alert->code = 2;
-            $resp = $alert->re();
+            $resp = $alert->rd(2);
         }
     } else {
         // Melde Input Error
-        $alert->code = 2;
-        $resp = $alert->re();
+        $resp = $alert->rd(2);
     }
+}
+elseif(isset($_POST['edit'])) {
+    $reps = $alert->rd(99);
 }
 
 // Entferne Jobs
-if (isset($url[4]) && isset($url[5]) && $url[4] == "delete") {
+if (isset($url[5]) && $url[4] == "delete" && $user->perm("$perm/jobs/remove")) {
     $i = $url[5];
     $i = intval($i);
     $query = 'SELECT * FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';
@@ -177,22 +143,22 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "delete") {
         $query = 'DELETE FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';
         if ($mycon->query($query)) {
             // Melde Erfolg
-            $alert->code = 101;
-            $resp = $alert->re();
+            $resp = $alert->rd(101);
         } else {
             // Melde Lese/Schreib Fehler
-            $alert->code = 1;
-            $resp = $alert->re();
+            $resp = $alert->rd(1);
         }
     } else {
         // Melde Werte Error
-        $alert->code = 16;
-        $resp = $alert->re();
+        $resp = $alert->rd(16);
     }
+}
+elseif(isset($url[5]) && $url[4] == "delete") {
+    $reps = $alert->rd(99);
 }
 
 //Erstelle Job (Update & Backup btn)
-if (isset($url[4]) && isset($url[5]) && $url[4] == "create") {
+if (isset($url[5]) && $url[4] == "create" && $user->perm("$perm/jobs/add")) {
     echo 1;
     $type = $url[5];
     $i = intval($i);
@@ -239,14 +205,16 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "create") {
         }
         else {
             // Melde Datenbank Fehler
-            $alert->code = 3;
-            $resp = $alert->re();
+            $resp = $alert->rd(3);
         }
     }
 }
+elseif(isset($url[5]) && $url[4] == "create") {
+    $reps = $alert->rd(99);
+}
 
 // (De-)Aktivieren von Jobs
-if (isset($url[4]) && isset($url[5]) && $url[4] == "toggle") {
+if (isset($url[5]) && $url[4] == "toggle" && $user->perm("$perm/jobs/toggle")) {
     $i = $url[5];
     $i = intval($i);
     $query = 'SELECT * FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';
@@ -268,14 +236,15 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "toggle") {
             $resp = $alert->re();
         } else {
             // Melde Lese/Schreibfehler
-            $alert->code = 1;
-            $resp = $alert->re();
+            $resp = $alert->rd(1);
         }
     } else {
         // Melde Werte Fehler
-        $alert->code = 16;
-        $resp = $alert->re();
+        $resp = $alert->rd(16);
     }
+}
+elseif(isset($url[5]) && $url[4] == "toggle") {
+    $reps = $alert->rd(99);
 }
 
 // Lese Jobs und liste sie
@@ -333,7 +302,6 @@ $page_tpl->r('backup_url', "/servercenter/".$serv->name()."/jobs/create/backup/"
 $page_tpl->r('listmodal', $jobs_modal);
 $page_tpl->r('listmodal', $jobs_modal);
 $page_tpl->r('list', $jobs);
-$page_tpl->session();
 $panel = $page_tpl->load_var();
 
 

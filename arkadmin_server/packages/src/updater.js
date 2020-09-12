@@ -60,8 +60,11 @@ exports.auto = () => {
                             // Installiere Module
                             'npm install ; ' +
                             'sleep 2s ; ' +
+                            // überschreibe Rechte
+                            'chmod 777 -R ./../ ; ' +
+                            'sleep 2s ; ' +
                             // Starte Server wieder
-                            'screen -mdS ArkAdmin node server.js ;' +
+                            'screen -mdS ArkAdmin ./start.sh ;' +
                             'screen -wipe ;' +
                             'exit;\'';
                         // Beginne Update
@@ -80,4 +83,18 @@ exports.auto = () => {
             logger.log("Autoupdate: Github Verbindung fehlgeschlagen");
         }
     });
+};
+
+exports.restarter = (auto) => {
+    var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
+        'sleep 2s ; ' +
+        'screen -S ArkAdmin -p 0 -X quit ; ' +
+        'sleep 2s ; ' +
+        'screen -mdR ArkAdmin ./start.sh ;' +
+        'screen -wipe ;' +
+        'exit;\'';
+    // Beginne Restart
+    if (shell.exec(command, config.use_ssh, auto ? 'Auto-Restarter' : 'Restarter', true, 'wird Neugestartet')) {
+        logger.log("Restarter: " + (auto ? 'Auto-Restarter' : 'Restarter') + " wird Neugestartet \n");
+    }
 };

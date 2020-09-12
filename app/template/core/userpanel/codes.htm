@@ -1,6 +1,6 @@
 <tr>
     {!ifemtpy}<td style="width:5%">
-        [{id}]
+        {rank}
     </td>{/!ifemtpy}
     <td style="width:80%" {ifemtpy}colspan="3"{/ifemtpy}>
     {!ifemtpy}
@@ -10,6 +10,9 @@
                 <button onclick="copythis('copy{id}')" class="btn btn-primary btn-flat" type="button">
                     <i class="fas fa-copy" aria-hidden="true"></i>
                 </button>
+                {permissions??userpanel??delete_code}<a class="btn btn-danger" href="/userpanel/rmcode/{id}">
+                    <i class="fas fa-trash" aria-hidden="true"></i>
+                </a>{/permissions}
             </span>
         </div>
     {/!ifemtpy}
@@ -17,11 +20,4 @@
         {code}
     {/ifemtpy}
     </td>
-    {!ifemtpy}<td style="width:15%">
-        <a class="btn btn-danger btn-sm" href="/userpanel/rmcode/{id}">
-            <i class="fas fa-trash" aria-hidden="true">
-            </i>
-            Löschen
-        </a>
-    </td>{/!ifemtpy}
 </tr>

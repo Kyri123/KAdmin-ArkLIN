@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if (!$user->perm("$perm/logs/show")) {
+    header("Location: /401");
+    exit;
+}
+
 $pagename = '{::lang::php::sc::page::logs::pagename}';
 $page_tpl = new Template('logs.htm', 'app/template/sub/serv/');
 $page_tpl->load();
@@ -39,6 +45,5 @@ if(isset($_POST["clearlogs"])) {
 $page_tpl->r('cfg' ,$serv->name());
 $page_tpl->r('path' ,$path);
 $page_tpl->r('resp' ,$resp);
-$page_tpl->session();
 $panel = $page_tpl->load_var();
 ?>

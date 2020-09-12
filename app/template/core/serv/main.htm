@@ -125,7 +125,7 @@
                 <ul class="nav nav-pills flex-column navbar-dark" data-widget="treeview" role="menu" data-accordion="false">
                     {ifin}
                     <li class="nav-item">
-                        <a href="/cluster" class="nav-link aa_nav_hover text-white">
+                        <a href="{permissions??cluster??show}/cluster{/permissions}{!permissions??cluster??show}#{/!permissions}" class="nav-link aa_nav_hover text-white">
                             <i class="fas fa-random pr-2 pr-1" aria-hidden="true"></i> {typestr} <b>{clustername}</b>
                         </a>
                     </li>{/ifin}
@@ -136,48 +136,60 @@
                         </a>
                     </li>
 
-                    {modsupport}
+                    {modsupport}{permissions??server??{cfg}??mods??show}
                     <li class="nav-item ">
                         <a href="/servercenter/{cfg}/mods" class="nav-link {_mods} text-white aa_nav_hover">
                             <i class="nav-icon fas fa-cogs pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::mods}
                         </a>
-                    </li>{/modsupport}
+                    </li>{/permissions}{/modsupport}
 
+                    {permissions??server??{cfg}??konfig??show}
                     <li class="nav-item ">
                         <a href="/servercenter/{cfg}/konfig" class="nav-link {_konfig} text-white aa_nav_hover">
                             <i class="nav-icon fa fa-file-code pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::config}
                         </a>
                     </li>
+                    {/permissions}
 
+                    {permissions??server??{cfg}??logs??show}
                     <li class="nav-item ">
                         <a href="/servercenter/{cfg}/logs" class="nav-link {_logs} text-white aa_nav_hover">
                             <i class="nav-icon fas fa-list pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::logs}
                         </a>
                     </li>
+                    {/permissions}
 
+                    {permissions??server??{cfg}??backup??show}
                     <li class="nav-item ">
-                        <a href="/servercenter/{cfg}/backups" class="nav-link {_backups} text-white aa_nav_hover">
+                        <a href="/servercenter/{cfg}/backup" class="nav-link {_backups} text-white aa_nav_hover">
                             <i class="nav-icon fas fa-file-archive pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::backup}
                         </a>
                     </li>
+                    {/permissions}
 
+                    {permissions??server??{cfg}??filebrowser??show}
                     <li class="nav-item ">
                         <a href="/servercenter/{cfg}/file_manager" class="nav-link {_file_manager} text-white aa_nav_hover">
                             <i class="nav-icon fas fa-file pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::files}
                         </a>
                     </li>
+                    {/permissions}
 
+                    {permissions??server??{cfg}??saves??show}
                     <li class="nav-item">
                         <a href="/servercenter/{cfg}/saves" class="nav-link {_saves} text-white aa_nav_hover">
                             <i class="nav-icon fas fa-folder-open pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::saves}
                         </a>
                     </li>
+                    {/permissions}
 
+                    {permissions??server??{cfg}??jobs??show}
                     <li class="nav-item ">
                         <a href="/servercenter/{cfg}/jobs" class="nav-link {_jobs} text-white aa_nav_hover">
                             <i class="nav-icon fas fa-tasks pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::jobs}
                         </a>
                     </li>
+                    {/permissions}
                 </ul>
             </div>
         </div>
@@ -235,6 +247,7 @@
 </script>
 
 
+{permissions??server??{cfg}??actions}
 <div class="modal fade" id="action" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <form id="action_form" class="modal-dialog modal-xl" role="document" style="max-width: 700px" method="POST">
         <div class="modal-content">
@@ -277,51 +290,9 @@
         </div>
     </form>
 </div>
+{/permissions}
 
-
-<div class="modal fade" id="danger_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" style="max-width: 700px">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title">{::lang::servercenter::main::modal::err::title}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body p-0">
-                <ul class="list-group" style="border:0; border-radius: 0">
-                    {danger_resp}
-                </ul>
-            </div>
-            <div class="modal-footer bg-gray-200">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::main::modal::err::btn_close}</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="warning_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" id="form" style="max-width: 700px">
-        <div class="modal-content">
-            <div class="modal-header bg-warning text-white">
-                <h5 class="modal-title" id="exampleModalLabel">{::lang::servercenter::main::modal::warning::title}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body p-0">
-                <ul class="list-group" style="border:0; border-radius: 0">
-                    {warning_resp}
-                </ul>
-            </div>
-            <div class="modal-footer bg-gray-200">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::main::modal::warning::btn_close}</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+{permissions??server??{cfg}??show_players}
 <div class="modal fade" id="playerlist_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document" style="max-width: 700px">
         <div class="modal-content ">
@@ -340,3 +311,4 @@
         </div>
     </div>
 </div>
+{/permissions}

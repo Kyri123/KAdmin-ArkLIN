@@ -25,19 +25,19 @@
         {/!ifincluster}
     </td>
     <td class="project-actions text-right">
-        <a class="btn btn-primary btn-sm" href="/servercenter/{cfg}" target="_blank">
+        {permissions??server??{cfg}??show}<a class="btn btn-primary btn-sm" href="/servercenter/{cfg}" target="_blank">
             <i class="fas fa-folder">
             </i>
             ServerCenter
-        </a>
-        <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#remove{cfg}">
+        </a>{/permissions}
+        {permissions??servercontrollcenter??delete}<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#remove{cfg}">
             <i class="fas fa-trash">
             </i>
             {::lang::scc::list::remove}
-        </a>
+        </a>{/permissions}
     </td>
 </tr>
-{/!ifmodal}{ifmodal}
+{/!ifmodal}{ifmodal}{permissions??servercontrollcenter??delete}
 <!-- Modal -->
 <form class="modal fade" id="remove{cfg}" tabindex="-1" method="post" action="#">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
@@ -66,4 +66,4 @@
             </div>
         </div>
     </div>
-</form>{/ifmodal}
+</form>{/permissions}{/ifmodal}

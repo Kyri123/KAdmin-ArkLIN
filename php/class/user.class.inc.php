@@ -18,6 +18,7 @@ class userclass extends helper
     private $mycon;
     private $myconisset;
     public $frech;
+    public $permissions;
 
     /**
      * userclass constructor.
@@ -44,6 +45,30 @@ class userclass extends helper
         if ($this->mycon->query($query)->numRows() > 0) {
             $this->myconisset = true;
             $this->frech = $this->mycon->query($query)->fetchArray();
+
+            $permissions_default = parent::file_to_json("app/json/user/permissions.tpl.json");
+            $permissions = (file_exists("app/json/user/".md5($id).".permissions.json")) ? parent::file_to_json("app/json/user/".md5($id).".permissions.json") : parent::file_to_json("app/json/user/permissions.tpl.json");
+            $permissions = array_replace_recursive($permissions_default, $permissions);
+
+            // gehe Rechte der Server durch
+            $servers = array();
+            $file = 'app/json/serverinfo/all.json';
+            $server = parent::file_to_json($file, true)["cfgs_only_name"];
+            foreach ($server as $item) {
+                $perm_file = file_get_contents("app/json/user/permissions_servers.tpl.json");
+                $perm_file = str_replace("{cfg}", $item, $perm_file);
+                $default = parent::str_to_json($perm_file);
+                if(isset($permissions["server"][$item])) {
+                    $permissions["server"][$item] = array_replace_recursive($default[$item], $permissions["server"][$item]);
+                }
+                else {
+                    $permissions["server"] += $default;
+                }
+            }
+
+
+            $this->permissions = $permissions;
+
             return true;
         }
         $this->myconisset = false;
@@ -95,7 +120,7 @@ class userclass extends helper
         if (file_exists($path)) {
             $json = parent::file_to_json($path, true);
             if(isset($json["expert"])) {
-                return ($json["expert"] == 1) ? true : false;
+                return $json["expert"] == 1 && $this->perm("usersettings/expert");
             }
             else {
                 return false;
@@ -118,7 +143,7 @@ class userclass extends helper
         if (file_exists($path)) {
             $json = parent::file_to_json($path, true);
             if(isset($json[$mode])) {
-                return ($json[$mode] == 1) ? true : false;
+                return $json[$mode] == 1;
             }
             else {
                 return false;
@@ -126,6 +151,38 @@ class userclass extends helper
         } else {
             return false;
         }
+    }
+
+    /**
+     * Gibt aus ob der Benutzer die Rechte zu der jeweiligen aktion hat
+     *
+     * @param String $key schlüssel zur permissions (multi array ist mit / zu trennen)
+     * @return bool
+     */
+    public function perm(String $key)
+    {
+        // Prüfe das Format
+        if(!($key = explode("/", $key))) return false;
+
+        // werte Permissions aus
+        $found = true;
+        $value = $this->permissions;
+        foreach ($key as $item) {
+            if(!isset($value[$item])) {
+                $found = false;
+            }
+            else {
+                $value = $value[$item];
+            }
+        }
+
+
+        // gebe bool aus
+        return (
+            ($found && boolval($value)) ||
+            (($key[0] != "server") ? false : boolval($this->permissions["server"][$key[1]]["is_server_admin"])) ||
+            boolval($this->permissions["all"]["is_admin"])
+        );
     }
 }
 

@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if (!$user->perm("$perm/konfig/show")) {
+    header("Location: /401");
+    exit;
+}
+
 $pagename = '{::lang::php::sc::page::konfig::pagename}';
 $page_tpl = new Template('konfig.htm', 'app/template/sub/serv/');
 $page_tpl->load();
@@ -16,7 +22,7 @@ $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}<
 
 // arkmanager.cfg Speichern (Normaler Modus)
 $resp = $ark_flag = $eventlist = null;
-if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
+if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $user->perm("$perm/konfig/arkmanager")) {
     $value = $_POST['value'];
     $key = $_POST['key'];
     $flag = $_POST['flag'];
@@ -58,6 +64,7 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
 else {
     // Melde Fehlschlag
     if(isset($_POST['savecfg'])) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
 }
 
 // GameUserSettings.ini Speichern (Normaler Modus)
@@ -67,38 +74,48 @@ if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode
     $value = $_POST['value'];
     $key = $_POST['key'];
     $skey = $_POST['skey'];
+    $type = $_POST["type"];
+    
+    if(
+        ($type == "GameUserSettings.ini" && $user->perm("$perm/konfig/gus")) ||
+        ($type == "Game.ini" && $user->perm("$perm/konfig/game")) ||
+        ($type == "Engine.ini" && $user->perm("$perm/konfig/engine"))
+    ) {
+        for ($i=0;$i<count($key);$i++) {
+            $cfg[$skey[$i]][$key[$i]] = $value[$i];
+        }
 
-    for ($i=0;$i<count($key);$i++) {
-        $cfg[$skey[$i]][$key[$i]] = $value[$i];
-    }
+        $cfg_done = null;
+        foreach ($cfg as $k => $v){
+            $cfg_done .= "\n[$k]\n";
+            foreach ($v as $ik => $iv){
+                $cfg_done .= "$ik=$iv\n";
+            }
+        }
 
-    $cfg_done = null;
-    foreach ($cfg as $k => $v){
-        $cfg_done .= "\n[$k]\n";
-        foreach ($v as $ik => $iv){
-            $cfg_done .= "$ik=$iv\n";
+        $path = $serv->dir_konfig().$type;
+        $text = ini_save_rdy($cfg_done);
+        // Wenn Datei geschreiben wurde
+        if (file_put_contents($path, $text)) {
+            // Melde: Erfolg
+            $resp = $alert->rd(102);
+        } else {
+            // Melde: Lese/SchreibFeher
+            $resp = $alert->rd(1);
         }
     }
-
-    $type = $_POST["type"];
-    $path = $serv->dir_konfig().$type;
-    $text = ini_save_rdy($cfg_done);
-    // Wenn Datei geschreiben wurde
-    if (file_put_contents($path, $text)) {
-        // Melde: Erfolg
-        $resp = $alert->rd(102);
-    } else {
-        // Melde: Lese/SchreibFeher
-        $resp = $alert->rd(1);
+    else {
+        $resp = $alert->rd(99);
     }
 }
 else {
     // Melde Fehlschlag
     if(isset($_POST['savenormal'])) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
 }
 
 // arkmanager.cfg (Expert) Speichern
-if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
+if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $user->perm("$perm/konfig/arkmanager")) {
     $txtarea = $_POST['txtarea'];
     $cfg = ini_save_rdy($txtarea);
     $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
@@ -114,6 +131,7 @@ if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_
 else {
     // Melde Fehlschlag
     if(isset($_POST['savecfg_expert'])) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
 }
 
 // Game,GUS,Engine.ini Speichern (Expertenmodus)
@@ -121,19 +139,29 @@ if (isset($_POST['save']) && (($serv->statecode() == 1 && $user->show_mode("konf
     $type = $_POST["type"];
     $text = $_POST["text"];
     $path = $serv->dir_konfig().$type;
-    // Prüfe ob Datei Exsistiert
-    if (file_exists($path)) {
-        $text = ini_save_rdy($text);
-        if (file_put_contents($path, $text)) {
-            // Mel.de Erfolg
-            $resp = $alert->rd(102);
+    
+    if(
+        ($type == "GameUserSettings.ini" && $user->perm("$perm/konfig/gus")) ||
+        ($type == "Game.ini" && $user->perm("$perm/konfig/game")) ||
+        ($type == "Engine.ini" && $user->perm("$perm/konfig/engine"))
+    ) {
+        // Prüfe ob Datei Exsistiert
+        if (file_exists($path)) {
+            $text = ini_save_rdy($text);
+            if (file_put_contents($path, $text)) {
+                // Mel.de Erfolg
+                $resp = $alert->rd(102);
+            } else {
+                // Melde: Lese/Schreib Fehler
+                $resp = $alert->rd(1);
+            }
         } else {
             // Melde: Lese/Schreib Fehler
             $resp = $alert->rd(1);
         }
-    } else {
-        // Melde: Lese/Schreib Fehler
-        $resp = $alert->rd(1);
+    }
+    else {
+        $resp = $alert->rd(99);
     }
 }
 else {
@@ -393,6 +421,5 @@ $page_tpl->r('eventlist', $eventlist);
 $page_tpl->r('amcfg', file_get_contents('remote/arkmanager/instances/'.$url[2].'.cfg'));
 $page_tpl->rif('expert', $user->expert());
 $page_tpl->rif('show', $show);
-$page_tpl->session();
 $panel = $page_tpl->load_var();
 ?>

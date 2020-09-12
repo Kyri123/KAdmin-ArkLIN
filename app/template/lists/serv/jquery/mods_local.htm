@@ -3,27 +3,25 @@
         <div class="col-12">
             <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50">
             <div class="ml-auto float-right">
-                {!ifcmods}<a href="javascript:void();" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{rnd}" class="btn btn-danger">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-times"></i>
-                                        </span>
-            </a>{/!ifcmods}
-            <a href="https://steamcommunity.com/sharedfiles/filedetails/?id={modid}" class="btn btn-dark btn-sm" target="_blank">
-                                        <span class="icon text-white">
-                                            <i class="fab fa-steam-symbol"></i>
-                                        </span>
-            </a>
-        </div>
+                {permissions??server??{cfg}??mods??remove}
+                <a href="javascript:void();" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{rnd}" class="btn btn-danger">
+                    <span class="icon text-white">
+                            <i class="fas fa-times"></i>
+                    </span>
+                </a>{/permissions}
+                <a href="https://steamcommunity.com/sharedfiles/filedetails/?id={modid}" class="btn btn-dark btn-sm" target="_blank">
+                    <span class="icon text-white">
+                        <i class="fab fa-steam-symbol"></i>
+                    </span>
+                </a>
+            </div>
             <div style="margin-left: 60px;">
                 {active}
-                    <span class="text-success">{::lang::servercenter::list::mods::active}</span>
-                {/active}
-                {!active}
-                <span class="text-danger">{::lang::servercenter::list::mods::inactive}</span>
-                {/!active}
+                <span class="text-success">{::lang::servercenter::list::mods::active}</span> {/active} {!active}
+                <span class="text-danger">{::lang::servercenter::list::mods::inactive}</span> {/!active}
                 <br />
                 <span class="font-weight-light" style="font-size: 11px;"> {modid} | {::lang::servercenter::list::mods::lastupdate}</span>&nbsp;
-                </div>
+            </div>
         </div>
     </div>
 </li>
@@ -47,7 +45,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                <a href="/servercenter/{cfg}/mods/removelocal/{modid}"  type="submit" class="btn btn-danger" name="del">Löschen</a>
+                <a href="/servercenter/{cfg}/mods/removelocal/{modid}" type="submit" class="btn btn-danger" name="del">Löschen</a>
             </div>
         </div>
     </div>

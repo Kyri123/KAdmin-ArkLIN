@@ -37,7 +37,7 @@ class jobs extends helper
      * Erstellt ein Job (shell) mit vordefinierten befehl "arkmanager"
      *
      * @param String $shell
-     * @return bool
+     * @return bool|mysql
      */
     public function arkmanager(String $shell) {
         if ($this->server == null) return "Server nicht gesetzt";
@@ -45,7 +45,7 @@ class jobs extends helper
 
         // Füge Kommand zur DB hinzu
         global $mycon;
-        $command = 'arkmanager ' . $shell . ' @' . $serv->name() . '; exit';
+        $command = 'arkmanager ' . saveshell($shell) . ' @' . saveshell($serv->name()) . '; exit';
         $query = "INSERT INTO `ArkAdmin_shell` 
         (
             `server`, 
@@ -62,7 +62,7 @@ class jobs extends helper
     /**
      * Erstellt ein Job (shell)
      * @param String $shell
-     * @return bool
+     * @return bool|mysql
      */
     public function shell(String $shell) {
         if ($this->server == null) return "Server nicht gesetzt";
@@ -70,7 +70,7 @@ class jobs extends helper
 
         // Füge Kommand zur DB hinzu
         global $mycon;
-        $command = $shell . '; exit';
+        $command = saveshell($shell) . '; exit';
         $query = "INSERT INTO `ArkAdmin_shell` 
         (
             `server`, 

@@ -79,14 +79,14 @@
                         </div>
                     </div>
                     <ul class="list-group list-group-flush border">
-                        <li class="list-group-item" style="border-top-width: 1px;">
+                        {permissions??usersettings??expert}<li class="list-group-item" style="border-top-width: 1px;">
                             <div class="form-group clearfix m-0">
                                 <div class="icheck-success d-inline">
                                     <input name="json[expert]" {c_expert} type="checkbox" id="expert">
                                     <label for="expert">{::lang::usersettings::expert}</label>
                                 </div>
                             </div>
-                        </li>
+                        </li>{/permissions}
                         <li class="list-group-item" style="border-top-width: 1px;">
                             <div class="form-group clearfix m-0">
                                 <div class="icheck-success d-inline">

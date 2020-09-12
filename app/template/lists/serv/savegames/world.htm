@@ -8,18 +8,19 @@
                         <i class="fas fa-times"></i>
                     </span>
                 </a>
+                {permissions??server??{cfg}??saves??remove}
                 <a href="{durl}" class="btn btn-dark btn-sm" target="_blank" download>
                     <span class="icon text-white">
                         <i class="fas fa-download"></i>
                     </span>
-                </a>
+                </a>{/permissions}
             </div>
             <div style="margin-left: 60px;">{name}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::list::saves::lastupdate}</span></div>
         </div>
     </div>
 </li>
+{permissions??server??{cfg}??saves??remove}
 <!-- Modal -->
-
 <form class="modal fade" id="delw{rnd}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
@@ -41,4 +42,4 @@
             </div>
         </div>
     </div>
-</form>
+</form>{/permissions}

@@ -1,0 +1,58 @@
+{
+    "{cfg}": {
+        "is_server_admin": 0,
+        "show": 0,
+        "actions": 0,
+        "show_players": 0,
+        "home": {
+            "livechat_show": 1,
+            "livechat_send": 0,
+            "rcon_show": 0,
+            "rcon_send": 0,
+            "admin_show": 0,
+            "admin_send": 0,
+            "whitelist_show": 0,
+            "whitelist_send": 0
+        },
+        "mods": {
+            "show": 1,
+            "changeplace": 0,
+            "remove": 0,
+            "add": 0
+        },
+        "konfig": {
+            "show": 1,
+            "gus": 0,
+            "game": 0,
+            "engine": 0,
+            "arkmanager": 0
+        },
+        "logs": {
+            "show": 1
+        },
+        "backup": {
+            "show": 1,
+            "remove": 0,
+            "playin": 0,
+            "download": 0
+        },
+        "filebrowser": {
+            "show": 1,
+            "remove": 0,
+            "show_info": 0,
+            "download": 0
+        },
+        "saves": {
+            "show": 1,
+            "download": 0,
+            "remove": 0
+        },
+        "jobs": {
+            "show": 1,
+            "add": 0,
+            "remove": 0,
+            "toggle": 0,
+            "edit": 0
+        }
+    }
+}

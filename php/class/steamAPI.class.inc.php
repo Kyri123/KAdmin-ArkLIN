@@ -14,9 +14,9 @@
 class steamapi extends helper {
 
     private $API_Key;
-    public $modid;
-
     private $jsonpath = "app/json/steamapi/";
+
+    public $modid;
 
     /**
      * steamapi constructor.

@@ -1,29 +1,30 @@
 <li class="list-group-item">
     <div class="row p-0">
         <div class="col-12">
-            <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50">
-            {empty}<div class="ml-auto float-right">
-            {!ifcmods}{ifup}<a href="/servercenter/{cfg}/mods/top/{modid}" class="btn btn-info btn-sm">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-arrow-up"></i>
-                                        </span>
-        </a>{/ifup}
-            {ifdown}<a href="/servercenter/{cfg}/mods/bot/{modid}" class="btn btn-info btn-sm">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-arrow-down"></i>
-                                        </span>
-        </a>{/ifdown}
-            <a href="javascript:void()" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{modid}" class="btn btn-danger">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-times"></i>
-                                        </span>
-            </a>{/!ifcmods}
-            <a href="https://steamcommunity.com/sharedfiles/filedetails/?id={modid}" class="btn btn-dark btn-sm" target="_blank">
-                                        <span class="icon text-white">
-                                            <i class="fab fa-steam-symbol"></i>
-                                        </span>
-            </a>
-        </div>{/empty}
+            <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50"> {empty}
+            <div class="ml-auto float-right">
+                {!ifcmods}{permissions??server??{cfg}??mods??changeplace}{ifup}
+                <a href="/servercenter/{cfg}/mods/top/{modid}" class="btn btn-info btn-sm">
+                    <span class="icon text-white">
+                        <i class="fas fa-arrow-up"></i>
+                    </span>
+                </a>{/ifup} {ifdown}
+                <a href="/servercenter/{cfg}/mods/bot/{modid}" class="btn btn-info btn-sm">
+                    <span class="icon text-white">
+                        <i class="fas fa-arrow-down"></i>
+                    </span>
+                </a>{/ifdown}{/permissions}{permissions??server??{cfg}??mods??remove}
+                <a href="javascript:void()" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{modid}" class="btn btn-danger">
+                    <span class="icon text-white">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </a>{/permissions}{/!ifcmods}
+                <a href="https://steamcommunity.com/sharedfiles/filedetails/?id={modid}" class="btn btn-dark btn-sm" target="_blank">
+                    <span class="icon text-white">
+                        <i class="fab fa-steam-symbol"></i>
+                    </span>
+                </a>
+            </div>{/empty}
             <div style="margin-left: 60px;">{title}<br />{empty}<span class="font-weight-light" style="font-size: 11px;"> {modid} | {::lang::servercenter::list::mods::lastupdate}</span>&nbsp;{/empty}&nbsp;</div>
         </div>
     </div>
@@ -48,7 +49,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::mods::modal::remove::btn_cancel}</button>
-                <a href="/servercenter/{cfg}/mods/remove/{modid}"  type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::mods::modal::remove::btn_del}</a>
+                <a href="/servercenter/{cfg}/mods/remove/{modid}" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::mods::modal::remove::btn_del}</a>
             </div>
         </div>
     </div>

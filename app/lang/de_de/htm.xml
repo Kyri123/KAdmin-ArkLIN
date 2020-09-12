@@ -9,16 +9,25 @@
      -->
 
     <allg>
-
         <default>
+            <select>Bitte Wählen</select>
             <noplayer>Kein Spieler Gefunden</noplayer>
             <noadmin>Kein Admin Gefunden</noadmin>
             <notinapimod>Wurde noch nicht in die API geladen</notinapimod>
+            <nopermissions>Dazu fehlt dir die Berechtigung</nopermissions>
         </default>
 
-        <force_update>Erzwinge Panel Update</force_update>
+        <force_update>Panel Update</force_update>
         <force_update_text>Führt sofort ein Panel Update aus. Dies wird auch getan wenn Auto-Updates deaktiert ist</force_update_text>
 
+        <force_restart>Starte den ArkAdmin-Server neu</force_restart>
+        <force_restart_text>Startet den ArkAdmin-Server neu um z.B. Änderungen am Intervall zu übernehmen.</force_restart_text>
+
+        <!-- Platzhalter
+        <force_start>Starte den ArkAdmin-Server</force_start>
+        <force_start_text>Starte den ArkAdmin-Server wenn dieser Offline ist</force_start_text>-->
+
+        <pageload>Die Seite wurde in {ltime} Sekunden geladen</pageload>
         <navigation>Navigation</navigation>
         <save>Speichern</save>
         <delete>Löschen</delete>
@@ -40,11 +49,12 @@
         </traffic>
 
         <nav>
+            <hello_user>Hallo,</hello_user>
             <donate>Spenden</donate>
             <home>Dashboard</home>
             <scc>ServerControllCenter</scc>
             <cluster>Cluster System</cluster>
-            <userpanel>Benutzer</userpanel>
+            <userpanel>Benutzer und Rechte</userpanel>
             <config>Konfiguration</config>
             <changelog>Changelogs</changelog>
             <btn_createserver>Server Erstellen</btn_createserver>
@@ -280,15 +290,16 @@
             <mail>Email</mail>
             <regdate>Registrierungs Datum</regdate>
             <lastlogin>Letzter Login</lastlogin>
-            <banstate>Ban-Status</banstate>
+            <rank>Rang</rank>
         </tableheader>
 
         <list>
             <banned>Gebannt</banned>
-            <notbanned>Frei</notbanned>
+            <notbanned>Offen</notbanned>
             <ban>Bannen</ban>
             <unban>Freigeben</unban>
             <remove>Löschen</remove>
+            <show_permissions>Rechte verwalten</show_permissions>
             <modal>
                 <remove>
                     <remove>Löschen: {username}</remove>
@@ -328,6 +339,15 @@
         <line2>Vielleicht wurde sie von einem Dino gefressen!?</line2>
         <btn-back>Zurück zum Dashboard</btn-back>
     </err404>
+
+    <!-- Error401 Seite -->
+    <err401>
+        <maintitle>Error </maintitle>
+        <title>Ohnein! Fehlende Berechtigungen</title>
+        <line1>Die Seite konnte nicht aufgerufen werden da du nicht die nötige Berechtigung hast</line1>
+        <line2>...</line2>
+        <btn-back>Zurück zum Dashboard</btn-back>
+    </err401>
 
     <!-- servercenter -->
     <servercenter>
@@ -404,16 +424,6 @@
                     <custom_action>Eigenen Befehl</custom_action>
                     <custom_action_ph>start --alwaysstart</custom_action_ph>
                 </send_command>
-
-                <danger>
-                    <title></title>
-                    <btn_close>Schließen</btn_close>
-                </danger>
-
-                <warning>
-                    <title>Lister aller Warnungen</title>
-                    <btn_close>Schließen</btn_close>
-                </warning>
 
                 <err>
                     <title>Lister aller Fehler</title>
@@ -558,7 +568,6 @@
 
                 <admin>
                     <player>Benutzer:</player>
-                    <default>Bitte Wählen</default>
                     <info>Der User muss zuerst auf dem Server gewesen sein um als Spieler aufgelistet zu werden. (Änderungen werden erst nach einem Neustart wirksam)</info>
                     <btn_add>Hinzufügen</btn_add>
                 </admin>

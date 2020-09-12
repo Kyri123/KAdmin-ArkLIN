@@ -22,6 +22,12 @@ $serv = new server($url[2]);
 $serv->cluster_load();
 $txt_alert = $site_name = $player = null;
 
+$perm = "server/".$serv->name();
+
+if(!$user->perm("$perm/show")) {
+    header("Location: /401"); exit;
+}
+
 //erstelle SteamAPI von OnlineSpieler
 $pl_json = $helper->file_to_json('app/json/saves/pl_' . $serv->name() . '.players', false);
 $arr_pl = array();
@@ -83,7 +89,7 @@ $player_online = $serv->status()->aplayersarr;
 
 
 // Spieler
-if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0) {
+if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0 && $user->perm("$perm/show_players")) {
     for ($i = 0; $i < count($pl_json); $i++) {
         $list_tpl = new Template('user.htm', 'app/template/lists/serv/main/');
         $list_tpl->load();
@@ -157,8 +163,7 @@ if ($player == null) {
 
 $action_list = "<option value=\"\">Aktion wählen...</option>"; $i = 0;
 foreach ($action_opt as $key) {
-    $array[$key] = array();
-    $action_list .= "<option value=\"$key\">".$action_str[$i]."</option>";
+    $action_list .= "<option value=\"$key\">{::lang::php::cfg::action::$key}</option>";
     $i++;
 }
 

@@ -1,7 +1,7 @@
 {ifbool}
 <tr>
     <td class="p-2">
-        {keym}
+        {::lang::php::config::key::{keym}}
     </td>
     <td class="p-2">
         <input type="hidden" name="key[]" readonly value="{key}">
@@ -14,7 +14,7 @@
 {/ifbool} {iftxt}
 <tr>
     <td class="p-2">
-        {keym}
+        {::lang::php::config::key::{keym}}
     </td>
     <td class="p-2">
         <input type="hidden" name="key[]" readonly value="{key}">
@@ -24,11 +24,11 @@
 {/iftxt} {ifnum}
 <tr>
     <td class="p-2">
-        {keym}
+        {::lang::php::config::key::{keym}}
     </td>
     <td class="p-2">
         <input type="hidden" name="key[]" readonly value="{key}">
-        <input type="number" name="value[]" class="form-control form-control-sm" value="{value}" {ifmin}min="{min}"{/ifmin}>
+        <input type="number" name="value[]" class="form-control form-control-sm" value="{value}" {ifmin}min="{min}"{/ifmin} {ifmax}max="{max}"{/ifmax}>
     </td>
 </tr>
 {/ifnum}

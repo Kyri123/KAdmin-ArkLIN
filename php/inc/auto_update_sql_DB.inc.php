@@ -58,6 +58,27 @@ if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
     }
 }
 
+//überschreibe alle user auf Admin
+$path = "app/json/user";
+$dir_arr = scandir($path);
+$query = "SELECT * FROM `ArkAdmin_users`";
+
+if($query = $mycon->query($query)) {
+    $arr = $query->fetchAll();
+    foreach ($arr as $item) {
+        $permissions_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
+        $permissions_default["all"]["is_admin"] = 1;
+        if(!file_exists("app/json/user/".md5($item["id"]).".permissions.json")) $helper->savejson_create($permissions_default, "app/json/user/".md5($item["id"]).".permissions.json");
+    }
+}
+
+// Sende Daten an Server
+$array["dbhost"] = $dbhost;
+$array["dbuser"] = $dbuser;
+$array["dbpass"] = $dbpass;
+$array["dbname"] = $dbname;
+$helper->savejson_create($array, "arkadmin_server/config/mysql.json");
+
 $check_json["checked"] = true;
 $helper->savejson_create($check_json, "app/data/sql_check.json");
 ?>

@@ -108,23 +108,31 @@ switch ($case) {
         $mods_arr = json_decode(json_encode($steamapi->getmod_list($cfg."_installed", $mod_arr, 0, true)), true)["response"]["publishedfiledetails"];
          
         foreach($mods_arr as $key => $value) {
-            $tpl = new Template('mods_local.htm', 'app/template/lists/serv/jquery/');
-            $tpl->load();
-            $btns= null;
-            $installed = false;
-            if (in_array($value["publishedfileid"], $mods)) $installed = true;
-
-            $tpl->r('modid', $value["publishedfileid"]);
-            $tpl->r('steamurl', $value["file_url"]);
-            $tpl->rif ('active', $installed);
-            $tpl->r('img', $value["preview_url"]);
-            $tpl->r('cfg', $cfg);
-            $tpl->r('rnd', rndbit(25));
-            $tpl->r('title', $value["title"]);
-            $tpl->r('lastupdate', date('d.m.Y - H:i', $value["time_updated"]));
-            $tpl->rif ("ifcmods", false); //ggf false durch $ifcmods ersetzten so wird diese funktion auch verwaltet
-            if($value["publishedfileid"] != 111111111) $resp .= $tpl->load_var();
-            $tpl = null;
+            if(
+                isset($value["publishedfileid"]) &&
+                isset($value["file_url"]) &&
+                isset($value["preview_url"]) &&
+                isset($value["time_updated"]) &&
+                isset($value["title"]) 
+            ) {
+                $tpl = new Template('mods_local.htm', 'app/template/lists/serv/jquery/');
+                $tpl->load();
+                $btns= null;
+                $installed = false;
+                if (in_array($value["publishedfileid"], $mods)) $installed = true;
+    
+                $tpl->r('modid', $value["publishedfileid"]);
+                $tpl->r('steamurl', $value["file_url"]);
+                $tpl->rif ('active', $installed);
+                $tpl->r('img', $value["preview_url"]);
+                $tpl->r('cfg', $cfg);
+                $tpl->r('rnd', rndbit(25));
+                $tpl->r('title', $value["title"]);
+                $tpl->r('lastupdate', date('d.m.Y - H:i', $value["time_updated"]));
+                $tpl->rif ("ifcmods", false); //ggf false durch $ifcmods ersetzten so wird diese funktion auch verwaltet
+                if($value["publishedfileid"] != 111111111) $resp .= $tpl->load_var();
+                $tpl = null;
+            }
         }
         // Wenn kein Mod gefunden wurde
         if ($resp == null) {

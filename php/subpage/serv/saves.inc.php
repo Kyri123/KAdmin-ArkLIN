@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if (!$user->perm("$perm/saves/show")) {
+    header("Location: /401");
+    exit;
+}
+
 $pagename = '{::lang::php::sc::page::mods::pagename}';
 $page_tpl = new Template('saves.htm', 'app/template/sub/serv/');
 $urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
@@ -18,7 +24,7 @@ $resp = null;
 $c_pl = $c_t = $w_t = 0;
 
 // erstelle Zip download
-if (isset($_POST["zip"])) {
+if (isset($_POST["zip"]) && $user->perm("$perm/saves/download")) {
     if(!file_exists("app/downloads")) mkdir("app/downloads");
     $zipfile = "app/downloads/savegames.tar";
     
@@ -69,9 +75,12 @@ if (isset($_POST["zip"])) {
         $resp = $alert->rd(2);
     }
 }
+elseif(isset($_POST["zip"])) {
+    $resp = $alert->rd(99);
+}
 
 // Entferne Savegame
-if (isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
+if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$perm/saves/remove")) {
 
     // Setzte Vars
     $file_name = $url[5];
@@ -161,6 +170,9 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
             exit;
         }
     }
+}
+elseif(isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
+    $resp = $alert->rd(99);
 }
 
 
@@ -350,9 +362,6 @@ if(is_countable($dirarr)) {
     }
 }
 
-
-
-
 $page_tpl->load();
 $page_tpl->r('cfg' ,$url[2]);
 $page_tpl->r('urls' ,$urls);
@@ -363,7 +372,6 @@ $page_tpl->r('cp', $c_pl);
 $page_tpl->r('ct', $c_t);
 $page_tpl->r('cw', $w_t);
 $page_tpl->r('resp', $resp);
-$page_tpl->session();
 $panel = $page_tpl->load_var();
 
 $player = null;

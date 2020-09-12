@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if(!$user->perm("servercontrollcenter/show")) {
+    header("Location: /401"); exit;
+}
+
+
 // Vars
 $tpl_dir = 'app/template/core/scc/';
 $tpl_dir_all = 'app/template/all/';
@@ -21,71 +27,95 @@ $serv = new server("tiamat");
 $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 
-if (isset($_POST["add"])) {
-    //$name = $_POST["name"];
-    while (true) {
-        $name = rndbit(5);
-        $path = "remote/arkmanager/instances/".$name.".cfg";
-        if (!file_exists($path)) {
-            break;
-        }
-    }
-
-    $arkserverroot = $servlocdir."server_ID_".$name;
-    $logdir = $servlocdir."server_ID_".$name."_logs";
-    $arkbackupdir = $servlocdir."server_ID_".$name."_backups";
-    $ark_QueryPort = $_POST["port"][1];
-    $ark_Port = $_POST["port"][0];
-    $ark_RCONPort = $_POST["port"][2];
-
-    $cfg = file_get_contents('app/data/template.cfg');
-    $find = array(
-        "{arkserverroot}",
-        "{logdir}",
-        "{arkbackupdir}",
-        "{ark_Port}",
-        "{ark_RCONPort}",
-        "{ark_QueryPort}",
-        "{ark_ServerAdminPassword}"
-    );
-    $repl = array(
-        $arkserverroot,
-        $logdir,
-        $arkbackupdir,
-        $ark_Port,
-        $ark_RCONPort,
-        $ark_QueryPort,
-        md5(rndbit(10))
-    );
-    $cfg = str_replace($find, $repl, $cfg);
-    if(
-        ($_POST["port"][0] != "" && is_numeric($_POST["port"][0])) && 
-        ($_POST["port"][1] != "" && is_numeric($_POST["port"][1])) && 
-        ($_POST["port"][2] != "" && is_numeric($_POST["port"][2]))
-    ) {
-        if (!file_exists($path) && $ark_QueryPort > 1000) {
-            if (file_put_contents($path, $cfg)) {
-                $alert->code = 100;
-                $resp = $alert->re();
-                $serv = new server($name);
-                $serv->cfg_save();
-            } else {
-                $alert->code = 1;
-                $resp = $alert->re();
+if (isset($_POST["add"]) && $user->perm("servercontrollcenter/create")) {
+    //prüfe ob das Maximum erreicht wurde
+    if(!$maxpanel_server >= count($all["cfgs"])) {
+        while (true) {
+            $name = rndbit(5);
+            $path = "remote/arkmanager/instances/".$name.".cfg";
+            if (!file_exists($path)) {
+                break;
             }
-        } else {
-            $alert->code = 5;
-            $resp = $alert->re();
+        }
+
+        $arkserverroot = $servlocdir."server_ID_".$name;
+        $logdir = $servlocdir."server_ID_".$name."_logs";
+        $arkbackupdir = $servlocdir."server_ID_".$name."_backups";
+        $ark_QueryPort = $_POST["port"][1];
+        $ark_Port = $_POST["port"][0];
+        $ark_RCONPort = $_POST["port"][2];
+
+        $cfg = file_get_contents('app/data/template.cfg');
+        $find = array(
+            "{arkserverroot}",
+            "{logdir}",
+            "{arkbackupdir}",
+            "{ark_Port}",
+            "{ark_RCONPort}",
+            "{ark_QueryPort}",
+            "{ark_ServerAdminPassword}"
+        );
+        $repl = array(
+            $arkserverroot,
+            $logdir,
+            $arkbackupdir,
+            $ark_Port,
+            $ark_RCONPort,
+            $ark_QueryPort,
+            md5(rndbit(10))
+        );
+        $cfg = str_replace($find, $repl, $cfg);
+        if(
+            ($_POST["port"][0] != "" && is_numeric($_POST["port"][0])) &&
+            ($_POST["port"][1] != "" && is_numeric($_POST["port"][1])) &&
+            ($_POST["port"][2] != "" && is_numeric($_POST["port"][2]))
+        ) {
+            if (!file_exists($path) && $ark_QueryPort > 1000) {
+                if (file_put_contents($path, $cfg)) {
+                    $resp = $alert->rd(100);
+                    $serv = new server($name);
+                    $serv->cfg_save();
+
+                    // Speicher Rechte für den Benutzer
+                    if(isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) {
+                        $perm_file = file_get_contents("app/json/user/permissions_servers.tpl.json");
+                        $perm_file = str_replace("{cfg}", $name, $perm_file);
+                        $default = $helper->str_to_json($perm_file);
+                        $default[$name]["is_server_admin"] = 1;
+
+                        $user_permissions = $user->permissions;
+                        if(isset($user_permissions["server"][$name])) {
+                            $user_permissions["server"][$name] = array_replace_recursive($default[$name], $user_permissions["server"][$name]);
+                        }
+                        else {
+                            $user_permissions["server"] += $default;
+                        }
+
+                        $helper->savejson_create($user_permissions, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
+                    }
+                } else {
+                    $resp = $alert->rd(1);
+                }
+            } else {
+                $resp = $alert->rd(5);
+            }
+        }
+        else {
+            $resp = $alert->rd(2);
         }
     }
     else {
-        $alert->code = 2;
+        $alert->code = 37;
+        $alert->r("max_server", $maxpanel_server);
         $resp = $alert->re();
     }
 }
+elseif (isset($_POST["add"])) {
+    $resp = $alert->rd(99);
+}
 
 // Entfernen von Server
-if (isset($_POST["del"])) {
+if (isset($_POST["del"]) && $user->perm("servercontrollcenter/delete")) {
     $serv = new server($_POST["cfg"]);
     $opt = array();
     if (isset($_POST["opt"])) $opt = $_POST["opt"];
@@ -136,6 +166,9 @@ if (isset($_POST["del"])) {
         if (!file_exists($path_cfg)) $alert->code = 8;
         $resp = $alert->re();
     }
+}
+elseif (isset($_POST["del"])) {
+    $resp = $alert->rd(99);
 }
 
 $dir = dirToArray('remote/arkmanager/instances/');
@@ -198,7 +231,7 @@ $tpl->r("list_modal", $cfgmlist);
 $tpl->r("resp", $resp);
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
-$btns = '<a href="#" class="btn btn-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
+if($user->perm("servercontrollcenter/create")) $btns = '<a href="#" class="btn btn-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
             <span class="icon text-white-50">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>

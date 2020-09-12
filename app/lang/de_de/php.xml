@@ -36,22 +36,22 @@
         <!-- config.inc.php -->
         <cfg>
             <action>
-                <_0>Installieren</_0>
-                <_1>Starten</_1>
-                <_2>Update</_2>
-                <_3>Neustarten</_3>
-                <_4>Stoppen</_4>
-                <_5>Backup</_5>
-                <_6>Checkupdate</_6>
-                <_7>Checkmodupdate</_7>
-                <_8>Installmods</_8>
-                <_9>Uninstallmods</_9>
-                <_10>Speichern</_10>
-                <_11>Status</_11>
-                <_12>Liste alle Mods auf</_12>
-                <_13>Spiele letztes Backup ein</_13>
-                <_14>Zeige Prozzess ID</_14>
-                <_15>Breche Runterfahren ab</_15>
+                <install>Installieren</install>
+                <start>Starten</start>
+                <update>Update</update>
+                <restart>Neustarten</restart>
+                <stop>Stoppen</stop>
+                <backup>Backup</backup>
+                <checkupdate>Checkupdate</checkupdate>
+                <checkmodupdate>Checkmodupdate</checkmodupdate>
+                <installmods>Installmods</installmods>
+                <uninstallmods>Uninstallmods</uninstallmods>
+                <saveworld>Speichern</saveworld>
+                <status>Status</status>
+                <list-mods>Liste alle Mods auf</list-mods>
+                <restore>Spiele letztes Backup ein</restore>
+                <getpid>Zeige Prozzess ID</getpid>
+                <cancelshutdown>Breche Runterfahren ab</cancelshutdown>
             </action>
         </cfg>
         
@@ -78,13 +78,85 @@
         <!-- userpanel -->
         <userpanel>
             <pagename>Benutzer</pagename>
+            <user>Benutzer</user>
+            <admin>Admin</admin>
             <btn-regcode>Codes</btn-regcode>
             <nocodefound>Kein Code gefunden</nocodefound>
             <banned>Gebannt</banned>
-            <notbanned>Frei</notbanned>
+            <notbanned>Offen</notbanned>
             <removed_code>Code Gelöscht</removed_code>
             <removed_user>Benutzer {del_username} Gelöscht</removed_user>
-            <changed_ban>Benutzer [{ban_uid}] {ban_username} -> {ban_to}</changed_ban>
+            <changed_ban>Benutzer [{ban_uid}] {ban_username} > {ban_to}</changed_ban>
+
+            <permissions>
+                <!-- Titel -->
+                <all>ArkAdmin2 (Allgemein)</all>
+                <servercontrollcenter>ServerControllCenter</servercontrollcenter>
+                <userpanel>Benutzer und Rechte</userpanel>
+                <cluster>Cluster System</cluster>
+                <config>Konfiguration</config>
+                <usersettings>Benutzer Einstellungen</usersettings>
+                <server>Server</server>
+                <home>Startseite / Home</home>
+                <mods>Modifikationen</mods>
+                <konfig>Konfiguration</konfig>
+                <logs>Logs</logs>
+                <backup>Backups</backup>
+                <filebrowser>File System</filebrowser>
+                <saves>Spielstände</saves>
+                <jobs>Aufgaben</jobs>
+
+                <!-- Optionen -->
+                <show>Darf Sehen / Aufrufen</show>
+                <create>Darf Erstellen</create>
+                <delete>Darf Löschen</delete>
+                <is_admin>Ist Admin (hat Rechte auf ALLES)</is_admin>
+                <force_update>Darf über das Panel Updates erzwingen</force_update>
+                <force_restart>Darf ArkAdmin-Server über das Panel Neustarten</force_restart>
+                <show_traffic>Darf Server Traffics sehen</show_traffic>
+                <show_codes>Darf Codes sehen</show_codes>
+                <create_code>Darf Codes Erstellen</create_code>
+                <delete_code>Darf Codes Löschen</delete_code>
+                <delete_user>Darf Benutzer Löschen</delete_user>
+                <ban_user>Darf Benutzer Bannen</ban_user>
+                <toogle_master>Darf Master / Slaves ändern</toogle_master>
+                <remove_server>Darf Server vom Cluster entfernen</remove_server>
+                <add_server>Darf Server zu einem Cluster hinzufügen</add_server>
+                <panel_save>Darf Panel Optionen speichern / bearbeiten</panel_save>
+                <aa_show>Darf ArkAdmin-Server sehen</aa_show>
+                <aa_save>Darf ArkAdmin-Server speichern / bearbeiten</aa_save>
+                <am_show>Darf Arkmanager sehen</am_show>
+                <am_save>Darf Arkmanager speichern / bearbeiten</am_save>
+                <scmd_show>Darf SteamCMD sehen</scmd_show>
+                <scmd_save>Darf SteamCMD speichern / bearbeiten (Platzhalter)</scmd_save>
+                <scmd_clear>Darf SteamCMD Workshop cache leeren</scmd_clear>
+                <expert>Darf Expertenmodus verwenden bzw ändern</expert>
+                <is_server_admin>Ist Admin für den Server (kann alles auf dem Server ändern und Anpassen innerhalb vom ServerCenter)</is_server_admin>
+                <actions>Darf Aktionen an den Server senden</actions>
+                <show_players>Darf sehen welche Spieler Online sind</show_players>
+                <livechat_show>Darf Livechat sehen</livechat_show>
+                <livechat_send>Darf Livechat benutzten</livechat_send>
+                <rcon_show>Darf Rcon sehen</rcon_show>
+                <rcon_send>Darf Rcon benutzten</rcon_send>
+                <admin_show>Darf Administratoren sehen</admin_show>
+                <admin_send>Darf Administratoren hinzufügen</admin_send>
+                <whitelist_show>Darf die Whitelist sehen</whitelist_show>
+                <whitelist_send>Darf Spieler zur Whitelist hinzufügen</whitelist_send>
+                <changeplace>Dark Position der Mods ändern</changeplace>
+                <gus>Darf GameUserSettings bearbeiten</gus>
+                <game>Darf Game bearbeiten</game>
+                <engine>Darf Engine bearbeiten</engine>
+                <arkmanager>Darf Arkmanager bearbeiten</arkmanager>
+                <remove>Darf Entfernen</remove>
+                <playin>Darf Aufspielen</playin>
+                <download>Darf Runterladen</download>
+                <edit>Darf Bearbeiten</edit>
+                <add>Darf Hinzufügen</add>
+                <show_info>Darf Informationen sehen</show_info>
+                <toggle>Darf Jobs An- bzw Ausschalten</toggle>
+                <edit_default>Darf die Default Arkmanager.cfg bearbeiten</edit_default>
+                <show_default>Darf die Default Arkmanager.cfg sehen</show_default>
+            </permissions>
         </userpanel>
 
         <!-- servercontrollcenter -->
@@ -109,14 +181,42 @@
         <config>
             <pagename>Konfiguration</pagename>
             <key>
-                <uninstallmod>Deinstalliere Mods beim Entfernen</uninstallmod>
-                <installmod>Installiere Mods beim Hinzufügen</installmod>
-                <clusterestart>Starte Clusterserver neu wenn Optionen geändert werden</clusterestart>
-                <servlocdir>Server-verzeichnis</servlocdir>
-                <arklocdir>Arkmanager-verzeichnis</arklocdir>
-                <apikey_found_here>finde ich Hier</apikey_found_here>
-                <show_err>Zeige PHP Error</show_err>
-                <steamcmddir>SteamCMD Verzeichnis</steamcmddir>
+                <panel>
+                    <uninstall_mod>Deinstalliere Mods beim Entfernen</uninstall_mod>
+                    <install_mod>Installiere Mods beim Hinzufügen</install_mod>
+                    <clusterestart>Starte Clusterserver neu wenn Optionen geändert werden</clusterestart>
+                    <servlocdir>Server-verzeichnis</servlocdir>
+                    <arklocdir>Arkmanager-verzeichnis</arklocdir>
+                    <apikey>Steam-API Key [a="https://steamcommunity.com/dev/apikey"](klicke Hier)[/a]</apikey>
+                    <show_err>[b][Debug][/b] Zeige PHP Error</show_err>
+                    <steamcmddir>SteamCMD Verzeichnis</steamcmddir>
+                </panel>
+                <aa>
+                    <HTTP>Weblink zum Arkadmin</HTTP>
+                    <WebPath>Ordnerpfad wo Arkadmin installiert ist (Webverzeichnis)</WebPath>
+                    <AAPath>Ordnerpfad wo sich Arkmanager befindet</AAPath>
+                    <ServerPath>Ordnerpfad wo die Server gespeichert werden</ServerPath>
+                    <SteamPath>Ordnerpfad wo die SteamCMD liegt</SteamPath>
+                    <WebIntervall>Intervall für das abrufen des Crontabs
+                        (in ms | min: 5000)</WebIntervall>
+                    <CHMODIntervall>Intervall für das überschreiben der Rechte
+                        (in ms | min: 60000)</CHMODIntervall>
+                    <ShellIntervall>Intervall für das abrufen der Shell Dateien
+                        (in ms | min: 10000)</ShellIntervall>
+                    <StatusIntervall>Intervall für das abrufen von dem Status des Servers
+                        (in ms | min: 5000)</StatusIntervall>
+                    <autoupdater_intervall>Intervall für das abrufen des Automatischen Updates
+                        (in ms | min: 120000)</autoupdater_intervall>
+                    <CHMOD>Berechtigung für die Dateien (777 z.B. ist komplett offen)
+                        [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ]</CHMOD>
+                    <use_ssh>Aktiviere/Deaktivere SHH (1: an;0: aus) benötigt konfiguration in ssh.js</use_ssh>
+                    <port>Port den der ArkAdmin-Server benutzten soll</port>
+                    <autoupdater_active>Soll der Updater aktiv sein
+                        (1: an | 0: aus)</autoupdater_active>
+                    <autoupdater_branch>Welche Github Branch soll dafür verwendet werden</autoupdater_branch>
+                    <autorestart>Soll der ArkAdmin Server automatisch neustarten?</autorestart>
+                    <autorestart_intervall>Inverall vom Neustart (in ms | min: 1800000)</autorestart_intervall>
+                </aa>
             </key>
         </config>
 

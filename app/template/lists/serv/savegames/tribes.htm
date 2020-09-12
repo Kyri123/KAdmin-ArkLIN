@@ -8,18 +8,20 @@
                         <i class="fas fa-user pr-1"></i> {count}
                     </span>
                 </a>
+                {permissions??server??{cfg}??saves??remove}
                 <a data-toggle="modal" data-target="#delt{rnd}" class="btn btn-danger btn-sm">
                     <span class="icon text-white">
                         <i class="fas fa-times"></i>
                     </span>
-                </a>
+                </a>{/permissions} {permissions??server??{cfg}??saves??remove}
                 <a href="{durl}" class="btn btn-dark btn-sm" download>
                     <span class="icon text-white">
                         <i class="fas fa-download"></i>
                     </span>
-                </a>
+                </a>{/permissions}
             </div>
-            <div style="margin-left: 60px;">{name} <!--({count} Spieler)--> - ID: {id}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::list::saves::lastupdate}</span></div>
+            <div style="margin-left: 60px;">{name}
+                <!--({count} Spieler)-->- ID: {id}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::list::saves::lastupdate}</span></div>
         </div>
     </div>
 </li>
@@ -45,8 +47,8 @@
         </div>
     </div>
 </div>
+{permissions??server??{cfg}??saves??remove}
 <!-- Modal -->
-
 <form class="modal fade" id="delt{rnd}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
@@ -68,4 +70,4 @@
             </div>
         </div>
     </div>
-</form>
+</form>{/permissions}

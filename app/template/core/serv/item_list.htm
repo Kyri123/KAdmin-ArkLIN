@@ -1,4 +1,6 @@
-<a href="/servercenter/{cfg}/home" class="dropdown-item">
+
+{permissions??server??{cfg}??show}<a href="/servercenter/{cfg}/home" class="dropdown-item">{/permissions}
+{!permissions??server??{cfg}??show}<span class="dropdown-item disabled">{/!permissions}
     <div class="media">
         <div id="img_{cfg}" class="mr-2"></div>
         <div class="media-body">
@@ -11,9 +13,11 @@
             </p>
         </div>
     </div>
-</a>
+{!permissions??server??{cfg}??show}</span>{/!permissions}
+{permissions??server??{cfg}??show}</a>{/permissions}
+
 <div class="dropdown-divider"></div>
 
-<script>
+<script type="application/javascript">
     getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=imgtop&case=info", "img_{cfg}");
 </script>

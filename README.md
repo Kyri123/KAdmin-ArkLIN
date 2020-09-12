@@ -49,11 +49,14 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 | `CHMODIntervall` | `in Millisekunden` Intervall für das überschreiben der Rechte (Mindestens: *60000*) |
 | `ShellIntervall` | `in Millisekunden` Intervall für das abrufen der Shell Dateien (Mindestens: *10000*) |
 | `StatusIntervall` | `in Millisekunden` Intervall für das abrufen von dem Status des Servers (Mindestens: *5000*) |
+| `autorestart` | Soll der ArkAdmin Server Automatisch neustarten? (1: an;0: aus) |
+| `autorestart_intervall` | Wie oft soll er neustarten (Mindestens: *1800000*) |
 | `autoupdater_intervall` | `in Millisekunden` Intervall für das abrufen des Automatischen Updates (Mindestens: *120000*) |
 | `autoupdater_branch` | Welche Github Branch soll dafür verwendet werden |
 | `autoupdater_active` | Soll der Updater aktiv sein (1: an;0: aus)  |
 | `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ] |
 | `use_ssh` | Aktiviere/Deaktivere SHH (1: an;0: aus) benötigt konfiguration in ssh.js |
+| `port` | Port den der ArkAdmin-Server verwenden soll |
 
 # ssh.js (Wird benötigt wenn use_ssh an ist)
 
@@ -78,6 +81,7 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 - `PHP` mod_rewrite
 - `PHP` cURL
 - `PHP` MySQLi
+- `PHP` XML
 - `Linux` Root rechte (bzw Rechte um chmod 777, screen & arkmanager zu benutzten)
 - `Linux` Screen
 - `Linux` Arkmanager (https://github.com/arkmanager/ark-server-tools)

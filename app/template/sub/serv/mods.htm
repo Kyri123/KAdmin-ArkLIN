@@ -12,10 +12,10 @@
                 <li class="nav-item" style="margin-right: 5px">
                     <a class="nav-link" id="pills-modinstall-tab" data-toggle="pill" href="#pills-modinstall" role="tab" aria-controls="pills-modinstall" aria-selected="true">{::lang::servercenter::mods::nav::installed}</a>
                 </li>
-                {!ifcmods}
+                {!ifcmods}{permissions??server??{cfg}??mods??add}
                 <li class="nav-item">
                     <a class="nav-link" id="pills-add-tab" data-toggle="pill" href="#pills-add" role="tab" aria-controls="pills-add" aria-selected="false">{::lang::servercenter::mods::nav::add}</a>
-                </li>{/!ifcmods}
+                </li>{/permissions}{/!ifcmods}
             </ul>
         </div>
     </nav>
@@ -68,7 +68,7 @@
                     </li>
                 </ul>
             </div>
-            {!ifcmods}
+            {!ifcmods}{permissions??server??{cfg}??mods??add}
             <div class="tab-pane fade" id="pills-add" role="tabpanel" aria-labelledby="pills-add-tab">
                 <form action="{urls}" method="post" class="tab-pane fade active show" id="pills-Game" role="tabpanel">
                     <div id="form">
@@ -100,7 +100,7 @@
                         </table>
                     </div>
                 </form>
-            </div>{/!ifcmods}
+            </div>{/permissions}{/!ifcmods}
         </div>
     </div>
 </div>

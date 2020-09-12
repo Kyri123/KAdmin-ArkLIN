@@ -14,17 +14,16 @@
 class Template {
     
     private $filepath;
+    private $file_str;
     private $file = null;
     private $debug = false;
     private $load = false;
-    private $file_str = false;
+    private $rfrom = array();
+    private $rto = array();
+    private $rifkey = array();
+    private $rifbool = array();
+
     public $lang = "de_de";
-    public $rfrom = array();
-    public $rto = array();
-    public $rifkey = array();
-    public $rifbool = array();
-    private $langfrom = array();
-    private $langto = array();
 
     /**
      * Template constructor.
@@ -108,41 +107,34 @@ class Template {
 
     /**
      * Verarbeitet Session Ränge
-     * Todo: Am neuen Rängesystem was kommt anpassen
      *
-     * @return null
+     * @param $array
+     * @param $key
      */
-    public function session() {
-        if (!$this->load) {
-            echo "<p>Template not Loaded ' . $this->file_str . ' </p>";
-            return null;
-        }
-        global $_SESSION;
-        $srank = (isset($_SESSION['rank'])) ? $_SESSION['rank'] : 0;
-        if (isset($_SESSION['id'])) {
-            $this->file = preg_replace("/\{issetS\}(.*)\\{\/issetS\}/Uis", '\\1', $this->file);
-            $this->file = preg_replace("/\{!issetS\}(.*)\\{\/!issetS\}/Uis", null, $this->file);
-            // -----------1------------
-            for ($i=0;$i<10;$i++) {
-                if ($srank > $i) {
-                    $this->file = preg_replace("/\{rank".$i."\}(.*)\\{\/rank".$i."\}/Uis", '\\1', $this->file);
-                    $this->file = preg_replace("/\{!rank".$i."\}(.*)\\{\/!rank".$i."\}/Uis", null, $this->file);
-                }
-                else {
-                    $this->file = preg_replace("/\{rank".$i."\}(.*)\\{\/rank".$i."\}/Uis", null, $this->file);
-                    $this->file = preg_replace("/\{!rank".$i."\}(.*)\\{\/!rank".$i."\}/Uis", '\\1', $this->file);
+    private function session($array, $key, $isserver = false) {
+        global $permissions;
+
+        foreach ($array as $k => $v) {
+            $mkey = $key."\?\?$k";
+            if (is_array($v)) {
+                $this->session($v, $mkey, ($isserver || $k == "server"));
+            } else {
+                $exp = $isserver ? (isset(explode("\?\?", $mkey)[2]) ? explode("\?\?", $mkey)[2] : "example") : "example";
+                if (boolval($v) || boolval($permissions["all"]["is_admin"]) || (isset($permissions["server"][$exp]["is_server_admin"]) && boolval($permissions["server"][$exp]["is_server_admin"]))) {
+                    $this->file = preg_replace("/\{".$mkey."\}(.*)\\{\/permissions\}/Uis", '\\1', $this->file);
+                    $this->file = preg_replace("/\{!".$mkey."\}(.*)\\{\/!permissions\}/Uis", null, $this->file);
+                } else {
+                    $this->file = preg_replace("/\{".$mkey."\}(.*){\/permissions\}/Uis", null, $this->file);
+                    $this->file = preg_replace("/\{!".$mkey."\}(.*)\\{\/!permissions\}/Uis", '\\1', $this->file);
                 }
             }
-        } else {
-            $this->file = preg_replace("/\{issetS\}(.*)\\{\/issetS\}/Uis", null, $this->file);
-            $this->file = preg_replace("/\{!issetS\}(.*)\\{\/!issetS\}/Uis", '\\1', $this->file);
         }
     }
 
     /**
      * Ausgabe kann ein eine Variable gelesen werden
      *
-     * @return null
+     * @return string
      */
     public function load_var() {
         if ($this->load) {
@@ -189,20 +181,16 @@ class Template {
      * Finale verarbeitung des Templates (Sprachdateien usw)
      */
     private function final() {
-        $langfile = "app/lang/$this->lang/";
-        if (!file_exists($langfile)) $langfile = "app/lang/de_de/";
+        global $permissions;
+        global $_SESSION;
 
-        $arr = scandir($langfile);
-        foreach ($arr as $item) {
-            if($item != "." && $item != "..") $this->load_xml($langfile.$item);
-        }
-        
+        // verarbeite Sprache, Permissions & Eingaben
         $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
         $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
         $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
+        if(isset($_SESSION["id"]) && is_array($permissions)) $this->session($permissions, "permissions");
 
-        //Todo: nochmals mit der Standartsprachdatei drüber gehen?
-
+        // Wende BB-Codes an
         $this->bb_codes();
     }
 
@@ -212,42 +200,11 @@ class Template {
      * @return string|string[]|null
      */
     private function rlang() {
+        global $langfrom, $langto;
+
         // ersetzte im Template
-        $this->file = str_replace($this->langfrom, $this->langto, $this->file);
+        $this->file = str_replace($langfrom, $langto, $this->file);
         return $this->file;
-    }
-
-    /**
-     * Lade Sprachdateien aus der XML
-     *
-     * @param $langfile
-     */
-    private function load_xml($langfile) {
-        global $helper;
-        // mache XML zu einem Array
-        $xml = simplexml_load_file($langfile);
-        $xml = $helper->str_to_json($helper->json_to_str($xml), true);
-
-        //splite array um ein im Template einzubinden
-        $this->read_xml($xml, "::lang");
-    }
-
-    /**
-     * Verarbeitet die Sprachdateien
-     *
-     * @param $array
-     * @param $key
-     */
-    private function read_xml($array, $key) {
-        foreach ($array as $k => $v) {
-            $mkey = $key."::$k";
-            if (is_array($v)) {
-                $this->read_xml($v, $mkey);
-            } else {
-                array_push($this->langfrom, "{".$mkey."}");
-                array_push($this->langto, nl2br($v));
-            }
-        }
     }
 
     /**
@@ -271,6 +228,7 @@ class Template {
             '#\[td="(.*?)"](.*?)\[\/td\]#si',
             '#\[tr](.*?)\[\/tr\]#si',
             '#\[a="(.*?)"](.*?)\[\/a\]#si',
+            '#\[a="(.*?)" blank](.*?)\[\/a\]#si',
             '#\[ico="(.*?)"]\[\/ico\]#si',
             '#\[img="(.*?)"]\[\/img\]#si'
         );
@@ -291,6 +249,7 @@ class Template {
             "<td class=\"$1\">$2</td>",
             "<td>$1</td>",
             "<a href=\"$1\">$2</a>",
+            "<a href=\"$1\" target=\"_blank\">$2</a>",
             "<i class=\"$1\"></i>",
             "<img src=\"$1\" />"
         );

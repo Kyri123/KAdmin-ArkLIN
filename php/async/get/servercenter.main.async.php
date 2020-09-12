@@ -78,6 +78,8 @@ switch ($case) {
         $tpl->r("action_btntxt", $action_btntxt);
         $tpl->r("action_modal", $action_modal);
 
+        $tpl->r("cfg", $serv->name());
+
         $map_path = "app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
         if (!file_exists($map_path)) $map_path = "app/dist/img/igmap/ark.png";
 
@@ -92,13 +94,7 @@ switch ($case) {
         $action = $_GET["action"];
         $alert->code = 300;
         $i = 0;
-        foreach ($action_opt as $key) {
-            if($key == $action) {
-                $alert->overwrite_title = $action_str[$i];
-                break;
-            }  
-            $i++;
-        }
+        $alert->overwrite_title = "{::lang::php::cfg::action::$action}";
         $alert->overwrite_text = "{::lang::servercenter::infoaction::$action}";
         $alert->overwrite_style = 3;
         if($action != "") echo $alert->re();

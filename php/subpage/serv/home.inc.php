@@ -28,7 +28,7 @@ $playerjs = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->
 $count = (is_countable($playerjs)) ? count($playerjs): false;
 
 // Administrator hinzufügen
-if (isset($_POST["addadmin"])) {
+if (isset($_POST["addadmin"]) && $user->perm("$perm/home/admin_send")) {
     $id = $_POST["id"];
     // SteamID bzw Input prüfen
     if(is_numeric($id) && $id > 700000000) {
@@ -42,18 +42,19 @@ if (isset($_POST["addadmin"])) {
             $resp = $alert->re();
         } else {
             // Melde: Schreib/Lese Fehler
-            $alert->code = 1;
-            $resp = $alert->re();
+            $resp = $alert->rd(1);
         }
     } else {
         // Melde: Input Fehler
-        $alert->code = 2;
-        $resp = $alert->re();
+        $resp = $alert->rd(2);
     }
+}
+elseif(isset($_POST["addadmin"])) {
+    $resp = $alert->rd(99);
 }
 
 // Entfernte von Adminliste
-if (isset($url[4]) && isset($url[5]) && $url[4] == 'rm') {
+if (isset($url[4]) && isset($url[5]) && $url[4] == 'rm' && $user->perm("$perm/home/admin_send")) {
     $id = $url[5];
     $content = file_get_contents($cheatfile);
     // Prüfe ob die ID exsistent ist
@@ -61,13 +62,15 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == 'rm') {
         $content = str_replace($id, null, $content);
         if (file_put_contents($cheatfile, $content)) {
             // Melde: Erfolgreich
-            $resp = $alert->rd(101, 3);
+            $resp = $alert->rd(101);
         } else {
             // Melde: Lese/Schreib Fehler
-            $alert->code = 1;
-            $resp = $alert->re();
+            $resp = $alert->rd(1);
         }
     }
+}
+elseif(isset($_POST["addadmin"])) {
+    $resp = $alert->rd(99);
 }
 
 
@@ -79,7 +82,7 @@ if (!is_array($player_json)) $player_json = array();
 if (!is_array($tribe_json)) $tribe_json = array();
 
 // Liste Admins auf
-if ($serv->isinstalled()) {
+if ($serv->isinstalled() && $user->perm("$perm/home/admin_show")) {
 
     if (!file_exists($cheatfile)) file_put_contents($cheatfile, "");
     $file = file($cheatfile);
@@ -179,7 +182,6 @@ $page_tpl->r("userlist_admin", $userlist_admin);
 $page_tpl->r("adminlist_admin", $adminlist_admin);
 $page_tpl->r("whitelist_admin", $adminlist_admin);
 $page_tpl->r("pick_whitelist", $serv->cfg_check("exclusivejoin"));
-$page_tpl->session();
 $panel = $page_tpl->load_var();
 
 ?>

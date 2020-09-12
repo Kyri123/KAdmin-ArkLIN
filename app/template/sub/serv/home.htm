@@ -12,19 +12,19 @@
                 <li class="nav-item" style="margin-right: 5px">
                     <a class="nav-link active" id="pills-llog-tab" data-toggle="pill" href="#pills-llog" role="tab" aria-controls="pills-llog" aria-selected="true" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')">{::lang::servercenter::home::nav::llog}</a>
                 </li>
-                {rcon}{lchatactive}
+                {rcon}{lchatactive}{permissions??server??{cfg}??home??livechat_show}
                 <li class="nav-item" style="margin-right: 5px">
                     <a class="nav-link" id="pills-lchat-tab" data-toggle="pill" href="#pills-lchat" role="tab" aria-controls="pills-lchat" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')">{::lang::servercenter::home::nav::lchat}</a>
-                </li>{/lchatactive}
-                <li class="nav-item">
+                </li>{/permissions}{/lchatactive}
+                {permissions??server??{cfg}??home??rcon_show}<li class="nav-item">
                     <a class="nav-link" id="pills-rcon-tab" data-toggle="pill" href="#pills-rcon" role="tab" aria-controls="pills-rcon" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')">{::lang::servercenter::home::nav::rcon}</a>
-                </li>{/rcon} {installed}{!ifcadmin}
-                <li class="nav-item">
+                </li>{/permissions}{/rcon} {installed}{!ifcadmin}
+                {permissions??server??{cfg}??home??admin_show}<li class="nav-item">
                     <a class="nav-link" id="pills-admins-tab" data-toggle="pill" href="#pills-admins" role="tab" aria-controls="pills-admins" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::admin}</a>
-                </li>{/!ifcadmin}{!ifwhitelist}
-                <li class="nav-item">
+                </li>{/permissions}{/!ifcadmin}{!ifwhitelist}
+                {permissions??server??{cfg}??home??whitelist_show}<li class="nav-item">
                     <a class="nav-link" id="pills-whitel-tab" data-toggle="pill" href="#pills-whitel" role="tab" aria-controls="pills-whitel" aria-selected="false" onclick="setdisplay('logbar', 'none'); setdisplay('hidebar', 'none')">{::lang::servercenter::home::nav::whitel}</a>
-                </li>{/!ifwhitelist}{/installed}
+                </li>{/permissions}{/!ifwhitelist}{/installed}
             </ul>
             <div class="form-inline">
                 <div class="form-inline">
@@ -110,7 +110,7 @@
                 </table>
                 </div>
 
-                {rcon}{lchatactive}
+                {rcon}{lchatactive}{permissions??server??{cfg}??home??livechat_show}
                 <div class="tab-pane fade" id="pills-lchat" role="tabpanel" aria-labelledby="pills-lchat-tab">
                     <table class="table table-striped mb-0">
                         <tr class="bg-dark">
@@ -150,8 +150,9 @@
                             </td>
                         </tr>
                     </table>
-                    </div>{/lchatactive}
+                    </div>{/permissions}{/lchatactive}
 
+                    {permissions??server??{cfg}??home??rcon_show}
                     <div class="tab-pane fade" id="pills-rcon" role="tabpanel" aria-labelledby="pills-rcon-tab">
                         <table class="table table-striped mb-0">
                             <tr class="bg-dark">
@@ -172,7 +173,7 @@
                                                 <input type="text" id="rcon_text" class="form-control form-control-sm" placeholder="{::lang::servercenter::home::section::rcon::command_placeholder}">
                                                 <div class="input-group-append">
                                                     <select class="form-control form-control-sm" onchange="sel_in_input('#rcon_text', '#' + this.id)" id="selrocn">
-                                                        <option value="">{::lang::servercenter::home::section::admin::default}</option>
+                                                        <option value="">{::lang::allg::default::select}</option>
                                                         <option value="destroywilddinos">destroywilddinos</option>
                                                         <option value="saveworld">saveworld</option>
                                                         <option value="giveitemtoplayer <PlayerID> <ItemName> <QTY> <Quality> <True/False>">giveitemtoplayer </option>
@@ -207,7 +208,10 @@
                                 </td>
                             </tr>
                         </table>
-                        </div>{/rcon} {installed}{!ifcadmin}
+                        </div>{/permissions}{/rcon}
+
+                        {installed}{!ifcadmin}
+                        {permissions??server??{cfg}??home??admin_show}
                         <div class="tab-pane fade" id="pills-admins" role="tabpanel" aria-labelledby="pills-admins-tab">
                             <table class="table table-striped mb-0">
                                 <tr class="bg-dark">
@@ -226,7 +230,7 @@
                                                     <input type="text" name="id" class="form-control form-control-sm" placeholder="SteamID" id="steamid">
                                                     <div class="input-group-append">
                                                         <select class="form-control form-control-sm" onchange="sel_in_input('#steamid', '#' + this.id)" id="charsel">
-                                                            <option value="">{::lang::servercenter::home::section::admin::default}</option>
+                                                            <option value="">{::lang::allg::default::select}</option>
                                                             {userlist_admin}
                                                         </select>
                                                     </div>
@@ -243,8 +247,9 @@
                             <ul class="list-group">
                                 {adminlist_admin}
                             </ul>
-                            </div>{/!ifcadmin}{/installed} {installed}{!ifwhitelist}
+                            </div>{/permissions}{/!ifcadmin}{/installed} {installed}{!ifwhitelist}
 
+                            {permissions??server??{cfg}??home??whitelist_show}
                             <div class="tab-pane fade" id="pills-whitel" role="tabpanel" aria-labelledby="pills-whitel-tab">
 
                                 <table class="table table-striped mb-0">
@@ -274,7 +279,7 @@
                                     </tr>
                                 </table>
                                 <ul class="list-group" id="whitelist"></ul>
-                                </div>{/!ifwhitelist}{/installed}
+                                </div>{/permissions}{/!ifwhitelist}{/installed}
 
                             </div>
                         </div>

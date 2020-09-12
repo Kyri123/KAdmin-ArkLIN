@@ -9,12 +9,12 @@
 */
 
 // hide errors
+$stime = microtime(true);
 include('php/inc/config.inc.php');
 include('php/class/helper.class.inc.php');
 $helper = new helper();
 $ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
 $site_name = $content = null;
-
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 //error_reporting(E_ALL);
@@ -68,12 +68,8 @@ include('php/class/steamAPI.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/jobs.class.inc.php');
 
-// Sende Daten an Server
-$array["dbhost"] = $dbhost;
-$array["dbuser"] = $dbuser;
-$array["dbpass"] = $dbpass;
-$array["dbname"] = $dbname;
-$helper->savejson_create($array, "arkadmin_server/config/mysql.json");
+// include inz
+include('php/inc/template_preinz.inc.php');
 
 //create class_var
 $alert = new alert();
@@ -93,6 +89,34 @@ $API_Key = $ckonfig['apikey'];
 $servlocdir = $ckonfig['servlocdir'];
 $expert = $user->expert();
 $jobs = new jobs();
+$all = $helper->file_to_json("app/json/serverinfo/all.json");
+
+// lade Permissions
+$permissions_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
+// todo: 1.2.0 remove $check_json["checked"]
+if(
+    !file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json") &&
+    $check_json["checked"] &&
+    isset($_SESSION["id"])
+) $helper->savejson_create($permissions_default, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
+$permissions = (isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json("app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json("app/json/user/permissions.tpl.json");
+$permissions = array_replace_recursive($permissions_default, $permissions);
+
+// gehe Rechte der Server durch
+$servers_perm = array();
+$file = 'app/json/serverinfo/all.json';
+$server = $all["cfgs_only_name"];
+foreach ($server as $item) {
+    $perm_file = file_get_contents("app/json/user/permissions_servers.tpl.json");
+    $perm_file = str_replace("{cfg}", $item, $perm_file);
+    $default = $helper->str_to_json($perm_file);
+    if(isset($permissions["server"][$item])) {
+        $permissions["server"][$item] = array_replace_recursive($default[$item], $permissions["server"][$item]);
+    }
+    else {
+        $permissions["server"] += $default;
+    }
+}
 
 //Prüfe ob der Benutzer gebant ist
 if ($user->read("ban") > 0) {
@@ -112,7 +136,7 @@ if(isset($_SESSION["id"])) {
 }
 
 if (isset($_SESSION["id"])) {
-    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE (`id`=\''.$_SESSION["id"].'\')';
+    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`=\''.$_SESSION["id"].'\'';
     $mycon->query($query);
 } 
 
@@ -150,11 +174,20 @@ if ($page == "login" || $page == "registration") {
     if ($page == "login") $pagename = '{::lang::php::index::pagename_login}';
 }
 
-//tmp Force Update
-$btns .= '
-    <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-info rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
+//Force Update
+if($user->perm("all/force_update")) $btns .= '
+    <a href="http://'.$ip.':'.$webserver['config']['port'].'?update=true&code='.md5($ip).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
         <span class="icon text-white-50">
             <i class="fa fa-cloud-download"></i>
+        </span>
+    </a>
+';
+
+//Force Restart
+if($user->perm("all/force_restart")) $btns .= '
+    <a href="http://'.$ip.':'.$webserver['config']['port'].'?restart=true&code='.md5($ip).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_restart_text}" data-original-title="{::lang::allg::force_restart}">
+        <span class="icon text-white-50">
+            <i class="fas fa-undo"></i>
         </span>
     </a>
 ';
@@ -169,7 +202,6 @@ $tpl_h->r('pagename', $pagename);
 $tpl_b->r('aa_version', $version);
 $tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path_webhelper)) ? intval(file_get_contents($path_webhelper)) : time()), true));
 $tpl_b->r('user', $user->read("username"));
-$tpl_b->r('rank', $user->read("rang"));
 $tpl_b->r('content', $content);
 $tpl_b->r('site_name', $site_name);
 $tpl_b->r('btns', "<div class=\"d-sm-inline-block\">$btns</div>");
@@ -177,9 +209,9 @@ $tpl_b->r('urltop', $urltop);
 $tpl_b->r('g_alert', $g_alert);
 $tpl_b->rif ('if_g_alert', $g_alert_bool);
 $tpl_b->r("langlist", get_lang_list());
+$tpl_b->r("rank", "<span class='text-".((!$user->perm("allg/is_admin")) ? "success" : "danger")."'>{::lang::php::userpanel::".((!$user->perm("allg/is_admin")) ? "user" : "admin")."}</span>");
 
 // Server Traffics
-$all = $helper->file_to_json("app/json/serverinfo/all.json");
 $tpl_b->r('count_server', count($all["cfgs"]));
 $tpl_b->r('curr_server', $all["onserv"]);
 $tpl_b->r('off_server', (count($all["cfgs"]) - $all["onserv"]));
@@ -196,6 +228,8 @@ $ifnot_traffic = false;
 $check = array("changelog", "404");
 if (in_array($page, $check)) $ifnot_traffic = true;
 $tpl_b->rif ("ifchangelog", $ifnot_traffic);
+
+$tpl_b->r("ltime", round((microtime(true) - $stime), 2));
 
 // Site Builder
 if ($page != "login" && $page != "registration" && $page != "crontab" && isset($_SESSION['id']) && file_exists("app/check/done")) {

@@ -91,9 +91,9 @@ class alert extends helper {
         $this->tpl->r("mt", (($this->overwrite_mt >= 0) ? 'mt-'.$this->overwrite_mt : 'mt-0'));
         $this->tpl->r("ml", (($this->overwrite_ml >= 0) ? 'ml-'.$this->overwrite_ml : 'ml-0'));
 
-        $s1 = ($this->overwrite_style == 1) ? true : false;
-        $s2 = ($this->overwrite_style == 2) ? true : false;
-        $s3 = ($this->overwrite_style == 3) ? true : false;
+        $s1 = $this->overwrite_style == 1;
+        $s2 = $this->overwrite_style == 2;
+        $s3 = $this->overwrite_style == 3;
 
         $this->tpl->rif ("style1", $s1);
         $this->tpl->rif ("style2", $s2);
@@ -123,8 +123,8 @@ class alert extends helper {
     /**
      * Ersetzte ein Wert ({...}) im String des Alerts
      *
-     * @param  string $from - Wert der Ersetzt ersetzt werden soll
-     * @param  string $to - Wert der gesetzt werden soll
+     * @param  string $from - [Pflicht] Wert der Ersetzt ersetzt werden soll
+     * @param  string $to - [Pflicht] Wert der gesetzt werden soll
      * @return bool
      */
     public function r(String $from, String $to) {
@@ -132,18 +132,18 @@ class alert extends helper {
         array_push($this->to, $to);
         return true;
     }
-    
+
     /**
      * Gibt direkt ein Alert zurück (Code muss gesetzt sein)
      *
-     * @param  int $code - Alert nummer (alert.htm)
-     * @param  int $style - Style nummer (1-3)
-     * @param  int $mt - margin-top in Pixel
-     * @param  int $mr - margin-right in Pixel 
-     * @param  int $mb - margin-bottom in Pixel 
-     * @param  int $ml - margin-left in Pixel 
-     * @param  string $icon - überschreibe das Icon 
-     * @param  string $color - überschreibe die Farbe (alle boostrap classe ...-XXX)
+     * @param int $code - [Pflicht] Alert nummer (alert.htm)
+     * @param int $style - [Optional] Style nummer (1-3)
+     * @param int $mt - [Optional] margin-top in Pixel
+     * @param int $mr - [Optional] margin-right in Pixel
+     * @param int $mb - [Optional] margin-bottom in Pixel
+     * @param int $ml - [Optional] margin-left in Pixel
+     * @param String|null $icon - [Optional] überschreibe das Icon
+     * @param String|null $color - [Optional] überschreibe die Farbe (alle boostrap classe ...-XXX)
      * @return mixed
      */
     public function rd(Int $code, Int $style = 3, Int $mt = -1, Int $mr = -1, Int $mb = 3, Int $ml = -1, String $icon = null, String $color = null) {

@@ -8,6 +8,11 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if(!$user->perm("config/show")) {
+    header("Location: /401"); exit;
+}
+
 // Vars
 $tpl_dir = 'app/template/core/konfig/';
 $tpl_dir_all = 'app/template/all/';
@@ -17,11 +22,14 @@ $pagename = "{::lang::php::config::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 $syslpath = "remote/steamcmd";
 $workshop = "$syslpath/steamapps/workshop/appworkshop_346110.acf";
+$resp = null;
 $limit = $helper->file_to_json("app/json/panel/aas_min.json", true);
+$maxi = $helper->file_to_json("app/json/panel/aas_max.json", true);
 
 $ppath = "php/inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
 $wpath = 'arkadmin_server/config/server.json';
+$tpath = 'app/data/template.cfg';
 $array = $helper->file_to_json($ppath, true);
 if (!isset($array["clusterestart"])) $array["clusterestart"] = 0;
 if (!isset($array["uninstall_mod"])) $array["uninstall_mod"] = 0;
@@ -38,19 +46,33 @@ $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 
 // Arkmanager.cfg
-if (isset($_POST["savearkmanager"])) {
+if (isset($_POST["savearkmanager"]) && $user->perm("config/am_save")) {
     $content = ini_save_rdy($_POST["text"]);
     if (file_put_contents($apath, $content)) {
-        $alert->code = 102;
-        $resp .= $alert->re();
+        $resp .= $alert->rd(102);
     } else {
-        $alert->code = 1;
-        $resp .= $alert->re();
+        $resp .= $alert->rd(1);
     }
+}
+elseif(isset($_POST["savearkmanager"])) {
+    $resp .= $alert->rd(99);
+}
+
+// Template.cfg
+if (isset($_POST["savetemplate"]) && $user->perm("config/edit_default")) {
+    $content = ini_save_rdy($_POST["text"]);
+    if (file_put_contents($tpath, $content)) {
+        $resp .= $alert->rd(102);
+    } else {
+        $resp .= $alert->rd(1);
+    }
+}
+elseif(isset($_POST["savetemplate"])) {
+    $resp .= $alert->rd(99);
 }
 
 //remove cache
-if (isset($url[2]) && isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamcmd') {
+if (isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamcmd' && $user->perm("config/scmd_clear")) {
     if(file_exists($workshop)) {
         file_put_contents($workshop, "\"AppWorkshop\" {}");
         header("Location: /config"); exit;
@@ -59,14 +81,18 @@ if (isset($url[2]) && isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamc
         header("Location: /config"); exit;
     }
 }
+elseif(isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamcmd') {
+    $resp .= $alert->rd(99);
+}
 
 // save Webhelper
-if (isset($_POST["savewebhelper"])) {
+if (isset($_POST["savewebhelper"]) && $user->perm("config/aa_save")) {
     $a_key = $_POST["key"];
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");
     $filter_link = array("servlocdir","arklocdir");
 
+    // Prüfe minimalwerte
     $allok = true;
     for ($i=0;$i<count($a_key);$i++) {
         if(isset($limit[$a_key[$i]])) {
@@ -75,6 +101,7 @@ if (isset($_POST["savewebhelper"])) {
         $jsons[$a_key[$i]] = $a_value[$i];
     }
 
+    // Speichern
     $json_str = $helper->json_to_str($jsons);
     if($allok) {
         if (file_put_contents($wpath, $json_str)) {
@@ -87,9 +114,12 @@ if (isset($_POST["savewebhelper"])) {
         $resp .= $alert->rd(2);
     }
 }
+elseif(isset($_POST["savewebhelper"])) {
+    $resp .= $alert->rd(99);
+}
 
 //Panel CFG
-if (isset($_POST["savepanel"])) {
+if (isset($_POST["savepanel"]) && $user->perm("config/panel_save")) {
     $a_key = $_POST["key"];
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");
@@ -132,33 +162,15 @@ if (isset($_POST["savepanel"])) {
         $resp .= $alert->re();
     }
 }
+elseif(isset($_POST["savepanel"])) {
+    $resp .= $alert->rd(99);
+}
 
 $panelconfig = $helper->file_to_json($ppath, true);
 $option_panel = null;
 foreach($panelconfig as $key => $value) {
     $list = new Template("opt.htm", $tpl_dir);
     $list->load();
-
-    $find = array(
-        "uninstall_mod",
-        "install_mod",
-        "clusterestart",
-        "servlocdir",
-        "arklocdir",
-        "apikey",
-        "show_err",
-        "steamcmddir"
-    );
-    $repl = array(
-        "{::lang::php::config::key::uninstallmod}",
-        "{::lang::php::config::key::installmod}",
-        "{::lang::php::config::key::clusterestart}",
-        "{::lang::php::config::key::servlocdir}",
-        "{::lang::php::config::key::arklocdir}",
-        "Steam-API Key <a href='https://steamcommunity.com/dev/apikey' target='_blank'>({::lang::php::config::key::apikey_found_here})</a>",
-        "<b>[Debug]</b> {::lang::php::config::key::show_err}",
-        "{::lang::php::config::key::steamcmddir}"
-    );
 
     $bool = array("uninstall_mod", "install_mod", "clusterestart", "expert", "show_err");
     if (in_array($key, $bool)) {
@@ -171,24 +183,21 @@ foreach($panelconfig as $key => $value) {
             $list->r("true", "null");
         }
         $list->r("key", $key);
-        $key = str_replace($find, $repl, $key);
-        $list->r("keym", $key);
+        $list->r("keym", "panel::$key");
     }
     elseif (is_numeric($value)) {
         $list->rif ("ifbool", false);
         $list->rif ("ifnum", true);
         $list->rif ("iftxt", false);
         $list->r("key", $key);
-        $key = str_replace($find, $repl, $key);
-        $list->r("keym", $key);
+        $list->r("keym", "panel::$key");
         $list->r("value", $value);
     } else {
         $list->rif ("ifbool", false);
         $list->rif ("ifnum", false);
         $list->rif ("iftxt", true);
         $list->r("key", $key);
-        $key = str_replace($find, $repl, $key);
-        $list->r("keym", $key);
+        $list->r("keym", "panel::$key");
         $list->r("value", $value);
     }
     $option_panel .= $list->load_var();
@@ -196,9 +205,12 @@ foreach($panelconfig as $key => $value) {
 
 $servercfg = $helper->file_to_json($wpath, true);
 if(!isset($servercfg["port"])) $servercfg["port"] = 30000;
+if(!isset($servercfg["autorestart"])) $servercfg["autorestart"] = 1;
 if(!isset($servercfg["autoupdater_active"])) $servercfg["autoupdater_active"] = 0;
 if(!isset($servercfg["autoupdater_branch"])) $servercfg["autoupdater_branch"] = "master";
 if(!isset($servercfg["autoupdater_intervall"])) $servercfg["autoupdater_intervall"] = 60000;
+if(!isset($servercfg["autorestart_intervall"])) $servercfg["autorestart_intervall"] = 1800000;
+
 $option_server = null;
 foreach($servercfg as $key => $value) {
     $list = new Template("opt.htm", $tpl_dir);
@@ -207,10 +219,12 @@ foreach($servercfg as $key => $value) {
     $list->rif ("ifnum", is_numeric($value));
     $list->rif ("iftxt", !is_numeric($value));
     $list->rif("ifmin", isset($limit[$key]));
+    $list->rif("ifmax", isset($maxi[$key]));
     $list->r("key", $key);
-    $list->r("keym", $key);
+    $list->r("keym", "aa::$key");
     $list->r("value", $value);
     $list->r("min", ((isset($limit[$key])) ? $limit[$key] : 0));
+    $list->r("max", ((isset($maxi[$key])) ? $maxi[$key] : 0));
     $option_server .= $list->load_var();
 }
 
@@ -233,14 +247,14 @@ else {
 }
 
 
-$content_arkmanager = file_get_contents($apath);
 $tpl->r("steamcmd_info", (($steamcmd_exsists) ? null : $alert->rd(306, 3, 0, 0, 0, 0)));
 $tpl->r("info_CMD", $alert->rd(307, 3, 0, 0, 0, 0));
 $tpl->rif("steamcmdsys", $steamcmd_exsists);
 $tpl->rif("steamfile", $steamcmd_workshop_exsists);
 $tpl->r("cache_link", $cachelink);
 $tpl->r("cache_text", $cachetext);
-$tpl->r("arkmanager", $content_arkmanager);
+$tpl->r("arkmanager", (file_exists($apath)) ? file_get_contents($apath) : "");
+$tpl->r("templatecfg", (file_exists($tpath)) ? file_get_contents($tpath) : "");
 $tpl->r("option_panel", $option_panel);
 $tpl->r('webhelper', $option_server);
 $tpl->r("resp", $resp);

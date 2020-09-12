@@ -75,6 +75,7 @@ for ($i=0;$i<count($dir);$i++) {
 
             $json_all['maxserv']++;
             $json_all['cfgs'][] = $servdata->name().'.cfg';
+            $json_all['cfgs_only_name'][] = $servdata->name();
         }
     }
 }

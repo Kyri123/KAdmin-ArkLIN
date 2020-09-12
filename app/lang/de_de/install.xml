@@ -31,25 +31,25 @@
 
         <info>
             <curl>[b]Für Ubuntu Linux[/b]
-                    Folge diesen Link: [a="https://linuxconfig.org/how-to-enable-and-disable-php-curl-module-with-apache-on-ubuntu-linux"]Klick Mich![/a]
+                    Folge diesen Link: [a="https://linuxconfig.org/how-to-enable-and-disable-php-curl-module-with-apache-on-ubuntu-linux" blank]Klick Mich![/a]
 
                     [b]Für Debian[/b]
-                    Folge diesen Link: [a="https://stackoverflow.com/questions/20073676/how-do-i-install-php-curl-on-linux-debian/20073810"]Klick Mich![/a]
+                    Folge diesen Link: [a="https://stackoverflow.com/questions/20073676/how-do-i-install-php-curl-on-linux-debian/20073810" blank]Klick Mich![/a]
 
                     [b]Für Plesk Benutzer[/b]
-                    Folge diesen Link:[a="https://support.plesk.com/hc/en-us/articles/360002194613-PHP-application-in-Plesk-cannot-use-cURL-CURL-is-not-available-on-your-web-server"]Klick Mich![/a]</curl>
+                    Folge diesen Link:[a="https://support.plesk.com/hc/en-us/articles/360002194613-PHP-application-in-Plesk-cannot-use-cURL-CURL-is-not-available-on-your-web-server" blank]Klick Mich![/a]</curl>
 
             <mod_rewrite>[b]Für Ubuntu Linux[/b]
-                    Folge diesen Link: [a="http://www.iasptk.com/enable-apache-mod_rewrite-ubuntu-14-04-lts/"]Klick Mich![/a]
+                    Folge diesen Link: [a="http://www.iasptk.com/enable-apache-mod_rewrite-ubuntu-14-04-lts/" blank]Klick Mich![/a]
 
                     [b]Für Debian[/b]
-                    Folge diesen Link: [a="https://www.digitalocean.com/community/tutorials/how-to-rewrite-urls-with-mod-rewrite-for-apache-on-debian-9"]Klick Mich![/a]</mod_rewrite>
+                    Folge diesen Link: [a="https://www.digitalocean.com/community/tutorials/how-to-rewrite-urls-with-mod-rewrite-for-apache-on-debian-9" blank]Klick Mich![/a]</mod_rewrite>
             
             <os>[b]Ohje...[/b]
                     Da du Windows benutzt muss ich dich leider Enttäuschen. Das Panel ist für Linux Benutzer gebaut...</os>
             
             <am>[b]Für Linux Allgemein[/b]
-                    Folge diesen Link: [a="https://github.com/FezVrasta/ark-server-tools"]Klick Mich![/a]</am>
+                    Folge diesen Link: [a="https://github.com/FezVrasta/ark-server-tools" blank]Klick Mich![/a]</am>
             
             <screen>[b]Ohje...[/b]
                 Bitte installiere screen mit : [b]apt install screen[/b], [b]yum install screen[/b] oder [b]apt-get install screen[/b]</screen>
@@ -58,10 +58,10 @@
                 Bitte starte den ArkAdmin-Server (Alle infos unter Readme) oder stelle diesen richtig ein!</aa>
             
             <mysqli>[b]Ohje...[/b]
-                Deiner PHP-Version fehlt das Modul MySQLi... Bitte folge diesen Link: [a="https://stackoverflow.com/questions/35424982/how-can-i-enable-the-mysqli-extension-in-php-7"]Klick Mich![/a]</mysqli>
+                Deiner PHP-Version fehlt das Modul MySQLi... Bitte folge diesen Link: [a="https://stackoverflow.com/questions/35424982/how-can-i-enable-the-mysqli-extension-in-php-7" blank]Klick Mich![/a]</mysqli>
             
             <php>[b]ACHTUNG![/b]
-                Der Webserver hat nicht die PHP-Version 7.3 oder höher... Bitte folge diesen Link: [a="https://www.it-swarm.dev/de/php/php-versionen-auf-kommandozeile-ubuntu-16.04-umstellen/831459516/"]Klick Mich![/a]</php>
+                Der Webserver hat nicht die PHP-Version 7.3 oder höher... Bitte folge diesen Link: [a="https://www.it-swarm.dev/de/php/php-versionen-auf-kommandozeile-ubuntu-16.04-umstellen/831459516/" blank]Klick Mich![/a]</php>
         </info>
 
         <step0>
@@ -107,7 +107,7 @@
                 Stelle alles ein wie du willst
                 Sorge bitte dafür dass der Webserver zugriff die die Ordner hat!
                 [a="https://blog.ha-com.com/2011/07/11/open_basedir-php-apache-documentroot/"]open_basedir Allgemein Apache[/a] | [a="https://blog.ha-com.com/2011/07/11/open_basedir-php-apache-documentroot/"]open_basedir Plesk[/a]
-                Den Steam API key bekommst du [a="https://steamcommunity.com/dev/apikey"]HIER![/a]</text>
+                Den Steam API key bekommst du [a="https://steamcommunity.com/dev/apikey" blank]HIER![/a]</text>
             <form>
                 <title>Panel Einstellen</title>
                 <uninstallmods>Deinstalliere Mods beim Entfernen</uninstallmods>
@@ -125,7 +125,7 @@
             <text>[b]Crontab[/b]
                 Stelle sicher dass der ArkAdmin-Server richtig eingestellt ist.
                 Wenn der Crontab abgerufen wird wird der Abschluss der Installation freigeben [hr][b]Regestrierung[/b]
-                Erstelle nun ein Account: [a="/registration"]Klick mich![/a]
+                Erstelle nun ein Account: [a="/registration" blank]Klick mich![/a]
                 Dein Code lautet: [b]{code}[/b]</text>
         </step4>
 

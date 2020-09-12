@@ -13,12 +13,13 @@
  */
 class server extends Rcon {
 
-    private $serv;
     private $serverfound;
     private $cfg;
     private $ini;
-    private $inipath;
-    private $loadedcluster = false;
+
+    public $loadedcluster = false;
+    public $serv;
+    public $inipath;
     public $cluster_data;
 
     /**
@@ -435,7 +436,7 @@ class server extends Rcon {
      * @return bool
      */
     public function ini_remove($key) {
-        $bool = (isset($this->ini[$key])) ? true : false;
+        $bool = isset($this->ini[$key]);
         if($bool) unset($this->ini[$key]);
         return $bool;
     }

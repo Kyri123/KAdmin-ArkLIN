@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// Prüfe Rechte wenn nicht wird die seite nicht gefunden!
+if (!$user->perm("$perm/backup/show")) {
+    header("Location: /401");
+    exit;
+}
+
 $pagename = '{::lang::php::sc::page::backup::pagename}';
 $page_tpl = new Template('backup.htm', 'app/template/sub/serv/');
 $page_tpl->load();
@@ -22,28 +28,28 @@ $dir_array = dirToArray($serv->dir_backup());
 $y = 0; $list = null;
 
 // entferne ein Backup verzeichnis
-if (isset($url[4]) && isset($url[5]) && $url[4] == "removemain") {
+if (isset($url[4]) && isset($url[5]) && $url[4] == "removemain" && $user->perm("$perm/backup/remove")) {
     $key = $url[5];
     $path = $serv->dir_backup()."/".$key;
     if (file_exists($path)) {
         if (del_dir($path)) {
             // Melde: Abschluss
-            $alert->code = 101;
-            $resp = $alert->re();
+            $resp = $alert->rd(101);
         } else {
             // Melde: Lese/Schreib fehler
-            $alert->code = 1;
-            $resp = $alert->re();
+            $resp = $alert->rd(1);
         }
     } else {
         // Melde: Lese/Schreib fehler
-        $alert->code = 1;
-        $resp = $alert->re();
+        $resp = $alert->rd(1);
     }
+}
+elseif(isset($url[4]) && isset($url[5]) && $url[4] == "removemain") {
+    $resp = $alert->rd(99);
 }
 
 // entferne ein Backup
-if (isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove") {
+if (isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove" && $user->perm("$perm/backup/remove")) {
     $key = $url[5];
     $i = $url[6];
     $path = $serv->dir_backup()."/".$key."/".$dir_array[$key][$i];
@@ -51,22 +57,22 @@ if (isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove") {
     if (file_exists($path)) {
         if (unlink($path)) {
             // Melde: Abschluss
-            $alert->code = 101;
-            $resp = $alert->re();
+            $resp = $alert->rd(101);
         } else {
             // Melde: Lese/Schreib fehler
-            $alert->code = 1;
-            $resp = $alert->re();
+            $resp = $alert->rd(1);
         }
     } else {
         // Melde: Lese/Schreib fehler
-        $alert->code = 1;
-        $resp = $alert->re();
+        $resp = $alert->rd(1);
     }
+}
+elseif(isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove") {
+    $resp = $alert->rd(99);
 }
 
 // Spiele Backup ein
-if (isset($_POST["playthisin"])) {
+if (isset($_POST["playthisin"]) && $user->perm("$perm/backup/playin")) {
     $key = $_POST["key"];
     $i = $_POST["i"];
     $opt = array();
@@ -84,8 +90,7 @@ if (isset($_POST["playthisin"])) {
         $cont = true;
     } catch (Exception $e) {
         // Melde: Datei konnte nicht Entpackt werden
-        $alert->code = 17;
-        $resp = $alert->re();
+        $resp = $alert->rd(17);
         $cont = false;
     }
     if ($cont && $state == 0) {
@@ -133,13 +138,14 @@ if (isset($_POST["playthisin"])) {
         }
         rmdir($path);
         // Melde: Backup eingespielt
-        $alert->code = 106;
-        $resp = $alert->re();
+        $resp = $alert->rd(106);
     } else {
         // Melde: Server muss Offline sein
-        $alert->code = 7;
-        $resp = $alert->re();
+        $resp = $alert->rd(7);
     }
+}
+elseif(isset($_POST["playthisin"])) {
+    $resp = $alert->rd(99);
 }
 
 
@@ -190,7 +196,6 @@ if ($list == null) {
 }
 
 $page_tpl->r("backups_liste", $list);
-$page_tpl->session();
 $panel = $page_tpl->load_var();
 
 

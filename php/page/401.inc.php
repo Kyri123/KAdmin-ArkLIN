@@ -8,14 +8,16 @@
  * *******************************************************************************************
 */
 
-if (isset($_COOKIE["id"]) && isset($_COOKIE["validate"])) {
-    $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`validate`='".$_COOKIE["validate"]."')";
-    $mycon->query($query);
-    setcookie("id", "", time() - 3600);
-    setcookie("validate", "", time() - 3600);
-}
 
-session_destroy();
-//header('Location: /de/home');
-//exit;
+// Vars
+$tpl_dir = 'app/template/core/error/';
+$setsidebar = false;
+
+$urls = NULL;
+$tpl = new Template("401.htm", $tpl_dir);
+$tpl->load();
+
+$content = $tpl->load_var();
+$pagename = "{::lang::php::err404::maintitle} 401";
+$pageicon = "<i class=\"fas fa-exclamation-triangle text-danger\" aria-hidden=\"true\"></i>";
 ?>

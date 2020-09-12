@@ -20,57 +20,61 @@ switch ($case) {
         // def. Vars
         $errorMSG = "";
         $cfg = $_POST["cfg"];
+        $_POST["custom"] = saveshell($_POST["custom"]);
         $serv = new server($cfg);
         $para = $_POST["para"];
         $para_txt = (isset($_POST["txt"])) ? $_POST["txt"] : "";
         if ($para == null) $para[0] = null;
         $paraend = null;
 
-        // Aktion
-        if (empty($_POST["action"]) && $_POST["custom"] == "") {
-            $alert->code = 2;
-            $errorMSG = $alert->re();
-        } else {
-            $action = $_POST["action"];
-        }
-        
-        // erstelle parameter [Type=0]
-        if (count($para) > 1) {
-            for ($i=0;$i<count($para);$i++) {
-                $paraend .= ' '.$para[$i];
+        if($user->perm("server/$cfg/actions")) {
+            // Aktion
+            if (empty($_POST["action"]) && $_POST["custom"] == "") {
+                $errorMSG = $alert->rd(2);
+            } else {
+                $action = saveshell($_POST["action"]);
             }
-            $paraend .= ' ';
-        }
-        elseif (count($para) <1) {
-            $paraend = null;
-        } else {
-            $paraend = ' '.$para[0].' ';
-        }
 
-        // erstelle parameter [Type=1]
-        for($i=0;$i<count($para_txt);$i++) {
-            $input = $para_txt[$i]["input"];
-            $para_input = $para_txt[$i]["para"];
-            if($input != "") $paraend .= " $para_input=\"$input\" ";
-            if($input != "" && $para_input == "--beta") $paraend .= " --validate ";
-        }
-
-        // überschreibe ggf die action liste
-        $send_shell = ($_POST["custom"] == "") ? $action.$paraend : $_POST["custom"];
-
-        //sichere shell etwas
-        $find = array("|", ";", "&", "\n", "\r");
-        $send_shell = str_replace($find, null, $send_shell);
-
-        // sende command
-        $server = new server($cfg);
-        $json = json_decode(file_get_contents('app/json/serverinfo/'.$cfg.'.json'));
-        $force = (isset($_POST["force"])) ? true : false;
-        if($errorMSG == "") {
-            if (!$serv->send_action($send_shell, $force)) {
-                $alert->code = 13;
-                $errorMSG = $alert->re();
+            // erstelle parameter [Type=0]
+            if (count($para) > 1) {
+                for ($i=0;$i<count($para);$i++) {
+                    $paraend .= ' '.$para[$i];
+                }
+                $paraend .= ' ';
             }
+            elseif (count($para) <1) {
+                $paraend = null;
+            } else {
+                $paraend = ' '.$para[0].' ';
+            }
+
+            // erstelle parameter [Type=1]
+            for($i=0;$i<count($para_txt);$i++) {
+                $input = $para_txt[$i]["input"];
+                $para_input = $para_txt[$i]["para"];
+                if($input != "") $paraend .= " $para_input=\"$input\" ";
+                if($input != "" && $para_input == "--beta") $paraend .= " --validate ";
+            }
+
+            // überschreibe ggf die action liste
+            $send_shell = ($_POST["custom"] == "") ? $action.$paraend : $_POST["custom"];
+
+            //sichere shell etwas
+            $find = array("|", ";", "&", "\n", "\r");
+            $send_shell = str_replace($find, null, $send_shell);
+
+            // sende command
+            $server = new server($cfg);
+            $json = json_decode(file_get_contents('app/json/serverinfo/'.$cfg.'.json'));
+            $force = (isset($_POST["force"])) ? true : false;
+            if($errorMSG == "") {
+                if (!$serv->send_action($send_shell, $force)) {
+                    $errorMSG = $alert->rd(13);
+                }
+            }
+        }
+        else {
+            $errorMSG = $alert->rd(99);
         }
 
         if (empty($errorMSG)){
