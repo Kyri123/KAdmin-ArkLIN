@@ -6,7 +6,7 @@
 
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
-                {show}{!ifckonfig}
+                {show}{!ifckonfig} {permissions??server??{cfg}??konfig??gus}
                 <!-- GUS -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -16,7 +16,7 @@
                         <a class="dropdown-item" data-toggle="pill" href="#pills-GameUserStetting" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-GameUserStetting-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
-                </li>
+                </li>{/permissions} {permissions??server??{cfg}??konfig??game}
 
                 <!-- Game -->
                 <li class="nav-item dropdown">
@@ -27,7 +27,7 @@
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Game" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Game-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
-                </li>
+                </li>{/permissions} {permissions??server??{cfg}??konfig??engine}
 
                 <!-- Engine -->
                 <li class="nav-item dropdown">
@@ -38,7 +38,7 @@
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Engine" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Engine-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
-                </li>{/!ifckonfig}{/show}
+                </li>{/permissions}{/!ifckonfig}{/show} {permissions??server??{cfg}??konfig??arkmanager}
 
                 <!-- Arkmanager -->
                 <li class="nav-item dropdown">
@@ -49,7 +49,7 @@
                         <a class="dropdown-item" data-toggle="pill" href="#pills-AM" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-AM-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
-                </li>
+                </li>{/permissions}
             </ul>
         </div>
     </nav>
@@ -58,9 +58,7 @@
 
     <div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
         <div class="tab-content" id="pills-tabContent">
-            {show}{!ifckonfig}
-
-
+            {show}{!ifckonfig} {permissions??server??{cfg}??konfig??gus}
             <!-- GUS - Normal -->
             <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel">
                 <div id="form">
@@ -112,7 +110,7 @@
                     <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
                     <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
                     </div>
-            </form>
+            </form>{/permissions} {permissions??server??{cfg}??konfig??game}
 
 
             <!-- GAME - Normal -->
@@ -166,7 +164,7 @@
                     <input type="hidden" name="cfg" id="cfg_game" value="{cfg}">
                     <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
                     </div>
-            </form>
+            </form>{/permissions} {permissions??server??{cfg}??konfig??engine}
 
 
             <!-- Engine - Normal -->
@@ -220,7 +218,7 @@
                     <input type="hidden" name="cfg" id="cfg_engine" value="{cfg}">
                     <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
                     </div>
-            </form>{/!ifckonfig}{/show}
+            </form>{/permissions}{/!ifckonfig}{/show} {permissions??server??{cfg}??konfig??arkmanager}
 
             <!-- AA - NORMAL -->
             <div class="tab-pane fade {ifckonfig}show active{/ifckonfig} {!show}show active{/!show}" id="pills-AM" role="tabpanel">
@@ -305,7 +303,7 @@
                     </div>
 
 
-                </div>
+                </div>{/permissions}
             </div>
             </div>
 

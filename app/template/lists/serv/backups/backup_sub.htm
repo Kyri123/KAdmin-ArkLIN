@@ -9,27 +9,28 @@
         </tr>
     </table>
     <div class="right">
-            <a href="javascript:void();" class="btn btn-info btn-sm" data-toggle="modal" data-target="#{rndb}">
-                    <span class="icon text-white">
+        {permissions??server??{cfg}??backup??playin}
+        <a href="javascript:void();" class="btn btn-info btn-sm" data-toggle="modal" data-target="#{rndb}">
+            <span class="icon text-white">
                         <i class="fas fa-play"></i>
                     </span>
-            </a>
+        </a>{/permissions} {permissions??server??{cfg}??backup??remove}
 
-            <a href="javascript:void();" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{rndb}">
-                    <span class="icon text-white">
+        <a href="javascript:void();" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{rndb}">
+            <span class="icon text-white">
                         <i class="fas fa-times" aria-hidden="true"></i>
                     </span>
-            </a>
+        </a>{/permissions} {permissions??server??{cfg}??backup??download}
 
-            <a href="{durl}" class="btn btn-dark btn-sm" download="">
-                    <span class="icon text-white">
+        <a href="{durl}" class="btn btn-dark btn-sm" download="">
+            <span class="icon text-white">
                         <i class="fas fa-download" aria-hidden="true"></i>
                     </span>
-            </a>
+        </a>{/permissions}
     </div>
 </li>
 <!-- Modal -->
-
+{permissions??server??{cfg}??backup??remove}
 <form class="modal fade" id="del{rndb}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
@@ -51,8 +52,7 @@
             </div>
         </div>
     </div>
-</form>
-
+</form>{/permissions} {permissions??server??{cfg}??backup??playin}
 <form class="modal fade" id="{rndb}" tabindex="-1" method="post" action="/servercenter/{cfg}/backups">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
@@ -107,4 +107,4 @@
             </div>
         </div>
     </div>
-</form>
+</form>{/permissions}
