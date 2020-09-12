@@ -60,7 +60,7 @@ elseif(isset($_POST["savearkmanager"])) {
 
 // Template.cfg
 if (isset($_POST["savetemplate"]) && $user->perm("config/edit_default")) {
-    $content = ini_save_rdy($_POST["ini"]);
+    $content = ini_save_rdy($_POST["text"]);
     if (file_put_contents($tpath, $content)) {
         $resp .= $alert->rd(102);
     } else {
