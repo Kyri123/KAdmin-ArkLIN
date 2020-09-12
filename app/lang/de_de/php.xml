@@ -153,6 +153,9 @@
                 <edit>Darf Bearbeiten</edit>
                 <add>Darf Hinzufügen</add>
                 <show_info>Darf Informationen sehen</show_info>
+                <toggle>Darf Jobs An- bzw Ausschalten</toggle>
+                <edit_default>Darf die Default Arkmanager.cfg bearbeiten</edit_default>
+                <show_default>Darf die Default Arkmanager.cfg sehen</show_default>
             </permissions>
         </userpanel>
 

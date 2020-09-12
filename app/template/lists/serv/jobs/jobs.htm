@@ -3,27 +3,28 @@
         <div class="col-12">
             <i class="fas fa-briefcase rounded -align-left position-absolute text-{toggle_icon_color}" style="height: 50px; width: 50px; font-size: 50px;"></i> {empty}
             <div class="ml-auto float-right  btn-group">
+                {permissions??server??{cfg}??jobs??edit}
                 <a class="btn btn-primary btn-sm mr-1" href="#modal-edit" data-toggle="modal" data-target="#edit{rnd}">
                     <span class="icon text-white">
                         <i class="fas fa-edit"></i>
                     </span>
-                </a>
+                </a>{/permissions} {permissions??server??{cfg}??jobs??toggle}
                 <a href="/servercenter/{cfg}/jobs/toggle/{i}" class="btn btn-{toggle_btn_color} btn-sm mr-1">
                     <span class="icon text-white">
                                     <i class="{toggle_icon}" ></i>
                                 </span>
-                </a>
+                </a>{/permissions}{permissions??server??{cfg}??jobs??remove}
                 <a class="btn btn-danger btn-sm" href="#modal-del" data-toggle="modal" data-target="#delete{rnd}">
                     <span class="icon text-white">
                         <i class="fa fa-trash"></i>
                     </span>
-                </a>
+                </a>{/permissions}
             </div>{/empty}
             <div style="margin-left: 60px;"><b>{title}</b> {empty}{::lang::servercenter::list::jobs::intervall}{/empty}<br />{empty}<span class="font-weight-light" style="font-size: 15px;"> <b>{action}</b> {parameter} | {::lang::servercenter::list::jobs::next}</span>&nbsp;{/empty}&nbsp;</div>
         </div>
     </div>
 </li>
-
+{permissions??server??{cfg}??jobs??edit}
 <!-- Modal Edit -->
 <form class="modal fade" id="edit{rnd}" tabindex="-1" method="post" action="/servercenter/{cfg}/jobs" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
@@ -111,8 +112,7 @@
             </div>
         </div>
     </div>
-</form>
-
+</form>{/permissions} {permissions??server??{cfg}??jobs??remove}
 <!-- Modal Delete -->
 <div class="modal fade" id="delete{rnd}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
@@ -135,4 +135,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>{/permissions}

@@ -51,6 +51,7 @@
             "show": 1,
             "add": 0,
             "remove": 0,
+            "toggle": 0,
             "edit": 0
         }
     }

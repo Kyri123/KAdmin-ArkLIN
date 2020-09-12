@@ -4,21 +4,23 @@
             <!-- Jobs -->
             <div class="tab-pane fade show active" id="pills-jobs" role="tabpanel" aria-labelledby="pills-jobs-tab">
                 <div>
-                    <form action="/servercenter/{cfg}/jobs" method="post" class="p-0 mb-0">
+                    <form {permissions??server??{cfg}??jobs??add}action="/servercenter/{cfg}/jobs" method="post" {/permissions} class="p-0 mb-0">
                         <table class="table table-striped mb-0">
                             <tr class="bg-dark">
                                 <th colspan="2" class="p-0">
                                     <div class="list-group-item bg-dark">
                                         <h4 class="m-0">{::lang::servercenter::jobs::nav::jobs}</h4>
+                                        {permissions??server??{cfg}??jobs??add}
                                         <div class="right">
                                             {update_btn}<a data-toggle="tooltip" data-placement="top" title="{::lang::servercenter::jobs::tooltip_update}" href="{update_url}" class="btn btn-sm btn-info"><i class="fa fa-refresh" aria-hidden="true"></i></a>{/update_btn}
                                             {backup_btn}
                                             <a data-toggle="tooltip" data-placement="top" title="{::lang::servercenter::jobs::tooltip_backup}" href="{backup_url}" class="btn btn-sm btn-info"><i class="fas fa-file-archive" aria-hidden="true"></i></a>{/backup_btn}
-                                        </div>
+                                        </div>{/permissions}
                                     </div>
                                 </th>
                             </tr>
 
+                            {permissions??server??{cfg}??jobs??add}
                             <tr>
                                 <td class="p-2">
                                     <div class="form-group row m-0">
@@ -83,7 +85,7 @@
                             </tr>
 
                         </table>
-                        <button type="submit" class="btn btn-primary mb-0" name="addjob" style="width:100%">{::lang::servercenter::jobs::section::allg::btn_save}</button>
+                        <button type="submit" class="btn btn-primary mb-0" name="addjob" style="width:100%">{::lang::servercenter::jobs::section::allg::btn_save}</button>{/permissions}
                     </form>
                     <ul class="list-group" id="livelog">
                         {list}
