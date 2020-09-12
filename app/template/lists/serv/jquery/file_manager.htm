@@ -3,17 +3,17 @@
     <td>{ico}</td>
     <td>{name}</td>
     <td>
-        {!re}
+        {!re} {permissions??server??{cfg}??filebrowser??show_info}
         <a class="btn btn-info btn-sm" data-toggle="collapse" href="#M{id}" role="button" aria-expanded="false" aria-controls="collapseExample">
             <i class="fa fa-info" aria-hidden="true"></i>
-        </a>{/!re} {dir}
+        </a>{/permissions}{/!re} {dir}
         <a href="javascript:void(0)" onclick="loadfile('{surl}')" class="btn btn-sm btn-secondary">{re}<i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>{/re}{!re}<i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>{/!re}</a>{/dir}
-        {!dir}
-        <a href="{durl}" download class="btn btn-sm btn-success"><i class="nav-icon fa fa-download" aria-hidden="true"></i></a>{/!dir} {!re} {!dir} <a href="javascript:void(0)" onclick="removeline('{durl}', '#{id}')" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>{/!dir}{/!re}
+        {!dir} {permissions??server??{cfg}??filebrowser??download}
+        <a href="{durl}" download class="btn btn-sm btn-success"><i class="nav-icon fa fa-download" aria-hidden="true"></i></a>{/permissions}{/!dir} {!re} {!dir} {permissions??server??{cfg}??filebrowser??remove}
+        <a href="javascript:void(0)" onclick="removeline('{durl}', '#{id}')" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>{/permissions}{/!dir}{/!re}
     </td>
 </tr>
-
-<!-- Modal -->
+{permissions??server??{cfg}??filebrowser??show_info}
 <tr class="collapse" id="M{id}">
     <td colspan="4" class="p-0">
         <table class="table table-bordered table-hover table-light m-0">
@@ -33,4 +33,4 @@
 </tr>
 <tr class="collapse" id="M{id}">
     <td colspan="4" class="p-0" style="height: 5px;"></td>
-</tr>
+</tr>{/permissions}

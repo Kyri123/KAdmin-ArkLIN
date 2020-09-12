@@ -152,6 +152,7 @@
                 <download>Darf Runterladen</download>
                 <edit>Darf Bearbeiten</edit>
                 <add>Darf Hinzufügen</add>
+                <show_info>Darf Informationen sehen</show_info>
             </permissions>
         </userpanel>
 

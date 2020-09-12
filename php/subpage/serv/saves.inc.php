@@ -24,7 +24,7 @@ $resp = null;
 $c_pl = $c_t = $w_t = 0;
 
 // erstelle Zip download
-if (isset($_POST["zip"])) {
+if (isset($_POST["zip"]) && $user->perm("$perm/saves/download")) {
     if(!file_exists("app/downloads")) mkdir("app/downloads");
     $zipfile = "app/downloads/savegames.tar";
     
@@ -75,9 +75,12 @@ if (isset($_POST["zip"])) {
         $resp = $alert->rd(2);
     }
 }
+elseif(isset($_POST["zip"])) {
+    $resp = $alert->rd(99);
+}
 
 // Entferne Savegame
-if (isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
+if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$perm/saves/remove")) {
 
     // Setzte Vars
     $file_name = $url[5];
@@ -167,6 +170,9 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
             exit;
         }
     }
+}
+elseif(isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
+    $resp = $alert->rd(99);
 }
 
 

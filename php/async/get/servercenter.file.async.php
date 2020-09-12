@@ -44,6 +44,7 @@ switch ($case) {
                 $fileinfos = pathinfo( $target);
                 $filesize = (is_dir($target)) ? null : bitrechner(filesize($target));
                 
+                $list->r("cfg", $cfg);
                 $list->r("size", $filesize);
                 $list->r("dirname", $fileinfos["dirname"]);
                 $list->r("id", md5($i));
@@ -73,6 +74,7 @@ switch ($case) {
                 if(is_array($exp)) if(is_countable($exp)) if(count($exp) > 1) unset($exp[(count($exp)-2)]);
                 $imp = implode("/", $exp);
 
+                $list->r("cfg", $cfg);
                 $list->r("name", $item);
                 $list->r("details", null);
                 $list->r("surl", $imp);
@@ -101,24 +103,29 @@ switch ($case) {
 
 
     case "del":
-        $file = $_GET["file"];
-        $size = strlen($file)-1;
-        $file=substr($file,1,$size); 
-        if(file_exists($file)) {
-            if(!is_dir($file)) {
-                if(unlink($file)) {
-                    $re["code"] = 200;
+        if($user->perm("server/$cfg/filebrowser/remove")) {
+            $file = $_GET["file"];
+            $size = strlen($file)-1;
+            $file=substr($file,1,$size); 
+            if(file_exists($file)) {
+                if(!is_dir($file)) {
+                    if(unlink($file)) {
+                        $re["code"] = 200;
+                    }
+                    else {
+                        $re["code"] = 1;
+                    }
                 }
                 else {
-                    $re["code"] = 1;
+                    $re["code"] = 33;
                 }
             }
             else {
-                $re["code"] = 33;
+                $re["code"] = 1;
             }
         }
         else {
-            $re["code"] = 1;
+            $re["code"] = 99;
         }
         echo json_encode($re);
     break;
