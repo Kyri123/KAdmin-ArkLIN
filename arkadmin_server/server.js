@@ -15,7 +15,7 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.4.1.0";
+const version = "0.4.1.1";
 const mysql = require("mysql");
 const http = require('http');
 const url = require('url');
@@ -23,6 +23,7 @@ const updater = require("./packages/src/updater");
 const ip = require("ip");
 const md5 = require('md5');
 const logger = require('./packages/src/logger');
+const { isString } = require("util");
 
 var config_ssh = sshK.login();
 global.config = [];
@@ -48,6 +49,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         if (config.autoupdater_intervall === undefined) config.autoupdater_intervall = 120000;
         if (config.autorestart === undefined) config.autorestart = 1;
         if (config.autorestart_intervall === undefined) config.autorestart_intervall = 1800000;
+        if (config.screen_name === undefined && isString(config.screen_name)) config.screen_name = "ArkAdmin";
 
         // prüfe Minimal werte
         if (config.WebIntervall < 5000) process.exit(4);
@@ -198,19 +200,13 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
 // Code Meldungen
 process.on('exit', function(code) {
-    con.destroy();
-
     // Exit: Konfiguration enthält Default informationen
     if (code == 2) {
-        logger.log("Beendet: Bitte stelle die Konfiguration ein! (config/server.json)");
-        logger.log("Beendet: ArkAdmin-Server \n");
         return console.log(`\x1b[91mBitte stelle die Konfiguration ein! (config/server.json)`);
     }
 
     // Exit: Es konnte zu SSH2 keine Verbingung aufgebaut werden
     if (code === 3) {
-        logger.log("Beendet: Keine Verbindung zum SSH2 Server");
-        logger.log("Beendet: ArkAdmin-Server \n");
         return console.log(`\x1b[91mKeine Verbindung zum SSH2 Server`);
     }
 
@@ -232,9 +228,6 @@ process.on('exit', function(code) {
             parameter = "autoupdater_intervall";
             wert = 120000;
         }
-
-        logger.log("Beendet: Minimal Werte unterschritten: " + parameter + " darf nicht kleiner als " + wert + " sein!");
-        logger.log("Beendet: ArkAdmin-Server \n");
         return console.log("\x1b[91mMinimal Werte unterschritten: " + parameter + " darf nicht kleiner als " + wert + " sein!");
     }
 });
