@@ -198,7 +198,7 @@ class userclass extends helper
             // gebe bool aus
             return (
                 ($found && boolval($value)) ||
-                (($key[0] != "server") ? false : boolval($this->permissions["server"][$key[1]]["is_server_admin"])) ||
+                (($key[0] != "server") ? false : (isset($key[1]) ? boolval($this->permissions["server"][$key[1]]["is_server_admin"]) : false)) ||
                 boolval($this->permissions["all"]["is_admin"])
             );
         } else {

@@ -15,7 +15,7 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.4.1.1";
+const version = "1.2.0";
 const mysql = require("mysql");
 const http = require('http');
 const url = require('url');
@@ -107,6 +107,9 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                                 logger.log("Gestartet: Jobs & Commands");
                                 global.iscon = true;
                                 console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Mysql: \x1b[32mVerbindung aufgebaut - Shell/Jobs Aktiviert');
+
+                                // Sende Informationen der Server an die Datenbank
+                                status.sendcheck(true);
                             } else {
                                 logger.log("Fehler: Mysql hat keine Verbindung aufgebaut");
                                 global.iscon = false;
@@ -125,6 +128,13 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                 status.sendcheck();
             }
         }, config.StatusIntervall);
+
+        // Sende Informationen an die Datenbank (Aller 30 Minuten)
+        setInterval(() => {
+            if (iscon) {
+                status.sendcheck(true);
+            }
+        }, 1800000);
         console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Panel (Server): \x1b[36mRun');
 
         //handle Crontab
@@ -158,7 +168,6 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         // Webserver für Abrufen des Server Status
         http.createServer((req, res) => {
             let response = url.parse(req.url, true).query;
-            var hcode = 0;
 
             if (response.update) {
                 if (response.code === md5(ip.address())) {

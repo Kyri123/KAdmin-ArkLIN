@@ -15,3 +15,4 @@ DROP TABLE IF EXISTS `ArkAdmin_players`;
 create table ArkAdmin_players (total_id int auto_increment, server text null, id bigint null, SteamId bigint null, SteamName text null, CharacterName text null, Level bigint null, ExperiencePoints bigint null, TotalEngramPoints bigint null, FirstSpawned boolean null, FileCreated bigint null, FileUpdated bigint null, TribeId text null, TribeName longtext null, constraint ArkAdmin_players_pk primary key (total_id));
 DROP TABLE IF EXISTS `ArkAdmin_tribe`;
 create table ArkAdmin_tribe (total_id int auto_increment, server text null, Id bigint null, tribeName text null, OwnerId bigint null, FileCreated bigint null, FileUpdated bigint null, Members longtext null, constraint ArkAdmin_tribe_pk primary key (total_id));
+create table ArkAdmin_statistiken (id int auto_increment, time bigint null, serverinfo_json longtext null, server text null, constraint statistiken_pk primary key (id));

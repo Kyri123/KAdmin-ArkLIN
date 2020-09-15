@@ -14,7 +14,7 @@ const shell = require('./shell');
 const Gamedig = require('gamedig');
 const ip = require("ip");
 
-exports.sendcheck = () => {
+exports.sendcheck = (mysql_status = false) => {
     var arkmanager_folder = config.AAPath + "/instances/";
     // Scanne Instancen
     fs.readdirSync(arkmanager_folder).forEach(file => {
@@ -25,7 +25,6 @@ exports.sendcheck = () => {
             var name = file.replace(".cfg", "");
             var cfg = ini.parse(fs.readFileSync(arkmanager_folder + file, 'utf-8'));
             var pid_file = cfg.arkserverroot + '/ShooterGame/Saved/.arkserver-' + name + '.pid';
-            var server_file = cfg.arkserverroot + '/ShooterGame/ShooterGame/Binaries/Linux/ShooterGameServer';
             var ip_addresse = ip.address();
 
             // Default werte
@@ -41,7 +40,7 @@ exports.sendcheck = () => {
 
             // Prüfe ob der Server läuft und hole PID
             data.run = (fs.existsSync(pid_file)) ? require('is-running')(fs.readFileSync(pid_file, 'utf-8')) : false;
-            data.pid = (data.run) ? fs.readFileSync(pid_file) : 0;
+            data.pid = (data.run) ? fs.readFileSync(pid_file, 'utf-8') : 0;
 
             // versuche verbindung zum Server aufzubauen
             if (data.run) {
@@ -67,16 +66,31 @@ exports.sendcheck = () => {
                     version_split = version_split.replace(" ", "");
                     version_split = version_split.replace("v", "");
                     data.version = version_split;
-
-                    fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
                 }).catch((error) => {
-                    fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
+                    if(error) process.exit(0);
                 });
-            } else {
-                fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
             }
 
-
+            if(mysql_status) {
+                // Schreibe in die Datenbank zu weiterverarbeitung
+                var query_lf = 'SELECT * FROM `ArkAdmin_statistiken` WHERE `server` = \'' + name + '\' ORDER BY `time`';
+                con.query(query_lf, (error, results) => {
+                    if(error) process.exit(0);
+                    // Wenn mehr als 335 Datensätze bestehen Updaten
+                    if(results.length > 335) {
+                        var update = 'UPDATE `ArkAdmin_statistiken` SET `time` = \'' + Math.floor(Date.now() / 1000) + '\', `serverinfo_json` = \'' + JSON.stringify(data) + '\' WHERE `id` = \'' + results[0].id + '\'';
+                        con.query(update);
+                    }
+                    // Wenn mehr weniger 335 Datensätze bestehen Erstelle neue Datensätze
+                    else {
+                        var create = 'INSERT INTO `ArkAdmin_statistiken` VALUES (null, \'' + Math.floor(Date.now() / 1000) +'\', \'' + JSON.stringify(data) + '\', \'' + name + '\');';
+                        con.query(create);
+                    }
+                });
+            }
+            else {
+                fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
+            }
         }
     });
 };
