@@ -15,6 +15,8 @@ include('php/class/helper.class.inc.php');
 $helper = new helper();
 $ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
 $site_name = $content = null;
+
+// Deaktiviere Error anzeige
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 //error_reporting(E_ALL);

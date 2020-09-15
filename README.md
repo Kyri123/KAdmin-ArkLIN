@@ -63,11 +63,11 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 
 | Eigenschaften | Wert | 
 | :--- | :--- |
-| `host` | SSH2 Host (Bsp. `localhost/127.0.0.1`) |
+| `host` | SSH2 Host (Bsp. `127.0.0.1`) |
 | `username` | SSH2 Benutzername (Bsp. `root`) |
 | `password` | SSH2 Passwort  |
 | `port` | SSH2 port (Standart: `22`) |
-| `key_path` | Pfad zum SSH-Key (Erstelle einen mit: `ssh-keygen -t rsa`) |
+| `key_path` | Pfad zum SSH-Key |
 
 # Sprache Installieren
 
@@ -76,9 +76,9 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 
 # Benötigt
 
-- `Node.JS` Version => 12.0.0
+- `Node.JS` Version >= 12.0.0
 - `Node.JS` NPM
-- `PHP` Version => 7.3
+- `PHP` Version >= 7.3
 - `PHP` mod_rewrite
 - `PHP` cURL
 - `PHP` MySQLi
