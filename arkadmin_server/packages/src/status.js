@@ -58,6 +58,7 @@ exports.sendcheck = (mysql_status = false) => {
                     data.cfg = name;
                     data.ServerMap = state.map;
                     data.ServerName = state.name;
+                    data.ping = state.ping;
 
                     // Hole Version
                     var version_split = state.name.split("-")[1];
@@ -87,33 +88,51 @@ exports.sendcheck = (mysql_status = false) => {
                     else {
                         fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
                     }
-                    return true;
                 }).catch((error) => {
-                    if(error) process.exit(0);
-                });
-            }
-
-            if(mysql_status) {
-                // Schreibe in die Datenbank zu weiterverarbeitung
-                var query_lf = 'SELECT * FROM `ArkAdmin_statistiken` WHERE `server` = \'' + name + '\' ORDER BY `time`';
-                con.query(query_lf, (error, results) => {
-                    if(error) process.exit(0);
-                    // Wenn mehr als 335 Datensätze bestehen Updaten
-                    if(results.length > 335) {
-                        var update = 'UPDATE `ArkAdmin_statistiken` SET `time` = \'' + Math.floor(Date.now() / 1000) + '\', `serverinfo_json` = \'' + JSON.stringify(data) + '\' WHERE `id` = \'' + results[0].id + '\'';
-                        con.query(update);
+                    if(mysql_status) {
+                        // Schreibe in die Datenbank zu weiterverarbeitung
+                        var query_lf = 'SELECT * FROM `ArkAdmin_statistiken` WHERE `server` = \'' + name + '\' ORDER BY `time`';
+                        con.query(query_lf, (error, results) => {
+                            if(error) process.exit(0);
+                            // Wenn mehr als 335 Datensätze bestehen Updaten
+                            if(results.length > 335) {
+                                var update = 'UPDATE `ArkAdmin_statistiken` SET `time` = \'' + Math.floor(Date.now() / 1000) + '\', `serverinfo_json` = \'' + JSON.stringify(data) + '\' WHERE `id` = \'' + results[0].id + '\'';
+                                con.query(update);
+                            }
+                            // Wenn mehr weniger 335 Datensätze bestehen Erstelle neue Datensätze
+                            else {
+                                var create = 'INSERT INTO `ArkAdmin_statistiken` VALUES (null, \'' + Math.floor(Date.now() / 1000) +'\', \'' + JSON.stringify(data) + '\', \'' + name + '\');';
+                                con.query(create);
+                            }
+                        });
                     }
-                    // Wenn mehr weniger 335 Datensätze bestehen Erstelle neue Datensätze
                     else {
-                        var create = 'INSERT INTO `ArkAdmin_statistiken` VALUES (null, \'' + Math.floor(Date.now() / 1000) +'\', \'' + JSON.stringify(data) + '\', \'' + name + '\');';
-                        con.query(create);
+                        fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
                     }
                 });
             }
             else {
-                fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
+                if(mysql_status) {
+                    // Schreibe in die Datenbank zu weiterverarbeitung
+                    var query_lf = 'SELECT * FROM `ArkAdmin_statistiken` WHERE `server` = \'' + name + '\' ORDER BY `time`';
+                    con.query(query_lf, (error, results) => {
+                        if(error) process.exit(0);
+                        // Wenn mehr als 335 Datensätze bestehen Updaten
+                        if(results.length > 335) {
+                            var update = 'UPDATE `ArkAdmin_statistiken` SET `time` = \'' + Math.floor(Date.now() / 1000) + '\', `serverinfo_json` = \'' + JSON.stringify(data) + '\' WHERE `id` = \'' + results[0].id + '\'';
+                            con.query(update);
+                        }
+                        // Wenn mehr weniger 335 Datensätze bestehen Erstelle neue Datensätze
+                        else {
+                            var create = 'INSERT INTO `ArkAdmin_statistiken` VALUES (null, \'' + Math.floor(Date.now() / 1000) +'\', \'' + JSON.stringify(data) + '\', \'' + name + '\');';
+                            con.query(create);
+                        }
+                    });
+                }
+                else {
+                    fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
+                }
             }
-            return true;
         }
     });
 };
