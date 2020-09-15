@@ -263,4 +263,3 @@ $tpl->r("resp", $resp);
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-edit\" aria-hidden=\"true\"></i>";
 $btns = null;
-?>

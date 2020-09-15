@@ -46,4 +46,3 @@ $page_tpl->r('cfg' ,$serv->name());
 $page_tpl->r('path' ,$path);
 $page_tpl->r('resp' ,$resp);
 $panel = $page_tpl->load_var();
-?>

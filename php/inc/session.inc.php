@@ -161,4 +161,3 @@ $tpl_register->r('4', $a4);
 $tpl_login->r('bg', '/app/dist/img/backgrounds/side.jpg');
 $tpl_login->r('meld', $resp); 
 
-?>

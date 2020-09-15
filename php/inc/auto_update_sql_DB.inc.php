@@ -81,4 +81,3 @@ $helper->savejson_create($array, "arkadmin_server/config/mysql.json");
 
 $check_json["checked"] = true;
 $helper->savejson_create($check_json, "app/data/sql_check.json");
-?>

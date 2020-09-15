@@ -120,4 +120,3 @@ $tpl->r('serv_list', $serv_list);
 
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fas fa-tachometer-alt\" aria-hidden=\"true\"></i>";
-?>

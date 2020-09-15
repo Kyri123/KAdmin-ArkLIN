@@ -160,4 +160,3 @@ for ($i=0;$i<count($dir);$i++) {
         $container = $json_user = $json_tribe = null;
     }
 }
-?>

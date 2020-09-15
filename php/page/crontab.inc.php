@@ -54,4 +54,3 @@ include("$subpage/allgemein/cluster.inc.php");
 include("$subpage/allgemein/steamapi.inc.php");
 
 $tpl_crontab->r('re', $re);
-?>

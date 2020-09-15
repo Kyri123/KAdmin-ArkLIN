@@ -35,4 +35,3 @@ function get_lang_list() {
     }
     return $re;
 }
-?>

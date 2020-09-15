@@ -173,4 +173,3 @@ $tpl->r('list', $list);
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-book\" aria-hidden=\"true\"></i>";
 $site_name = 'Changelogs';
-?>

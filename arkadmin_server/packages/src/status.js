@@ -75,6 +75,8 @@ exports.sendcheck = () => {
             } else {
                 fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
             }
+
+
         }
     });
 };

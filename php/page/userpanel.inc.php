@@ -231,4 +231,3 @@ if($user->perm("userpanel/create_code")) $btns = '<a href="#" class="btn btn-suc
             </span>
             <span class="text">{::lang::php::userpanel::btn-regcode}</span>
         </a>';
-?>

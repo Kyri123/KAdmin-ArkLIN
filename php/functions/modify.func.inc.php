@@ -394,4 +394,3 @@ function saveshell($command) {
     return str_replace($forbitten, null, $command);
 }
 
-?>

@@ -708,4 +708,3 @@ class data_server {
     public $connect;
 }
 
-?>

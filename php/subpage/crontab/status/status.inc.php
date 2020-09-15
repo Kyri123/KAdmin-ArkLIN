@@ -81,4 +81,3 @@ for ($i=0;$i<count($dir);$i++) {
 }
 
 $helper->savejson_create($json_all, $file);
-?>

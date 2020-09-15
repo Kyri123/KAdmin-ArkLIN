@@ -305,4 +305,4 @@ $page_tpl->r('list', $jobs);
 $panel = $page_tpl->load_var();
 
 
-?>
+

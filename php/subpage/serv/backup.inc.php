@@ -199,4 +199,3 @@ $page_tpl->r("backups_liste", $list);
 $panel = $page_tpl->load_var();
 
 
-?>

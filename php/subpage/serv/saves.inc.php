@@ -376,4 +376,3 @@ $panel = $page_tpl->load_var();
 
 $player = null;
 
-?>

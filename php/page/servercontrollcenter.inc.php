@@ -237,4 +237,3 @@ if($user->perm("servercontrollcenter/create")) $btns = '<a href="#" class="btn b
             </span>
             <span class="text">{::lang::php::scc::btn_addserver}</span>
         </a>';
-?>

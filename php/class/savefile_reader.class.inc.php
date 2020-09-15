@@ -262,4 +262,3 @@ class player_json_helper {
 }
 
 
-?>

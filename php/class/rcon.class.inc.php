@@ -114,4 +114,3 @@ class Rcon {
         return $packet_pack;
     }
 }
-?>

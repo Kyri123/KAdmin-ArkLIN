@@ -22,4 +22,3 @@ if(isset($replace) && is_countable($replace)) foreach($replace as $k => $v) $ale
 
 echo $alert->re();
 $mycon->close();
-?>

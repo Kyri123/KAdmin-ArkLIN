@@ -184,4 +184,3 @@ class alert extends helper {
     }
 }
 
-?>

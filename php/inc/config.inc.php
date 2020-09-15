@@ -48,4 +48,3 @@ $clustertype = array(
   "Slave",
   "Master"
 );
-?>

@@ -86,4 +86,3 @@ $path = "app/json/steamapi";
 
 $helper->savejson_create($player_array, "$path/user.json");
 $helper->savejson_create($mod_array, "$path/mods.json");
-?>

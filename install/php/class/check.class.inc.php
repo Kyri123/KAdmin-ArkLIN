@@ -70,23 +70,23 @@ class check extends helper {
             case "curl":
                 $this->state = (in_array('curl', get_loaded_extensions())) ? 2 : 0;
             break;
-            //________________________________________________//
+
             // Prüfe Rewrite aktiv
             case "mod_rewrite":
                 $this->state = (array_key_exists('HTTP_MOD_REWRITE', $_SERVER)) ? 2 : 0;
             break;
-            //________________________________________________//
+
             // Prüfe Linux
             case "os":
                 $this->state = (!(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')) ? 2 : 0;
             break;
-            //________________________________________________//
+
             // Prüfe Arkmanager
             case "am":
                 $check = shell_exec(sprintf("which %s", escapeshellarg("arkmanager")));
                 $this->state = (!empty($check)) ? 2 : 0;
             break;
-            //________________________________________________//
+
             // Prüfe ArkAdmin-Server
             case "aa":
                 $webserver = json_decode(file_get_contents("arkadmin_server/config/server.json") ,true);
@@ -94,24 +94,22 @@ class check extends helper {
                 $header = @get_headers("http://127.0.0.1:".$webserver['port']."/");
                 $this->state = (is_array($header)) ? 2 : 0;
             break;
-            //________________________________________________//
+
             // Prüfe Screen
             case "screen":
                 $check = shell_exec(sprintf("which %s", escapeshellarg("screen")));
                 $this->state = (!empty($check)) ? 2 : 0;
             break;
-            //________________________________________________//
+
             // Prüfe Mysql Klasse
             case "mysqli":
                 $this->state = (class_exists("mysqli")) ? 2 : 0;
             break;
-            //________________________________________________//
+
             // Prüfe PHP version
             case "php":
                 if (PHP_VERSION_ID >= 70300) {
                     $this->state = 2;
-                //} elseif(PHP_VERSION_ID >= 70000) {
-                    //$this->state = 1;
                 } else {
                     $this->state = 0;
                 }
@@ -134,4 +132,3 @@ class check extends helper {
 }
 
 
-?>

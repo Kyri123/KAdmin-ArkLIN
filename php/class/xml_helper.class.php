@@ -68,4 +68,3 @@ class xml_helper extends helper {
 }
 
 
-?>

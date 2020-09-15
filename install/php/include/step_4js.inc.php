@@ -9,7 +9,6 @@
 */
 
 chdir('../../../');
-include("php/functions/php70-72.inc.php");
 include('php/inc/config.inc.php');
 
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
@@ -43,5 +42,5 @@ $tpl = new Template("content.htm", "app/template/universally/default/");
 $tpl->load();
 $tpl->r("content", (file_exists("app/data/checked")) ? "<a href='/install.php/5' target='_blank' class='btn btn-success rounded-0' style='width: 100%'>{::lang::install::allg::done}</a>" : null);
 $tpl->echo();
-?>
+
 

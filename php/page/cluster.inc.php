@@ -378,4 +378,3 @@ if($user->perm("cluster/create")) $btns = '<a href="#" class="btn btn-success bt
             </span>
             <span class="text">{::lang::php::cluster::btn_addcluster}</span>
         </a>';
-?>

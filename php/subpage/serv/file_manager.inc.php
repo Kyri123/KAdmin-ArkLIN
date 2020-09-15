@@ -27,4 +27,3 @@ $page_tpl->r("path", $dir);
 $page_tpl->r("cfg", $serv->name());
 $panel = $page_tpl->load_var();
 
-?>

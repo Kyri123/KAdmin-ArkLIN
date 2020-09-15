@@ -58,4 +58,3 @@ function cpu_perc(){
     return $load[0];
 }
 
-?>

@@ -186,4 +186,3 @@ class userclass extends helper
     }
 }
 
-?>

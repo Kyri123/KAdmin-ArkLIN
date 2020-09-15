@@ -19,9 +19,6 @@ ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] 
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 //error_reporting(E_ALL);
 
-// kleiner fix für PHP 70-72
-include("php/functions/php70-72.inc.php");
-
 //check install
 if (!file_exists("app/check/subdone")) {
     header('Location: /install.php');
@@ -33,7 +30,7 @@ date_default_timezone_set('Europe/Amsterdam');
 $pagename = $pageimg = $titlename = $sidebar = $btns = $urltop = $g_alert = $pageicon = $tpl = null;
 $setsidebar = $g_alert_bool = false;
 
-//start Session
+//start SessionS
 session_start();
 // read URL
 $url = $surl = $_SERVER["REQUEST_URI"];
@@ -293,4 +290,3 @@ if ($page != "login" && $page != "registration" && $page != "crontab" && isset($
 
 //close mysql
 $mycon->close();
-?>

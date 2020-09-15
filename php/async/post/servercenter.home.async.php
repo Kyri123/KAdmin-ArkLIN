@@ -169,4 +169,3 @@ switch ($case) {
         break;
 }
 $mycon->close();
-?>

@@ -262,4 +262,3 @@ function perc($curr, $max) {
     return ($curr / $max * 100);
 }
 
-?>

@@ -46,5 +46,5 @@ $sitetpl->rif ("ifallok", $check->check_all());
 $title = "{::lang::install::step0::title}";
 $content = $sitetpl->load_var();
 
-?>
+
 

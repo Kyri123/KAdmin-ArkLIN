@@ -52,4 +52,3 @@ for ($i=0;$i<count($dir);$i++) {
 $tpl_b->r('servers', $servers);
 $tpl_b->r('count_serv_1', $count_serv_1);
 $tpl_b->r('count_serv_max', $count_serv_max);
-?>
