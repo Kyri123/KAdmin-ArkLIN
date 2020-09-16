@@ -58,7 +58,7 @@ exports.auto = () => {
                             // Starte danach sen ArkAdmin-Server neu
                             'cd ' + config.WebPath + '/arkadmin_server/ ; ' +
                             // Installiere Module
-                            'npm install ; ' +
+                            'npm update && npm install && npm fund ; ' +
                             'sleep 2s ; ' +
                             // überschreibe Rechte
                             'chmod 777 -R ./../ ; ' +
@@ -89,6 +89,8 @@ exports.restarter = (auto) => {
     var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
         'sleep 2s ; ' +
         'screen -S ' + config.screen + ' -p 0 -X quit ; ' +
+        'sleep 2s ; ' +
+        'npm update && npm install && npm fund ; ' +
         'sleep 2s ; ' +
         'screen -mdR ' + config.screen + ' ./start.sh ;' +
         'screen -wipe ;' +
