@@ -32,8 +32,8 @@ global.config = [];
 global.dateFormat = require('dateformat');
 
 //erstelle log Ordner
-if (!fs.existsSync('data/logs/' + dateFormat(global.started, "yyyy-mm-dd_HH-MM"))){
-    fs.mkdirSync('data/logs/' + dateFormat(global.started, "yyyy-mm-dd_HH-MM"));
+if (!fs.existsSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd_HH-MM")}`)){
+    fs.mkdirSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd_HH-MM")}`);
 }
 
 //global vars from JSON (Konfig)
@@ -93,10 +93,10 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         var mysql_inter = () => {
             // verbinde neu wenn Mysql verbindung nicht besteht
             if (!iscon) {
-                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Mysql: \x1b[95mMysql Verbindung wird aufgebaut');
+                console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Mysql: \x1b[95mMysql Verbindung wird aufgebaut`);
                 fs.readFile("config/mysql.json", 'utf8', (err, re) => {
                     if (err) {
-                        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Mysql: \x1b[91mVerbindung fehlgeschlagen (Datei Fehler) - Shell/Jobs Deaktiviert');
+                        console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Mysql: \x1b[91mVerbindung fehlgeschlagen (Datei Fehler) - Shell/Jobs Deaktiviert`);
                     } else {
                         var mysql_config = JSON.parse(re);
 
@@ -112,14 +112,14 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                                 logger.log("Verbunden: Mysql");
                                 logger.log("Gestartet: Jobs & Commands");
                                 global.iscon = true;
-                                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Mysql: \x1b[32mVerbindung aufgebaut - Shell/Jobs Aktiviert');
+                                console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Mysql: \x1b[32mVerbindung aufgebaut - Shell/Jobs Aktiviert`);
 
                                 // Sende Informationen der Server an die Datenbank
                                 status.sendcheck(true);
                             } else {
                                 logger.log("Fehler: Mysql hat keine Verbindung aufgebaut");
                                 global.iscon = false;
-                                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Mysql: \x1b[91mVerbindung fehlgeschlagen (Verbindungsfehler Fehler) - Shell/Jobs Deaktiviert');
+                                console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Mysql: \x1b[91mVerbindung fehlgeschlagen (Verbindungsfehler Fehler) - Shell/Jobs Deaktiviert`);
                             }
                         });
                     }
@@ -141,14 +141,14 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                 status.sendcheck(true);
             }
         }, 1800000);
-        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Panel (Server): \x1b[36mRun');
+        console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Panel (Server): \x1b[36mRun`);
 
         //handle Crontab
         crontab.req("crontab/player");
         crontab.req("crontab/status");
 
         //handle shell
-        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Geladen: \x1b[36mShell verwaltung');
+        console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Geladen: \x1b[36mShell verwaltung`);
         setInterval(() => {
             if (iscon) {
                 panel_shell.job(config.use_ssh);
@@ -158,10 +158,10 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
         //handle chmod
         setInterval(() => {
-            shell.exec("chmod 777 -R " + config.WebPath, config.use_ssh, 'CHMOD', false, undefined, false);
-            shell.exec("chmod 777 -R " + config.AAPath, config.use_ssh, 'CHMOD', false, undefined, false);
-            shell.exec("chmod 777 -R " + config.ServerPath, config.use_ssh, 'CHMOD', false, undefined, false);
-            shell.exec("chmod 777 -R " + config.SteamPath, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec(`chmod 777 -R ${config.WebPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec(`chmod 777 -R ${config.AAPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec(`chmod 777 -R ${config.ServerPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec(`chmod 777 -R ${config.SteamPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
         }, config.CHMODIntervall);
         logger.log("Gestartet: CHMOD");
 
@@ -170,7 +170,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             if (config.autoupdater_active > 0) updater.auto();
         }, config.autoupdater_intervall);
 
-        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Server (Webserver): \x1b[36mhttp://' + ip.address() + ':' + config.port + '/');
+        console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Server (Webserver): \x1b[36mhttp://${ip.address()}:${config.port}/`);
         // Webserver für Abrufen des Server Status
         http.createServer((req, res) => {
             let response = url.parse(req.url, true).query;
@@ -217,14 +217,14 @@ const errlog = winston.createLogger({
     format: winston.format.json(),
     defaultMeta: { service: 'user-service' },
     transports: [
-        new winston.transports.File({ filename: 'data/logs/' + dateFormat(global.started, "yyyy-mm-dd_HH-MM") + '/error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'data/logs/' + dateFormat(global.started, "yyyy-mm-dd_HH-MM") + '/combined.log' }),
+        new winston.transports.File({ filename: `data/logs/${dateFormat(global.started, "yyyy-mm-dd_HH-MM")}/error.log`, level: 'error' }),
+        new winston.transports.File({ filename: `data/logs/${dateFormat(global.started, "yyyy-mm-dd_HH-MM")}/combined.log` }),
     ],
 });
 
 if (process.env.NODE_ENV !== 'production') {
     errlog.add(new winston.transports.Console({
-        format: winston.format.simple(),
+        "format": winston.format.simple(),
     }));
 }
 
@@ -258,6 +258,6 @@ process.on('exit', function(code) {
             parameter = "autoupdater_intervall";
             wert = 120000;
         }
-        return console.log("\x1b[91mMinimal Werte unterschritten: " + parameter + " darf nicht kleiner als " + wert + " sein!");
+        return console.log(`\x1b[91mMinimal Werte unterschritten: ${parameter} darf nicht kleiner als ${wert} sein!`);
     }
 });
