@@ -153,6 +153,7 @@ if (isset($_POST["del"]) && $user->perm("servercontrollcenter/delete")) {
             $mycon->query("DELETE FROM `ArkAdmin_shell` WHERE `server`='".$serv->name()."'");
             $mycon->query("DELETE FROM `ArkAdmin_jobs` WHERE `server`='".$serv->name()."'");
             $mycon->query("DELETE FROM `ArkAdmin_tribe` WHERE `server`='".$serv->name()."'");
+            $mycon->query("DELETE FROM `ArkAdmin_statistiken` WHERE `server`='".$serv->name()."'");
 
             $alert->code = 101;
             $alert->overwrite_text = "{::lang::php::scc::serverremoved}";

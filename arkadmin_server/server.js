@@ -113,9 +113,6 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                                 logger.log("Gestartet: Jobs & Commands");
                                 global.iscon = true;
                                 console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Mysql: \x1b[32mVerbindung aufgebaut - Shell/Jobs Aktiviert`);
-
-                                // Sende Informationen der Server an die Datenbank
-                                status.sendcheck(true);
                             } else {
                                 logger.log("Fehler: Mysql hat keine Verbindung aufgebaut");
                                 global.iscon = false;
@@ -130,7 +127,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         //handle Status
         setInterval(() => {
             if (iscon) {
-                status.sendcheck();
+                status.sendcheck(false);
             }
         }, config.StatusIntervall);
 
@@ -139,7 +136,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             if (iscon) {
                 status.sendcheck(true);
             }
-        }, 1800000);
+        }, 600000);
         console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Panel (Server): \x1b[36mRun`);
 
         //handle Crontab

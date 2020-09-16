@@ -20,12 +20,12 @@ function save(mysql_status, data, name, state) {
         con.query(query_lf, (error, results) => {
             data.state = state;
             if(!error) {
-                // Wenn mehr als 335 Datensätze bestehen Updaten
-                if(results.length > 335) {
+                // Wenn mehr als 999 Datensätze bestehen Updaten
+                if(results.length > 999) {
                     var update = `UPDATE \`ArkAdmin_statistiken\` SET \`time\` = '${Math.floor(Date.now() / 1000)}', \`serverinfo_json\` = '${JSON.stringify(data)}' WHERE \`id\` = '${results[0].id}'`;
                     con.query(update);
                 }
-                // Wenn mehr weniger 335 Datensätze bestehen Erstelle neue Datensätze
+                // Wenn mehr weniger 999 Datensätze bestehen Erstelle neue Datensätze
                 else {
                     var create = `INSERT INTO \`ArkAdmin_statistiken\` VALUES (null, '${Math.floor(Date.now() / 1000)}', '${JSON.stringify(data)}', '${name}');`;
                     con.query(create);
@@ -96,12 +96,12 @@ exports.sendcheck = (mysql_status = false) => {
                     save(mysql_status, data, name, state);
                 }).catch((error) => {
                     // Speichern in Json / MySQL
-                    save(mysql_status, data, name, {});
+                    if(error) save(mysql_status, data, name, {});
                 });
             }
             else {
                 // Speichern in Json / MySQL
-                save(mysql_status, data, name, {});
+                if(!data.run) save(mysql_status, data, name, {});
             }
         }
     });
