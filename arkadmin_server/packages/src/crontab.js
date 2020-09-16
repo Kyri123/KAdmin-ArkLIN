@@ -16,7 +16,7 @@ exports.req = (url) => {
     setInterval(() => {
         // gebe abschluss zum Log
         request(config.HTTP + url, () => {
-            // done
+            console.log('\x1b[33m%s\x1b[0m', "[" + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + "] Request: \x1b[36m" + config.HTTP + url);
         });
     }, time);
 };

@@ -64,7 +64,7 @@ exports.auto = () => {
                             'chmod 777 -R ./../ ; ' +
                             'sleep 2s ; ' +
                             // Starte Server wieder
-                            'screen -mdS ' + config.screen_name + ' ./start.sh > data/latest.log ;' +
+                            'screen -mdS ' + config.screen_name + ' ./start.sh ;' +
                             'screen -wipe ;' +
                             'exit;\'';
                         // Beginne Update
@@ -90,7 +90,7 @@ exports.restarter = (auto) => {
         'sleep 2s ; ' +
         'screen -S ' + config.screen_name + ' -p 0 -X quit ; ' +
         'sleep 2s ; ' +
-        'screen -mdR ' + config.screen_name + ' ./start.sh > data/latest.log ;' +
+        'screen -mdR ' + config.screen_name + ' ./start.sh ;' +
         'screen -wipe ;' +
         'exit;\'';
     // Beginne Restart
