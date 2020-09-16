@@ -54,6 +54,9 @@
             "remove": 0,
             "toggle": 0,
             "edit": 0
+        },
+        "statistiken": {
+            "show": 1
         }
     }
 }

@@ -418,6 +418,7 @@
                 <mods>Modifikationen</mods>
                 <saves>Savegames</saves>
                 <files>Simple Filebrowser</files>
+                <statistiken>Statistiken</statistiken>
             </nav>
 
             <modal>
@@ -531,6 +532,22 @@
                 </_2_>
             </backup>
         </list>
+
+
+        <statistiken>
+            <table>
+                <date>Datum</date>
+                <player>Spieler</player>
+                <action>Aktionen</action>
+                <status>Status</status>
+            </table>
+            <modal>
+                <ServerMap>Karte</ServerMap>
+                <ServerName>Server Name</ServerName>
+                <player>Aktive Spieler</player>
+                <ping>Ping</ping>
+            </modal>
+        </statistiken>
 
         <backup>
             <nav>

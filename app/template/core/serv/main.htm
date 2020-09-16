@@ -136,6 +136,14 @@
                         </a>
                     </li>
 
+                    {permissions??server??{cfg}??statistiken??show}
+                    <li class="nav-item ">
+                        <a href="/servercenter/{cfg}/statistiken" class="nav-link {_statistiken} text-white aa_nav_hover">
+                            <i class="nav-icon fas fa-chart-bar pr-1" aria-hidden="true"></i> {::lang::servercenter::main::nav::statistiken}
+                        </a>
+                    </li>
+                    {/permissions}
+
                     {modsupport}{permissions??server??{cfg}??mods??show}
                     <li class="nav-item ">
                         <a href="/servercenter/{cfg}/mods" class="nav-link {_mods} text-white aa_nav_hover">

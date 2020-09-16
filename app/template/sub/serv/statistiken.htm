@@ -1,0 +1,41 @@
+<div class="col-xl-9 col-md-8 mb-4" onload="getmods('{cfg}')">
+    <div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+        <div class="tab-content" id="pills-tabContent">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr class="bg-dark">
+                        <th colspan="4" class="p-0">
+                            <div class="list-group-item bg-dark">
+                                <h4 class="m-0">{::lang::php::sc::page::statistiken::pagename}</h4>
+                            </div>
+                        </th>
+                    </tr>
+                    <tbody>
+                        <!-- Optionen -->
+                        <tr>
+                            <td colspan="4"></td>
+                        </tr>
+                    </tbody>
+                </thead>
+            </table>
+            <table class="table table-striped table-hover mb-0">
+                <thead>
+                <!-- Head -->
+                    <tr>
+                        <th style="width:30px">#</th>
+                        <th style="width:60px">{::lang::servercenter::statistiken::table::status}</th>
+                        <th>{::lang::servercenter::statistiken::table::date}</th>
+                        <th>{::lang::servercenter::statistiken::table::player}</th>
+                        <th style="width:30px">{::lang::servercenter::statistiken::table::action}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Items -->
+                    {list}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+{modal_list}
