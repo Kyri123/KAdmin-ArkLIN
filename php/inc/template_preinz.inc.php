@@ -51,7 +51,15 @@ if (!file_exists($langfile)) $langfile = "app/lang/de_de/";
 // Lade Sprachdateien
 $arr = scandir($langfile);
 foreach ($arr as $item) {
-    if ($item != "." && $item != ".." && pathinfo($langfile . $item, PATHINFO_EXTENSION) == "xml") load_xml($langfile . $item);
+    if (
+        pathinfo($langfile . $item, PATHINFO_EXTENSION) == "xml" &&
+        $_COOKIE["lang"] != "debug"
+    ) {
+        if(
+            $item != "." &&
+            $item != ".."
+        ) load_xml($langfile . $item);
+    }
 }
 
 

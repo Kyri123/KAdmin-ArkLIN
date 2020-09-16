@@ -4,6 +4,7 @@
         "show": 0,
         "actions": 0,
         "show_players": 0,
+        "kill": 0,
         "home": {
             "livechat_show": 1,
             "livechat_send": 0,

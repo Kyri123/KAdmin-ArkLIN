@@ -13,11 +13,12 @@ const fs = require('fs');
 const Gamedig = require('gamedig');
 const ip = require("ip");
 
-function save(mysql_status, data, name) {
+function save(mysql_status, data, name, state) {
     if(mysql_status) {
         // Schreibe in die Datenbank zu weiterverarbeitung
         let query_lf = `SELECT * FROM \`ArkAdmin_statistiken\` WHERE \`server\` = '${name}' ORDER BY \`time\``;
         con.query(query_lf, (error, results) => {
+            data.state = state;
             if(!error) {
                 // Wenn mehr als 335 Datensätze bestehen Updaten
                 if(results.length > 335) {
@@ -92,15 +93,15 @@ exports.sendcheck = (mysql_status = false) => {
                     data.version = version_split;
 
                     // Speichern in Json / MySQL
-                    save(mysql_status, data, name);
+                    save(mysql_status, data, name, state);
                 }).catch((error) => {
                     // Speichern in Json / MySQL
-                    save(mysql_status, data, name);
+                    save(mysql_status, data, name, {});
                 });
             }
             else {
                 // Speichern in Json / MySQL
-                save(mysql_status, data, name);
+                save(mysql_status, data, name, {});
             }
         }
     });

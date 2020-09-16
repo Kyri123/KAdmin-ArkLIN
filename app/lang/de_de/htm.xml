@@ -355,6 +355,8 @@
         <wait>Bitte warten</wait>
         <open_url>Öffnen</open_url>
         <force_action>Befehl im Panel erzwingen</force_action>
+        <kill_titel>Server Killen</kill_titel>
+        <kill_text>Beendet den Prozess vom Server</kill_text>
 
         <topline>
             <state>Server Status</state>

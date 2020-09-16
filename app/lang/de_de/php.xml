@@ -156,6 +156,7 @@
                 <toggle>Darf Jobs An- bzw Ausschalten</toggle>
                 <edit_default>Darf die Default Arkmanager.cfg bearbeiten</edit_default>
                 <show_default>Darf die Default Arkmanager.cfg sehen</show_default>
+                <kill>Darf den Prozess vom Server beenden</kill>
             </permissions>
         </userpanel>
 

@@ -19,13 +19,35 @@ $tpl_dir_lists = 'app/template/lists/serv/main/';
 $tpl_dir_all = 'app/template/all/';
 $setsidebar = false; $resp_cluster = null;
 $serv = new server($url[2]);
+exec("ps ax | grep ".$serv->status()->pid, $checkpid); // Prüfe ob der Server Läuft
 $serv->cluster_load();
 $txt_alert = $site_name = $player = null;
 
 $perm = "server/".$serv->name();
-
 if(!$user->perm("$perm/show")) {
     header("Location: /401"); exit;
+}
+
+// server Killen
+if(isset($url[5]) && $url[4] == "kill" && $user->perm("$perm/kill")) {
+    $jobs->set($serv->name());
+    if($jobs->shell("kill ".$serv->status()->pid)) {
+        $resp = $alert->rd(111);
+    } else {
+        $resp = $alert->rd(3);
+    }
+}
+elseif(isset($url[5]) && $url[4] == "kill") {
+    $resp = $alert->rd(99);
+}
+
+//erstelle SteamAPI von OnlineSpieler
+$pl_json = $helper->file_to_json('app/json/saves/pl_' . $serv->name() . '.players', false);
+$arr_pl = array();
+if (is_array($pl_json)) {
+    for ($i = 0; $i < count($pl_json); $i++) {
+        $arr_pl[] = $pl_json[$i]->steamID;
+    }
 }
 
 //erstelle SteamAPI von OnlineSpieler
@@ -232,19 +254,13 @@ $tpl->r('joinurl', $connect);
 // lade in TPL
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
 $content = $tpl->load_var();
-$btns .= '
-        <a href="#" class="btn btn-warning btn-icon-split rounded-0" data-toggle="modal" data-target="#warning_modal">
+$running = false;
+foreach ($checkpid as $item) if(strpos($item, $serv->name())) $running = true;
+if($running && $user->perm("$perm/kill")) $btns .= '
+        <a href="/servercenter/'.$serv->name().'/'.$url[3].'/kill/'.$serv->status()->pid.'" class="btn btn-outline-danger btn-icon-split rounded-0" 
+        data-toggle="popover_action" title="" data-content="{::lang::servercenter::kill_text}" data-original-title="{::lang::servercenter::kill_titel}">
             <span class="icon text-white-50">
-                <i class="fas fa-exclamation-circle"></i>
+                <i class="fas fa-power-off"></i>
             </span>
-            <span class="text">'.$globa_json->warning_count.'</span>
         </a>
-        <a href="#" class="btn btn-danger btn-icon-split rounded-0" data-toggle="modal" data-target="#danger_modal">
-            <span class="icon text-white-50">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            <span class="text">'.$globa_json->error_count.'</span>
-        </a>
-'; $btns = null;
-
-
+';

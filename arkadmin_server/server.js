@@ -90,7 +90,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
         // mysql verbindung aufbauen
         global.iscon = false;
-        var mysql_inter = () => {
+        setInterval(() => {
             // verbinde neu wenn Mysql verbindung nicht besteht
             if (!iscon) {
                 console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Mysql: \x1b[95mMysql Verbindung wird aufgebaut`);
@@ -125,8 +125,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                     }
                 });
             }
-        };
-        setInterval(mysql_inter, 5000);
+        }, 5000);
 
         //handle Status
         setInterval(() => {
