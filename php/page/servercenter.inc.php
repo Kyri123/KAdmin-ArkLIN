@@ -109,10 +109,9 @@ if ($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>{::lang::php::s
 
 $player_online = $serv->status()->aplayersarr;
 
-
 // Spieler
 if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0 && $user->perm("$perm/show_players")) {
-    for ($i = 0; $i < count($pl_json); $i++) {
+    for ($i = 0; $i < count($player_online); $i++) {
         $list_tpl = new Template('user.htm', 'app/template/lists/serv/main/');
         $list_tpl->load();
 
@@ -140,7 +139,7 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
             $TribeId = $row["TribeId"];
             $TotalEngramPoints = $row["TotalEngramPoints"];
             $TribeName = $row["TribeName"];
-            $IG_name = $row["CharacterName"];
+            $IG_name = $row["CharacterName"] == "" ? $player_online[$i]["name"] : $row["CharacterName"];
         }
         else {
             $img = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/";
@@ -167,6 +166,7 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
         $list_tpl->r('SpielerID', $SpielerID);
         $list_tpl->r('TEP', $TotalEngramPoints);
         $list_tpl->r('TID', $TribeId);
+        $list_tpl->r('IG:online', round($player_online[$i]["time"] / 60, 0));
         $list_tpl->rif ('empty', true);
 
         $player .= $list_tpl->load_var();
@@ -198,7 +198,7 @@ for ($i=0;$i<count($json_para);$i++) {
     $para = new Template('parameter.htm', 'app/template/core/serv/');
     $para->load();
     
-    $t0 = ($json_para[$i]["type"] == 0) ? true : false;
+    $t0 = $json_para[$i]["type"] == 0;
     $t1 = ($json_para[$i]["type"] == 0) ? false : true;
         
     $para->r("name", str_replace("--", null, $json_para[$i]["parameter"]));
@@ -259,7 +259,7 @@ foreach ($checkpid as $item) if(strpos($item, $serv->name())) $running = true;
 if($running && $user->perm("$perm/kill")) $btns .= '
         <a href="/servercenter/'.$serv->name().'/'.$url[3].'/kill/'.$serv->status()->pid.'" class="btn btn-outline-danger btn-icon-split rounded-0" 
         data-toggle="popover_action" title="" data-content="{::lang::servercenter::kill_text}" data-original-title="{::lang::servercenter::kill_titel}">
-            <span class="icon text-white-50">
+            <span class="icon">
                 <i class="fas fa-power-off"></i>
             </span>
         </a>

@@ -225,8 +225,8 @@ $tpl->r("list_codes", $list_codes);
 $tpl->r("resp", $resp);
 $pageicon = "<i class=\"fa fa-users\" aria-hidden=\"true\"></i>";
 $content = $tpl->load_var();
-if($user->perm("userpanel/create_code")) $btns = '<a href="#" class="btn btn-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
-            <span class="icon text-white-50">
+if($user->perm("userpanel/create_code")) $btns = '<a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
+            <span class="icon">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>
             <span class="text">{::lang::php::userpanel::btn-regcode}</span>

@@ -372,8 +372,8 @@ $tpl->r("resp", $resp);
 $tpl->r("sel_serv", $sel_serv);
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fas fa-random\"></i>";
-if($user->perm("cluster/create")) $btns = '<a href="#" class="btn btn-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addcluster">
-            <span class="icon text-white-50">
+if($user->perm("cluster/create")) $btns = '<a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addcluster">
+            <span class="icon">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>
             <span class="text">{::lang::php::cluster::btn_addcluster}</span>

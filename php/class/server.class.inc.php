@@ -331,7 +331,7 @@ class server extends Rcon {
         $data = $helper->file_to_json($path);
         $class = new data_server();
 
-        $class->aplayers = $data["aplayers"];
+        $class->aplayers = is_countable($data["aplayersarr"]) ? count($data["aplayersarr"]) : 0;
         $class->players = $data["players"];
         $class->listening = $data["listening"];
         $class->online = $data["online"];
