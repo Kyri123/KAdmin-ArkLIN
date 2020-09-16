@@ -44,7 +44,7 @@ exports.auto = () => {
                             'wget https://github.com/Kyri123/Arkadmin/archive/' + config.autoupdater_branch + '.zip ;' +
                             'unzip ' + config.autoupdater_branch + '.zip; cd Arkadmin-' + config.autoupdater_branch + ' ;' +
                             // Beende Arkadmin_Server
-                            'screen -S ' + config.screen_name + ' -p 0 -X quit ; ' +
+                            'screen -S ' + config.screen + ' -p 0 -X quit ; ' +
                             'sleep 2s ; ' +
                             // Entferne ungewünschte Dateien
                             'rm -R ./arkadmin_server/config ; ' +
@@ -64,7 +64,7 @@ exports.auto = () => {
                             'chmod 777 -R ./../ ; ' +
                             'sleep 2s ; ' +
                             // Starte Server wieder
-                            'screen -mdS ' + config.screen_name + ' ./start.sh ;' +
+                            'screen -mdS ' + config.screen + ' ./start.sh ;' +
                             'screen -wipe ;' +
                             'exit;\'';
                         // Beginne Update
@@ -88,9 +88,9 @@ exports.auto = () => {
 exports.restarter = (auto) => {
     var command = 'screen -dm bash -c \'cd ' + config.WebPath + '/arkadmin_server/ ;' +
         'sleep 2s ; ' +
-        'screen -S ' + config.screen_name + ' -p 0 -X quit ; ' +
+        'screen -S ' + config.screen + ' -p 0 -X quit ; ' +
         'sleep 2s ; ' +
-        'screen -mdR ' + config.screen_name + ' ./start.sh ;' +
+        'screen -mdR ' + config.screen + ' ./start.sh ;' +
         'screen -wipe ;' +
         'exit;\'';
     // Beginne Restart

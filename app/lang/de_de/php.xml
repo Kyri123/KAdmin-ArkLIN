@@ -216,7 +216,7 @@
                     <autoupdater_branch>Welche Github Branch soll dafür verwendet werden</autoupdater_branch>
                     <autorestart>Soll der ArkAdmin Server automatisch neustarten?</autorestart>
                     <autorestart_intervall>Inverall vom Neustart (in ms | min: 1800000)</autorestart_intervall>
-                    <screen_name>Name der benutzt werden soll um die Screen zu erstellen (Wo der ArkAdmin-Server läuft)</screen_name>
+                    <screen>Name der benutzt werden soll um die Screen zu erstellen (Wo der ArkAdmin-Server läuft)</screen>
                 </aa>
             </key>
         </config>

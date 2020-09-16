@@ -14,6 +14,30 @@ const shell = require('./shell');
 const Gamedig = require('gamedig');
 const ip = require("ip");
 
+function save(mysql_status, data, name) {
+    if(mysql_status) {
+        // Schreibe in die Datenbank zu weiterverarbeitung
+        let query_lf = 'SELECT * FROM `ArkAdmin_statistiken` WHERE `server` = \'' + name + '\' ORDER BY `time`';
+        con.query(query_lf, (error, results) => {
+            if(!error) {
+                // Wenn mehr als 335 Datensätze bestehen Updaten
+                if(results.length > 335) {
+                    var update = 'UPDATE `ArkAdmin_statistiken` SET `time` = \'' + Math.floor(Date.now() / 1000) + '\', `serverinfo_json` = \'' + JSON.stringify(data) + '\' WHERE `id` = \'' + results[0].id + '\'';
+                    con.query(update);
+                }
+                // Wenn mehr weniger 335 Datensätze bestehen Erstelle neue Datensätze
+                else {
+                    var create = 'INSERT INTO `ArkAdmin_statistiken` VALUES (null, \'' + Math.floor(Date.now() / 1000) +'\', \'' + JSON.stringify(data) + '\', \'' + name + '\');';
+                    con.query(create);
+                }
+            }
+        });
+    }
+    else {
+        fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
+    }
+}
+
 exports.sendcheck = (mysql_status = false) => {
     var arkmanager_folder = config.AAPath + "/instances/";
     // Scanne Instancen
@@ -68,70 +92,16 @@ exports.sendcheck = (mysql_status = false) => {
                     version_split = version_split.replace("v", "");
                     data.version = version_split;
 
-                    if(mysql_status) {
-                        // Schreibe in die Datenbank zu weiterverarbeitung
-                        var query_lf = 'SELECT * FROM `ArkAdmin_statistiken` WHERE `server` = \'' + name + '\' ORDER BY `time`';
-                        con.query(query_lf, (error, results) => {
-                            if(error) process.exit(0);
-                            // Wenn mehr als 335 Datensätze bestehen Updaten
-                            if(results.length > 335) {
-                                var update = 'UPDATE `ArkAdmin_statistiken` SET `time` = \'' + Math.floor(Date.now() / 1000) + '\', `serverinfo_json` = \'' + JSON.stringify(data) + '\' WHERE `id` = \'' + results[0].id + '\'';
-                                con.query(update);
-                            }
-                            // Wenn mehr weniger 335 Datensätze bestehen Erstelle neue Datensätze
-                            else {
-                                var create = 'INSERT INTO `ArkAdmin_statistiken` VALUES (null, \'' + Math.floor(Date.now() / 1000) +'\', \'' + JSON.stringify(data) + '\', \'' + name + '\');';
-                                con.query(create);
-                            }
-                        });
-                    }
-                    else {
-                        fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
-                    }
+                    // Speichern in Json / MySQL
+                    save(mysql_status, data, name);
                 }).catch((error) => {
-                    if(mysql_status) {
-                        // Schreibe in die Datenbank zu weiterverarbeitung
-                        var query_lf = 'SELECT * FROM `ArkAdmin_statistiken` WHERE `server` = \'' + name + '\' ORDER BY `time`';
-                        con.query(query_lf, (error, results) => {
-                            if(error) process.exit(0);
-                            // Wenn mehr als 335 Datensätze bestehen Updaten
-                            if(results.length > 335) {
-                                var update = 'UPDATE `ArkAdmin_statistiken` SET `time` = \'' + Math.floor(Date.now() / 1000) + '\', `serverinfo_json` = \'' + JSON.stringify(data) + '\' WHERE `id` = \'' + results[0].id + '\'';
-                                con.query(update);
-                            }
-                            // Wenn mehr weniger 335 Datensätze bestehen Erstelle neue Datensätze
-                            else {
-                                var create = 'INSERT INTO `ArkAdmin_statistiken` VALUES (null, \'' + Math.floor(Date.now() / 1000) +'\', \'' + JSON.stringify(data) + '\', \'' + name + '\');';
-                                con.query(create);
-                            }
-                        });
-                    }
-                    else {
-                        fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
-                    }
+                    // Speichern in Json / MySQL
+                    save(mysql_status, data, name);
                 });
             }
             else {
-                if(mysql_status) {
-                    // Schreibe in die Datenbank zu weiterverarbeitung
-                    var query_lf = 'SELECT * FROM `ArkAdmin_statistiken` WHERE `server` = \'' + name + '\' ORDER BY `time`';
-                    con.query(query_lf, (error, results) => {
-                        if(error) process.exit(0);
-                        // Wenn mehr als 335 Datensätze bestehen Updaten
-                        if(results.length > 335) {
-                            var update = 'UPDATE `ArkAdmin_statistiken` SET `time` = \'' + Math.floor(Date.now() / 1000) + '\', `serverinfo_json` = \'' + JSON.stringify(data) + '\' WHERE `id` = \'' + results[0].id + '\'';
-                            con.query(update);
-                        }
-                        // Wenn mehr weniger 335 Datensätze bestehen Erstelle neue Datensätze
-                        else {
-                            var create = 'INSERT INTO `ArkAdmin_statistiken` VALUES (null, \'' + Math.floor(Date.now() / 1000) +'\', \'' + JSON.stringify(data) + '\', \'' + name + '\');';
-                            con.query(create);
-                        }
-                    });
-                }
-                else {
-                    fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
-                }
+                // Speichern in Json / MySQL
+                save(mysql_status, data, name);
             }
         }
     });

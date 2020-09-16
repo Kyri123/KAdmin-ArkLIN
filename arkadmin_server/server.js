@@ -15,7 +15,7 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "1.2.0";
+const version = "1.1.1";
 const mysql = require("mysql");
 const http = require('http');
 const url = require('url');
@@ -24,11 +24,17 @@ const ip = require("ip");
 const md5 = require('md5');
 const logger = require('./packages/src/logger');
 const { isString } = require("util");
+const winston = require('winston');
+global.started = Date.now();
 
 var config_ssh = sshK.login();
 global.config = [];
 global.dateFormat = require('dateformat');
 
+//erstelle log Ordner
+if (!fs.existsSync('data/logs/' + dateFormat(global.started, "yyyy-mm-dd_HH-MM"))){
+    fs.mkdirSync('data/logs/' + dateFormat(global.started, "yyyy-mm-dd_HH-MM"));
+}
 
 //global vars from JSON (Konfig)
 fs.readFile("config/server.json", 'utf8', (err, data) => {
@@ -49,7 +55,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         if (config.autoupdater_intervall === undefined) config.autoupdater_intervall = 120000;
         if (config.autorestart === undefined) config.autorestart = 1;
         if (config.autorestart_intervall === undefined) config.autorestart_intervall = 1800000;
-        if (config.screen_name === undefined && isString(config.screen_name)) config.screen_name = "ArkAdmin";
+        if (config.screen === undefined) config.screen = "ArkAdmin";
 
         // prüfe Minimal werte
         if (config.WebIntervall < 5000) process.exit(4);
@@ -168,27 +174,27 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         // Webserver für Abrufen des Server Status
         http.createServer((req, res) => {
             let response = url.parse(req.url, true).query;
+            infos = {
+                "version": version,
+                "db_connect": iscon,
+                "gestartet": dateFormat(started, "yyyy-mm-dd HH:MM:ss"),
+                "curr_log": logger.get()
+            };
 
             if (response.update) {
                 if (response.code === md5(ip.address())) {
                     updater.auto();
-                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '","update":"running"}';
-                } else {
-                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
+                    infos["update"] = "running";
                 }
             } else if (response.restart) {
                 if (response.code === md5(ip.address())) {
-                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '","restart":"running"}';
                     updater.restarter(false);
-                } else {
-                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
+                    infos["restart"] = "running";
                 }
-            } else {
-                resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
             }
 
             res.writeHead(200, { 'Content-Type': 'text/json' });
-            res.write(resp);
+            res.write(JSON.stringify(infos));
             res.end();
         }).listen(config.port);
         logger.log("Gestartet: Webserver");
@@ -206,6 +212,21 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
     }
 });
 
+const errlog = winston.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    defaultMeta: { service: 'user-service' },
+    transports: [
+        new winston.transports.File({ filename: 'data/logs/' + dateFormat(global.started, "yyyy-mm-dd_HH-MM") + '/error.log', level: 'error' }),
+        new winston.transports.File({ filename: 'data/logs/' + dateFormat(global.started, "yyyy-mm-dd_HH-MM") + '/combined.log' }),
+    ],
+});
+
+if (process.env.NODE_ENV !== 'production') {
+    errlog.add(new winston.transports.Console({
+        format: winston.format.simple(),
+    }));
+}
 
 // Code Meldungen
 process.on('exit', function(code) {
