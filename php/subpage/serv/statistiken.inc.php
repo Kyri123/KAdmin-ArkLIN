@@ -41,7 +41,7 @@ if(isset($_COOKIE[$server."_offset"])) {
 $order = isset($_COOKIE[$server."_order"]) ? ($_COOKIE[$server."_order"] != "DESC" ? " ASC" : " DESC") : " DESC";
 
 $pages_list = null;
-for($i = 0; $i < $pager_c ; $i++) $pages_list .= "<option value='".$i."' ".($i == (isset($_COOKIE[$server."_offset"]) ? $_COOKIE[$server."_offset"] : 0) ? "Selected" : "").">$i</option>";
+for($i = 0; $i < $pager_c ; $i++) $pages_list .= "<option value='".$i."' ".($i == (isset($_COOKIE[$server."_offset"]) ? $_COOKIE[$server."_offset"] : 0) ? "Selected" : "").">".($i+1)."</option>";
 
 // Erstelle Liste
 $list["item"] = $list["modal"] = null;
