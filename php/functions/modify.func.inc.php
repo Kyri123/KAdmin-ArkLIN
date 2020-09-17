@@ -394,3 +394,22 @@ function saveshell($command) {
     return str_replace($forbitten, null, $command);
 }
 
+/**
+ * Wandelt die Zeit in das höhste vorgegebene Format (Rundet IMMER auf)
+ *
+ * @param  int $int Zeit in INT
+ * @param  string $target Ziel (w = Wochen, d = Tage, h = Stunden (Default), m = Minuten, s = Sekunden)
+ * @param  string $round Rundet (up = Rundet auf (Default), down = Rundet ab, disabled = Rundet nicht)
+ * @return array [int] Zeit in INT ; [lang] Endung in String (Lang format)
+ */
+function TimeCalc($int, $target = "h", $round = "up") {
+    $x = $int;
+    if($target == "m") $x = $int / 60;
+    if($target == "h") $x = $int / 60 / 60;
+    if($target == "d") $x = $int / 60 / 60 / 24;
+    if($target == "w") $x = $int / 60 / 60 / 24 / 7;
+
+    if($round == "down") return array("int" => floor($x), "lang" => "{::lang::allg::$target}");
+    if($round == "disabled") return array("int" => $x, "lang" => "{::lang::allg::$target}");
+    return array("int" => ceil($x), "lang" => "{::lang::allg::$target}");
+}

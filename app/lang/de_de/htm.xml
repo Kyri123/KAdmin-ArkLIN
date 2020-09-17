@@ -21,6 +21,11 @@
         <force_update_text>Führt sofort ein Panel Update aus. Dies wird auch getan wenn Auto-Updates deaktiert ist</force_update_text>
 
         <minutes>Minuten</minutes>
+        <s>Sekunden</s>
+        <m>Minuten</m>
+        <h>Stunden</h>
+        <d>Tage</d>
+        <w>Wochen</w>
 
         <force_restart>Starte den ArkAdmin-Server neu</force_restart>
         <force_restart_text>Startet den ArkAdmin-Server neu um z.B. Änderungen am Intervall zu übernehmen.</force_restart_text>

@@ -166,7 +166,8 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
         $list_tpl->r('SpielerID', $SpielerID);
         $list_tpl->r('TEP', $TotalEngramPoints);
         $list_tpl->r('TID', $TribeId);
-        $list_tpl->r('IG:online', round($player_online[$i]["time"] / 60, 0));
+        $time = TimeCalc($player_online[$i]["time"], ($player_online[$i]["time"] > 3600 ? "h" : "m"), "disabled");
+        $list_tpl->r('IG:online', round($time["int"], 2) . ' ' . $time["lang"]);
         $list_tpl->rif ('empty', true);
 
         $player .= $list_tpl->load_var();

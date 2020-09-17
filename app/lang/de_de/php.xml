@@ -329,7 +329,7 @@
                     <OFFSET>Seite</OFFSET>
                     <DESC>Neusten > Ältesten</DESC>
                     <ASC>Ältesten > Neusten</ASC>
-                    <notonline>Server war zu diesem Zeitpunkt nicht Online (Daten konnten nicht gefunden werden)</notonline>
+                    <notonline>[b]Daten wurden nicht erfasst[/b]</notonline>
                     <noplayer>Keine Spieler Gefunden</noplayer>
                     <pagename>ServerCenter - Statistiken</pagename>
                     <urltop>Statistiken</urltop>
