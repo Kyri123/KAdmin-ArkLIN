@@ -6,14 +6,64 @@
                     <tr class="bg-dark">
                         <th colspan="4" class="p-0">
                             <div class="list-group-item bg-dark">
-                                <h4 class="m-0">{::lang::php::sc::page::statistiken::pagename}</h4>
+                                <h4 class="m-0">{::lang::php::sc::page::statistiken::pagename} ({cdata} {::lang::php::sc::page::statistiken::datas})</h4>
                             </div>
                         </th>
                     </tr>
                     <tbody>
                         <!-- Optionen -->
                         <tr>
-                            <td colspan="4"></td>
+                            <td colspan="4" class="p-0">
+                                <form action="#" method="post" class="m-0">
+                                    <table class="table table-bordered mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">{::lang::php::sc::page::statistiken::LIMIT}</span>
+                                                        </div>
+                                                        <select class="form-control" name="LIMIT">
+                                                            <option value="10" {__L_10}>10</option>
+                                                            <option value="50" {__L_50}>50</option>
+                                                            <option value="100" {__L_100}>100</option>
+                                                            <option value="250" {__L_250}>250</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">{::lang::php::sc::page::statistiken::ORDER}</span>
+                                                        </div>
+                                                        <select class="form-control" name="ORDER">
+                                                            <option value="DESC" {DESC}>{::lang::php::sc::page::statistiken::DESC}</option>
+                                                            <option value="ASC" {ASC}>{::lang::php::sc::page::statistiken::ASC}</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">{::lang::php::sc::page::statistiken::OFFSET}</span>
+                                                        </div>
+                                                        <select class="form-control" name="OFFSET">
+                                                            {pages}
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button name="OPT" type="submit" style="width: 100%" class="btn-success btn btn-sm">{::lang::php::sc::page::statistiken::submit}</button>
+                                </form>
+                            </td>
                         </tr>
                     </tbody>
                 </thead>

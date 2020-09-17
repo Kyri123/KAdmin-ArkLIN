@@ -239,10 +239,6 @@ elseif(isset($_POST["add"])) {
     $resp = $alert->rd(99);
 }
 
-
-//Fixed (bis ich ne andere lösung gefunden habe......)
-// NOTE: Diese variante bleibt vorerst
-// TODO: Später nochmal anschauen läuft vorerst
 $i = 0;
 foreach ($json as $mk => $mv) {
     $old = $json[$mk]["servers"];

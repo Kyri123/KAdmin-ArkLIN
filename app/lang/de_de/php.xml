@@ -322,6 +322,13 @@
 
                 <!-- statistiken.inc.php -->
                 <statistiken>
+                    <submit>Absenden</submit>
+                    <datas>Datensätze</datas>
+                    <LIMIT>Anzeigen</LIMIT>
+                    <ORDER>Ordnung</ORDER>
+                    <OFFSET>Seite</OFFSET>
+                    <DESC>Neusten > Ältesten</DESC>
+                    <ASC>Ältesten > Neusten</ASC>
                     <notonline>Server war zu diesem Zeitpunkt nicht Online (Daten konnten nicht gefunden werden)</notonline>
                     <noplayer>Keine Spieler Gefunden</noplayer>
                     <pagename>ServerCenter - Statistiken</pagename>

@@ -6,6 +6,7 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
  */
+const version = "1.1.1";
 
 const fs = require("fs");
 const shell = require("./packages/src/shell");
@@ -15,7 +16,6 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "1.1.1";
 const mysql = require("mysql");
 const http = require('http');
 const url = require('url');
@@ -23,7 +23,6 @@ const updater = require("./packages/src/updater");
 const ip = require("ip");
 const md5 = require('md5');
 const logger = require('./packages/src/logger');
-const { isString } = require("util");
 const winston = require('winston');
 global.started = Date.now();
 
@@ -32,8 +31,8 @@ global.config = [];
 global.dateFormat = require('dateformat');
 
 //erstelle log Ordner
-if (!fs.existsSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd_HH-MM")}`)){
-    fs.mkdirSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd_HH-MM")}`);
+if (!fs.existsSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`)){
+    fs.mkdirSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`);
 }
 
 //global vars from JSON (Konfig)
@@ -177,16 +176,13 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                 "curr_log": logger.get()
             };
 
-            if (response.update) {
-                if (response.code === md5(ip.address())) {
+            if (response.update && response.code === md5(ip.address())) {
                     updater.auto();
                     infos["update"] = "running";
-                }
-            } else if (response.restart) {
-                if (response.code === md5(ip.address())) {
-                    updater.restarter(false);
-                    infos["restart"] = "running";
-                }
+            }
+            if (response.restart && response.code === md5(ip.address())) {
+                updater.restarter(false);
+                infos["restart"] = "running";
             }
 
             res.writeHead(200, { 'Content-Type': 'text/json' });
@@ -213,8 +209,8 @@ const errlog = winston.createLogger({
     format: winston.format.json(),
     defaultMeta: { service: 'user-service' },
     transports: [
-        new winston.transports.File({ filename: `data/logs/${dateFormat(global.started, "yyyy-mm-dd_HH-MM")}/error.log`, level: 'error' }),
-        new winston.transports.File({ filename: `data/logs/${dateFormat(global.started, "yyyy-mm-dd_HH-MM")}/combined.log` }),
+        new winston.transports.File({ filename: `data/logs/${dateFormat(global.started, "yyyy-mm-dd")}/error.log`, level: 'error' }),
+        new winston.transports.File({ filename: `data/logs/${dateFormat(global.started, "yyyy-mm-dd")}/combined.log` }),
     ],
 });
 

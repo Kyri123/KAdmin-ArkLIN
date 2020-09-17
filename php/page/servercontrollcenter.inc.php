@@ -143,9 +143,9 @@ if (isset($_POST["del"]) && $user->perm("servercontrollcenter/delete")) {
 
             // Wenn gewünscht entferne Verzeichnisse vom Server
             if (in_array('deinstall', $opt)) {
-                $jobs->shell("rm -R ".$arkservdir);
-                $jobs->shell("rm -R ".$arklogdir);
-                $jobs->shell("rm -R ".$arkbkdir);
+                $jobs->shell("rm -R $arkservdir");
+                $jobs->shell("rm -R $arklogdir");
+                $jobs->shell("rm -R $arkbkdir");
             }
 
             // Lösche Datensätze aus der DB

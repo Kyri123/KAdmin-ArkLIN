@@ -22,9 +22,30 @@ $server = $serv->name();
 
 $resp = null;
 
+// Speicher Optionen
+if(isset($_POST["OPT"])) {
+    setcookie($server."_offset", $_POST["OFFSET"]); $_COOKIE[$server."_offset"] = $_POST["OFFSET"];
+    setcookie($server."_limit", $_POST["LIMIT"]); $_COOKIE[$server."_limit"] = $_POST["LIMIT"];
+    setcookie($server."_order", $_POST["ORDER"]); $_COOKIE[$server."_order"] = $_POST["ORDER"];
+    $resp .= $alert->rd(102);
+}
+
+$query_count = $mycon->query("SELECT * FROM ArkAdmin_statistiken WHERE `server` = '$server'")->numRows();
+$limit = isset($_COOKIE[$server."_limit"]) ? $_COOKIE[$server."_limit"] : 50;
+$pager_c = ceil($query_count / $limit);
+$offset = 0;
+if(isset($_COOKIE[$server."_offset"])) {
+    $offset_new = $_COOKIE[$server."_offset"] * $limit;
+    if($offset_new < $query_count) $offset = $offset_new;
+}
+$order = isset($_COOKIE[$server."_order"]) ? ($_COOKIE[$server."_order"] != "DESC" ? " ASC" : " DESC") : " DESC";
+
+$pages_list = null;
+for($i = 0; $i < $pager_c ; $i++) $pages_list .= "<option value='".$i."' ".($i == (isset($_COOKIE[$server."_offset"]) ? $_COOKIE[$server."_offset"] : 0) ? "Selected" : "").">$i</option>";
+
 // Erstelle Liste
 $list["item"] = $list["modal"] = null;
-$query = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = '$server' ORDER BY `time` DESC";
+$query = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = '$server' ORDER BY `time`$order LIMIT $limit OFFSET $offset";
 $mycon->query($query);
 if($mycon->numRows() > 0) {
     $array = $mycon->fetchAll();
@@ -41,7 +62,8 @@ if($mycon->numRows() > 0) {
         $list_modal = new Template("modals.htm", "app/template/lists/serv/statistiken/");
         $list_modal->load();
 
-        if($k == 1) var_dump($infos);
+        // TODO: Remove;
+        //if($k == 1) var_dump($infos);
 
         // Status des Servers
         $serverstate = 0;
@@ -86,7 +108,18 @@ if($mycon->numRows() > 0) {
     }
 }
 
+
 $page_tpl->load();
+
+$page_tpl->r('__L_10', $limit == 10 ? "SELECTED" : "");
+$page_tpl->r('__L_50', $limit == 50 ? "SELECTED" : "");
+$page_tpl->r('__L_100', $limit == 100 ? "SELECTED" : "");
+$page_tpl->r('__L_250', $limit == 250 ? "SELECTED" : "");
+$page_tpl->r('ASC', $order == " ASC" ? "SELECTED" : "");
+$page_tpl->r('DESC', $order == " DESC" ? "SELECTED" : "");
+$page_tpl->r('pages', $pages_list);
+$page_tpl->r('cdata', $query_count);
+
 $page_tpl->r('resp', $resp);
 $page_tpl->r('list', $list["item"]);
 $page_tpl->r('modal_list', $list["modal"]);

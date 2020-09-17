@@ -8,7 +8,7 @@
  */
 dateFormat = require('dateformat');
 const fs = require("fs");
-const logfile = `data/logs/${dateFormat(global.started, "yyyy-mm-dd_HH-MM")}/server.log`;
+const logfile = `data/logs/${dateFormat(global.started, "yyyy-mm-dd")}/server.log`;
 
 // Speicher in Logdatei
 exports.log = (text) => {
