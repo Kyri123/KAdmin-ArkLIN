@@ -16,7 +16,6 @@
 
 function get_lang_list() {
     $re = null;
-    $dir = "app/lang";
     $dir = dirToArray("app/lang");
     foreach($dir as $k => $v) {
         $ftpl = new Template("lang.htm", "app/template/universally/default/");

@@ -220,7 +220,6 @@ function alog($str) {
         $modid = trim($modid[1]);
         $modid = str_replace('Updating mod ', null, $modid);
         $modid = str_replace(" ", null, $modid);
-        $json = $steamapi_mods[$modid];
         $str = $time.' <b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
     }
     if (strpos($str, '] Mod') !== false) {
@@ -244,14 +243,12 @@ function alog($str) {
         $modid = str_replace(' not fully downloaded - retrying', null, $str);
         $modid = str_replace("Mod ", null, $modid);
         $modid = trim($modid);
-        $json = $steamapi_mods[$modid];
         $str = '<b class="text-gray-800">Not fully downloaded: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"] .'</a> (retry)</b>';
     }
     if (strpos($str, ' installed') !== false) {
         $modid = str_replace('Mod ', null, $str);
         $modid = str_replace(" installed", null, $modid);
         $modid = trim($modid);
-        $json = $steamapi_mods[$modid];
         $str = '<b class="text-gray-800">Installed: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"] .'</a></b>';
     }
     if (strpos($str, 'Downloading mod ') !== false) {
@@ -260,7 +257,6 @@ function alog($str) {
         $modid = explode('...', $modid);
         $done = $modid[1];
         $modid = trim($modid[0]);
-        $json = $steamapi_mods[$modid];
         $str = '<b class="text-gray-800">Downloading: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
 
         if (strpos($done, 'downloaded') !== false) {
