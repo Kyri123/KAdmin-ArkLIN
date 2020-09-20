@@ -12,16 +12,25 @@ const ini = require('ini');
 const fs = require('fs');
 const Gamedig = require('gamedig');
 const ip = require("ip");
-const os = require('os');
 const osu = require('node-os-utils');
 const disk = require('diskusage');
+const logger = require('./logger');
+const si = require('systeminformation');
 
-function save(mysql_status, data, name, state) {
+/**
+ * Speichert Informationen in einer JSON oder in die MYSQL
+ * @param {boolean} mysql_status - Soll die Daten in der Datenbankl gespeichert werden
+ * @param {array} data - Daten die gespeichert werden
+ * @param {string} name - Bezeichung der gespeicherten Daten (bsp server)
+ * @param {array} state - Daten zusätzlich gespeichert werden sollen (array.state)
+ * @param {boolean} use_state - Soll state benutzt werden?
+ */
+function save(mysql_status, data, name, state, use_state = true) {
     if(mysql_status) {
         // Schreibe in die Datenbank zu weiterverarbeitung
         let query_lf = `SELECT * FROM \`ArkAdmin_statistiken\` WHERE \`server\` = '${name}' ORDER BY \`time\``;
         con.query(query_lf, (error, results) => {
-            data.state = state;
+            if(use_state) data.state = state;
             if(!error) {
                 // Wenn mehr als 999 Datensätze bestehen Updaten
                 if(results.length > 999) {
@@ -112,19 +121,24 @@ exports.sendcheck = (mysql_status = false) => {
 
 // Auslastungen für den Server
 exports.checkserver = () => {
-    osu.cpu.usage()
-    .then (cpuPercentage => {
-        disk.check('/', function(err, info) {
-            var ramPercentage = (os.totalmem() - os.freemem()) / os.totalmem() * 100;
-            var memPercentage = 100 - ((info.available / info.total) * 100);
+    osu.cpu.usage().then (cpuPercentage => {
+        let disk_path = fs.existsSync(`${config.WebPath}/remote/serv`) ? `${config.WebPath}/remote/serv` : '/';
+        disk.check(disk_path, function(err, info) {
+            si.mem()
+                .then(mem => {
+                    let ramPercentage = 100 - (mem.available / mem.total * 100);
+                    let memPercentage = 100 - (info.available / info.total * 100);
 
-            var data = {
-                "cpu" : cpuPercentage,
-                "ram" : ramPercentage,
-                "mem" : memPercentage
-            };
+                    let data = {
+                        "cpu" : cpuPercentage,
+                        "ram" : ramPercentage,
+                        "mem" : memPercentage
+                    };
 
-            save(true, data, "server", {});
+                    logger.log(ramPercentage);
+
+                    save(true, data, "server", {}, false);
+                });
         });
     });
-}
+};

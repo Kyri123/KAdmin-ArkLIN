@@ -136,6 +136,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                 status.checkserver();
             }
         }, 600000);
+
         console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Panel (Server): \x1b[36mRun`);
 
         //handle Crontab

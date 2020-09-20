@@ -16,7 +16,6 @@
  */
 
 function mem_perc(){
-
     $free = shell_exec('free');
     $free = (string)trim($free);
     $free_arr = explode("\n", $free);

@@ -26,6 +26,7 @@
         <h>Stunden</h>
         <d>Tage</d>
         <w>Wochen</w>
+        <h24>Letzten 24h</h24>
 
         <force_restart>Starte den ArkAdmin-Server neu</force_restart>
         <force_restart_text>Startet den ArkAdmin-Server neu um z.B. Änderungen am Intervall zu übernehmen.</force_restart_text>

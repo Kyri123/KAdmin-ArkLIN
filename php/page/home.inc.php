@@ -117,7 +117,9 @@ $query = "SELECT * FROM ArkAdmin_statistiken WHERE server='server'";
 $mycon->query($query);
 
 $cpu_lable = $cpu_data = $ram_lable = $ram_data = $mem_lable = $mem_data = array();
-$last = null;
+$last = 0;
+$first = null;
+$show_date = false;
 if($mycon->numRows() > 0) {
     $arr = $mycon->fetchAll();
     foreach ($arr as $item) {
@@ -127,12 +129,21 @@ if($mycon->numRows() > 0) {
         // wandel Informationen in Array
         $infos = json_decode($string, true);
 
-        $date = date("d-m-Y", $item["time"]);
-        $cpu_lable[] = $ram_lable[] = $mem_lable[] = $last != $date ? "'".date("d-m-Y", $item["time"])."'" : '\'\'';
-        $last = $date;
+        if($first == null) $first = $item["time"];
+        if(($item["time"] - $first) > 86400) break;
+        //if(($item["time"] - $last) > 1500) {
+        //    $last = $item["time"];
+        //    $show_date = true;
+        //}
+
+        $date = date("d.m - H:i", $item["time"]);
+        //$cpu_lable[] = $ram_lable[] = $mem_lable[] = ($show_date ? "'$date'" : '\'\'');
+        $cpu_lable[] = $ram_lable[] = $mem_lable[] = "'$date'";
         $cpu_data[] = round($infos["cpu"], 2);
         $ram_data[] = round($infos["ram"], 2);
         $mem_data[] = round($infos["mem"], 2);
+
+        $show_date = false;
     }
 }
 
