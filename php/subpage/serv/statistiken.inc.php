@@ -44,12 +44,16 @@ $pages_list = null;
 for($i = 0; $i < $pager_c ; $i++) $pages_list .= "<option value='".$i."' ".($i == (isset($_COOKIE[$server."_offset"]) ? $_COOKIE[$server."_offset"] : 0) ? "Selected" : "").">".($i+1)."</option>";
 
 // Erstelle Liste
-$list["item"] = $list["modal"] = null;
+$list["item"] = $list["modal"] = $to = $from = null;
+$label = $data = array();
+$onl = $total = $pingon = $tping = $max = 0;
 $query = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = '$server' ORDER BY `time`$order LIMIT $limit OFFSET $offset";
 $mycon->query($query);
 if($mycon->numRows() > 0) {
     $array = $mycon->fetchAll();
+    $from = converttime($array[0]["time"]);
     foreach ($array as $k => $item) {
+        $to = converttime($item["time"]);
         $string = trim(utf8_encode($item["serverinfo_json"]));
         $string = str_replace("\n", null, $string);
 
@@ -69,6 +73,10 @@ if($mycon->numRows() > 0) {
         $serverstate = 0;
         if ($infos["listening"] == "Yes" && $infos["online"] == "Yes" && $infos["run"]) {
             $serverstate = 2;
+            $onl++;
+            $label[] = "'".date("d.m - H:i", $item["time"])."'";
+            $data[] = count($infos["aplayersarr"]);
+            $max = $infos["players"];
         }
         elseif ($infos["listening"] == "No" && $infos["online"] == "No" && $infos["run"]) {
             $serverstate = 1;
@@ -106,6 +114,12 @@ if($mycon->numRows() > 0) {
         $list_modal->r("player", $players != null ? implode("</br>", $players) : "{::lang::php::sc::page::statistiken::notonline}");
 
         $list["modal"] .= $list_modal->load_var();
+        if($serverstate == 2 && $infos["ping"] != "") {
+            $pingon++;
+            $tping += $infos["ping"];
+        }
+
+        $total++;
     }
 }
 
@@ -116,10 +130,19 @@ $page_tpl->r('__L_10', $limit == 10 ? "SELECTED" : "");
 $page_tpl->r('__L_50', $limit == 50 ? "SELECTED" : "");
 $page_tpl->r('__L_100', $limit == 100 ? "SELECTED" : "");
 $page_tpl->r('__L_250', $limit == 250 ? "SELECTED" : "");
+$page_tpl->r('__L_1000', $limit == 1000 ? "SELECTED" : "");
 $page_tpl->r('ASC', $order == " ASC" ? "SELECTED" : "");
 $page_tpl->r('DESC', $order == " DESC" ? "SELECTED" : "");
 $page_tpl->r('pages', $pages_list);
 $page_tpl->r('cdata', $query_count);
+$page_tpl->r('from', $from);
+$page_tpl->r('to', $to);
+$page_tpl->r('d_state', ($onl / $total * 100). "%");
+$page_tpl->r('d_ping', ($tping / $pingon));
+$page_tpl->r('max', $max);
+
+$page_tpl->r('labels', implode(",", $label));
+$page_tpl->r('data', implode(",", $data));
 
 $page_tpl->r('resp', $resp);
 $page_tpl->r('list', $list["item"]);

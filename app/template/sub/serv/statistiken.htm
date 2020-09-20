@@ -11,6 +11,35 @@
                         </th>
                     </tr>
                     <tbody>
+                        <tr class="bg-secondary">
+                            <th colspan="4" class="p-0">
+                                <div class="list-group-item bg-secondary">
+                                    <h6 class="m-0">{::lang::php::sc::page::statistiken::fromto}</h6>
+                                </div>
+                            </th>
+                        </tr>
+                        <!-- Diagram -->
+                        <tr>
+                            <td colspan="4" class="p-2 pt-4">
+                                <canvas id="stats" width="100%" height="400"></canvas>
+                            </td>
+                        </tr>
+                        <!-- stats -->
+                        <tr>
+                            <td colspan="2" class="border">
+                                {::lang::php::sc::page::statistiken::dstats} : <b>{d_state}</b>
+                            </td>
+                            <td colspan="2" class="border">
+                                {::lang::php::sc::page::statistiken::dping} : <b>{d_ping}</b>
+                            </td>
+                        </tr>
+                        <tr class="bg-dark">
+                            <th colspan="4" class="p-0">
+                                <div class="list-group-item bg-dark">
+                                    <h4 class="m-0">{::lang::php::sc::page::statistiken::options}</h4>
+                                </div>
+                            </th>
+                        </tr>
                         <!-- Optionen -->
                         <tr>
                             <td colspan="4" class="p-0">
@@ -28,6 +57,7 @@
                                                             <option value="50" {__L_50}>50</option>
                                                             <option value="100" {__L_100}>100</option>
                                                             <option value="250" {__L_250}>250</option>
+                                                            <option value="1000" {__L_1000}>1000</option>
                                                         </select>
                                                     </div>
                                                 </td>
@@ -89,3 +119,55 @@
     </div>
 </div>
 {modal_list}
+
+<script>
+    $(function () {
+        // CPU
+        var diagramCanvas = $('#stats').get(0).getContext('2d');
+        var diagramData = {
+            labels  : [{labels}],
+            datasets: [
+                {
+                    backgroundColor     : 'rgba(23, 162, 184, 1)',
+                    borderColor         : 'rgba(20, 162, 184, 1)',
+                    pointRadius         : false,
+                    pointColor          : '#17a2b8',
+                    pointStrokeColor    : '#17a2b8',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data: [{data}]
+                }
+            ]
+        }
+
+        var diagramOptions = {
+            maintainAspectRatio : false,
+            responsive : true,
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    gridLines : {
+                        display : false,
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        max: {max},
+                        beginAtZero: false   // minimum value will be 0.
+                    },
+                    gridLines : {
+                        display : false,
+                    }
+                }]
+            }
+        }
+
+        var diagram = new Chart(diagramCanvas, {
+            type: 'line',
+            data: diagramData,
+            options: diagramOptions
+        });
+    });
+</script>

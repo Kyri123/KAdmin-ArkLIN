@@ -135,8 +135,6 @@ exports.checkserver = () => {
                         "mem" : memPercentage
                     };
 
-                    logger.log(ramPercentage);
-
                     save(true, data, "server", {}, false);
                 });
         });

@@ -333,6 +333,10 @@
                     <noplayer>Keine Spieler Gefunden</noplayer>
                     <pagename>ServerCenter - Statistiken</pagename>
                     <urltop>Statistiken</urltop>
+                    <dstats>Onlinezeit (in %)</dstats>
+                    <options>Angezeigte Datensätze</options>
+                    <dping>Durchschnitts Ping</dping>
+                    <fromto>Von [b]{from}[/b] bis [b]{to}[/b]</fromto>
                 </statistiken>
 
                 <!-- Saves.inc.php -->
