@@ -12,6 +12,9 @@ const ini = require('ini');
 const fs = require('fs');
 const Gamedig = require('gamedig');
 const ip = require("ip");
+const os = require('os');
+const osu = require('node-os-utils');
+const disk = require('diskusage');
 
 function save(mysql_status, data, name, state) {
     if(mysql_status) {
@@ -106,3 +109,24 @@ exports.sendcheck = (mysql_status = false) => {
         }
     });
 };
+
+// Auslastungen für den Server
+exports.checkserver = () => {
+    osu.cpu.usage()
+    .then (cpuPercentage => {
+        disk.check('/', function(err, info) {
+            var ramPercentage = (os.totalmem() - os.freemem()) / os.totalmem() * 100;
+            var memPercentage = 100 - ((info.available / info.total) * 100);
+
+            var data = {
+                "cpu" : cpuPercentage,
+                "ram" : ramPercentage,
+                "mem" : memPercentage
+            };
+
+            console.log(data);
+
+            save(true, data, "server", {});
+        });
+    });
+}

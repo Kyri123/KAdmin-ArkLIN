@@ -127,9 +127,9 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         setInterval(() => {
             if (iscon) {
                 status.sendcheck(false);
+                status.checkserver();
             }
         }, config.StatusIntervall);
-
         // Sende Informationen an die Datenbank (Aller 30 Minuten)
         setInterval(() => {
             if (iscon) {
