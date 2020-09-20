@@ -137,7 +137,7 @@ $page_tpl->r('pages', $pages_list);
 $page_tpl->r('cdata', $query_count);
 $page_tpl->r('from', $from);
 $page_tpl->r('to', $to);
-$page_tpl->r('d_state', round(($onl / $total * 100)), 2). "%";
+$page_tpl->r('d_state', round(($onl / $total * 100), 2). "%");
 $page_tpl->r('d_ping', round(($tping / ($pingon == 0 ? 1 : $pingon)), 2));
 $page_tpl->r('max', $max);
 
