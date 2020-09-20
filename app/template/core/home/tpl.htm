@@ -69,7 +69,7 @@
 <!-- Traffic -->
 <div class="row">
     <!-- CPU -->
-    <div class="col-4">
+    <div class="col-md-4">
         <div class="card">
             <div class="card-header bg-info">
                 <h3 class="card-title"><i class="fas fa-microchip mr-1" aria-hidden="true"></i> {::lang::allg::traffic::cpu}</h3>
@@ -87,7 +87,7 @@
     </div>
 
     <!-- RAM -->
-    <div class="col-4">
+    <div class="col-md-4">
         <div class="card">
             <div class="card-header bg-primary">
                 <h3 class="card-title"><i class="fas fa-memory mr-1" aria-hidden="true"></i> {::lang::allg::traffic::ram}</h3>
@@ -105,7 +105,7 @@
     </div>
 
     <!-- HDD -->
-    <div class="col-4">
+    <div class="col-md-4">
         <div class="card">
             <div class="card-header bg-danger">
                 <h3 class="card-title"><i class="fas fa-hdd mr-1" aria-hidden="true"></i> {::lang::allg::traffic::mem}</h3>
@@ -127,7 +127,7 @@
         // CPU
         var CPUCanvas = $('#CPUChart').get(0).getContext('2d')
         var CPUData = {
-            labels  : ['0', '', '', '', '', '', '1'],
+            labels  : [{lable_cpu}],
             datasets: [
                 {
                     backgroundColor     : 'rgba(23, 162, 184, 1)',
@@ -137,7 +137,7 @@
                     pointStrokeColor    : '#17a2b8',
                     pointHighlightFill  : '#fff',
                     pointHighlightStroke: 'rgba(220,220,220,1)',
-                    data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40]
+                    data: [{data_cpu}]
                 }
             ]
         }
@@ -155,6 +155,10 @@
                     }
                 }],
                 yAxes: [{
+                    ticks: {
+                        max: 100,
+                        beginAtZero: true   // minimum value will be 0.
+                    },
                     gridLines : {
                         display : false,
                     }
@@ -172,7 +176,7 @@
         // RAM
         var RAMCanvas = $('#RAMChart').get(0).getContext('2d')
         var RAMData = {
-            labels  : ['0', '', '', '', '', '', '1'],
+            labels  : [{lable_ram}],
             datasets: [
                 {
                     backgroundColor     : '#007bff',
@@ -182,7 +186,7 @@
                     pointStrokeColor    : '#17a2b8',
                     pointHighlightFill  : '#fff',
                     pointHighlightStroke: 'rgba(220,220,220,1)',
-                    data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40]
+                    data: [{data_ram}]
                 }
             ]
         }
@@ -200,6 +204,10 @@
                     }
                 }],
                 yAxes: [{
+                    ticks: {
+                        max: 100,
+                        beginAtZero: true   // minimum value will be 0.
+                    },
                     gridLines : {
                         display : false,
                     }
@@ -217,7 +225,7 @@
         // MEM
         var MEMCanvas = $('#MEMChart').get(0).getContext('2d')
         var MEMData = {
-            labels  : ['0', '', '', '', '', '', '1'],
+            labels  : [{lable_mem}],
             datasets: [
                 {
                     backgroundColor     : '#dc3545',
@@ -227,7 +235,7 @@
                     pointStrokeColor    : '#17a2b8',
                     pointHighlightFill  : '#fff',
                     pointHighlightStroke: 'rgba(220,220,220,1)',
-                    data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40]
+                    data: [{data_mem}],
                 }
             ]
         }
@@ -245,6 +253,10 @@
                     }
                 }],
                 yAxes: [{
+                    ticks: {
+                        max: 100,
+                        beginAtZero: true   // minimum value will be 0.
+                    },
                     gridLines : {
                         display : false,
                     }
