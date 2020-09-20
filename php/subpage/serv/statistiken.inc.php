@@ -89,7 +89,7 @@ if($mycon->numRows() > 0) {
         }
 
         $players = null;
-        if(is_countable($infos["aplayersarr"])) foreach ($infos["aplayersarr"] as $pitem) {
+        if(isset($infos["aplayersarr"]))) if(is_countable($infos["aplayersarr"])) foreach ($infos["aplayersarr"] as $pitem) {
             $time = TimeCalc($pitem["time"], ($pitem["time"] > 3600 ? "h" : "m"), "disabled");
             $on = round($time["int"], 2);
             $players[] = "<b>" . $pitem["name"] . "</b> - $on ".$time["lang"];
@@ -99,7 +99,7 @@ if($mycon->numRows() > 0) {
         $list_item->r("status_color", convertstate($serverstate)["color"]);
         $list_item->r("status_text", convertstate($serverstate)["str"]);
         $list_item->r("date", converttime($item["time"]));
-        $list_item->r("player", (is_countable($infos["aplayersarr"]) ? count($infos["aplayersarr"]) : 0) . '/' . $infos["players"]);
+        $list_item->r("player", isset($infos["aplayersarr"]) ? ((is_countable($infos["aplayersarr"]) ? count($infos["aplayersarr"]) : 0) . '/' . $infos["players"]) : "0/0");
         $list_item->r("id", $item["id"]);
 
         $list["item"] .= $list_item->load_var();
@@ -110,7 +110,7 @@ if($mycon->numRows() > 0) {
         $list_modal->r("id", $item["id"]);
         $list_modal->r("ServerMap", $infos["ServerMap"] != "" ? $infos["ServerMap"] : "{::lang::php::sc::page::statistiken::notonline}");
         $list_modal->r("ServerName", $infos["ServerName"] != "" ? $infos["ServerName"] : "{::lang::php::sc::page::statistiken::notonline}");
-        $list_modal->r("ping", $infos["ping"] != "" ? $infos["ping"] : "{::lang::php::sc::page::statistiken::notonline}");
+        $list_modal->r("ping", isset($infos["ping"]) ? ($infos["ping"] != "" ? $infos["ping"] : "{::lang::php::sc::page::statistiken::notonline}") : "{::lang::php::sc::page::statistiken::notonline}");
         $list_modal->r("player", $players != null ? implode("</br>", $players) : "{::lang::php::sc::page::statistiken::notonline}");
 
         $list["modal"] .= $list_modal->load_var();
