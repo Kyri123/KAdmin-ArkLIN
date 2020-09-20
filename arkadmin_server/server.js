@@ -127,13 +127,13 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         setInterval(() => {
             if (iscon) {
                 status.sendcheck(false);
-                status.checkserver();
             }
         }, config.StatusIntervall);
         // Sende Informationen an die Datenbank (Aller 30 Minuten)
         setInterval(() => {
             if (iscon) {
                 status.sendcheck(true);
+                status.checkserver();
             }
         }, 600000);
         console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Panel (Server): \x1b[36mRun`);

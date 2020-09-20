@@ -124,8 +124,6 @@ exports.checkserver = () => {
                 "mem" : memPercentage
             };
 
-            console.log(data);
-
             save(true, data, "server", {});
         });
     });
