@@ -239,10 +239,6 @@ elseif(isset($_POST["add"])) {
     $resp = $alert->rd(99);
 }
 
-
-//Fixed (bis ich ne andere lösung gefunden habe......)
-// NOTE: Diese variante bleibt vorerst
-// TODO: Später nochmal anschauen läuft vorerst
 $i = 0;
 foreach ($json as $mk => $mv) {
     $old = $json[$mk]["servers"];
@@ -372,10 +368,9 @@ $tpl->r("resp", $resp);
 $tpl->r("sel_serv", $sel_serv);
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fas fa-random\"></i>";
-if($user->perm("cluster/create")) $btns = '<a href="#" class="btn btn-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addcluster">
-            <span class="icon text-white-50">
+if($user->perm("cluster/create")) $btns = '<a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addcluster">
+            <span class="icon">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>
             <span class="text">{::lang::php::cluster::btn_addcluster}</span>
         </a>';
-?>

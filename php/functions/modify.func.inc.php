@@ -220,7 +220,6 @@ function alog($str) {
         $modid = trim($modid[1]);
         $modid = str_replace('Updating mod ', null, $modid);
         $modid = str_replace(" ", null, $modid);
-        $json = $steamapi_mods[$modid];
         $str = $time.' <b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
     }
     if (strpos($str, '] Mod') !== false) {
@@ -244,14 +243,12 @@ function alog($str) {
         $modid = str_replace(' not fully downloaded - retrying', null, $str);
         $modid = str_replace("Mod ", null, $modid);
         $modid = trim($modid);
-        $json = $steamapi_mods[$modid];
         $str = '<b class="text-gray-800">Not fully downloaded: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"] .'</a> (retry)</b>';
     }
     if (strpos($str, ' installed') !== false) {
         $modid = str_replace('Mod ', null, $str);
         $modid = str_replace(" installed", null, $modid);
         $modid = trim($modid);
-        $json = $steamapi_mods[$modid];
         $str = '<b class="text-gray-800">Installed: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"] .'</a></b>';
     }
     if (strpos($str, 'Downloading mod ') !== false) {
@@ -260,7 +257,6 @@ function alog($str) {
         $modid = explode('...', $modid);
         $done = $modid[1];
         $modid = trim($modid[0]);
-        $json = $steamapi_mods[$modid];
         $str = '<b class="text-gray-800">Downloading: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
 
         if (strpos($done, 'downloaded') !== false) {
@@ -394,4 +390,22 @@ function saveshell($command) {
     return str_replace($forbitten, null, $command);
 }
 
-?>
+/**
+ * Wandelt die Zeit in das höhste vorgegebene Format (Rundet IMMER auf)
+ *
+ * @param  int $int Zeit in INT
+ * @param  string $target Ziel (w = Wochen, d = Tage, h = Stunden (Default), m = Minuten, s = Sekunden)
+ * @param  string $round Rundet (up = Rundet auf (Default), down = Rundet ab, disabled = Rundet nicht)
+ * @return array [int] Zeit in INT ; [lang] Endung in String (Lang format)
+ */
+function TimeCalc($int, $target = "h", $round = "up") {
+    $x = $int;
+    if($target == "m") $x = $int / 60;
+    if($target == "h") $x = $int / 60 / 60;
+    if($target == "d") $x = $int / 60 / 60 / 24;
+    if($target == "w") $x = $int / 60 / 60 / 24 / 7;
+
+    if($round == "down") return array("int" => floor($x), "lang" => "{::lang::allg::$target}");
+    if($round == "disabled") return array("int" => $x, "lang" => "{::lang::allg::$target}");
+    return array("int" => ceil($x), "lang" => "{::lang::allg::$target}");
+}

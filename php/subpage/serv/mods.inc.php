@@ -216,4 +216,3 @@ $page_tpl->r('urls' ,$urls);
 $panel = $page_tpl->load_var();
 
 
-?>

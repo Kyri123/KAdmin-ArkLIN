@@ -45,4 +45,3 @@ if (isie()) {
     $g_alert .= $alert->re();
     $g_alert_bool = true;
 }
-?>

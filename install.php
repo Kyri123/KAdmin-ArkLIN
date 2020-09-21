@@ -8,6 +8,9 @@
  * *******************************************************************************************
 */
 
+// Standart Vars
+$title = $content = null;
+
 // Setzte Error auf 0
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -77,4 +80,3 @@ $tpl->r("time", time());
 $tpl->r("content", $content);
 $tpl->r("code", "7c90c6595f7cb4d2aa0e");
 $tpl->echo();
-?>

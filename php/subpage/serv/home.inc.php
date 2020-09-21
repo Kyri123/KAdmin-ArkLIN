@@ -184,4 +184,3 @@ $page_tpl->r("whitelist_admin", $adminlist_admin);
 $page_tpl->r("pick_whitelist", $serv->cfg_check("exclusivejoin"));
 $panel = $page_tpl->load_var();
 
-?>

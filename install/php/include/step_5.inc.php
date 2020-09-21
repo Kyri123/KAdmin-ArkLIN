@@ -27,5 +27,5 @@ unlink("install.php");
 
 header("Location: /login"); exit;
 
-?>
+
 

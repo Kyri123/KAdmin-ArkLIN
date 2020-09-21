@@ -18,4 +18,3 @@ if (isset($_COOKIE["id"]) && isset($_COOKIE["validate"])) {
 session_destroy();
 //header('Location: /de/home');
 //exit;
-?>

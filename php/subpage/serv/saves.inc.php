@@ -230,7 +230,7 @@ if($count !== false) {
             $TribeId = $row["TribeId"];
             $TotalEngramPoints = $row["TotalEngramPoints"];
             $TribeName = $row["TribeName"];
-            $IG_name = $row["CharacterName"];
+            $IG_name = $row["CharacterName"] == "" ? $steamapi_user[$row["SteamId"]]["personaname"] : $row["CharacterName"];
         }
         else {
             $img = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/";
@@ -376,4 +376,3 @@ $panel = $page_tpl->load_var();
 
 $player = null;
 
-?>

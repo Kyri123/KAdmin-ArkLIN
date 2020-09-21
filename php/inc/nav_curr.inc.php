@@ -73,11 +73,3 @@ if(isset($_SESSION["id"]) && isset($_COOKIE["lang"])) {
         $helper->savejson_create($json, $path);
     }
 }
-
-
-
-
-
-?>
-
-

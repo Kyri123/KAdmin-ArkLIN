@@ -20,5 +20,5 @@ $sitetpl->r("error", $resp);
 $title = "{::lang::install::step3::title}";
 $content = $sitetpl->load_var();
 
-?>
+
 

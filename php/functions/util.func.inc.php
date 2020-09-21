@@ -51,7 +51,7 @@ function setico($target, $ico = null) {
  * Wandelt serverstatus in String (ML)
  *
  * @param  mixed $serverstate
- * @return array
+ * @return array - ["color"] / ["str"]
  */
 
 function convertstate($serverstate) {
@@ -262,4 +262,3 @@ function perc($curr, $max) {
     return ($curr / $max * 100);
 }
 
-?>

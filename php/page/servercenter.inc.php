@@ -19,13 +19,35 @@ $tpl_dir_lists = 'app/template/lists/serv/main/';
 $tpl_dir_all = 'app/template/all/';
 $setsidebar = false; $resp_cluster = null;
 $serv = new server($url[2]);
+exec("ps ax | grep ".$serv->status()->pid, $checkpid); // Prüfe ob der Server Läuft
 $serv->cluster_load();
 $txt_alert = $site_name = $player = null;
 
 $perm = "server/".$serv->name();
-
 if(!$user->perm("$perm/show")) {
     header("Location: /401"); exit;
+}
+
+// server Killen
+if(isset($url[5]) && $url[4] == "kill" && $user->perm("$perm/kill")) {
+    $jobs->set($serv->name());
+    if($jobs->shell("kill ".$serv->status()->pid)) {
+        $resp = $alert->rd(111);
+    } else {
+        $resp = $alert->rd(3);
+    }
+}
+elseif(isset($url[5]) && $url[4] == "kill") {
+    $resp = $alert->rd(99);
+}
+
+//erstelle SteamAPI von OnlineSpieler
+$pl_json = $helper->file_to_json('app/json/saves/pl_' . $serv->name() . '.players', false);
+$arr_pl = array();
+if (is_array($pl_json)) {
+    for ($i = 0; $i < count($pl_json); $i++) {
+        $arr_pl[] = $pl_json[$i]->steamID;
+    }
 }
 
 //erstelle SteamAPI von OnlineSpieler
@@ -87,10 +109,9 @@ if ($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>{::lang::php::s
 
 $player_online = $serv->status()->aplayersarr;
 
-
 // Spieler
 if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0 && $user->perm("$perm/show_players")) {
-    for ($i = 0; $i < count($pl_json); $i++) {
+    for ($i = 0; $i < count($player_online); $i++) {
         $list_tpl = new Template('user.htm', 'app/template/lists/serv/main/');
         $list_tpl->load();
 
@@ -118,7 +139,7 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
             $TribeId = $row["TribeId"];
             $TotalEngramPoints = $row["TotalEngramPoints"];
             $TribeName = $row["TribeName"];
-            $IG_name = $row["CharacterName"];
+            $IG_name = $row["CharacterName"] == "" ? $player_online[$i]["name"] : $row["CharacterName"];
         }
         else {
             $img = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/";
@@ -145,6 +166,8 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
         $list_tpl->r('SpielerID', $SpielerID);
         $list_tpl->r('TEP', $TotalEngramPoints);
         $list_tpl->r('TID', $TribeId);
+        $time = TimeCalc($player_online[$i]["time"], ($player_online[$i]["time"] > 3600 ? "h" : "m"), "disabled");
+        $list_tpl->r('IG:online', round($time["int"], 2) . ' ' . $time["lang"]);
         $list_tpl->rif ('empty', true);
 
         $player .= $list_tpl->load_var();
@@ -176,7 +199,7 @@ for ($i=0;$i<count($json_para);$i++) {
     $para = new Template('parameter.htm', 'app/template/core/serv/');
     $para->load();
     
-    $t0 = ($json_para[$i]["type"] == 0) ? true : false;
+    $t0 = $json_para[$i]["type"] == 0;
     $t1 = ($json_para[$i]["type"] == 0) ? false : true;
         
     $para->r("name", str_replace("--", null, $json_para[$i]["parameter"]));
@@ -232,20 +255,13 @@ $tpl->r('joinurl', $connect);
 // lade in TPL
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
 $content = $tpl->load_var();
-$btns .= '
-        <a href="#" class="btn btn-warning btn-icon-split rounded-0" data-toggle="modal" data-target="#warning_modal">
-            <span class="icon text-white-50">
-                <i class="fas fa-exclamation-circle"></i>
+$running = false;
+foreach ($checkpid as $item) if(strpos($item, $serv->name())) $running = true;
+if($running && $user->perm("$perm/kill")) $btns .= '
+        <a href="/servercenter/'.$serv->name().'/'.$url[3].'/kill/'.$serv->status()->pid.'" class="btn btn-outline-danger btn-icon-split rounded-0" 
+        data-toggle="popover_action" title="" data-content="{::lang::servercenter::kill_text}" data-original-title="{::lang::servercenter::kill_titel}">
+            <span class="icon">
+                <i class="fas fa-power-off"></i>
             </span>
-            <span class="text">'.$globa_json->warning_count.'</span>
         </a>
-        <a href="#" class="btn btn-danger btn-icon-split rounded-0" data-toggle="modal" data-target="#danger_modal">
-            <span class="icon text-white-50">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            <span class="text">'.$globa_json->error_count.'</span>
-        </a>
-'; $btns = null;
-
-
-?>
+';

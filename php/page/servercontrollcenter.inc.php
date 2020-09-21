@@ -143,9 +143,9 @@ if (isset($_POST["del"]) && $user->perm("servercontrollcenter/delete")) {
 
             // Wenn gewünscht entferne Verzeichnisse vom Server
             if (in_array('deinstall', $opt)) {
-                $jobs->shell("rm -R ".$arkservdir);
-                $jobs->shell("rm -R ".$arklogdir);
-                $jobs->shell("rm -R ".$arkbkdir);
+                $jobs->shell("rm -R $arkservdir");
+                $jobs->shell("rm -R $arklogdir");
+                $jobs->shell("rm -R $arkbkdir");
             }
 
             // Lösche Datensätze aus der DB
@@ -153,6 +153,7 @@ if (isset($_POST["del"]) && $user->perm("servercontrollcenter/delete")) {
             $mycon->query("DELETE FROM `ArkAdmin_shell` WHERE `server`='".$serv->name()."'");
             $mycon->query("DELETE FROM `ArkAdmin_jobs` WHERE `server`='".$serv->name()."'");
             $mycon->query("DELETE FROM `ArkAdmin_tribe` WHERE `server`='".$serv->name()."'");
+            $mycon->query("DELETE FROM `ArkAdmin_statistiken` WHERE `server`='".$serv->name()."'");
 
             $alert->code = 101;
             $alert->overwrite_text = "{::lang::php::scc::serverremoved}";
@@ -231,10 +232,9 @@ $tpl->r("list_modal", $cfgmlist);
 $tpl->r("resp", $resp);
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
-if($user->perm("servercontrollcenter/create")) $btns = '<a href="#" class="btn btn-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
-            <span class="icon text-white-50">
+if($user->perm("servercontrollcenter/create")) $btns = '<a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
+            <span class="icon">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>
             <span class="text">{::lang::php::scc::btn_addserver}</span>
         </a>';
-?>

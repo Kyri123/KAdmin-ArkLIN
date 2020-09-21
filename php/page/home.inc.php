@@ -108,8 +108,42 @@ if (isset($json['file'])) {
         $listtpl->r('date', $json[$i]['datestring']);
         $listtpl->r('version', $json[$i]['version']);
         $list .= $listtpl->load_var();
-        if ($c == 9) break;
+        if ($c == 12) break;
         $c++;
+    }
+}
+
+$query = "SELECT * FROM ArkAdmin_statistiken WHERE server='server'";
+$mycon->query($query);
+
+$cpu_lable = $cpu_data = $ram_lable = $ram_data = $mem_lable = $mem_data = array();
+$last = 0;
+$first = null;
+$show_date = false;
+if($mycon->numRows() > 0) {
+    $arr = $mycon->fetchAll();
+    foreach ($arr as $item) {
+        $string = trim(utf8_encode($item["serverinfo_json"]));
+        $string = str_replace("\n", null, $string);
+
+        // wandel Informationen in Array
+        $infos = json_decode($string, true);
+
+        if($first == null) $first = $item["time"];
+        if(($item["time"] - $first) > 86400) break;
+        //if(($item["time"] - $last) > 1500) {
+        //    $last = $item["time"];
+        //    $show_date = true;
+        //}
+
+        $date = date("d.m - H:i", $item["time"]);
+        //$cpu_lable[] = $ram_lable[] = $mem_lable[] = ($show_date ? "'$date'" : '\'\'');
+        $cpu_lable[] = $ram_lable[] = $mem_lable[] = "'$date'";
+        $cpu_data[] = round($infos["cpu"], 2);
+        $ram_data[] = round($infos["ram"], 2);
+        $mem_data[] = round($infos["mem"], 2);
+
+        $show_date = false;
     }
 }
 
@@ -118,6 +152,13 @@ $tpl->r('listchangelogs', $list);
 $tpl->r('version', $version);
 $tpl->r('serv_list', $serv_list);
 
+$tpl->r('lable_ram', implode(",", $ram_lable));
+$tpl->r('lable_cpu', implode(",", $cpu_lable));
+$tpl->r('lable_mem', implode(",", $mem_lable));
+
+$tpl->r('data_ram', implode(",", $ram_data));
+$tpl->r('data_cpu', implode(",", $cpu_data));
+$tpl->r('data_mem', implode(",", $mem_data));
+
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fas fa-tachometer-alt\" aria-hidden=\"true\"></i>";
-?>

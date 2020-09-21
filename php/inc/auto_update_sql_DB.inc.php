@@ -28,6 +28,16 @@ if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
     }
 }
 
+//check SQL for statistiken
+$table = "ArkAdmin_statistiken";
+$query_file = "app/sql/statistiken.sql";
+if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
+    $query_file = file($query_file);
+    foreach ($query_file as $query) {
+        $mycon->query($query);
+    }
+}
+
 //check SQL for jobs
 $table = "ArkAdmin_shell";
 $query_file = "app/sql/shell.sql";
@@ -81,4 +91,3 @@ $helper->savejson_create($array, "arkadmin_server/config/mysql.json");
 
 $check_json["checked"] = true;
 $helper->savejson_create($check_json, "app/data/sql_check.json");
-?>

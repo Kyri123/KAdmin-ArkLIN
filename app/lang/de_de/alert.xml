@@ -12,8 +12,6 @@
     200-299 = Warning
     >300 = Info
     ++++++++++++++++++++++++++++++++++++++++++++
-    TODO: (Langfile auch über Webserver beziehen)
-    ++++++++++++++++++++++++++++++++++++++++++++
     -->
 
     <alert>
@@ -322,6 +320,12 @@
             <title>Erfolgreich!</title>
             <text>Der download sollte gleich Starten. Wenn nicht klicke auf diesen link: [a="{url}"]Klick mich![/a]</text>
         </c_110>
+
+        <!-- Success | shell -->
+        <c_111>
+            <title>Erfolgreich Gesendet!</title>
+            <text>Kommando wurde an den Server gesendet (Die Ausführung kann jenach eingestellen Inverall kurz dauern)</text>
+        </c_111>
 
 
         <!-- Warning -->

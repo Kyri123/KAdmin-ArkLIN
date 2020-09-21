@@ -44,4 +44,3 @@ for ($i=0;$i<count($dir);$i++) {
 
 // schreibe lesen vom Webhelper
 file_put_contents("app/check/webhelper", time());
-?>

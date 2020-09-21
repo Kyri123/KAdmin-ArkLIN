@@ -52,8 +52,6 @@ switch ($case) {
                     } else {
                         $resp = $rcon->get_response();
                         $alert->code = 107;
-                        //$alert->r("command", $command); TODO: rausfinden wieso hier kein $alert geht...
-                        //$alert->r("response", trim($resp)); TODO: rausfinden wieso hier kein $alert geht...
                         $msg = $alert->re();
                         $log = 'app/json/saves/rconlog_'.$serv->name().'.txt';
                         if (file_exists($log)) {
@@ -169,4 +167,3 @@ switch ($case) {
         break;
 }
 $mycon->close();
-?>

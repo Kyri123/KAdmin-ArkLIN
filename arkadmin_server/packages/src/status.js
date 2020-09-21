@@ -10,12 +10,48 @@
 // require Module
 const ini = require('ini');
 const fs = require('fs');
-const shell = require('./shell');
 const Gamedig = require('gamedig');
 const ip = require("ip");
+const osu = require('node-os-utils');
+const disk = require('diskusage');
+const logger = require('./logger');
+const si = require('systeminformation');
 
-exports.sendcheck = () => {
-    var arkmanager_folder = config.AAPath + "/instances/";
+/**
+ * Speichert Informationen in einer JSON oder in die MYSQL
+ * @param {boolean} mysql_status - Soll die Daten in der Datenbankl gespeichert werden
+ * @param {array} data - Daten die gespeichert werden
+ * @param {string} name - Bezeichung der gespeicherten Daten (bsp server)
+ * @param {array} state - Daten zusätzlich gespeichert werden sollen (array.state)
+ * @param {boolean} use_state - Soll state benutzt werden?
+ */
+function save(mysql_status, data, name, state, use_state = true) {
+    if(mysql_status) {
+        // Schreibe in die Datenbank zu weiterverarbeitung
+        let query_lf = `SELECT * FROM \`ArkAdmin_statistiken\` WHERE \`server\` = '${name}' ORDER BY \`time\``;
+        con.query(query_lf, (error, results) => {
+            if(use_state) data.state = state;
+            if(!error) {
+                // Wenn mehr als 999 Datensätze bestehen Updaten
+                if(results.length > 999) {
+                    var update = `UPDATE \`ArkAdmin_statistiken\` SET \`time\` = '${Math.floor(Date.now() / 1000)}', \`serverinfo_json\` = '${JSON.stringify(data)}' WHERE \`id\` = '${results[0].id}'`;
+                    con.query(update);
+                }
+                // Wenn mehr weniger 999 Datensätze bestehen Erstelle neue Datensätze
+                else {
+                    var create = `INSERT INTO \`ArkAdmin_statistiken\` VALUES (null, '${Math.floor(Date.now() / 1000)}', '${JSON.stringify(data)}', '${name}');`;
+                    con.query(create);
+                }
+            }
+        });
+    }
+    else {
+        fs.writeFileSync(`${config.WebPath}/app/json/serverinfo/raw_${name}.json`, JSON.stringify(data));
+    }
+}
+
+exports.sendcheck = (mysql_status = false) => {
+    var arkmanager_folder = `${config.AAPath}/instances/`;
     // Scanne Instancen
     fs.readdirSync(arkmanager_folder).forEach(file => {
         // Erstelle Abfrage wenn es eine .cfg Datei ist
@@ -24,8 +60,7 @@ exports.sendcheck = () => {
             var data = {};
             var name = file.replace(".cfg", "");
             var cfg = ini.parse(fs.readFileSync(arkmanager_folder + file, 'utf-8'));
-            var pid_file = cfg.arkserverroot + '/ShooterGame/Saved/.arkserver-' + name + '.pid';
-            var server_file = cfg.arkserverroot + '/ShooterGame/ShooterGame/Binaries/Linux/ShooterGameServer';
+            var pid_file = `${cfg.arkserverroot}/ShooterGame/Saved/.arkserver-${name}.pid`;
             var ip_addresse = ip.address();
 
             // Default werte
@@ -36,12 +71,12 @@ exports.sendcheck = () => {
             data.cfg = name;
             data.ServerMap = "";
             data.ServerName = "";
-            data.ARKServers = "https:\/\/arkservers.net\/server\/" + ip_addresse + ":" + cfg.ark_QueryPort;
-            data.connect = "steam:\/\/connect\/" + ip_addresse + ":" + cfg.ark_Port;
+            data.ARKServers = `https://arkservers.net/server/${ip_addresse}:${cfg.ark_QueryPort}`;
+            data.connect = `steam://connect/${ip_addresse}:${cfg.ark_Port}`;
 
             // Prüfe ob der Server läuft und hole PID
             data.run = (fs.existsSync(pid_file)) ? require('is-running')(fs.readFileSync(pid_file, 'utf-8')) : false;
-            data.pid = (data.run) ? fs.readFileSync(pid_file) : 0;
+            data.pid = (data.run) ? fs.readFileSync(pid_file, 'utf-8') : 0;
 
             // versuche verbindung zum Server aufzubauen
             if (data.run) {
@@ -59,6 +94,7 @@ exports.sendcheck = () => {
                     data.cfg = name;
                     data.ServerMap = state.map;
                     data.ServerName = state.name;
+                    data.ping = state.ping;
 
                     // Hole Version
                     var version_split = state.name.split("-")[1];
@@ -68,13 +104,39 @@ exports.sendcheck = () => {
                     version_split = version_split.replace("v", "");
                     data.version = version_split;
 
-                    fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
+                    // Speichern in Json / MySQL
+                    save(mysql_status, data, name, state);
                 }).catch((error) => {
-                    fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
+                    // Speichern in Json / MySQL
+                    if(error) save(mysql_status, data, name, {});
                 });
-            } else {
-                fs.writeFileSync(config.WebPath + "/app/json/serverinfo/raw_" + name + ".json", JSON.stringify(data));
+            }
+            else {
+                // Speichern in Json / MySQL
+                if(!data.run) save(mysql_status, data, name, {});
             }
         }
+    });
+};
+
+// Auslastungen für den Server
+exports.checkserver = () => {
+    osu.cpu.usage().then (cpuPercentage => {
+        let disk_path = fs.existsSync(`${config.WebPath}/remote/serv`) ? `${config.WebPath}/remote/serv` : '/';
+        disk.check(disk_path, function(err, info) {
+            si.mem()
+                .then(mem => {
+                    let ramPercentage = 100 - (mem.available / mem.total * 100);
+                    let memPercentage = 100 - (info.available / info.total * 100);
+
+                    let data = {
+                        "cpu" : cpuPercentage,
+                        "ram" : ramPercentage,
+                        "mem" : memPercentage
+                    };
+
+                    save(true, data, "server", {}, false);
+                });
+        });
     });
 };

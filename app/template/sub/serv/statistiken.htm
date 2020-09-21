@@ -1,0 +1,173 @@
+<div class="col-xl-9 col-md-8 mb-4" onload="getmods('{cfg}')">
+    <div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+        <div class="tab-content" id="pills-tabContent">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr class="bg-dark">
+                        <th colspan="4" class="p-0">
+                            <div class="list-group-item bg-dark">
+                                <h4 class="m-0">{::lang::php::sc::page::statistiken::pagename} ({cdata} {::lang::php::sc::page::statistiken::datas})</h4>
+                            </div>
+                        </th>
+                    </tr>
+                    <tbody>
+                        <tr class="bg-secondary">
+                            <th colspan="4" class="p-0">
+                                <div class="list-group-item bg-secondary">
+                                    <h6 class="m-0">{::lang::php::sc::page::statistiken::fromto}</h6>
+                                </div>
+                            </th>
+                        </tr>
+                        <!-- Diagram -->
+                        <tr>
+                            <td colspan="4" class="p-2 pt-4">
+                                <canvas id="stats" width="100%" height="400"></canvas>
+                            </td>
+                        </tr>
+                        <!-- stats -->
+                        <tr>
+                            <td colspan="2" class="border">
+                                {::lang::php::sc::page::statistiken::dstats} : <b>{d_state}</b>
+                            </td>
+                            <td colspan="2" class="border">
+                                {::lang::php::sc::page::statistiken::dping} : <b>{d_ping}</b>
+                            </td>
+                        </tr>
+                        <tr class="bg-dark">
+                            <th colspan="4" class="p-0">
+                                <div class="list-group-item bg-dark">
+                                    <h4 class="m-0">{::lang::php::sc::page::statistiken::options}</h4>
+                                </div>
+                            </th>
+                        </tr>
+                        <!-- Optionen -->
+                        <tr>
+                            <td colspan="4" class="p-0">
+                                <form action="#" method="post" class="m-0">
+                                    <table class="table table-bordered mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">{::lang::php::sc::page::statistiken::LIMIT}</span>
+                                                        </div>
+                                                        <select class="form-control" name="LIMIT">
+                                                            <option value="10" {__L_10}>10</option>
+                                                            <option value="50" {__L_50}>50</option>
+                                                            <option value="100" {__L_100}>100</option>
+                                                            <option value="250" {__L_250}>250</option>
+                                                            <option value="1000" {__L_1000}>1000</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">{::lang::php::sc::page::statistiken::ORDER}</span>
+                                                        </div>
+                                                        <select class="form-control" name="ORDER">
+                                                            <option value="DESC" {DESC}>{::lang::php::sc::page::statistiken::DESC}</option>
+                                                            <option value="ASC" {ASC}>{::lang::php::sc::page::statistiken::ASC}</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">{::lang::php::sc::page::statistiken::OFFSET}</span>
+                                                        </div>
+                                                        <select class="form-control" name="OFFSET">
+                                                            {pages}
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button name="OPT" type="submit" style="width: 100%" class="btn-success btn btn-sm">{::lang::php::sc::page::statistiken::submit}</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </thead>
+            </table>
+            <table class="table table-striped table-hover mb-0">
+                <thead>
+                <!-- Head -->
+                    <tr>
+                        <th style="width:30px">#</th>
+                        <th style="width:60px">{::lang::servercenter::statistiken::table::status}</th>
+                        <th>{::lang::servercenter::statistiken::table::date}</th>
+                        <th>{::lang::servercenter::statistiken::table::player}</th>
+                        <th style="width:30px">{::lang::servercenter::statistiken::table::action}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Items -->
+                    {list}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+{modal_list}
+
+<script>
+    $(function () {
+        // CPU
+        var diagramCanvas = $('#stats').get(0).getContext('2d');
+        var diagramData = {
+            labels  : [{labels}],
+            datasets: [
+                {
+                    backgroundColor     : 'rgba(23, 162, 184, 1)',
+                    borderColor         : 'rgba(20, 162, 184, 1)',
+                    pointRadius         : false,
+                    pointColor          : '#17a2b8',
+                    pointStrokeColor    : '#17a2b8',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data: [{data}]
+                }
+            ]
+        }
+
+        var diagramOptions = {
+            maintainAspectRatio : false,
+            responsive : true,
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    gridLines : {
+                        display : false,
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        max: {max},
+                        beginAtZero: false   // minimum value will be 0.
+                    },
+                    gridLines : {
+                        display : false,
+                    }
+                }]
+            }
+        }
+
+        var diagram = new Chart(diagramCanvas, {
+            type: 'line',
+            data: diagramData,
+            options: diagramOptions
+        });
+    });
+</script>

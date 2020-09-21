@@ -73,5 +73,5 @@ $sitetpl->r ("list_opt", $list_opt);
 $title = "{::lang::install::step0::title}";
 $content = $sitetpl->load_var();
 
-?>
+
 

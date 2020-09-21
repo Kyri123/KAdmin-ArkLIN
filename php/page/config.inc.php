@@ -210,6 +210,7 @@ if(!isset($servercfg["autoupdater_active"])) $servercfg["autoupdater_active"] = 
 if(!isset($servercfg["autoupdater_branch"])) $servercfg["autoupdater_branch"] = "master";
 if(!isset($servercfg["autoupdater_intervall"])) $servercfg["autoupdater_intervall"] = 60000;
 if(!isset($servercfg["autorestart_intervall"])) $servercfg["autorestart_intervall"] = 1800000;
+if(!isset($servercfg["screen"])) $servercfg["screen"] = "ArkAdmin";
 
 $option_server = null;
 foreach($servercfg as $key => $value) {
@@ -262,4 +263,3 @@ $tpl->r("resp", $resp);
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-edit\" aria-hidden=\"true\"></i>";
 $btns = null;
-?>

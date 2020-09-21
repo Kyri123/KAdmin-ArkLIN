@@ -7,7 +7,7 @@
 
         <div class="card">
             <div class="card-header border-transparent bg-dark">
-                <h3 class="card-title">{::lang::home::cards::changelog::title}</h3>
+                <h3 class="card-title"><i class="fa fa-book mr-1" aria-hidden="true"></i> {::lang::home::cards::changelog::title}</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -21,11 +21,11 @@
                     <table class="table m-0">
                         <thead>
                         <tr>
-                            <th>{::lang::home::cards::changelog::table::version_number}</th>
-                            <th>{::lang::home::cards::changelog::table::date}</th>
-                            <th>{::lang::home::cards::changelog::table::lastupdate}</th>
-                            <th>{::lang::home::cards::changelog::table::state}</th>
-                            <th></th>
+                            <th class="pt-2 pb-2">{::lang::home::cards::changelog::table::version_number}</th>
+                            <th class="pt-2 pb-2">{::lang::home::cards::changelog::table::date}</th>
+                            <th class="pt-2 pb-2">{::lang::home::cards::changelog::table::lastupdate}</th>
+                            <th class="pt-2 pb-2">{::lang::home::cards::changelog::table::state}</th>
+                            <th class="pt-2 pb-2"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -46,7 +46,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-header bg-dark">
-                <h3 class="card-title">{::lang::home::cards::server::title}</h3>
+                <h3 class="card-title"><i class="fa fa-server mr-1" aria-hidden="true"></i> {::lang::home::cards::server::title}</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
@@ -65,4 +65,209 @@
         </div>
         <!-- SERV -->
     </div>
+</div>{permissions??all??show_traffic}
+<!-- Traffic -->
+<div class="row">
+    <!-- CPU -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info">
+                <h3 class="card-title"><i class="fas fa-microchip mr-1" aria-hidden="true"></i> {::lang::allg::traffic::cpu} - {::lang::allg::h24}</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body" style="display: block;">
+                <canvas id="CPUChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- RAM -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h3 class="card-title"><i class="fas fa-memory mr-1" aria-hidden="true"></i> {::lang::allg::traffic::ram} - {::lang::allg::h24}</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body" style="display: block;">
+                <canvas id="RAMChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- HDD -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-danger">
+                <h3 class="card-title"><i class="fas fa-hdd mr-1" aria-hidden="true"></i> {::lang::allg::traffic::mem} - {::lang::allg::h24}</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body" style="display: block;">
+                <canvas id="MEMChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
+<script>
+    $(function () {
+        // CPU
+        var CPUCanvas = $('#CPUChart').get(0).getContext('2d')
+        var CPUData = {
+            labels  : [{lable_cpu}],
+            datasets: [
+                {
+                    backgroundColor     : 'rgba(23, 162, 184, 1)',
+                    borderColor         : 'rgba(20, 162, 184, 1)',
+                    pointRadius         : false,
+                    pointColor          : '#17a2b8',
+                    pointStrokeColor    : '#17a2b8',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data: [{data_cpu}]
+                }
+            ]
+        }
+
+        var CPUOptions = {
+            maintainAspectRatio : false,
+            responsive : true,
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    gridLines : {
+                        display : false,
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        max: 100,
+                        beginAtZero: true   // minimum value will be 0.
+                    },
+                    gridLines : {
+                        display : false,
+                    }
+                }]
+            }
+        }
+
+        var CPU = new Chart(CPUCanvas, {
+            type: 'line',
+            data: CPUData,
+            options: CPUOptions
+        });
+
+
+        // RAM
+        var RAMCanvas = $('#RAMChart').get(0).getContext('2d')
+        var RAMData = {
+            labels  : [{lable_ram}],
+            datasets: [
+                {
+                    backgroundColor     : '#007bff',
+                    borderColor         : '#007bff',
+                    pointRadius         : false,
+                    pointColor          : '#17a2b8',
+                    pointStrokeColor    : '#17a2b8',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data: [{data_ram}]
+                }
+            ]
+        }
+
+        var RAMOptions = {
+            maintainAspectRatio : false,
+            responsive : true,
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    gridLines : {
+                        display : false,
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        max: 100,
+                        beginAtZero: true   // minimum value will be 0.
+                    },
+                    gridLines : {
+                        display : false,
+                    }
+                }]
+            }
+        }
+
+        var RAM = new Chart(RAMCanvas, {
+            type: 'line',
+            data: RAMData,
+            options: RAMOptions
+        });
+
+
+        // MEM
+        var MEMCanvas = $('#MEMChart').get(0).getContext('2d')
+        var MEMData = {
+            labels  : [{lable_mem}],
+            datasets: [
+                {
+                    backgroundColor     : '#dc3545',
+                    borderColor         : '#dc3545',
+                    pointRadius         : false,
+                    pointColor          : '#17a2b8',
+                    pointStrokeColor    : '#17a2b8',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data: [{data_mem}],
+                }
+            ]
+        }
+
+        var MEMOptions = {
+            maintainAspectRatio : false,
+            responsive : true,
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    gridLines : {
+                        display : false,
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        max: 100,
+                        beginAtZero: true   // minimum value will be 0.
+                    },
+                    gridLines : {
+                        display : false,
+                    }
+                }]
+            }
+        }
+
+        var MEM = new Chart(MEMCanvas, {
+            type: 'line',
+            data: MEMData,
+            options: MEMOptions
+        });
+    })
+</script>{/permissions}

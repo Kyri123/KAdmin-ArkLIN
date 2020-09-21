@@ -15,12 +15,11 @@ include('php/class/helper.class.inc.php');
 $helper = new helper();
 $ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
 $site_name = $content = null;
+
+// Deaktiviere Error anzeige
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 //error_reporting(E_ALL);
-
-// kleiner fix für PHP 70-72
-include("php/functions/php70-72.inc.php");
 
 //check install
 if (!file_exists("app/check/subdone")) {
@@ -33,7 +32,7 @@ date_default_timezone_set('Europe/Amsterdam');
 $pagename = $pageimg = $titlename = $sidebar = $btns = $urltop = $g_alert = $pageicon = $tpl = null;
 $setsidebar = $g_alert_bool = false;
 
-//start Session
+//start SessionS
 session_start();
 // read URL
 $url = $surl = $_SERVER["REQUEST_URI"];
@@ -93,10 +92,8 @@ $all = $helper->file_to_json("app/json/serverinfo/all.json");
 
 // lade Permissions
 $permissions_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
-// todo: 1.2.0 remove $check_json["checked"]
 if(
     !file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json") &&
-    $check_json["checked"] &&
     isset($_SESSION["id"])
 ) $helper->savejson_create($permissions_default, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
 $permissions = (isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json("app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json("app/json/user/permissions.tpl.json");
@@ -293,4 +290,3 @@ if ($page != "login" && $page != "registration" && $page != "crontab" && isset($
 
 //close mysql
 $mycon->close();
-?>

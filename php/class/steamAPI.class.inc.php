@@ -249,4 +249,3 @@ class steam_mod {
     public $tags;
 }
 
-?>

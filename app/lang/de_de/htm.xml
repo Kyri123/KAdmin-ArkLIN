@@ -20,6 +20,14 @@
         <force_update>Panel Update</force_update>
         <force_update_text>Führt sofort ein Panel Update aus. Dies wird auch getan wenn Auto-Updates deaktiert ist</force_update_text>
 
+        <minutes>Minuten</minutes>
+        <s>Sekunden</s>
+        <m>Minuten</m>
+        <h>Stunden</h>
+        <d>Tage</d>
+        <w>Wochen</w>
+        <h24>Letzten 24h</h24>
+
         <force_restart>Starte den ArkAdmin-Server neu</force_restart>
         <force_restart_text>Startet den ArkAdmin-Server neu um z.B. Änderungen am Intervall zu übernehmen.</force_restart_text>
 
@@ -355,6 +363,8 @@
         <wait>Bitte warten</wait>
         <open_url>Öffnen</open_url>
         <force_action>Befehl im Panel erzwingen</force_action>
+        <kill_titel>Server Killen</kill_titel>
+        <kill_text>Beendet den Prozess vom Server</kill_text>
 
         <topline>
             <state>Server Status</state>
@@ -414,6 +424,7 @@
                 <mods>Modifikationen</mods>
                 <saves>Savegames</saves>
                 <files>Simple Filebrowser</files>
+                <statistiken>Statistiken</statistiken>
             </nav>
 
             <modal>
@@ -527,6 +538,22 @@
                 </_2_>
             </backup>
         </list>
+
+
+        <statistiken>
+            <table>
+                <date>Datum</date>
+                <player>Spieler</player>
+                <action>Aktionen</action>
+                <status>Status</status>
+            </table>
+            <modal>
+                <ServerMap>Karte</ServerMap>
+                <ServerName>Server Name</ServerName>
+                <player>Aktive Spieler</player>
+                <ping>Ping</ping>
+            </modal>
+        </statistiken>
 
         <backup>
             <nav>

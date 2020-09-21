@@ -57,16 +57,17 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 | `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ] |
 | `use_ssh` | Aktiviere/Deaktivere SHH (1: an;0: aus) benötigt konfiguration in ssh.js |
 | `port` | Port den der ArkAdmin-Server verwenden soll |
+| `screen` | Name der benutzt werden soll um die Screen zu erstellen (Wo der ArkAdmin-Server läuft) |
 
 # ssh.js (Wird benötigt wenn use_ssh an ist)
 
 | Eigenschaften | Wert | 
 | :--- | :--- |
-| `host` | SSH2 Host (Bsp. `localhost/127.0.0.1`) |
+| `host` | SSH2 Host (Bsp. `127.0.0.1`) |
 | `username` | SSH2 Benutzername (Bsp. `root`) |
 | `password` | SSH2 Passwort  |
 | `port` | SSH2 port (Standart: `22`) |
-| `key_path` | Pfad zum SSH-Key (Erstelle einen mit: `ssh-keygen -t rsa`) |
+| `key_path` | Pfad zum SSH-Key |
 
 # Sprache Installieren
 
@@ -75,9 +76,9 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 
 # Benötigt
 
-- `Node.JS` Version => 12.0.0
+- `Node.JS` Version >= 12.0.0
 - `Node.JS` NPM
-- `PHP` Version => 7.3
+- `PHP` Version >= 7.3
 - `PHP` mod_rewrite
 - `PHP` cURL
 - `PHP` MySQLi

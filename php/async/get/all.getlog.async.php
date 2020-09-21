@@ -124,4 +124,3 @@ $tpl->r("content", $content);
 $tpl->echo();
 $mycon->close();
 
-?>

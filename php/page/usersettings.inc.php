@@ -93,4 +93,3 @@ $tpl->r("c_konfig", ($user->show_mode("konfig")) ? "checked" : null);
 // sendet alles an Index
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fas fa-tachometer-alt\" aria-hidden=\"true\"></i>";
-?>

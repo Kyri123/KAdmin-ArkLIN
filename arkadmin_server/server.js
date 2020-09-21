@@ -6,6 +6,7 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
  */
+const version = "1.1.1";
 
 const fs = require("fs");
 const shell = require("./packages/src/shell");
@@ -15,7 +16,6 @@ const head = require("./packages/src/head");
 const status = require("./packages/src/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("./config/ssh");
-const version = "0.4.1.0";
 const mysql = require("mysql");
 const http = require('http');
 const url = require('url');
@@ -23,11 +23,17 @@ const updater = require("./packages/src/updater");
 const ip = require("ip");
 const md5 = require('md5');
 const logger = require('./packages/src/logger');
+const winston = require('winston');
+global.started = Date.now();
 
 var config_ssh = sshK.login();
 global.config = [];
 global.dateFormat = require('dateformat');
 
+//erstelle log Ordner
+if (!fs.existsSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`)){
+    fs.mkdirSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`);
+}
 
 //global vars from JSON (Konfig)
 fs.readFile("config/server.json", 'utf8', (err, data) => {
@@ -48,6 +54,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         if (config.autoupdater_intervall === undefined) config.autoupdater_intervall = 120000;
         if (config.autorestart === undefined) config.autorestart = 1;
         if (config.autorestart_intervall === undefined) config.autorestart_intervall = 1800000;
+        if (config.screen === undefined) config.screen = "ArkAdmin";
 
         // prüfe Minimal werte
         if (config.WebIntervall < 5000) process.exit(4);
@@ -82,13 +89,13 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
         // mysql verbindung aufbauen
         global.iscon = false;
-        var mysql_inter = () => {
+        setInterval(() => {
             // verbinde neu wenn Mysql verbindung nicht besteht
             if (!iscon) {
-                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Mysql: \x1b[95mMysql Verbindung wird aufgebaut');
+                console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Mysql: \x1b[95mMysql Verbindung wird aufgebaut`);
                 fs.readFile("config/mysql.json", 'utf8', (err, re) => {
                     if (err) {
-                        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Mysql: \x1b[91mVerbindung fehlgeschlagen (Datei Fehler) - Shell/Jobs Deaktiviert');
+                        console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Mysql: \x1b[91mVerbindung fehlgeschlagen (Datei Fehler) - Shell/Jobs Deaktiviert`);
                     } else {
                         var mysql_config = JSON.parse(re);
 
@@ -104,33 +111,40 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
                                 logger.log("Verbunden: Mysql");
                                 logger.log("Gestartet: Jobs & Commands");
                                 global.iscon = true;
-                                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Mysql: \x1b[32mVerbindung aufgebaut - Shell/Jobs Aktiviert');
+                                console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Mysql: \x1b[32mVerbindung aufgebaut - Shell/Jobs Aktiviert`);
                             } else {
                                 logger.log("Fehler: Mysql hat keine Verbindung aufgebaut");
                                 global.iscon = false;
-                                console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Mysql: \x1b[91mVerbindung fehlgeschlagen (Verbindungsfehler Fehler) - Shell/Jobs Deaktiviert');
+                                console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Mysql: \x1b[91mVerbindung fehlgeschlagen (Verbindungsfehler Fehler) - Shell/Jobs Deaktiviert`);
                             }
                         });
                     }
                 });
             }
-        };
-        setInterval(mysql_inter, 5000);
+        }, 5000);
 
         //handle Status
         setInterval(() => {
             if (iscon) {
-                status.sendcheck();
+                status.sendcheck(false);
             }
         }, config.StatusIntervall);
-        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Panel (Server): \x1b[36mRun');
+        // Sende Informationen an die Datenbank (Aller 30 Minuten)
+        setInterval(() => {
+            if (iscon) {
+                status.sendcheck(true);
+                status.checkserver();
+            }
+        }, 600000);
+
+        console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Panel (Server): \x1b[36mRun`);
 
         //handle Crontab
         crontab.req("crontab/player");
         crontab.req("crontab/status");
 
         //handle shell
-        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Geladen: \x1b[36mShell verwaltung');
+        console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Geladen: \x1b[36mShell verwaltung`);
         setInterval(() => {
             if (iscon) {
                 panel_shell.job(config.use_ssh);
@@ -140,10 +154,10 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
 
         //handle chmod
         setInterval(() => {
-            shell.exec("chmod 777 -R " + config.WebPath, config.use_ssh, 'CHMOD', false, undefined, false);
-            shell.exec("chmod 777 -R " + config.AAPath, config.use_ssh, 'CHMOD', false, undefined, false);
-            shell.exec("chmod 777 -R " + config.ServerPath, config.use_ssh, 'CHMOD', false, undefined, false);
-            shell.exec("chmod 777 -R " + config.SteamPath, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec(`chmod 777 -R ${config.WebPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec(`chmod 777 -R ${config.AAPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec(`chmod 777 -R ${config.ServerPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
+            shell.exec(`chmod 777 -R ${config.SteamPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
         }, config.CHMODIntervall);
         logger.log("Gestartet: CHMOD");
 
@@ -152,32 +166,28 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
             if (config.autoupdater_active > 0) updater.auto();
         }, config.autoupdater_intervall);
 
-        console.log('\x1b[33m%s\x1b[0m', '[' + dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss") + '] Server (Webserver): \x1b[36mhttp://' + ip.address() + ':' + config.port + '/');
+        console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Server (Webserver): \x1b[36mhttp://${ip.address()}:${config.port}/`);
         // Webserver für Abrufen des Server Status
         http.createServer((req, res) => {
             let response = url.parse(req.url, true).query;
-            var hcode = 0;
+            infos = {
+                "version": version,
+                "db_connect": iscon,
+                "gestartet": dateFormat(started, "yyyy-mm-dd HH:MM:ss"),
+                "curr_log": logger.get()
+            };
 
-            if (response.update) {
-                if (response.code === md5(ip.address())) {
+            if (response.update && response.code === md5(ip.address())) {
                     updater.auto();
-                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '","update":"running"}';
-                } else {
-                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
-                }
-            } else if (response.restart) {
-                if (response.code === md5(ip.address())) {
-                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '","restart":"running"}';
-                    updater.restarter(false);
-                } else {
-                    resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
-                }
-            } else {
-                resp = '{"version":"' + version + '","db_connect":"' + iscon + '"}';
+                    infos["update"] = "running";
+            }
+            if (response.restart && response.code === md5(ip.address())) {
+                updater.restarter(false);
+                infos["restart"] = "running";
             }
 
             res.writeHead(200, { 'Content-Type': 'text/json' });
-            res.write(resp);
+            res.write(JSON.stringify(infos));
             res.end();
         }).listen(config.port);
         logger.log("Gestartet: Webserver");
@@ -195,22 +205,31 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
     }
 });
 
+const errlog = winston.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    defaultMeta: { service: 'user-service' },
+    transports: [
+        new winston.transports.File({ filename: `data/logs/${dateFormat(global.started, "yyyy-mm-dd")}/error.log`, level: 'error' }),
+        new winston.transports.File({ filename: `data/logs/${dateFormat(global.started, "yyyy-mm-dd")}/combined.log` }),
+    ],
+});
+
+if (process.env.NODE_ENV !== 'production') {
+    errlog.add(new winston.transports.Console({
+        "format": winston.format.simple(),
+    }));
+}
 
 // Code Meldungen
 process.on('exit', function(code) {
-    con.destroy();
-
     // Exit: Konfiguration enthält Default informationen
     if (code == 2) {
-        logger.log("Beendet: Bitte stelle die Konfiguration ein! (config/server.json)");
-        logger.log("Beendet: ArkAdmin-Server \n");
         return console.log(`\x1b[91mBitte stelle die Konfiguration ein! (config/server.json)`);
     }
 
     // Exit: Es konnte zu SSH2 keine Verbingung aufgebaut werden
     if (code === 3) {
-        logger.log("Beendet: Keine Verbindung zum SSH2 Server");
-        logger.log("Beendet: ArkAdmin-Server \n");
         return console.log(`\x1b[91mKeine Verbindung zum SSH2 Server`);
     }
 
@@ -232,9 +251,6 @@ process.on('exit', function(code) {
             parameter = "autoupdater_intervall";
             wert = 120000;
         }
-
-        logger.log("Beendet: Minimal Werte unterschritten: " + parameter + " darf nicht kleiner als " + wert + " sein!");
-        logger.log("Beendet: ArkAdmin-Server \n");
-        return console.log("\x1b[91mMinimal Werte unterschritten: " + parameter + " darf nicht kleiner als " + wert + " sein!");
+        return console.log(`\x1b[91mMinimal Werte unterschritten: ${parameter} darf nicht kleiner als ${wert} sein!`);
     }
 });

@@ -14,7 +14,7 @@
 class userclass extends helper
 {
 
-    private $id;
+    private $id = 0;
     private $mycon;
     private $myconisset;
     public $frech;
@@ -46,12 +46,12 @@ class userclass extends helper
             $this->myconisset = true;
             $this->frech = $this->mycon->query($query)->fetchArray();
 
+            // Lade Rechte
             $permissions_default = parent::file_to_json("app/json/user/permissions.tpl.json");
             $permissions = (file_exists("app/json/user/".md5($id).".permissions.json")) ? parent::file_to_json("app/json/user/".md5($id).".permissions.json") : parent::file_to_json("app/json/user/permissions.tpl.json");
             $permissions = array_replace_recursive($permissions_default, $permissions);
 
             // gehe Rechte der Server durch
-            $servers = array();
             $file = 'app/json/serverinfo/all.json';
             $server = parent::file_to_json($file, true)["cfgs_only_name"];
             foreach ($server as $item) {
@@ -82,7 +82,8 @@ class userclass extends helper
      * @return string
      */
     public function read(String $key) {
-        if ($this->myconisset) {
+        // Prüfe ob Benutzer gesetzt ist
+        if ($this->myconisset && $this->id != 0) {
             $frech = $this->frech;
             return $frech[$key];
         } else {
@@ -98,14 +99,19 @@ class userclass extends helper
      * @return bool
      */
     public function write(String $key, String $value) {
-        $id = $this->id;
-        $query = 'UPDATE `ArkAdmin_users` SET `'.$key.'`=\''.$value.'\'  WHERE `id` = \''.$id.'\'';
-        if ($this->mycon->query($query)) {
-            $this->setid($id);
-            return true;
+        // Prüfe ob Benutzer gesetzt ist
+        if ($this->myconisset && $this->id != 0) {
+            $query = 'UPDATE `ArkAdmin_users` SET `'.$key.'`=\''.$value.'\'  WHERE `id` = \''.$this->id.'\'';
+            if ($this->mycon->query($query)) {
+                $this->setid($this->id);
+                return true;
+            }
+            $this->myconisset = false;
+            return false;
         }
-        $this->myconisset = false;
-        return false;
+        else {
+            return false;
+        }
     }
 
     /**
@@ -115,14 +121,19 @@ class userclass extends helper
      */
     public function expert()
     {
-        $id = md5($this->id);
-        $path = "app/json/user/$id.json";
-        if (file_exists($path)) {
-            $json = parent::file_to_json($path, true);
-            if(isset($json["expert"])) {
-                return $json["expert"] == 1 && $this->perm("usersettings/expert");
-            }
-            else {
+        // Prüfe ob Benutzer gesetzt ist
+        if ($this->myconisset && $this->id != 0) {
+            $id = md5($this->id);
+            $path = "app/json/user/$id.json";
+            if (file_exists($path)) {
+                $json = parent::file_to_json($path, true);
+                if(isset($json["expert"])) {
+                    return $json["expert"] == 1 && $this->perm("usersettings/expert");
+                }
+                else {
+                    return false;
+                }
+            } else {
                 return false;
             }
         } else {
@@ -138,14 +149,19 @@ class userclass extends helper
      */
     public function show_mode(String $mode)
     {
-        $id = md5($this->id);
-        $path = "app/json/user/$id.json";
-        if (file_exists($path)) {
-            $json = parent::file_to_json($path, true);
-            if(isset($json[$mode])) {
-                return $json[$mode] == 1;
-            }
-            else {
+        // Prüfe ob Benutzer gesetzt ist
+        if ($this->myconisset && $this->id != 0) {
+            $id = md5($this->id);
+            $path = "app/json/user/$id.json";
+            if (file_exists($path)) {
+                $json = parent::file_to_json($path, true);
+                if(isset($json[$mode])) {
+                    return $json[$mode] == 1;
+                }
+                else {
+                    return false;
+                }
+            } else {
                 return false;
             }
         } else {
@@ -156,34 +172,38 @@ class userclass extends helper
     /**
      * Gibt aus ob der Benutzer die Rechte zu der jeweiligen aktion hat
      *
-     * @param String $key schlüssel zur permissions (multi array ist mit / zu trennen)
+     * @param String $key Schlüssel zur permissions (multi array ist mit / zu trennen)
      * @return bool
      */
     public function perm(String $key)
     {
-        // Prüfe das Format
-        if(!($key = explode("/", $key))) return false;
+        // Prüfe ob Benutzer gesetzt ist
+        if ($this->myconisset && $this->id != 0) {
+            // Prüfe das Format
+            if(!($key = explode("/", $key))) return false;
 
-        // werte Permissions aus
-        $found = true;
-        $value = $this->permissions;
-        foreach ($key as $item) {
-            if(!isset($value[$item])) {
-                $found = false;
+            // werte Permissions aus
+            $found = true;
+            $value = $this->permissions;
+            foreach ($key as $item) {
+                if(!isset($value[$item])) {
+                    $found = false;
+                }
+                else {
+                    $value = $value[$item];
+                }
             }
-            else {
-                $value = $value[$item];
-            }
+
+
+            // gebe bool aus
+            return (
+                ($found && boolval($value)) ||
+                (($key[0] != "server") ? false : (isset($key[1]) ? boolval($this->permissions["server"][$key[1]]["is_server_admin"]) : false)) ||
+                boolval($this->permissions["all"]["is_admin"])
+            );
+        } else {
+            return false;
         }
-
-
-        // gebe bool aus
-        return (
-            ($found && boolval($value)) ||
-            (($key[0] != "server") ? false : boolval($this->permissions["server"][$key[1]]["is_server_admin"])) ||
-            boolval($this->permissions["all"]["is_admin"])
-        );
     }
 }
 
-?>

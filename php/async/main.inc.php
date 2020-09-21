@@ -9,7 +9,6 @@
 */
 
 chdir('../../../');
-include("php/functions/php70-72.inc.php");
 include('php/inc/config.inc.php');
 include('php/class/helper.class.inc.php');
 
@@ -57,4 +56,4 @@ $permissions = $user->permissions;
 // Allgemein SteamAPI Arrays
 $steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();
 $steamapi_user = (file_exists("app/json/steamapi/user.json")) ? $helper->file_to_json("app/json/steamapi/user.json", true) : array();
-?>
+

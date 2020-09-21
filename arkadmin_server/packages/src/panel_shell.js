@@ -34,9 +34,9 @@ exports.job = (usessh) => {
                     var cmd = results[i].job + ' ' + results[i].parm;
                     var nextrun = results[i].time + x;
 
-                    var command = "screen -dm bash -c 'arkmanager " + cmd + " @" + results[i].server + "'";
+                    var command = `screen -dm bash -c 'arkmanager ${cmd} @${results[i].server}'`;
                     shell.exec(command, usessh, 'Jobs');
-                    var qry = 'UPDATE `ArkAdmin_jobs` SET `time` = \'' + nextrun + '\' WHERE `id` = \'' + results[i].id + '\'';
+                    var qry = `UPDATE \`ArkAdmin_jobs\` SET \`time\` = '${nextrun}' WHERE \`id\` = '${results[i].id}'`;
                     con.query(qry);
                 }
             }
@@ -52,7 +52,7 @@ exports.command = (usessh) => {
         for (i = 0; i < results.length; i++) {
             var command = results[i].command;
             shell.exec(command, usessh, 'Commands');
-            var qry = 'DELETE FROM `ArkAdmin_shell` WHERE `id` = \'' + results[i].id + '\'';
+            var qry = `DELETE FROM \`ArkAdmin_shell\` WHERE \`id\` = '${results[i].id}'`;
             con.query(qry);
         }
     });

@@ -105,6 +105,7 @@
                 <filebrowser>File System</filebrowser>
                 <saves>Spielstände</saves>
                 <jobs>Aufgaben</jobs>
+                <statistiken>Statistiken</statistiken>
 
                 <!-- Optionen -->
                 <show>Darf Sehen / Aufrufen</show>
@@ -156,6 +157,7 @@
                 <toggle>Darf Jobs An- bzw Ausschalten</toggle>
                 <edit_default>Darf die Default Arkmanager.cfg bearbeiten</edit_default>
                 <show_default>Darf die Default Arkmanager.cfg sehen</show_default>
+                <kill>Darf den Prozess vom Server beenden</kill>
             </permissions>
         </userpanel>
 
@@ -216,6 +218,7 @@
                     <autoupdater_branch>Welche Github Branch soll dafür verwendet werden</autoupdater_branch>
                     <autorestart>Soll der ArkAdmin Server automatisch neustarten?</autorestart>
                     <autorestart_intervall>Inverall vom Neustart (in ms | min: 1800000)</autorestart_intervall>
+                    <screen>Name der benutzt werden soll um die Screen zu erstellen (Wo der ArkAdmin-Server läuft)</screen>
                 </aa>
             </key>
         </config>
@@ -316,6 +319,25 @@
                     <mod_removed_dir>Verzeichnis der mod [b]{name}[/b] wird Entfernt (dauert höhsten eine Minute)</mod_removed_dir>
                     <mod_added>Mod [b]{name}[/b] Entfernt</mod_added>
                 </mods>
+
+                <!-- statistiken.inc.php -->
+                <statistiken>
+                    <submit>Absenden</submit>
+                    <datas>Datensätze</datas>
+                    <LIMIT>Anzeigen</LIMIT>
+                    <ORDER>Ordnung</ORDER>
+                    <OFFSET>Seite</OFFSET>
+                    <DESC>Neusten > Ältesten</DESC>
+                    <ASC>Ältesten > Neusten</ASC>
+                    <notonline>[b]Daten wurden nicht erfasst[/b]</notonline>
+                    <noplayer>Keine Spieler Gefunden</noplayer>
+                    <pagename>ServerCenter - Statistiken</pagename>
+                    <urltop>Statistiken</urltop>
+                    <dstats>Onlinezeit (in %)</dstats>
+                    <options>Angezeigte Datensätze</options>
+                    <dping>Durchschnitts Ping</dping>
+                    <fromto>Von [b]{from}[/b] bis [b]{to}[/b]</fromto>
+                </statistiken>
 
                 <!-- Saves.inc.php -->
                 <saves>

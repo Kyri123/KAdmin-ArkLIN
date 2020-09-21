@@ -71,4 +71,3 @@ function check_server_json_bool($key) {
     }
 }
 
-?>
