@@ -14,7 +14,7 @@ include('pconfig.inc.php');
 #allgmeine
 $sitename = "ArkAdmin";
 $sitename_short = "AA";
-$version = '1.1.1';
+$version = '1.2.0';
 $ip = $_SERVER['SERVER_ADDR'];
 $maxpanel_server = 10;
 

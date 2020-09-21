@@ -6,8 +6,6 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
  */
-const version = "1.1.1";
-
 const fs = require("fs");
 const shell = require("./packages/src/shell");
 const panel_shell = require("./packages/src/panel_shell");
@@ -24,6 +22,7 @@ const ip = require("ip");
 const md5 = require('md5');
 const logger = require('./packages/src/logger');
 const winston = require('winston');
+global.version = fs.readFileSync("data/version.txt", 'utf8');
 global.started = Date.now();
 
 var config_ssh = sshK.login();
@@ -55,7 +54,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         if (config.autorestart === undefined) config.autorestart = 1;
         if (config.autorestart_intervall === undefined) config.autorestart_intervall = 1800000;
         if (config.screen === undefined) config.screen = "ArkAdmin";
-
+        
         // prüfe Minimal werte
         if (config.WebIntervall < 5000) process.exit(4);
         if (config.CHMODIntervall < 60000) process.exit(5);
@@ -67,7 +66,7 @@ fs.readFile("config/server.json", 'utf8', (err, data) => {
         // hole aller 60 Sekunden die Konfigurationsdaten neu
         setInterval(() => {
             fs.readFile("config/server.json", 'utf8', (err, data) => {
-                if (err == undefined) {
+                if (!err) {
                     config = JSON.parse(data, config);
                 }
             });
