@@ -8,23 +8,24 @@
  * *******************************************************************************************
 */
 
-#Mysql
-include('pconfig.inc.php');
+// Mysql
+if(file_exists('php/inc/pconfig.inc.php')) include('pconfig.inc.php');
 
-#allgmeine
+// allgmeine
 $sitename = "ArkAdmin";
-$sitename_short = "AA";
 $version = '1.2.0';
 $ip = $_SERVER['SERVER_ADDR'];
 $maxpanel_server = 10;
 
-#Webserver
+// Webserver
 $webserver['url'] = 'https://data.chiraya.de/';
 $webserver['changelog'] = $webserver['url'].'changelog.json';
 $webserver['config'] = json_decode(file_get_contents("arkadmin_server/config/server.json") ,true);
 $webserver['config']["port"] = (isset($webserver['config']["port"])) ? $webserver['config']["port"] : 30000;
 
-#Actions
+// Webserver Platzhalter
+
+// Actions
 $action_opt = array(
     "install",
     "start",
@@ -44,6 +45,7 @@ $action_opt = array(
     "cancelshutdown"
 );
 
+// Cluster Typen
 $clustertype = array(
   "Slave",
   "Master"

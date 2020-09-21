@@ -1,4 +1,4 @@
-<lang>
+action_closed<lang>
     <!--
     ++++++++++++++++++++++++++++++++++++++++++++
     @author:  Oliver Kaufmann (Kyri123)
@@ -245,6 +245,7 @@
                 <servercenter>
                     <main>
                         <action_closed>Gesperrt</action_closed>
+                        <action_pick>Aktion auswählen</action_pick>
                         <action_closed_need_open>Server muss Frei sein!</action_closed_need_open>
                         <action_open>Frei</action_open>
                         <showplayer>Spieler Zeigen</showplayer>

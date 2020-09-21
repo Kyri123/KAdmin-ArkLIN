@@ -184,7 +184,7 @@ if ($player == null) {
 
 
 
-$action_list = "<option value=\"\">Aktion wählen...</option>"; $i = 0;
+$action_list = "<option value=\"\">{::lang::servercenter::jobs::section::jobs::task::option::default}</option>"; $i = 0;
 foreach ($action_opt as $key) {
     $action_list .= "<option value=\"$key\">{::lang::php::cfg::action::$key}</option>";
     $i++;
