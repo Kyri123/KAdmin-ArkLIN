@@ -31,8 +31,12 @@ include('php/class/server.class.inc.php');
 include('php/class/alert.class.inc.php');
 include('php/functions/allg.func.inc.php');
 
+
 $steamapi = new steamapi();
 $helper = new helper();
+
+// include inz
+include('php/inc/template_preinz.inc.php');
 $user = new userclass();
 $user->setid($_SESSION["id"]);
 $jhelper = new player_json_helper();

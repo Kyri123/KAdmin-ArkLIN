@@ -25,6 +25,8 @@ if(!file_exists("app/cache")) mkdir("app/cache");
 
 // Hole alle benötigten Klassen
 include('php/class/helper.class.inc.php');
+$helper = new helper();
+include('php/inc/template_preinz.inc.php');
 include('php/class/xml_helper.class.php');
 include('php/class/Template.class.inc.php'); 
 include('php/class/alert.class.inc.php');
@@ -45,8 +47,6 @@ include("install/php/class/check.class.inc.php");
 // Erstelle hauptverzeichnise und Klassen
 $check = new check("install/data/check.json");
 $alert = new alert();
-$helper = new helper();
-include('php/inc/template_preinz.inc.php');
 
 // Verzeichnisse
 $dirs["main"] = "install/";
