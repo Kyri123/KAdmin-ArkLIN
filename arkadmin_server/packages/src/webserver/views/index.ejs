@@ -1,0 +1,30 @@
+<%- include('header'); -%>
+        <div class="content-wrapper pt-5" style="min-height: 892px;">
+
+            <div class="content">
+                <div class="container">
+
+                    <div class="card">
+                        <div class="card-header border-transparent bg-dark">
+                            <h3 class="card-title">ArkAdmin-Server :: <%= title %></h3>
+                        </div>
+
+                        <div class="card-body p-0">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <% list.forEach(function(item){ %>
+                                        <tr>
+                                            <td class="p-2">
+                                                <%= item %>
+                                            </tr>
+                                        </td>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+<%- include('footer'); -%>

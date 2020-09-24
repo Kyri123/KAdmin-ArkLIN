@@ -50,3 +50,8 @@ $clustertype = array(
   "Slave",
   "Master"
 );
+
+$ignore_perm = array(
+    "force_update",
+    "force_restart"
+);

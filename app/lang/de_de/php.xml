@@ -112,8 +112,7 @@
                 <create>Darf Erstellen</create>
                 <delete>Darf Löschen</delete>
                 <is_admin>Ist Admin (hat Rechte auf ALLES)</is_admin>
-                <force_update>Darf über das Panel Updates erzwingen</force_update>
-                <force_restart>Darf ArkAdmin-Server über das Panel Neustarten</force_restart>
+                <manage_aas>Darf über das Panel den ArkAdmin-Server erreichen</manage_aas>
                 <show_traffic>Darf Server Traffics sehen</show_traffic>
                 <show_codes>Darf Codes sehen</show_codes>
                 <create_code>Darf Codes Erstellen</create_code>

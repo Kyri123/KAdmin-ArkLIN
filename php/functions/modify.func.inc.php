@@ -290,6 +290,8 @@ function alog($str) {
  * @return void
  */
 function perm_to_htm(array $array, $keys = null) {
+    global $ignore_perm;
+
     $fullarray = $array;
     $str = null;
     if(isset($fullarray["all"]["is_admin"]) && $fullarray["all"]["is_admin"] == 1) {
@@ -316,63 +318,65 @@ function perm_to_htm(array $array, $keys = null) {
     }
     else {
         foreach ($array as $key => $item) {
-            $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
-            $tpl->load();
-            $tpl->rif("is_array", is_array($item));
-            if(is_array($item)) {
-                if($keys == "[server]") {
-                    if(file_exists("remote/arkmanager/instances/$key.cfg")) {
-                        if(isset($item["is_server_admin"]) && $item["is_server_admin"] == 1) {
-                            $serv = new server($key);
+            if(!in_array($key, $ignore_perm)) {
+                $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
+                $tpl->load();
+                $tpl->rif("is_array", is_array($item));
+                if(is_array($item)) {
+                    if($keys == "[server]") {
+                        if(file_exists("remote/arkmanager/instances/$key.cfg")) {
+                            if(isset($item["is_server_admin"]) && $item["is_server_admin"] == 1) {
+                                $serv = new server($key);
 
-                            // Erstelle Head
-                            $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
-                            $tpl->load();
-                            $tpl->rif("is_array", true);
-                            $tpl->r("key", $serv->cfg_read("ark_SessionName"));
-                            $tpl->r("keys", "[server][$key]");
-                            $str .= $tpl->load_var();
+                                // Erstelle Head
+                                $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
+                                $tpl->load();
+                                $tpl->rif("is_array", true);
+                                $tpl->r("key", $serv->cfg_read("ark_SessionName"));
+                                $tpl->r("keys", "[server][$key]");
+                                $str .= $tpl->load_var();
 
-                            $tpl = null;
+                                $tpl = null;
 
-                            // Erstelle Input
-                            $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
-                            $tpl->load();
-                            $tpl->rif("is_array", false);
-                            $tpl->r("key", "{::lang::php::userpanel::permissions::is_server_admin}");
-                            $tpl->r("keys", "[server][$key][is_server_admin]");
-                            $tpl->rif("active", true);
-                            $str .= $tpl->load_var();
+                                // Erstelle Input
+                                $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
+                                $tpl->load();
+                                $tpl->rif("is_array", false);
+                                $tpl->r("key", "{::lang::php::userpanel::permissions::is_server_admin}");
+                                $tpl->r("keys", "[server][$key][is_server_admin]");
+                                $tpl->rif("active", true);
+                                $str .= $tpl->load_var();
 
-                            $tpl = null;
+                                $tpl = null;
+                            }
+                            else {
+                                // Erstelle Head
+                                $serv = new server($key);
+                                $tpl->r("key", $serv->cfg_read("ark_SessionName"));
+                                $keyw = $keys."[$key]";
+                                $tpl->r("keys", $keyw);
+                                $str .= $tpl->load_var();
+                                $str .= perm_to_htm($item, $keyw);
+                            }
                         }
-                        else {
-                            // Erstelle Head
-                            $serv = new server($key);
-                            $tpl->r("key", $serv->cfg_read("ark_SessionName"));
-                            $keyw = $keys."[$key]";
-                            $tpl->r("keys", $keyw);
-                            $str .= $tpl->load_var();
-                            $str .= perm_to_htm($item, $keyw);
-                        }
+                    }
+                    else {
+                        // Erstelle Head
+                        $keyw = $keys."[$key]";
+                        $tpl->r("key", "{::lang::php::userpanel::permissions::$key}");
+                        $tpl->r("keys", $keyw);
+                        $str .= $tpl->load_var();
+                        $str .= perm_to_htm($item, $keyw);
                     }
                 }
                 else {
-                    // Erstelle Head
+                    // Erstelle Input
                     $keyw = $keys."[$key]";
                     $tpl->r("key", "{::lang::php::userpanel::permissions::$key}");
                     $tpl->r("keys", $keyw);
+                    $tpl->rif("active", boolval($item));
                     $str .= $tpl->load_var();
-                    $str .= perm_to_htm($item, $keyw);
                 }
-            }
-            else {
-                // Erstelle Input
-                $keyw = $keys."[$key]";
-                $tpl->r("key", "{::lang::php::userpanel::permissions::$key}");
-                $tpl->r("keys", $keyw);
-                $tpl->rif("active", boolval($item));
-                $str .= $tpl->load_var();
             }
         }
     }

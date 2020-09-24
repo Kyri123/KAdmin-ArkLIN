@@ -171,20 +171,20 @@ if ($page == "login" || $page == "registration") {
     if ($page == "login") $pagename = '{::lang::php::index::pagename_login}';
 }
 
-//Force Update
-if($user->perm("all/force_update")) $btns .= '
-    <a href="http://'.$ip.':'.$webserver['config']['port'].'?update=true&code='.md5($ip).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
+if($user->perm("all/manage_aas")) $btns .= '
+    <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
         <span class="icon text-white-50">
             <i class="fa fa-cloud-download"></i>
         </span>
     </a>
-';
-
-//Force Restart
-if($user->perm("all/force_restart")) $btns .= '
-    <a href="http://'.$ip.':'.$webserver['config']['port'].'?restart=true&code='.md5($ip).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_restart_text}" data-original-title="{::lang::allg::force_restart}">
+    <a href="http://'.$ip.':'.$webserver['config']['port'].'/restart/'.md5($ip).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_restart_text}" data-original-title="{::lang::allg::force_restart}">
         <span class="icon text-white-50">
             <i class="fas fa-undo"></i>
+        </span>
+    </a>
+    <a href="http://'.$ip.':'.$webserver['config']['port'].'/log" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::show_as_logs_text}" data-original-title="{::lang::allg::show_as_logs}">
+        <span class="icon text-white-50">
+            <i class="fas fa-list"></i>
         </span>
     </a>
 ';

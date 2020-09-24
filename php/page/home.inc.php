@@ -113,7 +113,7 @@ if (isset($json['file'])) {
     }
 }
 
-$query = "SELECT * FROM ArkAdmin_statistiken WHERE server='server'";
+$query = "SELECT * FROM ArkAdmin_statistiken WHERE server='server' ORDER BY `time` DESC";
 $mycon->query($query);
 
 $cpu_lable = $cpu_data = $ram_lable = $ram_data = $mem_lable = $mem_data = array();

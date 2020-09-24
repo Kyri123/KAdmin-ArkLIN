@@ -15,7 +15,7 @@
 function check_server()
 {
     global $webserver;
-    $header = @get_headers("http://127.0.0.1:".$webserver['config']['port']."/");
+    $header = @get_headers("http://127.0.0.1:".$webserver['config']['port']."/data");
     return is_array($header);
 }
 
@@ -48,8 +48,12 @@ function check_webhelper() {
         return false;
     }
     else {
+        $json_string = file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/data");
+        $string = html_entity_decode(trim(utf8_encode($json_string)));
+        $string = str_replace("\n", null, $string);
+
         $curr = (file_exists("arkadmin_server/data/version.txt")) ? trim(file_get_contents("arkadmin_server/data/version.txt")) : "curr_not_found";
-        $run = json_decode(file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/"), true)["version"];
+        $run = json_decode($string, true)["version"];
         return ($curr == $run) ? true : false;
     }
 }
@@ -66,7 +70,12 @@ function check_server_json_bool($key) {
         return false;
     }
     else {
-        $bool = json_decode(file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/"), true)[$key];
+        $json_string = file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/data");
+        $string = html_entity_decode(trim(utf8_encode($json_string)));
+        $string = str_replace("\n", null, $string);
+
+        // wandel Informationen in Array
+        $bool = json_decode($string, true)[$key];
         return ($bool == "true") ? true : false;
     }
 }
