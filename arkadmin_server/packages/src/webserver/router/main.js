@@ -7,6 +7,7 @@
  * *******************************************************************************************
  */
 
+const fs = require('fs');
 const lineReader  = require('line-reader');
 const express = require('express');
 const md5 = require('md5');
@@ -69,17 +70,35 @@ router.get('/data', function(req, res) {
 // Neustart
 router.get('/restart/' + md5(ip.address()), function(req, res) {
     updater.restarter(false);
-    global.title = 'Logs';
-    list = ['Restarting...'];
-    res.render("index.ejs");
+    global.title = 'Logs - Restarter';
+    global.logpath = `/data_root/restarter.log`;
+    res.render("logs.ejs");
 });
 
 // Update Erzwingen
 router.get('/update/' + md5(ip.address()), function(req, res) {
     updater.auto();
-    global.title = 'Logs';
-    list = ['Updating...'];
-    res.render("index.ejs");
+    global.title = 'Logs - Updater';
+    global.logpath = `/data_root/updater.log`;
+    res.render("logs.ejs");
+});
+
+// log_restart
+router.get('/data_root/restarter.log', function(req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
+    res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    global.data = fs.readFileSync(`${mainpath}/data/restarter.log`);
+    res.render("data.ejs");
+});
+
+// log_update
+router.get('/data_root/updater.log', function(req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
+    res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    global.data = fs.readFileSync(`${mainpath}/data/updater.log`);
+    res.render("data.ejs");
 });
 
 module.exports = router;

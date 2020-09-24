@@ -1,0 +1,44 @@
+<%- include('header'); -%>
+        <div class="content-wrapper pt-5" style="min-height: 892px;">
+
+            <div class="content">
+                <div class="container">
+
+                    <div class="card">
+                        <div class="card-header border-transparent bg-dark">
+                            <h3 class="card-title">ArkAdmin-Server :: <%= title %></h3>
+                        </div>
+
+                        <div class="card-body p-0">
+                            <table class="table table-striped">
+                                <tbody id="log">
+                                    <tr>
+                                        <td>Loading....</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script type="application/javascript">
+            var file = "<%= logpath %>";
+            function getFile(){
+                $.get(file,function(txt){
+                    var lines = txt.split("\n");
+                    var list = "";
+                    for (var i = 0, len = lines.length; i < len; i++) {
+                        if(lines[i] != "") list += `<tr><td class="p-2">${lines[i]}</td></tr>`;
+                    }
+                    $('#log').html(list);
+                });
+            }
+
+            setInterval(() => {
+                getFile();
+            }, 1000)
+        </script>
+<%- include('footer'); -%>

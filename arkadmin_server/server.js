@@ -14,6 +14,7 @@ global.version = fs.readFileSync("data/version.txt", 'utf8');
 global.started = Date.now();
 global.config = JSON.parse(fs.readFileSync("config/server.json", 'utf8'));
 global.dateFormat = require('dateformat');
+global.mainpath = __dirname;
 
 //erstelle log Ordner
 if (!fs.existsSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`)){
