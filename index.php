@@ -93,7 +93,7 @@ $all = $helper->file_to_json("app/json/serverinfo/all.json");
 // lade Permissions
 $permissions_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
 if(
-    !file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json") &&
+    !file_exists("app/json/user/".(isset($_SESSION["id"]) ? md5($_SESSION["id"]) : null).".permissions.json") &&
     isset($_SESSION["id"])
 ) $helper->savejson_create($permissions_default, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
 $permissions = (isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json("app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json("app/json/user/permissions.tpl.json");

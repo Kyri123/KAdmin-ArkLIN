@@ -179,6 +179,7 @@ if ($player == null) {
     $list_tpl->r('img', "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
     $list_tpl->rif ('empty', false);
     $list_tpl->r('IG:name', '{::lang::php::sc::no_player_online}');
+    $list_tpl->r('IG:online', '');
     $player .= $list_tpl->load_var();
 }
 
