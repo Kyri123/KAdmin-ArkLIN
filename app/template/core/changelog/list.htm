@@ -1,4 +1,4 @@
-
+{style1}
 <div class="time-label mb-2" id="{version}">
                   <span class="{color} text-white  rounded-0">
                     Version {version} | {datestring}
@@ -50,4 +50,59 @@
                 {java}
         </div>
     </div>{/ifjava}
+</div>{/style1}
+
+
+{style2}
+<div class="time-label mb-2" id="{version}">
+                  <span class="{color} text-white  rounded-0">
+                    Version {version} | {datestring}
+                  </span>
+    <p class="d-xl-none d-lg-none mb-0" style="margin-top: 3px;"></p>
+    {ifgit}<a href="{git}" target="_blank" class="btn btn-sm btn-dark rounded-0" style="height: 34px; margin-bottom: 4px;"><i class="nav-icon fab fa-github" aria-hidden="true"></i> GitHub</a>{/ifgit}
+    {ifdownload}<a href="{download}" download="" class="btn btn-sm btn-dark rounded-0" style="height: 34px; margin-bottom: 4px;"><i class="nav-icon fa fa-download" aria-hidden="true"></i> Runterladen</a>{/ifdownload}
 </div>
+<div class="time-label m-0" id="{version}">
+</div>
+
+<div style="margin-right: 0px;">
+    <i class="fa fa-server {color} text-white rounded-0"></i><div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
+
+    <div class="timeline-header"><h6 class="m-0">Letztes Update: <b>{lastupdate}</b></h6></div>
+</div>
+    <div class="timeline-item rounded-0 border-0 row" style="margin-bottom: 5px;margin-right: 0px;background-color: transparent; box-shadow: 0 0 1px rgba(0,0,0,0), 0 1px 3px rgba(0,0,0,0);">
+        <div class="col-md-4 p-md-0 pt-md-2 pb-md-2 p-sm-0 pt-sm-2">
+            <div style="background-color: #2ecc71" class="p-2 pl-3 pr-3 text-light border">
+                {::lang::changelog::new}
+            </div>
+        </div>
+        <div class="col-md-4 p-md-2 p-sm-0 pt-sm-2">
+            <div style="background-color: #3498db" class="p-2 pl-3 pr-3 text-light border">
+                {::lang::changelog::change}
+            </div>
+        </div>
+        <div class="col-md-4 p-md-0 pt-md-2 pb-md-2 p-sm-0 pt-sm-2 pb-sm-2">
+            <div style="background-color: #9b59b6" class="p-2 pl-3 pr-3 text-light border">
+                {::lang::changelog::bug}
+            </div>
+        </div>
+    </div>
+    {ifnew}<div class="timeline-item rounded-0 mb-3" style="margin-bottom: 5px;margin-right: 0px;">
+
+    <div class="timeline-header border-bottom-0 bg-dark"><h4 class="mb-0">Panel</h4></div>
+
+    <div class="timeline-body p-0">
+        {new}
+    </div>
+</div>{/ifnew}
+
+    {ifjava}<div class="timeline-item rounded-0" style="margin-bottom: 5px;margin-right: 0px;">
+
+    <div class="timeline-header border-bottom-0 bg-dark"><h4 class="mb-0">{::lang::changelog::java}</h4></div>
+
+    <div class="timeline-body p-0">
+        {java}
+    </div>
+</div>{/ifjava}
+</div>
+{/style2}
