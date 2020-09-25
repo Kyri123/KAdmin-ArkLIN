@@ -46,8 +46,8 @@ exports.auto = () => {
 
                         var command = `screen -dm bash -c '${config.WebPath}/arkadmin_server/updater.sh ${config.WebPath} ${config.screen} ${config.autoupdater_branch} ${config.WebPath}/arkadmin_server/data/updater.log'`;
 
-                        shell.exec(command, config.use_ssh, 'Auto-Updater', true, 'Update wird gestartet');
                         fs.writeFile("data/sha.txt", "" + api.commit.sha, (err) => {});
+                        shell.exec(command, 'Auto-Updater', true, 'Update wird gestartet');
                     }
                 } else {
                     // sende Error wenn Datei nicht gefunden wenrden konnte
@@ -66,9 +66,8 @@ exports.auto = () => {
 };
 
 exports.restarter = (auto) => {
-    var command = `screen -dm bash -c '${config.WebPath}/arkadmin_server/restarter.sh ${config.WebPath} ${config.screen} ${config.WebPath}/arkadmin_server/data/restarter.log'`;
     // Beginne Restart
-    if (shell.exec(command, config.use_ssh, auto ? 'Auto-Restarter' : 'Restarter', true, 'wird Neugestartet')) {
-        logger.log("Restarter: " + (auto ? 'Auto-Restarter' : 'Restarter') + " wird Neugestartet \n");
-    }
+    var command = `screen -dm bash -c '${config.WebPath}/arkadmin_server/restarter.sh ${config.WebPath} ${config.screen} ${config.WebPath}/arkadmin_server/data/restarter.log'`;
+    logger.log(`"${auto ? 'Auto-Restarter' : 'Restarter'}: wird Neugestartet \n"`);
+    shell.exec(command, auto ? 'Auto-Restarter' : 'Restarter', true, 'wird Neugestartet');
 };

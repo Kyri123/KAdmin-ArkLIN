@@ -7,27 +7,18 @@
  * *******************************************************************************************
  */
 
-//const { spawn } = require('child_process');
 const { exec } = require('child_process');
 const logger = require('./logger');
 
-exports.exec = (command, config, type, short = false, text = undefined, logthis = true) => {
-    if (config == 0) {
+exports.exec = (command, type, short = false, text = undefined, logthis = true) => {
+    if (config.use_ssh == 0) {
         exec(command, (error, stdout, stderr) => {
             if (error) process.exit();
         });
-        if (short) {
-            console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Shell (${type}): \x1b[36m${text}`);
-        } else {
-            console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Shell (${type}): \x1b[36m${command}`);
-        }
+        console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Shell (${type}): \x1b[36m${short ? text : command}`);
     } else {
         ssh.execCommand(command).then((result) => {
-            if (short) {
-                console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Shell (${type}): \x1b[36m${text}`);
-            } else {
-                console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Shell (${type}): \x1b[36m${command}`);
-            }
+            console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Shell (${type}): \x1b[36m${short ? text : command}`);
         });
     }
     if (logthis) logger.log(`Shell: ${command}`);

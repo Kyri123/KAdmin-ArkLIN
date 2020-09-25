@@ -138,17 +138,17 @@ crontab.req("crontab/status");
 console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Geladen: \x1b[36mShell verwaltung`);
 setInterval(() => {
     if (iscon) {
-        panel_shell.job(config.use_ssh);
-        panel_shell.command(config.use_ssh);
+        panel_shell.job();
+        panel_shell.command();
     }
 }, config.ShellIntervall);
 
 //handle chmod
 setInterval(() => {
-    shell.exec(`chmod 777 -R ${config.WebPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
-    shell.exec(`chmod 777 -R ${config.AAPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
-    shell.exec(`chmod 777 -R ${config.ServerPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
-    shell.exec(`chmod 777 -R ${config.SteamPath}`, config.use_ssh, 'CHMOD', false, undefined, false);
+    shell.exec(`chmod 777 -R ${config.WebPath}`, 'CHMOD', false, undefined, false);
+    shell.exec(`chmod 777 -R ${config.AAPath}`, 'CHMOD', false, undefined, false);
+    shell.exec(`chmod 777 -R ${config.ServerPath}`, 'CHMOD', false, undefined, false);
+    shell.exec(`chmod 777 -R ${config.SteamPath}`, 'CHMOD', false, undefined, false);
 }, config.CHMODIntervall);
 logger.log("Gestartet: CHMOD");
 
@@ -156,31 +156,6 @@ logger.log("Gestartet: CHMOD");
 setInterval(() => {
     if (config.autoupdater_active > 0) updater.auto();
 }, config.autoupdater_intervall);
-
- // Webserver für Abrufen des Server Status
-/*http.createServer((req, res) => {
-    let response = url.parse(req.url, true).query;
-    infos = {
-        "version": version,
-        "db_connect": iscon,
-        "gestartet": dateFormat(started, "yyyy-mm-dd HH:MM:ss"),
-        "curr_log": logger.get()
-    };
-
-    if (response.update && response.code === md5(ip.address())) {
-        updater.auto();
-        infos.update = "running";
-    }
-    if (response.restart && response.code === md5(ip.address())) {
-        updater.restarter(false);
-        infos.restart = "running";
-    }
-
-    res.writeHead(200, {'Content-Type': 'text/json'});
-    res.write(JSON.stringify(infos));
-    res.end();
-}).listen(config.port);
-logger.log("Gestartet: Webserver");*/
 
 console.log('\x1b[36m%s\x1b[0m', "------------------------------------------------------");
 

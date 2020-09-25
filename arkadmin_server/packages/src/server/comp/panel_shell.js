@@ -11,7 +11,7 @@
 const shell = require('./shell');
 
 // Verwalte Jobs
-exports.job = (usessh) => {
+exports.job = () => {
     con.query('SELECT * FROM `ArkAdmin_jobs`', (error, results) => {
         if (error) throw error;
 
@@ -35,7 +35,7 @@ exports.job = (usessh) => {
                     var nextrun = results[i].time + x;
 
                     var command = `screen -dm bash -c 'arkmanager ${cmd} @${results[i].server}'`;
-                    shell.exec(command, usessh, 'Jobs');
+                    shell.exec(command, 'Jobs');
                     var qry = `UPDATE \`ArkAdmin_jobs\` SET \`time\` = '${nextrun}' WHERE \`id\` = '${results[i].id}'`;
                     con.query(qry);
                 }
@@ -45,13 +45,13 @@ exports.job = (usessh) => {
 };
 
 // verwalte Befehle
-exports.command = (usessh) => {
+exports.command = () => {
     con.query('SELECT * FROM `ArkAdmin_shell`', (error, results) => {
         if (error) throw error;
 
         for (i = 0; i < results.length; i++) {
             var command = results[i].command;
-            shell.exec(command, usessh, 'Commands');
+            shell.exec(command, 'Commands');
             var qry = `DELETE FROM \`ArkAdmin_shell\` WHERE \`id\` = '${results[i].id}'`;
             con.query(qry);
         }

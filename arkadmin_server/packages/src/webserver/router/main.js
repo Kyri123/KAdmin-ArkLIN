@@ -8,7 +8,6 @@
  */
 
 const fs = require('fs');
-const lineReader  = require('line-reader');
 const express = require('express');
 const md5 = require('md5');
 const ip = require('ip');
@@ -22,12 +21,9 @@ global.tpl_ipmd5 = md5(ip.address());
 
 // Bekomme Infos Als JSON
 router.get('/data', function(req, res) {
-
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
     res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-
-    let get = req.query;
 
     infos = {
         "version": version,
