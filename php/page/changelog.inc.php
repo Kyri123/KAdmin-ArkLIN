@@ -86,6 +86,7 @@ if (isset($json['file'])) {
     for ($i=count($json)-1;$i>-1;$i--) {
         $listtpl = new Template('list.htm', $tpl_dir);
         $listtpl->load();
+        $vsint = intval(str_replace(".", null, $json[$i]['version']));
 
 
         if ($now) $color = 'bg-green';
@@ -162,6 +163,8 @@ if (isset($json['file'])) {
         $listtpl->rif ('ifdownload', $download);
         $listtpl->r('datestring', $json[$i]['datestring']);
         $listtpl->r('version', $json[$i]['version']);
+        $listtpl->rif("style2", $vsint >= 120);
+        $listtpl->rif("style1", $vsint <= 119);
         $list .= $listtpl->load_var();
     }
 }
