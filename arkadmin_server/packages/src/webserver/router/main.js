@@ -20,34 +20,7 @@ global.list = [];
 global.tpl_ip = ip.address();
 global.tpl_ipmd5 = md5(ip.address());
 
-router.get('/', function(req, res) {
-    global.title = 'Logs';
-    list = [];
-    lineReader.eachLine(logfile, function(line, last) {
-        if(line !== undefined) list.push(line);
-
-        if (last) {
-            res.render("index.ejs");
-            return false;
-        }
-    });
-});
-
-router.get('/log', function(req, res) {
-    global.title = 'Logs';
-    list = [];
-    lineReader.eachLine(logfile, function(line, last) {
-        if(line !== undefined) list.push(line);
-
-        if (last) {
-            res.render("index.ejs");
-            return false;
-        }
-    });
-});
-
-
-// Allgemeine Infos (alt)
+// Bekomme Infos Als JSON
 router.get('/data', function(req, res) {
 
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -99,6 +72,23 @@ router.get('/data_root/updater.log', function(req, res) {
     res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
     global.data = fs.readFileSync(`${mainpath}/data/updater.log`);
     res.render("data.ejs");
+});
+
+// log_server
+router.get('/data_root/server.log', function(req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
+    res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    global.data = fs.readFileSync(logfile);
+    res.render("data.ejs");
+});
+
+
+// Server Log
+router.get('*', function(req, res) {
+    global.title = 'Logs - Server';
+    global.logpath = `/data_root/server.log`;
+    res.render("logs.ejs");
 });
 
 module.exports = router;
