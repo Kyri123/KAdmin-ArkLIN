@@ -31,6 +31,7 @@ switch ($case) {
             for ($i=0;$i<count($mods);$i++) {
                 $tpl = new Template('mods.htm', 'app/template/lists/serv/jquery/');
                 $tpl->load();
+                $curr_id = $mods[$i];
 
                 $y = $i + 1;
                 $btns = null;
@@ -51,18 +52,39 @@ switch ($case) {
 
                 if(isset($steamapi_mods[$mods[$i]])) {
                     $tpl->r('img', $steamapi_mods[$mods[$i]]["preview_url"]);
-                    $tpl->r('title', $steamapi_mods[$mods[$i]]["title"]);
+                    $modname = $steamapi_mods[$mods[$i]]["title"];
+                    $l = strlen($modname); $lmax = 16;
+                    if ($l > $lmax) {
+                        $modname = substr($modname, 0 , $lmax) . "...";
+                    }
+                    $tpl->r('title_full', $steamapi_mods[$mods[$i]]["title"]);
+                    $tpl->r('title', $modname);
                     $tpl->r('lastupdate', date('d.m.Y - H:i', $steamapi_mods[$mods[$i]]["time_updated"]));
+
+                    // Todo Funktioniert noch nicht
+                    $tpl->rif ('ifupdate', file_exists("$dir_installed/$curr_id.mod") ? filemtime("$dir_installed/$curr_id.mod") > $steamapi_mods[$mods[$i]]["time_updated"] : false);
                 }
                 else {
+                    $tpl->r('title_full', "{::lang::allg::default::notinapimod}");
                     $tpl->r('img', "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
                     $tpl->r('title', "{::lang::allg::default::notinapimod}");
                     $tpl->r('lastupdate', date('d.m.Y - H:i', time()));
+                    $tpl->rif ('ifupdate', false);
                 }
 
+                $opt = null;
+                for ($z=0;$z<count($mods);$z++) {
+                    if($i != $z) $opt .= "<option value='$z'>$z</option>";
+                }
+
+                $dir_installed = $serv->dir_main()."/ShooterGame/Content/Mods";
+
+                $tpl->r('update', date('d.m.Y - H:i', $steamapi_mods[$mods[$i]]["time_updated"]));
+                $tpl->r('pos', $i);
+                $tpl->r('poslist', $opt);
                 $tpl->r('modid', $mods[$i]);
-                $tpl->rif ('empty', true);
                 $tpl->r('cfg', $cfg);
+                $tpl->r('img_head', $head_img["img"][rand($head_img["min"], $head_img["max"])]);
                 $tpl->rif ("ifcmods", $ifcmods);
                 $resp .= $tpl->load_var();
                 $tpl = null;

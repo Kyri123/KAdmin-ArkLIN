@@ -24,7 +24,8 @@ $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoChe
 if(!file_exists($cheatfile)) file_put_contents($cheatfile, " ");
 if(!file_exists($whitelistfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($whitelistfile, " ");
 
-$playerjs = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true)["response"]["players"];
+$playerjson = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true);
+$playerjs = isset($playerjson["response"]["players"]) ? $playerjson["response"]["players"] : [];
 $count = (is_countable($playerjs)) ? count($playerjs): false;
 
 // Administrator hinzufügen

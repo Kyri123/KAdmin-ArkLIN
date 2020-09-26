@@ -19,7 +19,7 @@ $site_name = $content = null;
 // Deaktiviere Error anzeige
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
-//error_reporting(E_ALL);
+if(isset($ckonfig["show_err"])) error_reporting(E_ALL);
 
 //check install
 if (!file_exists("app/check/subdone")) {

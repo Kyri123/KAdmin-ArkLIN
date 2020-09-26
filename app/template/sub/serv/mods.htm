@@ -1,3 +1,4 @@
+
 <div class="col-xl-9 col-md-8 mb-4" onload="getmods('{cfg}')">
     <nav class="navbar navbar-expand-lg navbar-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,7 +21,7 @@
         </div>
     </nav>
     <hr />
-    <div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+    <div class="card border-0 bg-transparent shadow-none" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-modactive" role="tabpanel" aria-labelledby="pills-modactive-tab">
                 <table class="table table-striped mb-0">
@@ -34,16 +35,18 @@
                         </tr>
                     </tbody>
                 </table>
-                <ul class="list-group" id="modlist" style="border:0;">
-                    <li class="list-group-item">
-                        <div class="row p-0">
-                            <div class="col-12">
-                                <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
-                                <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+                <div class="row mt-3" id="modlist">
+                    <ul class="list-group col-12 ml-2" style="border:0;">
+                        <li class="list-group-item">
+                            <div class="row p-0">
+                                <div class="col-12">
+                                    <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                    <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="tab-pane fade" id="pills-modinstall" role="tabpanel" aria-labelledby="pills-modinstall-tab">
                 <table class="table table-striped mb-0">
@@ -57,16 +60,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <ul class="list-group" id="modlist_loc" style="border:0;">
-                    <li class="list-group-item">
-                        <div class="row p-0">
-                            <div class="col-12">
-                                <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
-                                <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
             </div>
             {!ifcmods}{permissions??server??{cfg}??mods??add}
             <div class="tab-pane fade" id="pills-add" role="tabpanel" aria-labelledby="pills-add-tab">
@@ -106,8 +99,52 @@
 </div>
 
 <script>
-    getphp("/php/async/get/servercenter.mods.async.php?cfg={cfg}&case=mods_active", "modlist");
-    getphp("/php/async/get/servercenter.mods.async.php?cfg={cfg}&case=mods_installed", "modlist_loc");
+    function get(installed) {
+        if(!installed) {
+            getphp("/php/async/get/servercenter.mods.async.php?cfg={cfg}&case=mods_active", "modlist");
+        }
+        else {
+            getphp("/php/async/get/servercenter.mods.async.php?cfg={cfg}&case=mods_installed", "modlist_loc");
+        }
+    }
+
+    function push(up, modid) {
+        let resp = "#all_resp";
+
+        $.post("/php/async/post/servercenter.mods.async.php?case=push", {
+            "cfg": "{cfg}",
+            "action": up ? "up" : "down",
+            "modid": modid
+        }, (data) => {
+            console.log(data);
+            let json = JSON.parse(data);
+
+            if(json.success) {
+                $(resp).html(json.msg);
+                get(false);
+            }
+        });
+    }
+
+    function pushto(modid, to) {
+        let resp = "#all_resp";
+
+        $.post("/php/async/post/servercenter.mods.async.php?case=pushto", {
+            "cfg": "{cfg}",
+            "to": to,
+            "modid": modid
+        }, (data) => {
+            console.log(data);
+            let json = JSON.parse(data);
+
+            if(json.success) {
+                $(resp).html(json.msg);
+                get(false);
+            }
+        });
+    }
+
+    get(true); get(false);
 
     function additem(id) {
         var clone = $(id).clone(true);

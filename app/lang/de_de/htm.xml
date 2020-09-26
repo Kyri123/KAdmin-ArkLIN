@@ -677,6 +677,9 @@
             <workshop_url>Workshop URL</workshop_url>
             <mod_id>Mod ID</mod_id>
             <btn_add>Hinzufügen</btn_add>
+            <lastupdate>Letztes Update</lastupdate>
+            <updateav>Update verfügbar</updateav>
+            <pos>Position bestimmen</pos>
         </mods>
 
         <saves>

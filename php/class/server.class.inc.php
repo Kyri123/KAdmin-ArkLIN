@@ -331,19 +331,19 @@ class server extends Rcon {
         $data = $helper->file_to_json($path);
         $class = new data_server();
 
-        $class->aplayers = is_countable($data["aplayersarr"]) ? count($data["aplayersarr"]) : 0;
-        $class->players = $data["players"];
-        $class->listening = $data["listening"];
-        $class->online = $data["online"];
-        $class->cfg = $data["cfg"];
-        $class->ServerMap = $data["ServerMap"];
-        $class->ServerName = $data["ServerName"];
-        $class->ARKServers = $data["ARKServers"];
-        $class->connect = $data["connect"];
-        $class->run = $data["run"];
-        $class->pid = $data["pid"];
-        $class->aplayersarr = $data["aplayersarr"];
-        $class->version = $data["version"];
+        $class->aplayers = isset($data["aplayersarr"]) ? (is_countable($data["aplayersarr"]) ? count($data["aplayersarr"]) : 0) : 0;
+        $class->players = isset($data["players"]) ? $data["players"] : "";
+        $class->listening = isset($data["listening"]) ? $data["listening"] : "";
+        $class->online = isset($data["online"]) ? $data["online"] : "";
+        $class->cfg = isset($data["cfg"]) ? $data["cfg"] : "";
+        $class->ServerMap = isset($data["ServerMap"]) ? $data["ServerMap"] : "";
+        $class->ServerName = isset($data["ServerName"]) ? $data["ServerName"] : "";
+        $class->ARKServers = isset($data["ARKServers"]) ? $data["ARKServers"] : "";
+        $class->connect = isset($data["connect"]) ? $data["connect"] : "";
+        $class->run = isset($data["run"]) ? $data["run"] : "";
+        $class->pid = isset($data["pid"]) ? $data["pid"] : "";
+        $class->aplayersarr = isset($data["aplayersarr"]) ? $data["aplayersarr"] : [];
+        $class->version = isset($data["version"]) ? $data["version"] : "";
 
         return $class;
     }

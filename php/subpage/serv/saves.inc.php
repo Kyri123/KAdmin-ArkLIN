@@ -185,7 +185,8 @@ $savedir = $serv->dir_save();
 $player = null;
 $tribe_json = $helper->file_to_json('app/json/saves/tribes_'.$serv->name().'.json', false);
 $player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.json', false);
-$playerjs = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true)["response"]["players"];
+$playerjson = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true);
+$playerjs = isset($playerjson["response"]["players"]) ? $playerjson["response"]["players"] : [];
 $jhelper = new player_json_helper();
 
 // Spieler liste

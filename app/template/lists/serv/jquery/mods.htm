@@ -1,37 +1,67 @@
-<li class="list-group-item">
-    <div class="row p-0">
-        <div class="col-12">
-            <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50"> {empty}
-            <div class="ml-auto float-right">
-                {!ifcmods}{permissions??server??{cfg}??mods??changeplace}{ifup}
-                <a href="/servercenter/{cfg}/mods/top/{modid}" class="btn btn-info btn-sm">
-                    <span class="icon text-white">
-                        <i class="fas fa-arrow-up"></i>
-                    </span>
-                </a>{/ifup} {ifdown}
-                <a href="/servercenter/{cfg}/mods/bot/{modid}" class="btn btn-info btn-sm">
-                    <span class="icon text-white">
-                        <i class="fas fa-arrow-down"></i>
-                    </span>
-                </a>{/ifdown}{/permissions}{permissions??server??{cfg}??mods??remove}
-                <a href="javascript:void()" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{modid}" class="btn btn-danger">
-                    <span class="icon text-white">
-                        <i class="fas fa-times"></i>
-                    </span>
-                </a>{/permissions}{/!ifcmods}
-                <a href="https://steamcommunity.com/sharedfiles/filedetails/?id={modid}" class="btn btn-dark btn-sm" target="_blank">
-                    <span class="icon text-white">
-                        <i class="fab fa-steam-symbol"></i>
-                    </span>
-                </a>
-            </div>{/empty}
-            <div style="margin-left: 60px;">{title}<br />{empty}<span class="font-weight-light" style="font-size: 11px;"> {modid} | {::lang::servercenter::list::mods::lastupdate}</span>&nbsp;{/empty}&nbsp;</div>
+
+<div class="col-lg-6 col-xl-3">
+    <div class="card card-widget widget-user">
+        <div class="card bg-dark card-widget widget-user mb-0">
+            <div class="row p-2" title="{title_full}">
+                <div class="col-9">
+                    <h5 class="text-center left d-inline p-2 m-0">
+                        [{pos}] {title}
+                    </h5>
+                </div>
+                <div class="col-3 btn-group">
+                    <a class="btn btn-sm btn-secondary
+                        {!permissions??server??{cfg}??mods??changeplace}disabled{/!permissions}
+                        {!ifup}disabled{/!ifup}
+                    " {permissions??server??{cfg}??mods??changeplace}{ifup}onclick="push(true, '{modid}')"{/ifup}{/permissions}>
+                        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+                    </a>
+                    <a class="btn btn-sm btn-secondary
+                        {!permissions??server??{cfg}??mods??changeplace}disabled{/!permissions}
+                        {!ifdown}disabled{/!ifdown}
+                    " {permissions??server??{cfg}??mods??changeplace}{ifdown}onclick="push(false, '{modid}')"{/ifdown}{/permissions}><i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="widget-user-header text-white" style="background: url('/app/dist/img/backgrounds/bg.jpg') center center;">
+            <!-- TODO: funktioniert noch nicht -->
+            <!--{ifupdate}<h5 class="widget-user-desc text-center text-danger">{::lang::servercenter::mods::updateav}</h5>{/ifupdate}-->
+        </div>
+        <div class="widget-user-image" id="serv_img" style="top: 130px;z-index: 1000"><img src="{img}" style="border-radius: 25rem !important;border-top-width: 3px!important;height: 90px;width: 90px;background-color: #001f3f" class="border-secondary"></div>
+        <div class="card card-widget widget-user mb-0">
+            <div class="text-left left d-inline" style="width:50%">
+                <a href="https://steamcommunity.com/sharedfiles/filedetails/?id={modid}" target="_blank" style="width: 100%" class="btn btn-dark"><i class="fab fa-steam-symbol" aria-hidden="true"></i></a>
+            </div>
+            <div class="right-no-top ml-auto d-inline" style="width:50%">
+                <a style="width: 100%" {permissions??server??{cfg}??mods??remove}data-target="#del{modid}"{/permissions} data-toggle="modal" class="text-white btn btn-danger {!permissions??server??{cfg}??mods??remove}disabled{/!permissions}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="card-footer p-0">
+            <div class="row">
+                <div class="col-sm-6 border-right">
+                    <div class="description-block">
+                        <h5 class="description-header">{update}</h5>
+                        <span class="description-text">{::lang::servercenter::mods::lastupdate}</span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="description-block">
+                        <h5 class="description-header"><b>{modid}</b></h5>
+                        <span class="description-text">Mod-ID</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-0 border-top" title="{title_full}">
+            <select class="form-control-sm border-light" style="width: 100%" onchange="pushto('{modid}', this.value)">
+                <option>{::lang::servercenter::mods::pos}</option>
+                {poslist}
+            </select>
         </div>
     </div>
-</li>
+</div>
 
 <!-- Modal -->
-
+{permissions??server??{cfg}??mods??remove}
 <form class="modal fade" id="del{modid}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
@@ -44,13 +74,13 @@
 
             <div class="modal-body">
                 <p>{::lang::servercenter::list::mods::modal::remove::txt}</p>
-                <p><b>{title}</b></p>
+                <p><b>{title_full}</b></p>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::mods::modal::remove::btn_cancel}</button>
-                <a href="/servercenter/{cfg}/mods/remove/{modid}" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::mods::modal::remove::btn_del}</a>
+                <a href="/servercenter/{cfg}/mods/remove/{modid}" onclick="remove('{modid}')" class="btn btn-danger" name="del">{::lang::servercenter::list::mods::modal::remove::btn_del}</a>
             </div>
         </div>
     </div>
-</form>
+</form>{/permissions}
