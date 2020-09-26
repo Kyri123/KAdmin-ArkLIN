@@ -15,6 +15,7 @@ $serv = new server($cfg);
 $serv->cluster_load();
 $ifslave = ($serv->cluster_type() == 0 && $serv->cluster_in());
 $ifcmods = ($serv->cluster_mods() && $ifslave && $serv->cluster_in());
+$dir_installed = $serv->dir_main()."/ShooterGame/Content/Mods";
 
 switch ($case) {
     // CASE: Aktive Mods
@@ -27,6 +28,7 @@ switch ($case) {
         $y = 1;
 
         $total_count = (is_countable($mods)) ? count($mods) : 0;
+        $imgb = -1;
         if ($total_count > 1) {
             for ($i=0;$i<count($mods);$i++) {
                 $tpl = new Template('mods.htm', 'app/template/lists/serv/jquery/');
@@ -77,14 +79,20 @@ switch ($case) {
                     if($i != $z) $opt .= "<option value='$z'>$z</option>";
                 }
 
-                $dir_installed = $serv->dir_main()."/ShooterGame/Content/Mods";
+                while (true) {
+                    $rand = rand($head_img["min"], $head_img["max"]);
+                    if($rand != $imgb) {
+                        $imgb = $rand;
+                        break;
+                    }
+                }
 
                 $tpl->r('update', date('d.m.Y - H:i', $steamapi_mods[$mods[$i]]["time_updated"]));
                 $tpl->r('pos', $i);
                 $tpl->r('poslist', $opt);
                 $tpl->r('modid', $mods[$i]);
                 $tpl->r('cfg', $cfg);
-                $tpl->r('img_head', $head_img["img"][rand($head_img["min"], $head_img["max"])]);
+                $tpl->r('img_head', $head_img["img"][$imgb]);
                 $tpl->rif ("ifcmods", $ifcmods);
                 $resp .= $tpl->load_var();
                 $tpl = null;
@@ -157,6 +165,7 @@ switch ($case) {
             }
         }
         // Wenn kein Mod gefunden wurde
+    /*
         if ($resp == null) {
             $tpl = new Template('mods.htm', 'app/template/lists/serv/jquery/');
             $tpl->load();
@@ -165,7 +174,7 @@ switch ($case) {
             $tpl->rif ('empty', false);
             $resp = $tpl->load_var();
             $tpl = null;
-        }
+        }*/
 
         echo $resp;
         break;

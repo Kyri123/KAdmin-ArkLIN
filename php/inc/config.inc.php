@@ -55,3 +55,17 @@ $ignore_perm = array(
     "force_update",
     "force_restart"
 );
+
+$head_img = array(
+    "min" => 0,
+    "max" => 6,
+    "img" => array(
+        "/app/dist/img/backgrounds/bg.jpg",
+        "/app/dist/img/backgrounds/side.jpg",
+        "/app/dist/img/backgrounds/4.jpg",
+        "/app/dist/img/backgrounds/5.jpg",
+        "/app/dist/img/backgrounds/6.jpg",
+        "/app/dist/img/backgrounds/7.jpg",
+        "/app/dist/img/backgrounds/8.jpg"
+    )
+);
