@@ -113,6 +113,52 @@ switch ($case) {
         echo json_encode(array("success" => $bool, "msg" => $resp));
         break;
 
+    case "remove":
+        $bool = false;
+        $resp = "";
+        if($user->perm("$perm/mods/remove")) {
+            $cancel = false;
+            $modid = $_POST["modid"];
+            // change order
+            $mods = explode(',', $serv->cfg_read('ark_GameModIds'));
+            // Suche Nach Mods
+            for ($i=0;$i<count($mods);$i++) {
+                if ($mods[$i] == $modid) {
+                    $id = $mods[$i];
+                    $mods[$i] = 'removed';
+                    break;
+                }
+            }
+
+            // Modlist Builder
+            for ($i=0;$i<count($mods);$i++) {
+                if ($mods[$i] == 'removed') {
+                    if ($ckonfig['uninstall_mod'] == 1) {
+                        $jobs->set($serv->name());
+                        $jobs->arkmanager('uninstallmod ' . $id);
+                    }
+                    $removed = true;
+                    unset($mods[$i]);
+                    break;
+                }
+            }
+            $mod_builder = implode(',', $mods);
+            // saver
+
+            $serv->cfg_write('ark_GameModIds', $mod_builder);
+            if(!$cancel) {
+                $resp = $alert->rd($serv->cfg_save() ? 101 : 1);
+                $bool = true;
+            }
+            else {
+                $resp = $alert->rd(16);
+            }
+        }
+        else {
+            $resp = $alert->rd(99);
+        }
+        echo json_encode(array("success" => $bool, "msg" => $resp));
+        break;
     default:
         echo "Case not found";
         break;

@@ -53,7 +53,7 @@ switch ($case) {
                 if(isset($steamapi_mods[$mods[$i]])) {
                     $tpl->r('img', $steamapi_mods[$mods[$i]]["preview_url"]);
                     $modname = $steamapi_mods[$mods[$i]]["title"];
-                    $l = strlen($modname); $lmax = 16;
+                    $l = strlen($modname); $lmax = 15;
                     if ($l > $lmax) {
                         $modname = substr($modname, 0 , $lmax) . "...";
                     }

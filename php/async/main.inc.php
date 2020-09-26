@@ -40,6 +40,7 @@ include('php/class/Template.class.inc.php');
 include('php/class/rcon.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/alert.class.inc.php');
+include('php/class/jobs.class.inc.php');
 
 // include inz
 include('php/inc/template_preinz.inc.php');
@@ -51,6 +52,7 @@ $user = new userclass();
 $user->setid($_SESSION["id"]);
 $jhelper = new player_json_helper();
 $alert = new alert();
+$jobs = new jobs();
 $permissions = $user->permissions;
 
 // Allgemein SteamAPI Arrays

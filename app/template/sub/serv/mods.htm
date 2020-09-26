@@ -144,6 +144,26 @@
         });
     }
 
+    function remove(modid, to) {
+        let resp = "#all_resp";
+        let modal = `#del${modid}`;
+
+        $.post("/php/async/post/servercenter.mods.async.php?case=remove", {
+            "cfg": "{cfg}",
+            "to": to,
+            "modid": modid
+        }, (data) => {
+            console.log(data);
+            let json = JSON.parse(data);
+
+            if(json.success) {
+                $(resp).html(json.msg);
+                $(modal).modal('hide');
+                get(false);
+            }
+        });
+    }
+
     get(true); get(false);
 
     function additem(id) {
