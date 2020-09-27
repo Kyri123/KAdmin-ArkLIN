@@ -33,7 +33,6 @@ function allowed(get, ip) {
                 let perm_path = `${config.WebPath}/app/json/user/${get.md5}.permissions.json`;
                 if(fs.existsSync(perm_path)) {
                     let perm_json = JSON.parse(fs.readFileSync(perm_path));
-                    console.log(perm_json)
                     return (perm_json.all.is_admin == 1 || (perm_json.all.manage_aas !== undefined ? perm_json.all.manage_aas == 1 : false));
                 }
             }
