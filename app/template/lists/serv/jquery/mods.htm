@@ -2,21 +2,21 @@
 <div class="col-lg-6 col-xl-3">
     <div class="card card-widget widget-user">
         <div class="card bg-dark card-widget widget-user mb-0">
-            <div class="row p-2" title="{title_full}">
-                <div class="{!hide}col-9{/!hide}{hide}col-12{/hide}">
+            <div class="row p-2">
+                <div class="{!hide}col-6{/!hide}{hide}col-12{/hide}">
                     <h5 class="text-center left d-inline pt-3 pl-0 m-0 {hide}{color}{/hide}">
-                        {!hide}[{pos}]{/!hide} {title}
+                        {!hide}Pos: {pos}{/!hide}
                     </h5>
                 </div>
-                {!hide}<div class="col-3 btn-group">
-                    <a class="btn btn-sm btn-secondary
+                {!hide}<div class="col-6 btn-group">
+                    <a class="btn btn-sm btn-outline-secondary
                         {!permissions??server??{cfg}??mods??changeplace}disabled{/!permissions}
                         {!ifup}disabled{/!ifup}
                         {ifcmods}disabled{/ifcmods}
                     " {permissions??server??{cfg}??mods??changeplace}{ifup}{!ifcmods}onclick="push(true, '{modid}')"{/!ifcmods}{/ifup}{/permissions}>
                         <i class="fas fa-arrow-up" aria-hidden="true"></i>
                     </a>
-                    <a class="btn btn-sm btn-secondary
+                    <a class="btn btn-sm btn-outline-secondary
                         {!permissions??server??{cfg}??mods??changeplace}disabled{/!permissions}
                         {!ifdown}disabled{/!ifdown}
                         {ifcmods}disabled{/ifcmods}
@@ -25,8 +25,7 @@
             </div>
         </div>
         <div class="widget-user-header text-white" style="background: url('{img_head}') center center;">
-            <!-- TODO: funktioniert noch nicht -->
-            <!--{ifupdate}<h5 class="widget-user-desc text-center text-danger">{::lang::servercenter::mods::updateav}</h5>{/ifupdate}-->
+            <h5 title="{title_full}" class="widget-user-desc text-bold text-center text-light border" style="background-color: rgb(66 66 66 / 58%)!important;">{title}</h5>
         </div>
         <div class="widget-user-image" id="serv_img" style="top: 130px;z-index: 1000"><img src="{img}" style="border-top-width: 3px!important;height: 90px;width: 90px;background-color: #001f3f" class="border-secondary"></div>
         <div class="card card-widget widget-user mb-0">

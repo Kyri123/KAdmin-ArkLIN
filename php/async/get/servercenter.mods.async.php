@@ -109,7 +109,7 @@ switch ($case) {
                                         <div class="row p-0">
                                             <div class="col-12">
                                                 <i class="text-black-50 fas fa-exclamation-triangle -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
-                                                <div style="margin-left: 60px;">{::lang::php::async::get::servercenter::mods::no_mods_found}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::mods::nomodfound}</span></div>
+                                                <div style="margin-left: 60px;">{::lang::php::async::get::servercenter::mods::no_mods_found}<br><span style="font-size: 11px;">{::lang::servercenter::mods::nomodfound}</span></div>
                                             </div>
                                         </div>
                                     </div>
@@ -202,7 +202,7 @@ switch ($case) {
                                         <div class="row p-0">
                                             <div class="col-12">
                                                 <i class="text-black-50 fas fa-exclamation-triangle -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
-                                                <div style="margin-left: 60px;">{::lang::php::async::get::servercenter::mods::no_mods_found}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::mods::nomodfound}</span></div>
+                                                <div style="margin-left: 60px;">{::lang::php::async::get::servercenter::mods::no_mods_found}<br><span style="font-size: 11px;">{::lang::servercenter::mods::nomodfound}</span></div>
                                             </div>
                                         </div>
                                     </div>
