@@ -19,6 +19,26 @@ global.list = [];
 global.tpl_ip = ip.address();
 global.tpl_ipmd5 = md5(ip.address());
 
+/**
+ * Gibt aus ob die Anfrage ausgeführt werden darf
+ *
+ * @param get
+ */
+function allowed(get, ip) {
+    if(get.md5 !== undefined) {
+        let user_path = `${config.WebPath}/app/json/user/${get.md5}.json`;
+        let user_json = JSON.parse(fs.readFileSync(user_path));
+
+        if(ip.includes(user_json.ip)) {
+            let perm_path = `${config.WebPath}/app/json/user/${get.md5}.permissions.json`;
+            let perm_json = JSON.parse(fs.readFileSync(perm_path));
+            console.log(perm_json)
+            return (perm_json.all.is_admin == 1 || (perm_json.all.manage_aas !== undefined ? perm_json.all.manage_aas == 1 : false));
+        }
+    }
+    return false;
+}
+
 // Bekomme Infos Als JSON
 router.get('/data', function(req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -38,18 +58,32 @@ router.get('/data', function(req, res) {
 
 // Neustart
 router.get('/restart/' + md5(ip.address()), function(req, res) {
-    updater.restarter(false);
-    global.title = 'Logs - Restarter';
-    global.logpath = `/data_root/restarter.log`;
-    res.render("logs.ejs");
+    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    global.reqip = req.query.md5;
+    if(allowed(req.query, ip)) {
+        updater.restarter(false);
+        global.title = 'Logs - Restarter';
+        global.logpath = `/data_root/restarter.log`;
+        res.render("logs.ejs");
+    }
+    else {
+        res.render("forbitten.ejs");
+    }
 });
 
 // Update Erzwingen
 router.get('/update/' + md5(ip.address()), function(req, res) {
-    updater.auto();
-    global.title = 'Logs - Updater';
-    global.logpath = `/data_root/updater.log`;
-    res.render("logs.ejs");
+    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    global.reqip = req.query.md5;
+    if(allowed(req.query, ip)) {
+        updater.auto();
+        global.title = 'Logs - Updater';
+        global.logpath = `/data_root/updater.log`;
+        res.render("logs.ejs");
+    }
+    else {
+        res.render("forbitten.ejs");
+    }
 });
 
 // log_restart
@@ -82,9 +116,16 @@ router.get('/data_root/server.log', function(req, res) {
 
 // Server Log
 router.get('*', function(req, res) {
-    global.title = 'Logs - Server';
-    global.logpath = `/data_root/server.log`;
-    res.render("logs.ejs");
+    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    global.reqip = req.query.md5;
+    if(allowed(req.query, ip)) {
+        global.title = 'Logs - Server';
+        global.logpath = `/data_root/server.log`;
+        res.render("logs.ejs");
+    }
+    else {
+        res.render("forbitten.ejs");
+    }
 });
 
 module.exports = router;

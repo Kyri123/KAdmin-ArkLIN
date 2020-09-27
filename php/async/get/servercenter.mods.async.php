@@ -158,7 +158,7 @@ switch ($case) {
                 $tpl = new Template('mods_local.htm', 'app/template/lists/serv/jquery/');
                 $tpl->load();
                 $path = $serv->dir_main()."/ShooterGame/Content/Mods/".$value["publishedfileid"];
-                $installed = file_exists($path);
+                $installed = (file_exists($path) && in_array($value["publishedfileid"], $mods));
 
                 // new
                 while (true) {
@@ -171,7 +171,7 @@ switch ($case) {
 
                 $tpl->r('img', $value["preview_url"]);
                 $modname = $value["title"];
-                $l = strlen($modname); $lmax = 14;
+                $l = strlen($modname); $lmax = 25;
                 if ($l > $lmax) {
                     $modname = substr($modname, 0 , $lmax) . "...";
                 }

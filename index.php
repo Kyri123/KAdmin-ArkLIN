@@ -74,7 +74,32 @@ include('php/inc/template_preinz.inc.php');
 $alert = new alert();
 $steamapi = new steamapi();
 $user = new userclass();
-if(isset($_SESSION["id"])) $user->setid($_SESSION['id']);
+if(isset($_SESSION["id"])) {
+    $user->setid($_SESSION['id']);
+
+    //Prüfe ob der Benutzer gebant ist
+    if ($user->read("ban") > 0) {
+        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
+        $mycon->query($query);
+        session_destroy();
+    }
+
+    // Prüfe ob der Nutzer noch exsistiert
+    $query = "SELECT * FROM `ArkAdmin_users` WHERE (`id`='".$_SESSION["id"]."')";
+    if (!($mycon->query($query)->numRows() > 0)) {
+        session_destroy();
+        header("Location: /login");
+        exit;
+    }
+
+    // Erfasse IP
+    $path = "app/json/user/".md5($_SESSION["id"]).".json";
+    if(file_exists($path)) {
+        $json = $helper->file_to_json($path, true);
+        $json["ip"] = getRealIpAddr();
+        $helper->savejson_create($json, $path);
+    }
+}
 
 // Allgemein SteamAPI Arrays
 $steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();
@@ -115,27 +140,10 @@ foreach ($server as $item) {
     }
 }
 
-//Prüfe ob der Benutzer gebant ist
-if ($user->read("ban") > 0) {
-    $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
-    $mycon->query($query);
-    session_destroy();
-}
-
-// Prüfe ob der Nutzer noch exsistiert
-if(isset($_SESSION["id"])) {
-    $query = "SELECT * FROM `ArkAdmin_users` WHERE (`id`='".$_SESSION["id"]."')";
-    if (!($mycon->query($query)->numRows() > 0)) {
-        session_destroy();
-        header("Location: /login");
-        exit;
-    }
-}
-
 if (isset($_SESSION["id"])) {
     $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`=\''.$_SESSION["id"].'\'';
     $mycon->query($query);
-} 
+}
 
 // Define default page
 $page = $url[1];
@@ -172,17 +180,17 @@ if ($page == "login" || $page == "registration") {
 }
 
 if($user->perm("all/manage_aas")) $btns .= '
-    <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
+    <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'?md5='.md5($_SESSION["id"]).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
         <span class="icon text-white-50">
             <i class="fa fa-cloud-download"></i>
         </span>
     </a>
-    <a href="http://'.$ip.':'.$webserver['config']['port'].'/restart/'.md5($ip).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_restart_text}" data-original-title="{::lang::allg::force_restart}">
+    <a href="http://'.$ip.':'.$webserver['config']['port'].'/restart/'.md5($ip).'?md5='.md5($_SESSION["id"]).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_restart_text}" data-original-title="{::lang::allg::force_restart}">
         <span class="icon text-white-50">
             <i class="fas fa-undo"></i>
         </span>
     </a>
-    <a href="http://'.$ip.':'.$webserver['config']['port'].'/log" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::show_as_logs_text}" data-original-title="{::lang::allg::show_as_logs}">
+    <a href="http://'.$ip.':'.$webserver['config']['port'].'/log?md5='.md5($_SESSION["id"]).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::show_as_logs_text}" data-original-title="{::lang::allg::show_as_logs}">
         <span class="icon text-white-50">
             <i class="fas fa-list"></i>
         </span>
