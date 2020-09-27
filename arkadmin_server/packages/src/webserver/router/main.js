@@ -27,9 +27,9 @@ global.tpl_ipmd5 = md5(ip.address());
 function allowed(get, ip) {
     if(get.md5 !== undefined) {
         let user_path = `${config.WebPath}/app/json/user/${get.md5}.json`;
-        if(fa.existsSync(user_path)) {
+        if(fs.existsSync(user_path)) {
             let user_json = JSON.parse(fs.readFileSync(user_path));
-            if(fa.existsSync(user_json)) {
+            if(fs.existsSync(user_json)) {
                 if(ip.includes(user_json.ip)) {
                     let perm_path = `${config.WebPath}/app/json/user/${get.md5}.permissions.json`;
                     let perm_json = JSON.parse(fs.readFileSync(perm_path));
