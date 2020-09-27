@@ -45,7 +45,14 @@ $name = array(
     "<strong>Account",
     "<strong>Konfiguration",
     "<strong>Crontab",
-    "<strong>Sprachsystem"
+    "<strong>Sprachsystem",
+    "<strong>Server",
+    "<strong>Updater",
+    "<strong>Webserver",
+    "<strong>Crontab",
+    "<strong>Shell",
+    "<strong>Statusabfrage & Statistiken",
+    "<strong>Logs"
 );
 $withicon = array(
     "<strong><i class='fas fa-code'></i> Intern",
@@ -68,7 +75,13 @@ $withicon = array(
     "<strong><i class=\"fas fa-user\"></i> Account",
     "<strong><i class=\"far fa-file-alt\"></i> Konfiguration",
     "<strong><i class=\"fas fa-tasks\"></i> Crontab",
-    "<strong><i class=\"fas fa-language\"></i> Sprachsystem"
+    "<strong><i class=\"fas fa-language\"></i> Sprachsystem",
+    "<strong><i class=\"fas fa-server\"></i> Server",
+    "<strong><i class=\"fa fa-refresh\"></i> Updater",
+    "<strong><i class=\"fa fa-server\"></i> Webserver",
+    "<strong><i class=\"fas fa-terminal\"></i> Shell",
+    "<strong><i class=\"fas fa-chart-bar\"></i> Statusabfrage & Statistiken",
+    "<strong><i class=\"fas fa-list\"></i> Logs"
 );
 
 //tpl

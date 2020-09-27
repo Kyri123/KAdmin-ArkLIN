@@ -179,12 +179,13 @@ if ($player == null) {
     $list_tpl->r('img', "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
     $list_tpl->rif ('empty', false);
     $list_tpl->r('IG:name', '{::lang::php::sc::no_player_online}');
+    $list_tpl->r('IG:online', '');
     $player .= $list_tpl->load_var();
 }
 
 
 
-$action_list = "<option value=\"\">Aktion wählen...</option>"; $i = 0;
+$action_list = "<option value=\"\">{::lang::servercenter::jobs::section::jobs::task::option::default}</option>"; $i = 0;
 foreach ($action_opt as $key) {
     $action_list .= "<option value=\"$key\">{::lang::php::cfg::action::$key}</option>";
     $i++;

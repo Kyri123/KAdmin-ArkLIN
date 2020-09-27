@@ -130,7 +130,8 @@ function bitrechner( $size, $sourceUnit = 'bit', $targetUnit = 'MB' ) {
         'B' => 1,
         'KB' => 2,
         'MB' => 3,
-        'GB' => 4
+        'GB' => 4,
+        'TB' => 5
     );
 
     if ( $units[$sourceUnit] <= $units[$targetUnit] ) {
@@ -225,11 +226,11 @@ function dirToArray($dir) {
 /**
  * Fileter \r \t
  *
- * @param  mixed $str
+ * @param string $str
  * @return void
  */
 
-function ini_save_rdy($str) {
+function ini_save_rdy(string $str) {
     $str = str_replace("\r", null, $str);
     $str = str_replace("\t", null, $str);
     return $str;
@@ -262,3 +263,24 @@ function perc($curr, $max) {
     return ($curr / $max * 100);
 }
 
+/**
+ * Erfasse Client IP
+ *
+ * @return string
+ */
+function getRealIpAddr()
+{
+    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+    {
+        $ip=$_SERVER['HTTP_CLIENT_IP'];
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+    {
+        $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    else
+    {
+        $ip=$_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
+}

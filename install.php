@@ -67,7 +67,7 @@ $step = 0;
 if (isset($url[2])) $step = $url[2];
 for ($i=0;$i<20;$i++) {
     if ($step == $i) {
-        include($dirs["include"]."step_".$i.".inc.php");
+        include($dirs["include"]."step_$i.inc.php");
     }
 }
 

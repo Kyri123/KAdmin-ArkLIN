@@ -17,7 +17,7 @@ $ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
 
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
-//error_reporting(E_ALL);
+if(isset($ckonfig["show_err"])) error_reporting(E_ALL);
 
 // Starte Session
 session_start();
@@ -40,6 +40,7 @@ include('php/class/Template.class.inc.php');
 include('php/class/rcon.class.inc.php');
 include('php/class/server.class.inc.php');
 include('php/class/alert.class.inc.php');
+include('php/class/jobs.class.inc.php');
 
 // include inz
 include('php/inc/template_preinz.inc.php');
@@ -51,6 +52,7 @@ $user = new userclass();
 $user->setid($_SESSION["id"]);
 $jhelper = new player_json_helper();
 $alert = new alert();
+$jobs = new jobs();
 $permissions = $user->permissions;
 
 // Allgemein SteamAPI Arrays

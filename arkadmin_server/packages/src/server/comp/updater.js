@@ -11,12 +11,14 @@ const fs = require("fs");
 const req = require('request');
 const shell = require('./shell');
 const logger = require('./logger');
+const ip = require('ip');
 
 exports.auto = () => {
+
     var options = {
-        url: "https://api.github.com/repos/Kyri123/Arkadmin/branches/" + config.autoupdater_branch,
+        url: `https://api.github.com/repos/Kyri123/Arkadmin/branches/${config.autoupdater_branch}`,
         headers: {
-            'User-Agent': 'Arkadmin2-Server AutoUpdater'
+            'User-Agent': `Arkadmin2-Server AutoUpdater :: FROM: ${ip.address()}`
         },
         json: true
     };
@@ -24,6 +26,7 @@ exports.auto = () => {
     req.get(options, (err, res, api) => {
         if (err) {
             // wenn keine verbindung zu Github-API besteht
+            fs.writeFileSync(`data/updater.log`, `github API failed`);
             console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Auto-Updater: \x1b[91mVerbindung fehlgeschlagen`);
             logger.log("Autoupdate: Github Verbindung fehlgeschlagen");
         } else if (res.statusCode === 200) {
@@ -32,6 +35,7 @@ exports.auto = () => {
                 if (err == undefined) {
                     if (data == api.commit.sha) {
                         // kein Update
+                        fs.writeFileSync(`data/updater.log`, `Already up to date!`);
                         console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Auto-Updater: \x1b[32mIst auf dem neusten Stand`);
                         logger.log("Autoupdate: Panel & Server auf dem neusten Stand");
                     } else {
@@ -40,30 +44,21 @@ exports.auto = () => {
                         logger.log(`Autoupdate: Update... ${data}`);
                         logger.log("Autoupdate: Beende Server");
 
-                        var command = `screen -dm bash -c 'cd ${config.WebPath}/arkadmin_server/ ;
-                        rm -R tmp ; mkdir tmp ; cd tmp ;
-                        wget https://github.com/Kyri123/Arkadmin/archive/${config.autoupdater_branch}.zip ;
-                        unzip ${config.autoupdater_branch}.zip; 
-                        cd Arkadmin-${config.autoupdater_branch} ;
-                        screen -S ${config.screen} -p 0 -X quit ; sleep 2s ; 
-                        rm -R ./arkadmin_server/config ; rm -R ./install ; rm ./install.php ; rm ./arkadmin_server/data/sha.txt ; rm ./arkadmin_server/data/server.log ; 
-                        yes | cp -rf ./ ${config.WebPath}/ ;cd ../..; 
-                        rm -R tmp;cd ${config.WebPath}/arkadmin_server/ ; 
-                        npm install --force && npm update && npm fund ; sleep 2s ; 
-                        chmod 777 -R ./../ ; sleep 2s ; 
-                        screen -mdS ${config.screen} ./start.sh ;screen -wipe ;exit;'`;
+                        var command = `screen -dm bash -c '${config.WebPath}/arkadmin_server/updater.sh ${config.WebPath} ${config.screen} ${config.autoupdater_branch} ${config.WebPath}/arkadmin_server/data/updater.log'`;
 
-                        shell.exec(command, config.use_ssh, 'Auto-Updater', true, 'Update wird gestartet');
                         fs.writeFile("data/sha.txt", "" + api.commit.sha, (err) => {});
+                        shell.exec(command, 'Auto-Updater', true, 'Update wird gestartet');
                     }
                 } else {
                     // sende Error wenn Datei nicht gefunden wenrden konnte
+                    fs.writeFileSync(`data/updater.log`, `sha.txt not found`);
                     console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Auto-Updater: \x1b[91mLocale sha.txt nicht gefunden`);
                     logger.log("Autoupdate: Locale sha.txt nicht gefunden");
                 }
             });
         } else {
             // wenn keine verbindung zu Github-API besteht
+            fs.writeFileSync(`data/updater.log`, `github API failed`);
             console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Auto-Updater: \x1b[91mVerbindung fehlgeschlagen`);
             logger.log("Autoupdate: Github Verbindung fehlgeschlagen");
         }
@@ -71,12 +66,8 @@ exports.auto = () => {
 };
 
 exports.restarter = (auto) => {
-    var command = `screen -dm bash -c 'cd ${config.WebPath}/arkadmin_server/ ;sleep 2s ; 
-    screen -S ${config.screen} -p 0 -X quit ; sleep 2s ; 
-    npm install --force && npm update && npm fund ; sleep 2s ; 
-    screen -mdR ${config.screen} ./start.sh ;screen -wipe ;exit;'`;
     // Beginne Restart
-    if (shell.exec(command, config.use_ssh, auto ? 'Auto-Restarter' : 'Restarter', true, 'wird Neugestartet')) {
-        logger.log("Restarter: " + (auto ? 'Auto-Restarter' : 'Restarter') + " wird Neugestartet \n");
-    }
+    var command = `screen -dm bash -c '${config.WebPath}/arkadmin_server/restarter.sh ${config.WebPath} ${config.screen} ${config.WebPath}/arkadmin_server/data/restarter.log'`;
+    logger.log(`"${auto ? 'Auto-Restarter' : 'Restarter'}: wird Neugestartet \n"`);
+    shell.exec(command, auto ? 'Auto-Restarter' : 'Restarter', true, 'wird Neugestartet');
 };

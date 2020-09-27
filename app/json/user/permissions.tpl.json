@@ -1,8 +1,7 @@
 {
     "all": {
         "is_admin": 0,
-        "force_update": 0,
-        "force_restart": 0,
+        "manage_aas": 0,
         "show_traffic": 1
     },
     "servercontrollcenter": {

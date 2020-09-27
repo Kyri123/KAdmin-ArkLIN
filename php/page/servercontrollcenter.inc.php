@@ -29,7 +29,7 @@ $tpl->load();
 
 if (isset($_POST["add"]) && $user->perm("servercontrollcenter/create")) {
     //prüfe ob das Maximum erreicht wurde
-    if(!$maxpanel_server >= count($all["cfgs"])) {
+    if($maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2)) {
         while (true) {
             $name = rndbit(5);
             $path = "remote/arkmanager/instances/".$name.".cfg";

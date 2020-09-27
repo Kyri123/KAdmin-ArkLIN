@@ -31,9 +31,8 @@
         <force_restart>Starte den ArkAdmin-Server neu</force_restart>
         <force_restart_text>Startet den ArkAdmin-Server neu um z.B. Änderungen am Intervall zu übernehmen.</force_restart_text>
 
-        <!-- Platzhalter
-        <force_start>Starte den ArkAdmin-Server</force_start>
-        <force_start_text>Starte den ArkAdmin-Server wenn dieser Offline ist</force_start_text>-->
+        <show_as_logs>Zeige ArkAdmin-Server Logs</show_as_logs>
+        <show_as_logs_text>Öffnet den ArkAdmin-Server (Logs)</show_as_logs_text>
 
         <pageload>Die Seite wurde in {ltime} Sekunden geladen</pageload>
         <navigation>Navigation</navigation>
@@ -678,6 +677,10 @@
             <workshop_url>Workshop URL</workshop_url>
             <mod_id>Mod ID</mod_id>
             <btn_add>Hinzufügen</btn_add>
+            <lastupdate>Letztes Update</lastupdate>
+            <updateav>Update verfügbar</updateav>
+            <pos>Position bestimmen</pos>
+            <nomodfound>Du Musst erst Mods hinzufügen um diese Liste zu sehen</nomodfound>
         </mods>
 
         <saves>

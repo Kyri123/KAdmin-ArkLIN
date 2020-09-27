@@ -112,8 +112,7 @@
                 <create>Darf Erstellen</create>
                 <delete>Darf Löschen</delete>
                 <is_admin>Ist Admin (hat Rechte auf ALLES)</is_admin>
-                <force_update>Darf über das Panel Updates erzwingen</force_update>
-                <force_restart>Darf ArkAdmin-Server über das Panel Neustarten</force_restart>
+                <manage_aas>Darf über das Panel den ArkAdmin-Server erreichen</manage_aas>
                 <show_traffic>Darf Server Traffics sehen</show_traffic>
                 <show_codes>Darf Codes sehen</show_codes>
                 <create_code>Darf Codes Erstellen</create_code>
@@ -192,6 +191,7 @@
                     <apikey>Steam-API Key [a="https://steamcommunity.com/dev/apikey"](klicke Hier)[/a]</apikey>
                     <show_err>[b][Debug][/b] Zeige PHP Error</show_err>
                     <steamcmddir>SteamCMD Verzeichnis</steamcmddir>
+                    <screen_name>Name der benutzt werden soll um die Screen zu erstellen (Wo der ArkAdmin-Server läuft)</screen_name>
                 </panel>
                 <aa>
                     <HTTP>Weblink zum Arkadmin</HTTP>
@@ -245,6 +245,7 @@
                 <servercenter>
                     <main>
                         <action_closed>Gesperrt</action_closed>
+                        <action_pick>Aktion auswählen</action_pick>
                         <action_closed_need_open>Server muss Frei sein!</action_closed_need_open>
                         <action_open>Frei</action_open>
                         <showplayer>Spieler Zeigen</showplayer>
@@ -316,7 +317,7 @@
                     <pagename>ServerCenter - Modifikationen</pagename>
                     <urltop>Modifikationen</urltop>
                     <mod_removed>Mod [b]{name}[/b] Entfernt</mod_removed>
-                    <mod_removed_dir>Verzeichnis der mod [b]{name}[/b] wird Entfernt (dauert höhsten eine Minute)</mod_removed_dir>
+                    <mod_removed_dir>Verzeichnis der Modifikation wird Entfernt (dauert höhsten eine Minute)</mod_removed_dir>
                     <mod_added>Mod [b]{name}[/b] Entfernt</mod_added>
                 </mods>
 
