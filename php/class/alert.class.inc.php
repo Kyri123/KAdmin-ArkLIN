@@ -128,7 +128,7 @@ class alert extends helper {
      * @return bool
      */
     public function r(String $from, String $to) {
-        array_push($this->from, '{'.$from.'}');
+        array_push($this->from, "{$from}");
         array_push($this->to, $to);
         return true;
     }

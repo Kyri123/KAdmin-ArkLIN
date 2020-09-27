@@ -159,6 +159,30 @@ switch ($case) {
         }
         echo json_encode(array("success" => $bool, "msg" => $resp));
         break;
+
+
+    case "remove_installed":
+        $bool = false;
+        $resp = "";
+        if($user->perm("$perm/mods/remove")) {
+            $path = $serv->dir_main()."/ShooterGame/Content/Mods/".$_POST["modid"];
+            $resp = $alert->rd(1);
+            $bool = true;
+
+            if (file_exists($path)) {
+                // Deinstalliere Mod
+                $jobs->set($serv->name());
+                $jobs->arkmanager("uninstallmod ".$_POST["modid"]);
+                // Melde Locale Mod deinstalliert
+                $alert->overwrite_text = "{::lang::php::sc::page::mods::mod_removed_dir}";
+                $resp = $alert->rd(101);
+            }
+        }
+        else {
+            $resp = $alert->rd(99);
+        }
+        echo json_encode(array("success" => $bool, "msg" => $resp));
+        break;
     default:
         echo "Case not found";
         break;

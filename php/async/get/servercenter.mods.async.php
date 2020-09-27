@@ -24,12 +24,12 @@ switch ($case) {
         $resp = null;
         $site = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
-        $mods = explode(',', $serv->cfg_read("ark_GameModIds"));
+        $mods = explode(',', $serv->cfg_read('ark_GameModIds'));
         $y = 1;
 
         $total_count = (is_countable($mods)) ? count($mods) : 0;
         $imgb = -1;
-        if ($total_count > 1) {
+        if ($total_count > 0 && $serv->cfg_read('ark_GameModIds') != "") {
             for ($i=0;$i<count($mods);$i++) {
                 $tpl = new Template('mods.htm', 'app/template/lists/serv/jquery/');
                 $tpl->load();
@@ -87,24 +87,33 @@ switch ($case) {
                     }
                 }
 
-                $tpl->r('update', date('d.m.Y - H:i', $steamapi_mods[$mods[$i]]["time_updated"]));
+                $tpl->r('update', date('d.m.Y - H:i', (isset($steamapi_mods[$mods[$i]]["time_updated"]) ? $steamapi_mods[$mods[$i]]["time_updated"] : 0)));
                 $tpl->r('pos', $i);
                 $tpl->r('poslist', $opt);
                 $tpl->r('modid', $mods[$i]);
                 $tpl->r('cfg', $cfg);
                 $tpl->r('img_head', $head_img["img"][$imgb]);
+                $tpl->rif ('hide', false);
                 $tpl->rif ("ifcmods", $ifcmods);
                 $resp .= $tpl->load_var();
                 $tpl = null;
             }
         }
-        // Wenn kein Mod gefunden wurde
-        else {
-            $tpl = new Template('mods.htm', 'app/template/lists/serv/jquery/');
+
+        // Wenn kein Mod Gefunden wurde
+        if($resp == null) {
+            $tpl = new Template('content.htm', 'app/template/universally/default/');
             $tpl->load();
-            $tpl->r('img', "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
-            $tpl->r('title', "{::lang::php::async::get::servercenter::mods::no_mods_found}");
-            $tpl->rif ('empty', false);
+            $tpl->r('content', '<ul class="list-group ml-2 mr-2" style="border:0; width: 100%">
+                                    <div class="list-group-item bg-warning">
+                                        <div class="row p-0">
+                                            <div class="col-12">
+                                                <i class="text-black-50 fas fa-exclamation-triangle -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                                <div style="margin-left: 60px;">{::lang::php::async::get::servercenter::mods::no_mods_found}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::mods::nomodfound}</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>');
             $resp = $tpl->load_var();
             $tpl = null;
         }
@@ -118,6 +127,7 @@ switch ($case) {
 
         $api = new steamapi();
 
+        $imgb = -1;
         $resp = null;
         $site = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
         $dir = $serv->dir_main()."/ShooterGame/Content/Mods";
@@ -147,34 +157,59 @@ switch ($case) {
             ) {
                 $tpl = new Template('mods_local.htm', 'app/template/lists/serv/jquery/');
                 $tpl->load();
-                $btns= null;
-                $installed = false;
-                if (in_array($value["publishedfileid"], $mods)) $installed = true;
-    
-                $tpl->r('modid', $value["publishedfileid"]);
-                $tpl->r('steamurl', $value["file_url"]);
-                $tpl->rif ('active', $installed);
+                $path = $serv->dir_main()."/ShooterGame/Content/Mods/".$value["publishedfileid"];
+                $installed = file_exists($path);
+
+                // new
+                while (true) {
+                    $rand = rand($head_img["min"], $head_img["max"]);
+                    if($rand != $imgb) {
+                        $imgb = $rand;
+                        break;
+                    }
+                }
+
                 $tpl->r('img', $value["preview_url"]);
-                $tpl->r('cfg', $cfg);
-                $tpl->r('rnd', rndbit(25));
-                $tpl->r('title', $value["title"]);
+                $modname = $value["title"];
+                $l = strlen($modname); $lmax = 14;
+                if ($l > $lmax) {
+                    $modname = substr($modname, 0 , $lmax) . "...";
+                }
+
+                $tpl->r('title_full', $value["title"]);
+                $tpl->r('title', $modname);
                 $tpl->r('lastupdate', date('d.m.Y - H:i', $value["time_updated"]));
-                $tpl->rif ("ifcmods", false); //ggf false durch $ifcmods ersetzten so wird diese funktion auch verwaltet
+                $tpl->r('update', date('d.m.Y - H:i', $value["time_updated"]));
+                $tpl->r('modid', $value["publishedfileid"]);
+                $tpl->r('cfg', $cfg);
+                $tpl->r('img_head', $head_img["img"][$imgb]);
+                $tpl->r('color', $installed ? "text-success" : "text-danger");
+                $tpl->rif ('hide', true);
+                $tpl->rif ("ifcmods", $ifcmods);
+
+                // old
                 if($value["publishedfileid"] != 111111111) $resp .= $tpl->load_var();
                 $tpl = null;
             }
         }
-        // Wenn kein Mod gefunden wurde
-    /*
-        if ($resp == null) {
-            $tpl = new Template('mods.htm', 'app/template/lists/serv/jquery/');
+
+        // Wenn kein Mod Gefunden wurde
+        if($resp == null) {
+            $tpl = new Template('content.htm', 'app/template/universally/default/');
             $tpl->load();
-            $tpl->r('img', "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
-            $tpl->r('title', "{::lang::php::async::get::servercenter::mods::no_mods_found}");
-            $tpl->rif ('empty', false);
+            $tpl->r('content', '<ul class="list-group ml-2 mr-2" style="border:0; width: 100%">
+                                    <div class="list-group-item bg-warning">
+                                        <div class="row p-0">
+                                            <div class="col-12">
+                                                <i class="text-black-50 fas fa-exclamation-triangle -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                                <div style="margin-left: 60px;">{::lang::php::async::get::servercenter::mods::no_mods_found}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::mods::nomodfound}</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>');
             $resp = $tpl->load_var();
             $tpl = null;
-        }*/
+        }
 
         echo $resp;
         break;

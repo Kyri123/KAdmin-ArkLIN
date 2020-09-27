@@ -680,6 +680,7 @@
             <lastupdate>Letztes Update</lastupdate>
             <updateav>Update verfügbar</updateav>
             <pos>Position bestimmen</pos>
+            <nomodfound>Du Musst erst Mods hinzufügen um diese Liste zu sehen</nomodfound>
         </mods>
 
         <saves>

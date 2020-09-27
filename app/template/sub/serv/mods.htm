@@ -13,16 +13,13 @@
                 <li class="nav-item" style="margin-right: 5px">
                     <a class="nav-link" id="pills-modinstall-tab" data-toggle="pill" href="#pills-modinstall" role="tab" aria-controls="pills-modinstall" aria-selected="true">{::lang::servercenter::mods::nav::installed}</a>
                 </li>
-                {!ifcmods}{permissions??server??{cfg}??mods??add}
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-add-tab" data-toggle="pill" href="#pills-add" role="tab" aria-controls="pills-add" aria-selected="false">{::lang::servercenter::mods::nav::add}</a>
-                </li>{/permissions}{/!ifcmods}
             </ul>
         </div>
     </nav>
     <hr />
     <div class="card border-0 bg-transparent shadow-none" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
         <div class="tab-content" id="pills-tabContent">
+
             <div class="tab-pane fade show active" id="pills-modactive" role="tabpanel" aria-labelledby="pills-modactive-tab">
                 <table class="table table-striped mb-0">
                     <tbody>
@@ -30,13 +27,17 @@
                             <th colspan="2" class="p-0">
                                 <div class="list-group-item bg-dark">
                                     <h4 class="m-0">{::lang::servercenter::mods::nav::active}</h4>
+                                    <div class="right">
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="get(false)"><i class="fas fa-undo"></i></button>
+                                        {!ifcmods}{permissions??server??{cfg}??mods??add}<button data-toggle="modal" data-target="#addmod" class="btn btn-sm btn-outline-success">{::lang::servercenter::mods::nav::add}</button>{/permissions}{/!ifcmods}
+                                    </div>
                                 </div>
                             </th>
                         </tr>
                     </tbody>
                 </table>
                 <div class="row mt-3" id="modlist">
-                    <ul class="list-group col-12 ml-2" style="border:0;">
+                    <ul class="list-group ml-2 mr-2" style="border:0; width: 100%">
                         <li class="list-group-item">
                             <div class="row p-0">
                                 <div class="col-12">
@@ -48,6 +49,7 @@
                     </ul>
                 </div>
             </div>
+
             <div class="tab-pane fade" id="pills-modinstall" role="tabpanel" aria-labelledby="pills-modinstall-tab">
                 <table class="table table-striped mb-0">
                     <tbody>
@@ -55,48 +57,64 @@
                             <th colspan="2" class="p-0">
                                 <div class="list-group-item bg-dark">
                                     <h4 class="m-0">{::lang::servercenter::mods::nav::installed}</h4>
+                                    <div class="right">
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="get(true)"><i class="fas fa-undo"></i></button>
+                                    </div>
                                 </div>
                             </th>
                         </tr>
                     </tbody>
                 </table>
+                <div class="row mt-3" id="modlist_loc">
+                    <ul class="list-group ml-2 mr-2" style="border:0; width: 100%">
+                        <li class="list-group-item">
+                            <div class="row p-0">
+                                <div class="col-12">
+                                    <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                    <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            {!ifcmods}{permissions??server??{cfg}??mods??add}
-            <div class="tab-pane fade" id="pills-add" role="tabpanel" aria-labelledby="pills-add-tab">
-                <form action="{urls}" method="post" class="tab-pane fade active show" id="pills-Game" role="tabpanel">
-                    <div id="form">
-                        <table class="table table-striped mb-0">
-                            <tbody>
-                                <tr class="bg-dark">
-                                    <th class="p-0">
-                                        <div class="list-group-item bg-dark">
-                                            <h4 class="m-0">{::lang::servercenter::mods::nav::add}</h4>
-                                            <div class="right">
-                                                <button type="button" class="btn btn-sm btn-success" onclick="additem('#viaurl')"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr>
-                                <tr id="viaurl">
-                                    <td class="p-2">
-                                        <div class="input-group mb-0">
-                                            <input type="text" name="url[]" class="form-control form-control-sm" placeholder="Worshop URL / ModID">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="bg-dark">
-                                    <th class="p-0">
-                                        <button type="submit" class="btn btn-primary" name="addmod" style="width:100%">{::lang::servercenter::mods::btn_add}</button>
-                                    </th>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
-            </div>{/permissions}{/!ifcmods}
         </div>
     </div>
 </div>
+
+{!ifcmods}{permissions??server??{cfg}??mods??add}
+<form class="modal fade" id="addmod" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title">{::lang::servercenter::mods::nav::add}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body p-0">
+                <table class="table table-striped mb-0">
+                    <tbody>
+                        <tr id="addmodinput">
+                            <td class="p-2">
+                                <div class="input-group mb-0">
+                                    <input type="text" name="url[]" class="form-control form-control-sm" placeholder="Worshop URL / ModID">
+                                    <button type="button" class="btn btn-sm btn-info" onclick="additem('#addmodinput')"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::mods::modal::remove::btn_cancel}</button>
+                <button href="#del731604991" onclick="remove('731604991', false)" class="btn btn-success" name="addmod">{::lang::servercenter::mods::btn_add}</button>
+            </div>
+        </div>
+    </div>
+</form>{/permissions}{/!ifcmods}
 
 <script>
     function get(installed) {
@@ -125,6 +143,7 @@
             }
         });
     }
+    get(true); get(false);
 
     function pushto(modid, to) {
         let resp = "#all_resp";
@@ -144,13 +163,12 @@
         });
     }
 
-    function remove(modid, to) {
+    function remove(modid, installed) {
         let resp = "#all_resp";
-        let modal = `#del${modid}`;
+        let modal = installed ? `#del_installed${modid}` : `#del${modid}`;
 
-        $.post("/php/async/post/servercenter.mods.async.php?case=remove", {
+        $.post(`/php/async/post/servercenter.mods.async.php?case=${installed ? "remove_installed" : "remove"}`, {
             "cfg": "{cfg}",
-            "to": to,
             "modid": modid
         }, (data) => {
             console.log(data);
@@ -158,16 +176,16 @@
 
             if(json.success) {
                 $(resp).html(json.msg);
-                $(modal).modal('hide');
-                get(false);
+                $(modal).modal('hide')
+                $("div.modal-backdrop").remove();
+                get(installed);
             }
         });
     }
-
-    get(true); get(false);
 
     function additem(id) {
         var clone = $(id).clone(true);
         $(id).after(clone)
     }
 </script>
+

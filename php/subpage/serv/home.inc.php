@@ -21,7 +21,7 @@ $page_tpl->r('SESSION_USERNAME' ,$user->read("username"));
 // Erstelle Dateien wenn die nicht exsistieren
 $cheatfile = $serv->dir_save(true)."/AllowedCheaterSteamIDs.txt";
 $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
-if(!file_exists($cheatfile)) file_put_contents($cheatfile, " ");
+if(!file_exists($cheatfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($cheatfile, " ");
 if(!file_exists($whitelistfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($whitelistfile, " ");
 
 $playerjson = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true);
@@ -85,46 +85,48 @@ if (!is_array($tribe_json)) $tribe_json = array();
 // Liste Admins auf
 if ($serv->isinstalled() && $user->perm("$perm/home/admin_show")) {
 
-    if (!file_exists($cheatfile)) file_put_contents($cheatfile, "");
-    $file = file($cheatfile);
-    $arr = [];
+    if (!file_exists($cheatfile) && file_exists($serv->dir_save(true))) file_put_contents($cheatfile, "");
+    if (file_exists($cheatfile)) {
+        $file = file($cheatfile);
+        $arr = [];
 
-    if (is_array($file)) {
-        for ($i = 0; $i < count($file); $i++) {
-            $file[$i] = trim($file[$i]);
-            if($file[$i] != "0" && $file[$i] != "" && $file[$i] != null) $arr[] = $file[$i];
+        if (is_array($file)) {
+            for ($i = 0; $i < count($file); $i++) {
+                $file[$i] = trim($file[$i]);
+                if($file[$i] != "0" && $file[$i] != "" && $file[$i] != null) $arr[] = $file[$i];
+            }
+        }
+
+        if(is_countable($arr) && is_array($arr) && count($arr) > 0) {
+            for ($i=0;$i<count($arr);$i++) {
+                $list_tpl = new Template('user_admin.htm', 'app/template/lists/serv/home/');
+                $list_tpl->load();
+
+                $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$arr[$i]."'";
+                $query = $mycon->query($query);
+
+                if($query->numRows() > 0) {
+                    $row = $query->fetchArray();
+                    $list_tpl->r("stname", $steamapi_user[$arr[$i]]["personaname"]);
+                    $list_tpl->r("igname", $row["CharacterName"]);
+                }
+                else {
+                    $list_tpl->r("stname", $steamapi_user[$arr[$i]]["personaname"]);
+                    $list_tpl->r("igname", "{::lang::allg::default::noadmin}");
+                }
+
+                $list_tpl->r("stid", $steamapi_user[$arr[$i]]["steamid"]);
+                $list_tpl->r("url", $steamapi_user[$arr[$i]]["profileurl"]);
+                $list_tpl->r("cfg", $serv->name());
+                $list_tpl->r("rndb", rndbit(25));
+                $list_tpl->r("img", $steamapi_user[$arr[$i]]["avatarmedium"]);
+                $list_tpl->rif("hidebtn", false);
+
+                $adminlist_admin .= $list_tpl->load_var();
+            }
         }
     }
-
-    if(is_countable($arr) && is_array($arr) && count($arr) > 0) {
-        for ($i=0;$i<count($arr);$i++) {
-            $list_tpl = new Template('user_admin.htm', 'app/template/lists/serv/home/');
-            $list_tpl->load();
-
-            $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$arr[$i]."'";
-            $query = $mycon->query($query);
-
-            if($query->numRows() > 0) {
-                $row = $query->fetchArray();
-                $list_tpl->r("stname", $steamapi_user[$arr[$i]]["personaname"]);
-                $list_tpl->r("igname", $row["CharacterName"]);
-            }
-            else {
-                $list_tpl->r("stname", $steamapi_user[$arr[$i]]["personaname"]);
-                $list_tpl->r("igname", "{::lang::allg::default::noadmin}");
-            }
-
-            $list_tpl->r("stid", $steamapi_user[$arr[$i]]["steamid"]);
-            $list_tpl->r("url", $steamapi_user[$arr[$i]]["profileurl"]);
-            $list_tpl->r("cfg", $serv->name());
-            $list_tpl->r("rndb", rndbit(25));
-            $list_tpl->r("img", $steamapi_user[$arr[$i]]["avatarmedium"]);
-            $list_tpl->rif("hidebtn", false);
-
-            $adminlist_admin .= $list_tpl->load_var();
-        }
-    }
-    else {
+    if($adminlist_admin == null) {
         $list_tpl = new Template('whitelist.htm', 'app/template/lists/serv/jquery/');
         $list_tpl->load();
 

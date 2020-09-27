@@ -317,7 +317,7 @@
                     <pagename>ServerCenter - Modifikationen</pagename>
                     <urltop>Modifikationen</urltop>
                     <mod_removed>Mod [b]{name}[/b] Entfernt</mod_removed>
-                    <mod_removed_dir>Verzeichnis der mod [b]{name}[/b] wird Entfernt (dauert höhsten eine Minute)</mod_removed_dir>
+                    <mod_removed_dir>Verzeichnis der Modifikation wird Entfernt (dauert höhsten eine Minute)</mod_removed_dir>
                     <mod_added>Mod [b]{name}[/b] Entfernt</mod_added>
                 </mods>
 

@@ -1,34 +1,70 @@
-<li class="list-group-item">
-    <div class="row p-0">
-        <div class="col-12">
-            <img class="rounded -align-left position-absolute" src="{img}" height="50" width="50">
-            <div class="ml-auto float-right">
-                {permissions??server??{cfg}??mods??remove}
-                <a href="javascript:void();" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del{rnd}" class="btn btn-danger">
-                    <span class="icon text-white">
-                            <i class="fas fa-times"></i>
-                    </span>
-                </a>{/permissions}
-                <a href="https://steamcommunity.com/sharedfiles/filedetails/?id={modid}" class="btn btn-dark btn-sm" target="_blank">
-                    <span class="icon text-white">
-                        <i class="fab fa-steam-symbol"></i>
-                    </span>
+
+<div class="col-lg-6 col-xl-3">
+    <div class="card card-widget widget-user">
+        <div class="card bg-dark card-widget widget-user mb-0">
+            <div class="row p-2" title="{title_full}">
+                <div class="{!hide}col-9{/!hide}{hide}col-12{/hide}">
+                    <h5 class="text-center left d-inline pt-3 pl-0 m-0 {hide}{color}{/hide}">
+                        {!hide}[{pos}]{/!hide} {title}
+                    </h5>
+                </div>
+                {!hide}<div class="col-3 btn-group">
+                <a class="btn btn-sm btn-secondary
+                        {!permissions??server??{cfg}??mods??changeplace}disabled{/!permissions}
+                        {!ifup}disabled{/!ifup}
+                        {ifcmods}disabled{/ifcmods}
+                    " {permissions??server??{cfg}??mods??changeplace}{ifup}{!ifcmods}onclick="push(true, '{modid}')"{/!ifcmods}{/ifup}{/permissions}>
+                <i class="fas fa-arrow-up" aria-hidden="true"></i>
                 </a>
-            </div>
-            <div style="margin-left: 60px;">
-                {active}
-                <span class="text-success">{::lang::servercenter::list::mods::active}</span> {/active} {!active}
-                <span class="text-danger">{::lang::servercenter::list::mods::inactive}</span> {/!active}
-                <br />
-                <span class="font-weight-light" style="font-size: 11px;"> {modid} | {::lang::servercenter::list::mods::lastupdate}</span>&nbsp;
+                <a class="btn btn-sm btn-secondary
+                        {!permissions??server??{cfg}??mods??changeplace}disabled{/!permissions}
+                        {!ifdown}disabled{/!ifdown}
+                        {ifcmods}disabled{/ifcmods}
+                    " {permissions??server??{cfg}??mods??changeplace}{ifdown}{!ifcmods}onclick="push(false, '{modid}')"{/!ifcmods}{/ifdown}{/permissions}><i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+            </div>{/!hide}
             </div>
         </div>
+        <div class="widget-user-header text-white" style="background: url('{img_head}') center center;">
+            <!-- TODO: funktioniert noch nicht -->
+            <!--{ifupdate}<h5 class="widget-user-desc text-center text-danger">{::lang::servercenter::mods::updateav}</h5>{/ifupdate}-->
+        </div>
+        <div class="widget-user-image" id="serv_img" style="top: 124px;z-index: 1000"><img src="{img}" style="border-top-width: 3px!important;height: 90px;width: 90px;background-color: #001f3f" class="border-secondary"></div>
+        <div class="card card-widget widget-user mb-0">
+            <div class="text-left left d-inline" style="width:50%;padding-right: 45px;">
+                <a href="https://steamcommunity.com/sharedfiles/filedetails/?id={modid}" target="_blank" style="width: 100%" class="btn btn-dark"><i class="fab fa-steam-symbol" aria-hidden="true"></i></a>
+            </div>
+            <div class="right-no-top ml-auto d-inline" style="width:50%;padding-left: 45px;">
+                <a style="width: 100%" {permissions??server??{cfg}??mods??remove}{!ifcmods}data-target="#del_installed{modid}" data-toggle="modal"{/!ifcmods}{/permissions} class="text-white btn btn-danger {!permissions??server??{cfg}??mods??remove}disabled{/!permissions} {ifcmods}disabled{/ifcmods}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="card-footer p-0">
+            <div class="row">
+                <div class="col-sm-6 border-right">
+                    <div class="description-block">
+                        <h5 class="description-header">{update}</h5>
+                        <span class="description-text">{::lang::servercenter::mods::lastupdate}</span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="description-block">
+                        <h5 class="description-header"><b>{modid}</b></h5>
+                        <span class="description-text">Mod-ID</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {!hide}<div class="p-0 border-top" title="{title_full}">
+        <select class="form-control-sm border-light" {ifcmods}disabled{/ifcmods} style="width: 100%" onchange="pushto('{modid}', this.value)">
+        <option>{::lang::servercenter::mods::pos}</option>
+        {!ifcmods}{poslist}{/!ifcmods}
+        </select>
+    </div>{/!hide}
     </div>
-</li>
+</div>
 
 <!-- Modal -->
 
-<form class="modal fade" id="del{rnd}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
+<form class="modal fade" id="del_installed{modid}" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
             <div class="modal-header ">
@@ -45,7 +81,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                <a href="/servercenter/{cfg}/mods/removelocal/{modid}" type="submit" class="btn btn-danger" name="del">Löschen</a>
+                <a href="#" onclick="remove('{modid}', true)" type="submit" class="btn btn-danger" name="del">Löschen</a>
             </div>
         </div>
     </div>

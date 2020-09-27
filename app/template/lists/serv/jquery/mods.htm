@@ -3,12 +3,12 @@
     <div class="card card-widget widget-user">
         <div class="card bg-dark card-widget widget-user mb-0">
             <div class="row p-2" title="{title_full}">
-                <div class="col-9">
-                    <h5 class="text-center left d-inline pt-3 pl-0 m-0">
-                        [{pos}] {title}
+                <div class="{!hide}col-9{/!hide}{hide}col-12{/hide}">
+                    <h5 class="text-center left d-inline pt-3 pl-0 m-0 {hide}{color}{/hide}">
+                        {!hide}[{pos}]{/!hide} {title}
                     </h5>
                 </div>
-                <div class="col-3 btn-group">
+                {!hide}<div class="col-3 btn-group">
                     <a class="btn btn-sm btn-secondary
                         {!permissions??server??{cfg}??mods??changeplace}disabled{/!permissions}
                         {!ifup}disabled{/!ifup}
@@ -21,7 +21,7 @@
                         {!ifdown}disabled{/!ifdown}
                         {ifcmods}disabled{/ifcmods}
                     " {permissions??server??{cfg}??mods??changeplace}{ifdown}{!ifcmods}onclick="push(false, '{modid}')"{/!ifcmods}{/ifdown}{/permissions}><i class="fas fa-arrow-down" aria-hidden="true"></i></a>
-                </div>
+                </div>{/!hide}
             </div>
         </div>
         <div class="widget-user-header text-white" style="background: url('{img_head}') center center;">
@@ -53,12 +53,12 @@
                 </div>
             </div>
         </div>
-        <div class="p-0 border-top" title="{title_full}">
+        {!hide}<div class="p-0 border-top" title="{title_full}">
             <select class="form-control-sm border-light" {ifcmods}disabled{/ifcmods} style="width: 100%" onchange="pushto('{modid}', this.value)">
                 <option>{::lang::servercenter::mods::pos}</option>
                 {!ifcmods}{poslist}{/!ifcmods}
             </select>
-        </div>
+        </div>{/!hide}
     </div>
 </div>
 
@@ -81,7 +81,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::mods::modal::remove::btn_cancel}</button>
-                <a href="#del{modid}" onclick="remove('{modid}')" class="btn btn-danger" name="del">{::lang::servercenter::list::mods::modal::remove::btn_del}</a>
+                <a href="#del{modid}" onclick="remove('{modid}', false)" class="btn btn-danger" name="del">{::lang::servercenter::list::mods::modal::remove::btn_del}</a>
             </div>
         </div>
     </div>

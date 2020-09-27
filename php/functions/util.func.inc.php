@@ -226,11 +226,11 @@ function dirToArray($dir) {
 /**
  * Fileter \r \t
  *
- * @param  mixed $str
+ * @param string $str
  * @return void
  */
 
-function ini_save_rdy($str) {
+function ini_save_rdy(string $str) {
     $str = str_replace("\r", null, $str);
     $str = str_replace("\t", null, $str);
     return $str;

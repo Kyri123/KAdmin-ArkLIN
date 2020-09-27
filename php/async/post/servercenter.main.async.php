@@ -22,7 +22,7 @@ switch ($case) {
         $cfg = $_POST["cfg"];
         $_POST["custom"] = saveshell($_POST["custom"]);
         $serv = new server($cfg);
-        $para = $_POST["para"];
+        $para = isset($_POST["para"]) ? $_POST["para"] : [];
         $para_txt = (isset($_POST["txt"])) ? $_POST["txt"] : "";
         if ($para == null) $para[0] = null;
         $paraend = null;
@@ -50,8 +50,8 @@ switch ($case) {
 
             // erstelle parameter [Type=1]
             for($i=0;$i<count($para_txt);$i++) {
-                $input = $para_txt[$i]["input"];
-                $para_input = $para_txt[$i]["para"];
+                $input = isset($para_txt[$i]["input"]) ? $para_txt[$i]["input"] : "";
+                $para_input = isset($para_txt[$i]["para"]) ? $para_txt[$i]["para"] : "";
                 if($input != "") $paraend .= " $para_input=\"$input\" ";
                 if($input != "" && $para_input == "--beta") $paraend .= " --validate ";
             }
