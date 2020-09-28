@@ -4,6 +4,7 @@
             <div class="widget-user-header text-white" style="background: url('/app/dist/img/backgrounds/bg.jpg') center center;">
                 <h3 class="widget-user-username text-center text-gray-dark left">{servername}</h3>
                 <h5 class="widget-user-desc text-center text-gray-dark">{global_IP}:{QPort}</h5>
+                <div class="d-none" id="secretInfo">{global_IP}:{QPort}</div>
             </div>
             <div class="widget-user-image" id="serv_img" style="z-index: 1000">
                 <img src="/app/dist/img/logo/ark.png" style="border-radius: 25rem!important;height: 90px;width: 90px;background-color: #001f3f" class="border-danger">
@@ -18,42 +19,25 @@
             </div>
             <div class="card-footer pt-3">
                 <div class="row">
-                    <div class="col-sm-4 border-right">
+                    <div class="col-sm-3 border-sm-right">
                         <div class="description-block">
-                            <div class="d-none" id="secretInfo">{global_IP}:{QPort}</div>
-                            <h5 class="description-header">{map_str}</h5>
-                            <span class="description-text">{::lang::servercenter::main::map}</span>
+                            <h5 class="description-header" id="state">...</h5>
+                            <span class="description-text">{::lang::servercenter::topline::state}</span>
                         </div>
                     </div>
-                    <script>
-                        // von: https://gist.github.com/anazard/d42354f45e172519c0be3cead34fe869
-                        // {
-                        var $body = document.getElementsByTagName('body')[0];
-                        var $btnCopy = document.getElementById('btnCopy');
-                        var secretInfo = document.getElementById('secretInfo').innerHTML;
-
-                        var copyToClipboard = function(secretInfo) {
-                            var $tempInput = document.createElement('INPUT');
-                            $body.appendChild($tempInput);
-                            $tempInput.setAttribute('value', secretInfo)
-                            $tempInput.select();
-                            document.execCommand('copy');
-                            $body.removeChild($tempInput);
-                        }
-
-                        $btnCopy.addEventListener('click', function(ev) {
-                            copyToClipboard(secretInfo);
-                            alert("Kopiert: " + secretInfo);
-                        });
-                        // }
-                    </script>
-                    <div class="col-sm-4 border-right">
+                    <div class="col-sm-3 border-sm-right">
                         <div class="description-block">
-                            <h5 class="description-header">{tmod}</h5>
-                            <span class="description-text">T-MOD</span>
+                            <h5 class="description-header" id="player">...</h5>
+                            <span class="description-text">{::lang::servercenter::topline::player}</span>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3 border-sm-right">
+                        <div class="description-block">
+                            <h5 class="description-header" id="actions">...</h5>
+                            <span class="description-text">{::lang::servercenter::topline::action}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 border-sm-right">
                         <div class="description-block">
                             <h5 class="description-header"><a href="{arkservers}" target="_blank">{::lang::servercenter::open_url}</a></h5>
                             <span class="description-text">ARKServers</span>
@@ -70,77 +54,77 @@
                     <div class="collapse navbar-collapse" id="navbarColor02">
                         <ul class="nav navbar-nav mr-auto" id="pills-tab">
                             {ifin}
-                            <li class="nav-item">
+                            <li class="nav-item" onmouseenter="$('#cluster').toggleClass('d-lg-none', false)" onmouseleave="$('#cluster').toggleClass('d-lg-none', true)">
                                 <a href="{permissions??cluster??show}/cluster{/permissions}{!permissions??cluster??show}#{/!permissions}" class="nav-link">
-                                    <i class="fas fa-random pr-2 pr-1" aria-hidden="true"></i> {typestr} <b>{clustername}</b>
+                                    <i class="fas fa-random pr-2 pr-1" aria-hidden="true"></i> <span id="cluster" class="d-lg-none">{typestr} <b>{clustername}</b></span>
                                 </a>
                             </li>{/ifin}
 
                             <li class="nav-item">
-                                <a href="/servercenter/{cfg}/home" class="nav-link {__home}" onmouseenter="$('#home').toggle()" onmouseleave="$('#home').toggle()">
-                                    <i class="nav-icon fas fa-home pr-1" aria-hidden="true"></i> <span id="home" style="display: none">{::lang::servercenter::main::nav::home}</span>
+                                <a href="/servercenter/{cfg}/home" class="nav-link {__home}" onmouseenter="$('#home').toggleClass('d-lg-none', false)" onmouseleave="$('#home').toggleClass('d-lg-none', true)">
+                                    <i class="nav-icon fas fa-home pr-1" aria-hidden="true"></i> <span id="home" class="d-lg-none">{::lang::servercenter::main::nav::home}</span>
                                 </a>
                             </li>
 
                             {permissions??server??{cfg}??statistiken??show}
                             <li class="nav-item">
-                                <a href="/servercenter/{cfg}/statistiken" class="nav-link {__statistiken}" onmouseenter="$('#statistiken').toggle()" onmouseleave="$('#statistiken').toggle()">
-                                    <i class="nav-icon fas fa-chart-bar pr-1" aria-hidden="true"></i> <span id="statistiken" style="display: none">{::lang::servercenter::main::nav::statistiken}</span>
+                                <a href="/servercenter/{cfg}/statistiken" class="nav-link {__statistiken}" onmouseenter="$('#statistiken').toggleClass('d-lg-none', false)" onmouseleave="$('#statistiken').toggleClass('d-lg-none', true)">
+                                    <i class="nav-icon fas fa-chart-bar pr-1" aria-hidden="true"></i> <span id="statistiken" class="d-lg-none">{::lang::servercenter::main::nav::statistiken}</span>
                                 </a>
                             </li>
                             {/permissions}
 
                             {modsupport}{permissions??server??{cfg}??mods??show}
                             <li class="nav-item ">
-                                <a href="/servercenter/{cfg}/mods" class="nav-link {__mods}" onmouseenter="$('#mods').toggle()" onmouseleave="$('#mods').toggle()">
-                                    <i class="nav-icon fas fa-cogs pr-1" aria-hidden="true"></i> <span id="mods" style="display: none">{::lang::servercenter::main::nav::mods}</span>
+                                <a href="/servercenter/{cfg}/mods" class="nav-link {__mods}" onmouseenter="$('#mods').toggleClass('d-lg-none', false)" onmouseleave="$('#mods').toggleClass('d-lg-none', true)">
+                                    <i class="nav-icon fas fa-cogs pr-1" aria-hidden="true"></i> <span id="mods" class="d-lg-none">{::lang::servercenter::main::nav::mods}</span>
                                 </a>
                             </li>{/permissions}{/modsupport}
 
                             {permissions??server??{cfg}??konfig??show}
                             <li class="nav-item ">
-                                <a href="/servercenter/{cfg}/konfig" class="nav-link {__konfig}" onmouseenter="$('#konfig').toggle()" onmouseleave="$('#konfig').toggle()">
-                                    <i class="nav-icon fa fa-file-code pr-1" aria-hidden="true"></i> <span id="konfig" style="display: none">{::lang::servercenter::main::nav::config}</span>
+                                <a href="/servercenter/{cfg}/konfig" class="nav-link {__konfig}" onmouseenter="$('#konfig').toggleClass('d-lg-none', false)" onmouseleave="$('#konfig').toggleClass('d-lg-none', true)">
+                                    <i class="nav-icon fa fa-file-code pr-1" aria-hidden="true"></i> <span id="konfig" class="d-lg-none">{::lang::servercenter::main::nav::config}</span>
                                 </a>
                             </li>
                             {/permissions}
 
                             {permissions??server??{cfg}??logs??show}
                             <li class="nav-item ">
-                                <a href="/servercenter/{cfg}/logs" class="nav-link {__logs}" onmouseenter="$('#logs').toggle()" onmouseleave="$('#logs').toggle()">
-                                    <i class="nav-icon fas fa-list pr-1" aria-hidden="true"></i> <span id="logs" style="display: none">{::lang::servercenter::main::nav::logs}</span>
+                                <a href="/servercenter/{cfg}/logs" class="nav-link {__logs}" onmouseenter="$('#logs').toggleClass('d-lg-none', false)" onmouseleave="$('#logs').toggleClass('d-lg-none', true)">
+                                    <i class="nav-icon fas fa-list pr-1" aria-hidden="true"></i> <span id="logs" class="d-lg-none">{::lang::servercenter::main::nav::logs}</span>
                                 </a>
                             </li>
                             {/permissions}
 
                             {permissions??server??{cfg}??backup??show}
                             <li class="nav-item ">
-                                <a href="/servercenter/{cfg}/backup" class="nav-link {__backups}" onmouseenter="$('#backups').toggle()" onmouseleave="$('#backups').toggle()">
-                                    <i class="nav-icon fas fa-file-archive pr-1" aria-hidden="true"></i> <span id="backups" style="display: none">{::lang::servercenter::main::nav::backup}</span>
+                                <a href="/servercenter/{cfg}/backup" class="nav-link {__backups}" onmouseenter="$('#backups').toggleClass('d-lg-none', false)" onmouseleave="$('#backups').toggleClass('d-lg-none', true)">
+                                    <i class="nav-icon fas fa-file-archive pr-1" aria-hidden="true"></i> <span id="backups" class="d-lg-none">{::lang::servercenter::main::nav::backup}</span>
                                 </a>
                             </li>
                             {/permissions}
 
                             {permissions??server??{cfg}??filebrowser??show}
                             <li class="nav-item ">
-                                <a href="/servercenter/{cfg}/file_manager" class="nav-link {__file_manager}" onmouseenter="$('#file_manager').toggle()" onmouseleave="$('#file_manager').toggle()">
-                                    <i class="nav-icon fas fa-file pr-1" aria-hidden="true"></i> <span id="file_manager" style="display: none">{::lang::servercenter::main::nav::files}</span>
+                                <a href="/servercenter/{cfg}/file_manager" class="nav-link {__file_manager}" onmouseenter="$('#file_manager').toggleClass('d-lg-none', false)" onmouseleave="$('#file_manager').toggleClass('d-lg-none', true)">
+                                    <i class="nav-icon fas fa-file pr-1" aria-hidden="true"></i> <span id="file_manager" class="d-lg-none">{::lang::servercenter::main::nav::files}</span>
                                 </a>
                             </li>
                             {/permissions}
 
                             {permissions??server??{cfg}??saves??show}
                             <li class="nav-item">
-                                <a href="/servercenter/{cfg}/saves" class="nav-link {__saves}" onmouseenter="$('#saves').toggle()" onmouseleave="$('#saves').toggle()">
-                                    <i class="nav-icon fas fa-folder-open pr-1" aria-hidden="true"></i> <span id="saves" style="display: none">{::lang::servercenter::main::nav::saves}</span>
+                                <a href="/servercenter/{cfg}/saves" class="nav-link {__saves}" onmouseenter="$('#saves').toggleClass('d-lg-none', false)" onmouseleave="$('#saves').toggleClass('d-lg-none', true)">
+                                    <i class="nav-icon fas fa-folder-open pr-1" aria-hidden="true"></i> <span id="saves" class="d-lg-none">{::lang::servercenter::main::nav::saves}</span>
                                 </a>
                             </li>
                             {/permissions}
 
                             {permissions??server??{cfg}??jobs??show}
                             <li class="nav-item ">
-                                <a href="/servercenter/{cfg}/jobs" class="nav-link {__jobs}" onmouseenter="$('#jobs').toggle()" onmouseleave="$('#jobs').toggle()">
-                                    <i class="nav-icon fas fa-tasks pr-1" aria-hidden="true"></i> <span id="jobs" style="display: none">{::lang::servercenter::main::nav::jobs}</span>
+                                <a href="/servercenter/{cfg}/jobs" class="nav-link {__jobs}" onmouseenter="$('#jobs').toggleClass('d-lg-none', false)" onmouseleave="$('#jobs').toggleClass('d-lg-none', true)">
+                                    <i class="nav-icon fas fa-tasks pr-1" aria-hidden="true"></i> <span id="jobs" class="d-lg-none">{::lang::servercenter::main::nav::jobs}</span>
                                 </a>
                             </li>
                             {/permissions}
@@ -153,62 +137,6 @@
 </div>
 
 {cluster_meld} {!rcon}{rcon_meld}{/!rcon}
-<div class="row" id="server-stats" style="padding-top: 0px;">
-
-    <div class="col-xl-4 col-md-0 mb-0">
-        <div class="small-box bg-danger rounded-0">
-            <div class="overlay dark">
-                <i class="fas fa-3x fa-sync-alt"></i>
-            </div>
-            <div class="inner">
-                <h3>...</h3>
-
-                <p>{::lang::servercenter::topline::state}</p>
-            </div>
-            <div class="icon">
-                <i class="fa fa-server"></i>
-            </div>
-            <a href="#" class="small-box-footer">&nbsp;</a>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-md-0 mb-0">
-        <div class="info-box bg-info rounded-0" style="height: 142px;">
-            <div class="overlay dark">
-                <i class="fas fa-3x fa-sync-alt"></i>
-            </div>
-            <span class="info-box-icon"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-                <span class="info-box-text">{::lang::servercenter::topline::player}</span>
-                <span class="info-box-number">...</span>
-
-                <div class="progress">
-                    <div class="progress-bar" style="width: 0%"></div>
-                </div>
-                <span class="progress-description">
-                    <br />
-                    </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-md-0 mb-0">
-        <div class="small-box bg-danger">
-            <div class="overlay dark rounded-0">
-                <i class="fas fa-3x fa-sync-alt"></i>
-            </div>
-            <div class="inner">
-                <h3 class="text-white">...</h3>
-                <p class="text-white">{::lang::servercenter::topline::action}</p>
-            </div>
-            <div class="icon">
-                <i class="fa fa-tasks"></i>
-            </div>
-            <a href="#" class="small-box-footer">&nbsp;</a>
-        </div>
-    </div>
-</div>
 
 <div class="row">
     {panel}
@@ -216,13 +144,78 @@
 
 <script>
     $(document).ready(function() {
+        getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=cards&case=info", "server-stats");
 
         setInterval(function() {
-            getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=cards&case=info", "server-stats");
             getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=img&case=info", "serv_img");
+
+            $.get("/app/json/serverinfo/{cfg}.json", (data) => {
+                let installed = {installed_int};
+                let expert = {exp_int};
+                let serv_state = "{::lang::php::function_allg::state_off}";
+                let serv_color = "danger";
+                let statecode = 0;
+                if (installed !== 1) {
+                    serv_state = "{::lang::php::function_allg::state_notinstalled}";
+                    serv_color = "warning";
+                    statecode = 3;
+                }
+                else if (data.listening === "Yes" && data.online === "Yes" && data.run === "Yes") {
+                    serv_state = "{::lang::php::function_allg::state_on}";
+                    serv_color = "success";
+                    statecode = 2;
+                }
+                else if (data.listening === "No" && data.online === "No" && data.run === "Yes") {
+                    serv_state = "{::lang::php::function_allg::state_start}";
+                    serv_color = "info";
+                    statecode = 1;
+                }
+                else if (data.listening === "Yes" && data.online === "No" && data.run === "Yes") {
+                    serv_state = "{::lang::php::function_allg::state_start}";
+                    serv_color = "info";
+                    statecode = 1;
+                }
+                else if (data.listening === "No" && data.online === "Yes" && data.run === "Yes") {
+                    serv_state = "{::lang::php::function_allg::state_start}";
+                    serv_color = "info";
+                    statecode = 1;
+                }
+
+                // Status
+                if($('#state').html() !== serv_state) $('#state').html(serv_state).attr('class',`description-header text-${serv_color}`);
+
+                // Spieler
+                let inhalt;
+                if(statecode === 2) {
+                    inhalt = `<a href="#" data-toggle="modal" data-target="#playerlist_modal">${data.aplayers} / ${data.players}</a>`;
+                }
+                else {
+                    inhalt = `${data.aplayers} / ${data.players}`;
+                }
+                if($('#player').html() !== inhalt) $('#player').html(inhalt);
+
+                // Actions
+
+
+                // Action Card
+                let css;
+                if (data.next === "TRUE" && expert === 1) {
+                    inhalt = `<a href="javascript:void()" class="small-box-footer text-danger" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;
+                    css = 'danger';
+                }
+                else if (data.next === "TRUE") {
+                    inhalt `{::lang::php::async::get::servercenter::main::action_closed}`;
+                    css = 'danger';
+                }
+                else if (data.next === "FALSE") {
+                    inhalt = `<a href="javascript:void()" class="small-box-footer text-success" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;
+                    css = 'success';
+                }
+                if($('#actions').html() !== inhalt) $('#actions').html(inhalt).attr('class',`description-header text-${css}`);
+            });
         }, 1000);
 
-        $("#action_form").submit(function() {
+        $("#action_form").submit(() => {
             $.post("/php/async/post/servercenter.main.async.php?case=action", $("#action_form").serialize())
                 .done(function(data) {
                     console.log(data);
@@ -238,7 +231,7 @@
             return false;
         });
 
-        $('#action_sel').change(function(e) {
+        $('#action_sel').change(() => {
             var action = $("#action_sel").val();
             $.getJSON("/app/json/panel/parameter.json", function(data) {
                 $.each(data, function(i, item) {
@@ -261,6 +254,27 @@
             });
         });
     });
+
+    // von: https://gist.github.com/anazard/d42354f45e172519c0be3cead34fe869
+    // {
+    var $body = document.getElementsByTagName('body')[0];
+    var $btnCopy = document.getElementById('btnCopy');
+    var secretInfo = document.getElementById('secretInfo').innerHTML;
+
+    var copyToClipboard = (secretInfo) => {
+        var $tempInput = document.createElement('INPUT');
+        $body.appendChild($tempInput);
+        $tempInput.setAttribute('value', secretInfo)
+        $tempInput.select();
+        document.execCommand('copy');
+        $body.removeChild($tempInput);
+    }
+
+    $btnCopy.addEventListener('click', (ev) => {
+        copyToClipboard(secretInfo);
+        alert("Kopiert: " + secretInfo);
+    });
+    // }
 </script>
 
 

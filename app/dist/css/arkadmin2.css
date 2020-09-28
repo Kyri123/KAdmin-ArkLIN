@@ -63,14 +63,25 @@
 }
 
 
-/*-SM-
 
 @media (min-width: 576px) {
-    .text-overflow-dots {
-        width: 80%;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+    /* Border
+     * Erweiterung für Boostrap 4.X
+     */
+    .border-sm-right {
+        border-right: 1px solid #dee2e6!important;
+    }
+    .border-sm-top {
+        border-top: 1px solid #dee2e6!important;
+    }
+    .border-sm-left {
+        border-left: 1px solid #dee2e6!important;
+    }
+    .border-sm-bottom {
+        border-bottom: 1px solid #dee2e6!important;
+    }
+    .border-sm {
+        border: 1px solid #dee2e6!important;
     }
 }
 

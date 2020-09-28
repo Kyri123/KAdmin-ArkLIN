@@ -238,6 +238,8 @@ $tpl->r('resp', $resp);
 $tpl->r('playerlist', $player);
 $tpl->r ('rcon_meld', $alert->rd(305, 3));
 $tpl->r ('cluster_meld', $resp_cluster);
+$tpl->r ('installed_int', $serv->isinstalled() == "TRUE" ? 1 : 0);
+$tpl->r ('exp_int', intval($user->expert()));
 $tpl->rif ('rcon', $serv->check_rcon());
 $tpl->rif ('ifin', $serv->cluster_in());
 $tpl->rif ('ifcadmin', $ifcadmin);
