@@ -1,0 +1,331 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card card-widget widget-user">
+            <div class="widget-user-header text-white" style="background: url('/app/dist/img/backgrounds/bg.jpg') center center;">
+                <h3 class="widget-user-username text-center text-gray-dark left">{servername}</h3>
+                <h5 class="widget-user-desc text-center text-gray-dark">{global_IP}:{QPort}</h5>
+            </div>
+            <div class="widget-user-image" id="serv_img" style="z-index: 1000">
+                <img src="/app/dist/img/logo/ark.png" style="border-radius: 25rem!important;height: 90px;width: 90px;background-color: #001f3f" class="border-danger">
+            </div>
+            <div class="card card-widget widget-user mb-0">
+                <div class="text-left left d-inline" style="width:50%">
+                    <button data-toggle="tooltip" data-placement="top" title="" data-original-title="IP Kopieren" aria-hidden="true" style="width: 100%" class="btn btn-dark" onclick="copyToClipboard('info')" id="btnCopy"><i class="fas fa-copy"></i></button>
+                </div>
+                <div class="right-no-top ml-auto d-inline" style="width:50%">
+                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Direkt Joinen" aria-hidden="true" style="width: 100%" {ifonline}href="{joinurl}" {/ifonline} class="text-white btn btn-dark {!ifonline}disabled{/!ifonline}"><i class="fas fa-sign-in-alt"></i></a>
+                </div>
+            </div>
+            <div class="card-footer pt-3">
+                <div class="row">
+                    <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                            <div class="d-none" id="secretInfo">{global_IP}:{QPort}</div>
+                            <h5 class="description-header">{map_str}</h5>
+                            <span class="description-text">{::lang::servercenter::main::map}</span>
+                        </div>
+                    </div>
+                    <script>
+                        // von: https://gist.github.com/anazard/d42354f45e172519c0be3cead34fe869
+                        // {
+                        var $body = document.getElementsByTagName('body')[0];
+                        var $btnCopy = document.getElementById('btnCopy');
+                        var secretInfo = document.getElementById('secretInfo').innerHTML;
+
+                        var copyToClipboard = function(secretInfo) {
+                            var $tempInput = document.createElement('INPUT');
+                            $body.appendChild($tempInput);
+                            $tempInput.setAttribute('value', secretInfo)
+                            $tempInput.select();
+                            document.execCommand('copy');
+                            $body.removeChild($tempInput);
+                        }
+
+                        $btnCopy.addEventListener('click', function(ev) {
+                            copyToClipboard(secretInfo);
+                            alert("Kopiert: " + secretInfo);
+                        });
+                        // }
+                    </script>
+                    <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header">{tmod}</h5>
+                            <span class="description-text">T-MOD</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="description-block">
+                            <h5 class="description-header"><a href="{arkservers}" target="_blank">{::lang::servercenter::open_url}</a></h5>
+                            <span class="description-text">ARKServers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer p-0">
+                <nav class="navbar navbar-expand-lg navbar-dark">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarColor02">
+                        <ul class="nav navbar-nav mr-auto" id="pills-tab">
+                            {ifin}
+                            <li class="nav-item">
+                                <a href="{permissions??cluster??show}/cluster{/permissions}{!permissions??cluster??show}#{/!permissions}" class="nav-link">
+                                    <i class="fas fa-random pr-2 pr-1" aria-hidden="true"></i> {typestr} <b>{clustername}</b>
+                                </a>
+                            </li>{/ifin}
+
+                            <li class="nav-item">
+                                <a href="/servercenter/{cfg}/home" class="nav-link {__home}" onmouseenter="$('#home').toggle()" onmouseleave="$('#home').toggle()">
+                                    <i class="nav-icon fas fa-home pr-1" aria-hidden="true"></i> <span id="home" style="display: none">{::lang::servercenter::main::nav::home}</span>
+                                </a>
+                            </li>
+
+                            {permissions??server??{cfg}??statistiken??show}
+                            <li class="nav-item">
+                                <a href="/servercenter/{cfg}/statistiken" class="nav-link {__statistiken}" onmouseenter="$('#statistiken').toggle()" onmouseleave="$('#statistiken').toggle()">
+                                    <i class="nav-icon fas fa-chart-bar pr-1" aria-hidden="true"></i> <span id="statistiken" style="display: none">{::lang::servercenter::main::nav::statistiken}</span>
+                                </a>
+                            </li>
+                            {/permissions}
+
+                            {modsupport}{permissions??server??{cfg}??mods??show}
+                            <li class="nav-item ">
+                                <a href="/servercenter/{cfg}/mods" class="nav-link {__mods}" onmouseenter="$('#mods').toggle()" onmouseleave="$('#mods').toggle()">
+                                    <i class="nav-icon fas fa-cogs pr-1" aria-hidden="true"></i> <span id="mods" style="display: none">{::lang::servercenter::main::nav::mods}</span>
+                                </a>
+                            </li>{/permissions}{/modsupport}
+
+                            {permissions??server??{cfg}??konfig??show}
+                            <li class="nav-item ">
+                                <a href="/servercenter/{cfg}/konfig" class="nav-link {__konfig}" onmouseenter="$('#konfig').toggle()" onmouseleave="$('#konfig').toggle()">
+                                    <i class="nav-icon fa fa-file-code pr-1" aria-hidden="true"></i> <span id="konfig" style="display: none">{::lang::servercenter::main::nav::config}</span>
+                                </a>
+                            </li>
+                            {/permissions}
+
+                            {permissions??server??{cfg}??logs??show}
+                            <li class="nav-item ">
+                                <a href="/servercenter/{cfg}/logs" class="nav-link {__logs}" onmouseenter="$('#logs').toggle()" onmouseleave="$('#logs').toggle()">
+                                    <i class="nav-icon fas fa-list pr-1" aria-hidden="true"></i> <span id="logs" style="display: none">{::lang::servercenter::main::nav::logs}</span>
+                                </a>
+                            </li>
+                            {/permissions}
+
+                            {permissions??server??{cfg}??backup??show}
+                            <li class="nav-item ">
+                                <a href="/servercenter/{cfg}/backup" class="nav-link {__backups}" onmouseenter="$('#backups').toggle()" onmouseleave="$('#backups').toggle()">
+                                    <i class="nav-icon fas fa-file-archive pr-1" aria-hidden="true"></i> <span id="backups" style="display: none">{::lang::servercenter::main::nav::backup}</span>
+                                </a>
+                            </li>
+                            {/permissions}
+
+                            {permissions??server??{cfg}??filebrowser??show}
+                            <li class="nav-item ">
+                                <a href="/servercenter/{cfg}/file_manager" class="nav-link {__file_manager}" onmouseenter="$('#file_manager').toggle()" onmouseleave="$('#file_manager').toggle()">
+                                    <i class="nav-icon fas fa-file pr-1" aria-hidden="true"></i> <span id="file_manager" style="display: none">{::lang::servercenter::main::nav::files}</span>
+                                </a>
+                            </li>
+                            {/permissions}
+
+                            {permissions??server??{cfg}??saves??show}
+                            <li class="nav-item">
+                                <a href="/servercenter/{cfg}/saves" class="nav-link {__saves}" onmouseenter="$('#saves').toggle()" onmouseleave="$('#saves').toggle()">
+                                    <i class="nav-icon fas fa-folder-open pr-1" aria-hidden="true"></i> <span id="saves" style="display: none">{::lang::servercenter::main::nav::saves}</span>
+                                </a>
+                            </li>
+                            {/permissions}
+
+                            {permissions??server??{cfg}??jobs??show}
+                            <li class="nav-item ">
+                                <a href="/servercenter/{cfg}/jobs" class="nav-link {__jobs}" onmouseenter="$('#jobs').toggle()" onmouseleave="$('#jobs').toggle()">
+                                    <i class="nav-icon fas fa-tasks pr-1" aria-hidden="true"></i> <span id="jobs" style="display: none">{::lang::servercenter::main::nav::jobs}</span>
+                                </a>
+                            </li>
+                            {/permissions}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+{cluster_meld} {!rcon}{rcon_meld}{/!rcon}
+<div class="row" id="server-stats" style="padding-top: 0px;">
+
+    <div class="col-xl-4 col-md-0 mb-0">
+        <div class="small-box bg-danger rounded-0">
+            <div class="overlay dark">
+                <i class="fas fa-3x fa-sync-alt"></i>
+            </div>
+            <div class="inner">
+                <h3>...</h3>
+
+                <p>{::lang::servercenter::topline::state}</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-server"></i>
+            </div>
+            <a href="#" class="small-box-footer">&nbsp;</a>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-0 mb-0">
+        <div class="info-box bg-info rounded-0" style="height: 142px;">
+            <div class="overlay dark">
+                <i class="fas fa-3x fa-sync-alt"></i>
+            </div>
+            <span class="info-box-icon"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">{::lang::servercenter::topline::player}</span>
+                <span class="info-box-number">...</span>
+
+                <div class="progress">
+                    <div class="progress-bar" style="width: 0%"></div>
+                </div>
+                <span class="progress-description">
+                    <br />
+                    </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-0 mb-0">
+        <div class="small-box bg-danger">
+            <div class="overlay dark rounded-0">
+                <i class="fas fa-3x fa-sync-alt"></i>
+            </div>
+            <div class="inner">
+                <h3 class="text-white">...</h3>
+                <p class="text-white">{::lang::servercenter::topline::action}</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-tasks"></i>
+            </div>
+            <a href="#" class="small-box-footer">&nbsp;</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {panel}
+</div>
+
+<script>
+    $(document).ready(function() {
+
+        setInterval(function() {
+            getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=cards&case=info", "server-stats");
+            getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=img&case=info", "serv_img");
+        }, 1000);
+
+        $("#action_form").submit(function() {
+            $.post("/php/async/post/servercenter.main.async.php?case=action", $("#action_form").serialize())
+                .done(function(data) {
+                    console.log(data);
+                    data = JSON.parse(data);
+                    if (data.code != 404) {
+                        $("#action_resp").html(data.msg);
+                        $("#all_resp").html(data.msg);
+                        $('#action').modal('hide')
+                    } else {
+                        $("#action_resp").html(data.msg);
+                    }
+                });
+            return false;
+        });
+
+        $('#action_sel').change(function(e) {
+            var action = $("#action_sel").val();
+            $.getJSON("/app/json/panel/parameter.json", function(data) {
+                $.each(data, function(i, item) {
+                    if (item.type == 0) $(item.id_js).prop('checked', false);
+                    if (item.type == 1) $(item.id_js).val('');
+                    $(item.id_js).attr("disabled", true);
+                    $.each(item.for, function(il, iteml) {
+                        if (iteml == action) {
+                            $(item.id_js).attr("disabled", false);
+                        }
+                    });
+                });
+            });
+            $.get("/php/async/get/servercenter.main.async.php", {
+                "action": action,
+                "case": "actioninfo",
+                "cfg": "{cfg}"
+            }, function(data) {
+                $("#actioninfo").html(data);
+            });
+        });
+    });
+</script>
+
+
+{permissions??server??{cfg}??actions}
+<div class="modal fade" id="action" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form id="action_form" class="modal-dialog modal-xl" role="document" style="max-width: 700px" method="POST">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">{::lang::servercenter::main::modal::send_command::title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="text-white" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="action_resp"></p>
+                {expert}
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">{::lang::servercenter::main::modal::send_command::custom_action}</span>
+                    </div>
+                    <input name="custom" type="text" class="form-control" placeholder="{::lang::servercenter::main::modal::send_command::custom_action_ph}">
+                </div>
+                <div class="icheck-primary mb-3 col-md-12">
+                    <input type="checkbox" name="force" value="true" id="forcethis">
+                    <label for="forcethis">
+                            {::lang::servercenter::force_action}
+                        </label>
+                </div>
+                <hr>{/expert}
+                <input name="cfg" id="cfg" value="{cfg}" type="hidden">
+                <select name="action" id="action_sel" class="form-control">
+                    {action_list}
+                </select>
+                <div id="actioninfo"></div>
+                <hr>
+
+                <div class="form-row" style="padding-left: 25px;padding-right: 25px">{para_list}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::main::modal::send_command::btn_close}</button>
+                <button type="submit" class="btn btn-primary" id="sendaction">{::lang::servercenter::main::modal::send_command::btn_send}</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/permissions}
+
+{permissions??server??{cfg}??show_players}
+<div class="modal fade" id="playerlist_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 700px">
+        <div class="modal-content ">
+            <div class="modal-header bg-orange text-white rounded-0">
+                <h5 class="modal-title">{::lang::servercenter::main::modal::player_list::title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <ul class="list-group" style="border:0; border-radius: 0">{playerlist}</ul>
+            </div>
+            <div class="modal-footer bg-gray-200">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::main::modal::player_list::btn_close}</button>
+            </div>
+        </div>
+    </div>
+</div>
+{/permissions}

@@ -77,7 +77,7 @@ $servername = $serv->cfg_read('ark_SessionName');
 $qport = $serv->cfg_read('ark_QueryPort');
 
 //tpl
-$tpl = new Template('main.htm', $tpl_dir);
+$tpl = new Template('main_new.htm', $tpl_dir);
 $tpl->load();
 
 $globa_json = json_decode(file_get_contents('app/json/serverinfo/'.$url[2].'.json'));
@@ -92,7 +92,7 @@ foreach ($dir as $k => $v) {
         $visit = null;
         if ($sitename == $url[3]) {
             include("php/subpage/serv/$v");
-            $visit = "aa_active";
+            $visit = "active";
             $exsists = true;
         }
         $tpl->r("__$sitename", $visit);
@@ -101,7 +101,7 @@ foreach ($dir as $k => $v) {
 
 if (!$exsists) {
     include('php/subpage/serv/home.inc.php');
-    $tpl->r("__home", "aa_active");
+    $tpl->r("__home", "active");
 }
 $tpl->r("__home", null);
 
