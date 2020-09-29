@@ -1,5 +1,4 @@
-<div class="col-xl-9 col-md-8 mb-4" onload="getmods('{cfg}')">
-
+<div class="col-12 mb-4">
     <nav class="navbar navbar-expand-lg navbar-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -7,14 +6,22 @@
 
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-player" role="tab" aria-controls="pills-home" aria-selected="true">{::lang::servercenter::saves::nav::player} <b>({cp})</b></a>
-                </li>
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-tribe" role="tab" aria-controls="pills-profile" aria-selected="false">{::lang::servercenter::saves::nav::tribe} <b>({ct})</b></a>
-                </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-world" role="tab" aria-controls="pills-profile" aria-selected="false">{::lang::servercenter::saves::nav::map} <b>({cw})</b></a>
+                    <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-player" role="tab" aria-controls="pills-player" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#players').toggleClass('d-lg-none', false)" onmouseleave="$('#players').toggleClass('d-lg-none', true)">
+                        <i class="nav-icon fas fa-user pr-1" aria-hidden="true"></i> <span id="players" class="d-lg-none">{::lang::servercenter::saves::nav::player}</span> <b>({cp})</b>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-tribe-tab" data-toggle="pill" href="#pills-tribe" role="tab" aria-controls="pills-tribe" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#tribes').toggleClass('d-lg-none', false)" onmouseleave="$('#tribes').toggleClass('d-lg-none', true)">
+                        <i class="nav-icon fas fa-users pr-1" aria-hidden="true"></i> <span id="tribes" class="d-lg-none">{::lang::servercenter::saves::nav::tribe}</span> <b>({ct})</b>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-world" role="tab" aria-controls="pills-world" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#world').toggleClass('d-lg-none', false)" onmouseleave="$('#world').toggleClass('d-lg-none', true)">
+                        <i class="nav-icon fas fa-map pr-1" aria-hidden="true"></i> <span id="world" class="d-lg-none">{::lang::servercenter::saves::nav::map}</span> <b>({cw})</b>
+                    </a>
                 </li>
             </ul>
             {permissions??server??{cfg}??saves??download}
@@ -31,7 +38,7 @@
     <div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
         <div class="tab-content" id="pills-tabContent">
 
-            <div class="tab-pane fade show active" id="pills-player" role="tabpanel" aria-labelledby="pills-home-tab">
+            <div class="tab-pane fade show active" id="pills-player" role="tabpanel" aria-labelledby="pills-player-tab">
                 <table class="table table-striped mb-0">
                     <tr class="bg-dark">
                         <th colspan="2" class="p-0">
