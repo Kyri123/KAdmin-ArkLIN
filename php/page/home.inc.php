@@ -130,14 +130,9 @@ if($mycon->numRows() > 0) {
         $infos = json_decode($string, true);
 
         if($first == null) $first = $item["time"];
-        if(($item["time"] - $first) > 86400) break;
-        //if(($item["time"] - $last) > 1500) {
-        //    $last = $item["time"];
-        //    $show_date = true;
-        //}
+        if(($first - $item["time"]) > 86400) break;
 
         $date = date("d.m - H:i", $item["time"]);
-        //$cpu_lable[] = $ram_lable[] = $mem_lable[] = ($show_date ? "'$date'" : '\'\'');
         $cpu_lable[] = $ram_lable[] = $mem_lable[] = "'$date'";
         $cpu_data[] = round($infos["cpu"], 2);
         $ram_data[] = round($infos["ram"], 2);
