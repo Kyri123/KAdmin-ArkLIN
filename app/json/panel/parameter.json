@@ -118,8 +118,7 @@
         "type": 0,
         "for": [
             "stop",
-            "restart",
-            "update"
+            "restart"
         ]
     },
     {
