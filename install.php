@@ -19,7 +19,7 @@ ini_set('display_startup_errors', 1);
 $url = $_SERVER["REQUEST_URI"];
 $url = explode("/", $url);
 
-// Erstelle bestimmt Dateien
+// Erstelle bestimmt Ordner
 if(!file_exists("app/check")) mkdir("app/check");
 if(!file_exists("app/cache")) mkdir("app/cache");
 

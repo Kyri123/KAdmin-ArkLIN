@@ -90,16 +90,6 @@ switch ($case) {
         echo $string;
         break;
 
-    case "actioninfo":
-        $action = $_GET["action"];
-        $alert->code = 300;
-        $i = 0;
-        $alert->overwrite_title = "{::lang::php::cfg::action::$action}";
-        $alert->overwrite_text = "{::lang::servercenter::infoaction::$action}";
-        $alert->overwrite_style = 3;
-        if($action != "") echo $alert->re();
-    break;
-
     default:
         echo "Case not found";
     break;

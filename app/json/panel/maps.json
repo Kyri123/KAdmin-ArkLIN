@@ -1,0 +1,49 @@
+{
+  "TheIsland" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "The Island"
+  },
+
+  "TheCenter" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "The Center"
+  },
+
+  "ScorchedEarth_P" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Scorched Earth"
+  },
+
+  "Ragnarok" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Ragnarok"
+  },
+
+  "Genesis" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Genesis"
+  },
+
+  "Extinction" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Extinction"
+  },
+
+  "CrystalIsles" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "ISO: Crystal Isles"
+  },
+
+  "Aberration_P" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Aberration"
+  }
+}

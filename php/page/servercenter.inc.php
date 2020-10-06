@@ -77,7 +77,7 @@ $servername = $serv->cfg_read('ark_SessionName');
 $qport = $serv->cfg_read('ark_QueryPort');
 
 //tpl
-$tpl = new Template('main_new.htm', $tpl_dir);
+$tpl = new Template('main.htm', $tpl_dir);
 $tpl->load();
 
 $globa_json = json_decode(file_get_contents('app/json/serverinfo/'.$url[2].'.json'));
@@ -183,11 +183,16 @@ if ($player == null) {
     $player .= $list_tpl->load_var();
 }
 
-
-
+// Aktionen & Beschreibungen
 $action_list = "<option value=\"\">{::lang::servercenter::jobs::section::jobs::task::option::default}</option>"; $i = 0;
+$actioninfo_arr = [];
 foreach ($action_opt as $key) {
     $action_list .= "<option value=\"$key\">{::lang::php::cfg::action::$key}</option>";
+
+    // Aktionen Infos array für JS
+    $actioninfo_arr[$key]['title'] = "{::lang::php::cfg::action::$key}";
+    $actioninfo_arr[$key]['text'] = "{::lang::servercenter::infoaction::$key}";
+
     $i++;
 }
 
@@ -240,6 +245,8 @@ $tpl->r ('rcon_meld', $alert->rd(305, 3));
 $tpl->r ('cluster_meld', $resp_cluster);
 $tpl->r ('installed_int', $serv->isinstalled() == "TRUE" ? 1 : 0);
 $tpl->r ('exp_int', intval($user->expert()));
+$tpl->r ('timestamp', time());
+$tpl->r ('lang_arr', json_encode($actioninfo_arr));
 $tpl->rif ('rcon', $serv->check_rcon());
 $tpl->rif ('ifin', $serv->cluster_in());
 $tpl->rif ('ifcadmin', $ifcadmin);
