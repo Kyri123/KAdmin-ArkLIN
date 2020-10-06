@@ -1,10 +1,12 @@
 <div class="row">
     <div class="col-12">
         <div class="card card-widget widget-user">
-            <div class="widget-user-header text-white" style="background: url('/app/dist/img/backgrounds/bg.jpg') center center;">
-                <h3 class="widget-user-username text-center text-gray-dark left">{servername}</h3>
-                <h5 class="widget-user-desc text-center text-gray-dark">{global_IP}:{QPort}</h5>
-                <div class="d-none" id="secretInfo">{global_IP}:{QPort}</div>
+            <div class="widget-user-header text-white p-0" style="background: url('{bg_img}') center center;">
+                <div style="background-color: rgba(66,66,66,0.30)!important; height: 100%" class="p-3">
+                    <h3 class="widget-user-username text-center text-light left">{servername}</h3>
+                    <h5 class="widget-user-desc text-center text-light">{global_IP}:{QPort}</h5>
+                    <div class="d-none" id="secretInfo">{global_IP}:{QPort}</div>
+                </div>
             </div>
             <div class="widget-user-image" id="serv_img" style="z-index: 1000">
                 <img src="/app/dist/img/logo/ark.png" style="border-radius: 25rem!important;height: 90px;width: 90px;background-color: #001f3f" class="border-danger">

@@ -223,6 +223,7 @@ if ($l > $lmax) {
     $servername = substr($servername, 0 , $lmax) . " ...";
 }
 
+$mapbg = file_exists('app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg') ? '/app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg' : '/app/dist/img/backgrounds/bg.jpg';
 
 $tpl->r('action_list', $action_list);
 $tpl->r('para_list', $para_list);
@@ -247,6 +248,7 @@ $tpl->r ('installed_int', $serv->isinstalled() == "TRUE" ? 1 : 0);
 $tpl->r ('exp_int', intval($user->expert()));
 $tpl->r ('timestamp', time());
 $tpl->r ('lang_arr', json_encode($actioninfo_arr));
+$tpl->r ('bg_img', $mapbg);
 $tpl->rif ('rcon', $serv->check_rcon());
 $tpl->rif ('ifin', $serv->cluster_in());
 $tpl->rif ('ifcadmin', $ifcadmin);
