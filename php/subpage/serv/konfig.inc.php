@@ -289,19 +289,37 @@ if ($serv->isinstalled()) {
             }
             else {
                 $add = null;
+
+                // map Select
                 if($key == "serverMap") {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="setmap()" id="mapsel">
-                        <option value="">{::lang::php::sc::page::konfig::nosel}</option>
-                        <option value="Aberration_P">Aberration_P</option>
-                        <option value="CrystalIsles">CrystalIsles</option>
-                        <option value="Extinction">Extinction</option>
-                        <option value="Genesis">Genesis</option>
-                        <option value="Ragnarok">Ragnarok</option>
-                        <option value="ScorchedEarth_P">ScorchedEarth_P</option>
-                        <option value="TheCenter">TheCenter</option>
-                        <option value="TheIsland">TheIsland</option>
-                        <option value="Valguero_P">Valguero_P</option>
-                    </select></div>';
+                        <option value="">{::lang::allg::default::select}</option>';
+
+                    $mapjson = $helper->file_to_json("app/json/panel/maps.json");
+                    foreach ($mapjson as $map => $infos) {
+                        if(($infos["mod"] == 1 && $serv->mod_support()) || $infos["mod"] == 0)
+                            $add .= '<option id="'.$map.'" value="'.$map.'" data-mod="'.$infos["mod"].'" data-modid="'.$infos["modid"].'" '.($map == $val ? "selected" : null).'>
+                                '.($infos["mod"] == 1 ? "[MOD] " : null).$infos["name"].'
+                            </option>';
+                    }
+
+                    $add .= '</select></div>';
+                }
+
+                // Totalmod Select
+                if($key == "ark_TotalConversionMod") {
+                    $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="settmod()" id="tmodsel">
+                        <option value="">{::lang::allg::default::select}</option>';
+
+                    $tmodjson = $helper->file_to_json("app/json/panel/tmods.json");
+                    foreach ($tmodjson as $tmod => $infos) {
+                        if(($infos["offi"] == 0 && $serv->mod_support()) || $infos["offi"] == 1)
+                            $add .= '<option value="'.$infos["modid"].'" '.($infos["modid"] == $val ? "selected" : null).'>
+                                '.($infos["offi"] == 0 ? "[MOD] " : null).$tmod.'
+                            </option>';
+                    }
+
+                    $add .= '</select></div>';
                 }
 
                 $formtype = (!in_array($key, $no_del)) ? 

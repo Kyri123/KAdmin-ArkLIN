@@ -245,28 +245,6 @@
                                             <input id="custom_key" type="text" class="form-control form-control-sm" placeholder="arkwarnminutes">
                                             <input id="custom_val" type="text" class="form-control form-control-sm" placeholder="30">
                                             <span onclick="add_input()" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
-
-                                            <script>
-                                                function add_input() {
-                                                    var key = $("#custom_key");
-                                                    var val = $("#custom_val");
-                                                    var table = $("#tbody");
-
-                                                    var tpl = '<tr id="tmp_' + key.val() + '"><td>' + key.val() + '</td><td><div class="input-group mb-0">' +
-                                                        '<input type="hidden" name="key[]" readonly value="' + key.val() + '">' +
-                                                        '<input type="text" name="value[]" class="form-control form-control-sm"  value="' + val.val() + '">' +
-                                                        '<div class="input-group-append">' +
-                                                        '<span onclick="remove(\'tmp_' + key.val() + '\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>' +
-                                                        '</div>' +
-                                                        '</div></td></tr>';
-
-                                                    if (key.val() != "" && val.val() != "") {
-                                                        $("#addcfg").append(tpl);
-                                                        key.val('');
-                                                        val.val('');
-                                                    }
-                                                }
-                                            </script>
                                         </div>
                                     </td>
                                 </tr>
@@ -308,6 +286,26 @@
             </div>
 
             <script>
+                function add_input() {
+                    var key = $("#custom_key");
+                    var val = $("#custom_val");
+                    var table = $("#tbody");
+
+                    var tpl = '<tr id="tmp_' + key.val() + '"><td>' + key.val() + '</td><td><div class="input-group mb-0">' +
+                        '<input type="hidden" name="key[]" readonly value="' + key.val() + '">' +
+                        '<input type="text" name="value[]" class="form-control form-control-sm"  value="' + val.val() + '">' +
+                        '<div class="input-group-append">' +
+                        '<span onclick="remove(\'tmp_' + key.val() + '\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>' +
+                        '</div>' +
+                        '</div></td></tr>';
+
+                    if (key.val() != "" && val.val() != "") {
+                        $("#addcfg").append(tpl);
+                        key.val('');
+                        val.val('');
+                    }
+                }
+
                 $('select[name="flag[]"]').bootstrapDualListbox({
                     nonSelectedListLabel: '{::lang::servercenter::config::sel}',
                     selectedListLabel: '{::lang::servercenter::config::nonsel}',
@@ -318,8 +316,22 @@
                 });
 
                 function setmap() {
-                    var target = $("#input_serverMap");
-                    var opt = $("#mapsel");
+                    let target = $("#input_serverMap");
+                    let opt = $("#mapsel");
+                    target.val(opt.val());
+
+                    let data = $(`#${opt.val()}`).data();
+                    if(data.mod == 1 && $('#input_serverMapModId').length) {
+                        $("#input_serverMapModId").val(data.modid);
+                    }
+                    else {
+                        $("#input_serverMapModId").val("");
+                    }
+                }
+
+                function settmod() {
+                    let target = $("#input_ark_TotalConversionMod");
+                    let opt = $("#tmodsel");
                     target.val(opt.val());
                 }
 
