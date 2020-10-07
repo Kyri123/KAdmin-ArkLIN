@@ -35,6 +35,12 @@
     "name": "Extinction"
   },
 
+  "Valguero_P" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Valguero"
+  },
+
   "CrystalIsles" : {
     "mod": 0,
     "modid": 0,
