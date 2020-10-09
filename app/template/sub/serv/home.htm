@@ -2,22 +2,22 @@
 <div class="d-none" id="home">true</div>
 
 <div class="col-12 mb-4">
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark p-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="collapse navbar-collapse navbar-secondary" id="navbarColor03">
             <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
                 <li class="nav-item">
-                    <a  class="nav-link active" id="pills-llog-tab" data-toggle="pill" href="#pills-llog" role="tab" aria-controls="pills-llog" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#llog').toggleClass('d-lg-none', false)" onmouseleave="$('#llog').toggleClass('d-lg-none', true)">
+                    <a  class="nav-link active btn-dark p-3" id="pills-llog-tab" data-toggle="pill" href="#pills-llog" role="tab" aria-controls="pills-llog" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#llog').toggleClass('d-lg-none', false)" onmouseleave="$('#llog').toggleClass('d-lg-none', true)">
                         <i class="nav-icon fas fa-list pr-1" aria-hidden="true"></i> <span id="llog" class="d-lg-none">{::lang::servercenter::home::nav::llog}</span>
                     </a>
                 </li>
 
                 {rcon}{lchatactive}{permissions??server??{cfg}??home??livechat_show}
                 <li class="nav-item">
-                    <a  class="nav-link" id="pills-lchat-tab" data-toggle="pill" href="#pills-lchat" role="tab" aria-controls="pills-lchat" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#lchat').toggleClass('d-lg-none', false)" onmouseleave="$('#lchat').toggleClass('d-lg-none', true)">
+                    <a  class="nav-link btn-dark p-3" id="pills-lchat-tab" data-toggle="pill" href="#pills-lchat" role="tab" aria-controls="pills-lchat" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#lchat').toggleClass('d-lg-none', false)" onmouseleave="$('#lchat').toggleClass('d-lg-none', true)">
                         <i class="nav-icon fas fa-comment pr-1" aria-hidden="true"></i> <span id="lchat" class="d-lg-none">{::lang::servercenter::home::nav::lchat}</span>
                     </a>
                 </li>
@@ -25,7 +25,7 @@
 
                 {permissions??server??{cfg}??home??rcon_show}
                 <li class="nav-item">
-                    <a  class="nav-link" id="pills-rcon-tab" data-toggle="pill" href="#pills-rcon" role="tab" aria-controls="pills-rcon" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#rcon').toggleClass('d-lg-none', false)" onmouseleave="$('#rcon').toggleClass('d-lg-none', true)">
+                    <a  class="nav-link btn-dark p-3" id="pills-rcon-tab" data-toggle="pill" href="#pills-rcon" role="tab" aria-controls="pills-rcon" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#rcon').toggleClass('d-lg-none', false)" onmouseleave="$('#rcon').toggleClass('d-lg-none', true)">
                         <i class="nav-icon fas fa-terminal pr-1" aria-hidden="true"></i> <span id="rcon" class="d-lg-none">{::lang::servercenter::home::nav::rcon}</span>
                     </a>
                 </li>
@@ -33,7 +33,7 @@
 
                 {permissions??server??{cfg}??home??admin_show}
                 <li class="nav-item">
-                    <a  class="nav-link" id="pills-admins-tab" data-toggle="pill" href="#pills-admins" role="tab" aria-controls="pills-admins" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#admins').toggleClass('d-lg-none', false)" onmouseleave="$('#admins').toggleClass('d-lg-none', true)">
+                    <a  class="nav-link btn-dark p-3" id="pills-admins-tab" data-toggle="pill" href="#pills-admins" role="tab" aria-controls="pills-admins" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#admins').toggleClass('d-lg-none', false)" onmouseleave="$('#admins').toggleClass('d-lg-none', true)">
                         <i class="nav-icon fas fa-star pr-1" aria-hidden="true"></i> <span id="admins" class="d-lg-none">{::lang::servercenter::home::nav::admin}</span>
                     </a>
                 </li>
@@ -41,7 +41,7 @@
 
                 {permissions??server??{cfg}??home??whitelist_show}
                 <li class="nav-item">
-                    <a  class="nav-link" id="pills-whitel-tab" data-toggle="pill" href="#pills-whitel" role="tab" aria-controls="pills-whitel" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#whitel').toggleClass('d-lg-none', false)" onmouseleave="$('#whitel').toggleClass('d-lg-none', true)">
+                    <a  class="nav-link btn-dark p-3" id="pills-whitel-tab" data-toggle="pill" href="#pills-whitel" role="tab" aria-controls="pills-whitel" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#whitel').toggleClass('d-lg-none', false)" onmouseleave="$('#whitel').toggleClass('d-lg-none', true)">
                         <i class="nav-icon fas fa-door-open pr-1" aria-hidden="true"></i> <span id="whitel" class="d-lg-none">{::lang::servercenter::home::nav::whitel}</span>
                     </a>
                 </li>
@@ -52,13 +52,13 @@
 
                     <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
                         <div class="btn-group">
-                            <button class="btn btn-primary btn-sm" type="button">
+                            <button class="btn btn-dark btn-sm" type="button">
                             {::lang::allg::logs::filter}: <b id="filter_txt">{::lang::allg::on}</b> <span class="d-none" id="filter">true</span>
                         </button>
-                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="javascript:void(true);" onclick="set('{::lang::allg::on}', 'filter_txt');set('true', 'filter')">{::lang::allg::on}</a>
                                 <a class="dropdown-item" href="javascript:void(true);" onclick="set('{::lang::allg::off}', 'filter_txt');set('false', 'filter')">{::lang::allg::off}</a>
                             </div>
@@ -66,13 +66,13 @@
                     </div>
                     <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
                         <div class="btn-group">
-                            <button class="btn btn-primary btn-sm" type="button">
+                            <button class="btn btn-dark btn-sm" type="button">
                             <b id="max">25</b>
                         </button>
-                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="javascript:void;" onclick="set(25, 'max')">25</a>
                                 <a class="dropdown-item" href="javascript:void;" onclick="set(50, 'max')">50</a>
                                 <a class="dropdown-item" href="javascript:void;" onclick="set(150, 'max')">150</a>
@@ -82,18 +82,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="m-1 float-right btn-group" style="display: inline-flex;" id="hidebar">
+                    <div class="m-1 mr-2 ml-auto float-right btn-group" style="display: inline-flex;" id="hidebar">
                         <div class="btn-group">
-                            <button class="btn btn-primary btn-sm" type="button">
+                            <button class="btn btn-dark btn-sm" type="button">
                             <b>
                                 <i id="iconhide" class="null fas fa-check" aria-hidden="true"></i>
                             </b>
                             <span class="d-none" id="hide">Ja</span>
                         </button>
-                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="javascript:void();" onclick="set('Ja', 'hide');set_icon('fas', 'fa-check', 'iconhide')">
                                     <i class="fas fa-check" aria-hidden="true"></i> {::lang::allg::logs::show}</a>
                                 <a class="dropdown-item" href="javascript:void();" onclick="set('Nein', 'hide');set_icon('fa', 'fa-times', 'iconhide')">
