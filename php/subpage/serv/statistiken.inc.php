@@ -90,6 +90,8 @@ if($mycon->numRows() > 0) {
 
         $players = null;
         if(isset($infos["aplayersarr"])) if(is_countable($infos["aplayersarr"])) foreach ($infos["aplayersarr"] as $pitem) {
+            if(!isset($pitem["time"])) $pitem["time"] = time();
+            if(!isset($pitem["name"])) $pitem["name"] = "Unknown";
             $time = TimeCalc($pitem["time"], ($pitem["time"] > 3600 ? "h" : "m"), "disabled");
             $on = round($time["int"], 2);
             $players[] = "<b>" . $pitem["name"] . "</b> - $on ".$time["lang"];
