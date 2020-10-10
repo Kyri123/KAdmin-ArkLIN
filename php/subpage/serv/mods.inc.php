@@ -11,7 +11,7 @@
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
 // Wenn Modsupport deaktiviert ist leitet direkt zu ServerCenter Startseite des Servers
 if (!$user->perm("$perm/mods/show") || !$serv->mod_support()) {
-    header($serv->mod_support() ? "Location: /404" : "Location: /401");
+    header(!$serv->mod_support() ? "Location: /404" : "Location: /401");
     exit;
 }
 

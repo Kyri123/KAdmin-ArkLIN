@@ -20,7 +20,7 @@ switch ($case) {
         // def. Vars
         $errorMSG = "";
         $cfg = $_POST["cfg"];
-        $_POST["custom"] = saveshell($_POST["custom"]);
+        $_POST["custom"] = isset($_POST["custom"]) ? saveshell($_POST["custom"]) : null;
         $serv = new server($cfg);
         $para = isset($_POST["para"]) ? $_POST["para"] : [];
         $para_txt = (isset($_POST["txt"])) ? $_POST["txt"] : "";

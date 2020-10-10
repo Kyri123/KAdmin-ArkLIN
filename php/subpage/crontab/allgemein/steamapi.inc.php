@@ -24,7 +24,7 @@ foreach ($cfg_json["cfgs"] as $v) {
     $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
 
     $exp = explode(",", $serv->cfg_read("ark_GameModIds"));
-    foreach ($exp as $item) if(!in_array($item, $modid_array)) $modid_array[] = $item;
+    foreach ($exp as $item) if(!in_array($item, $modid_array) && $item != "") $modid_array[] = $item;
 
     // lese Adminliste
     $file = file($cheatfile);
@@ -73,6 +73,7 @@ foreach ($json as $key => $item) {
 }
 
 $json = $steamapi->getmod_list("allg", $modid_array, 360)->response->publishedfiledetails;
+
 $i = 0;
 foreach ($json as $key => $item) {
     $sid = intval($item->publishedfileid);

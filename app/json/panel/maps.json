@@ -1,0 +1,109 @@
+{
+  "TheIsland" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "The Island"
+  },
+
+  "TheCenter" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "The Center"
+  },
+
+  "ScorchedEarth_P" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Scorched Earth"
+  },
+
+  "Ragnarok" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Ragnarok"
+  },
+
+  "Genesis" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Genesis"
+  },
+
+  "Extinction" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Extinction"
+  },
+
+  "Valguero_P" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Valguero"
+  },
+
+  "CrystalIsles" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "ISO: Crystal Isles"
+  },
+
+  "Aberration_P" : {
+    "mod": 0,
+    "modid": 0,
+    "name": "Aberration"
+  },
+
+  "TheVolcano" : {
+    "mod": 1,
+    "modid": 715028562,
+    "name": "TheVolcano"
+  },
+
+  "Olympus" : {
+    "mod": 1,
+    "modid": 970855993,
+    "name": "Olympus"
+  },
+
+  "Hope" : {
+    "mod": 1,
+    "modid": 869946022,
+    "name": "Hope"
+  },
+
+  "Shigoislands" : {
+    "mod": 1,
+    "modid": 661564024,
+    "name": "Shigoislands"
+  },
+
+  "SkiesofNazca" : {
+    "mod": 1,
+    "modid": 720200839,
+    "name": "Skies of Nazca"
+  },
+
+  "Zelos" : {
+    "mod": 1,
+    "modid": 1693852365,
+    "name": "Zelos: The Everything Map"
+  },
+
+  "TiamatPrime" : {
+    "mod": 1,
+    "modid": 1946280554,
+    "name": "Tiamat"
+  },
+
+  "TheOldestWorld" : {
+    "mod": 1,
+    "modid": 747162211,
+    "name": "The Oldest World"
+  },
+
+  "Viking_P" : {
+    "mod": 1,
+    "modid": 1838617463,
+    "name": "Fjördur - A Nordic Adventure"
+  }
+}

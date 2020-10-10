@@ -1,18 +1,18 @@
-<div class="col-xl-9 col-md-8 mb-4">
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+<div class="col-12 mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark p-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="collapse navbar-collapse navbar-secondary" id="navbarColor03">
             <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
                 {show}{!ifckonfig} {permissions??server??{cfg}??konfig??gus}
                 <!-- GUS -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle btn-dark p-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         GameUserSettings.ini
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" data-toggle="pill" href="#pills-GameUserStetting" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-GameUserStetting-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
@@ -20,10 +20,10 @@
 
                 <!-- Game -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle btn-dark p-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Game.ini
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Game" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Game-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
@@ -31,10 +31,10 @@
 
                 <!-- Engine -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle btn-dark p-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Engine.ini
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Engine" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Engine-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
@@ -42,10 +42,10 @@
 
                 <!-- Arkmanager -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle btn-dark p-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Arkmanager.cfg
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" data-toggle="pill" href="#pills-AM" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-AM-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
@@ -245,28 +245,6 @@
                                             <input id="custom_key" type="text" class="form-control form-control-sm" placeholder="arkwarnminutes">
                                             <input id="custom_val" type="text" class="form-control form-control-sm" placeholder="30">
                                             <span onclick="add_input()" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
-
-                                            <script>
-                                                function add_input() {
-                                                    var key = $("#custom_key");
-                                                    var val = $("#custom_val");
-                                                    var table = $("#tbody");
-
-                                                    var tpl = '<tr id="tmp_' + key.val() + '"><td>' + key.val() + '</td><td><div class="input-group mb-0">' +
-                                                        '<input type="hidden" name="key[]" readonly value="' + key.val() + '">' +
-                                                        '<input type="text" name="value[]" class="form-control form-control-sm"  value="' + val.val() + '">' +
-                                                        '<div class="input-group-append">' +
-                                                        '<span onclick="remove(\'tmp_' + key.val() + '\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>' +
-                                                        '</div>' +
-                                                        '</div></td></tr>';
-
-                                                    if (key.val() != "" && val.val() != "") {
-                                                        $("#addcfg").append(tpl);
-                                                        key.val('');
-                                                        val.val('');
-                                                    }
-                                                }
-                                            </script>
                                         </div>
                                     </td>
                                 </tr>
@@ -308,6 +286,26 @@
             </div>
 
             <script>
+                function add_input() {
+                    var key = $("#custom_key");
+                    var val = $("#custom_val");
+                    var table = $("#tbody");
+
+                    var tpl = '<tr id="tmp_' + key.val() + '"><td>' + key.val() + '</td><td><div class="input-group mb-0">' +
+                        '<input type="hidden" name="key[]" readonly value="' + key.val() + '">' +
+                        '<input type="text" name="value[]" class="form-control form-control-sm"  value="' + val.val() + '">' +
+                        '<div class="input-group-append">' +
+                        '<span onclick="remove(\'tmp_' + key.val() + '\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>' +
+                        '</div>' +
+                        '</div></td></tr>';
+
+                    if (key.val() != "" && val.val() != "") {
+                        $("#addcfg").append(tpl);
+                        key.val('');
+                        val.val('');
+                    }
+                }
+
                 $('select[name="flag[]"]').bootstrapDualListbox({
                     nonSelectedListLabel: '{::lang::servercenter::config::sel}',
                     selectedListLabel: '{::lang::servercenter::config::nonsel}',
@@ -318,8 +316,22 @@
                 });
 
                 function setmap() {
-                    var target = $("#input_serverMap");
-                    var opt = $("#mapsel");
+                    let target = $("#input_serverMap");
+                    let opt = $("#mapsel");
+                    target.val(opt.val());
+
+                    let data = $(`#${opt.val()}`).data();
+                    if(data.mod == 1 && $('#input_serverMapModId').length) {
+                        $("#input_serverMapModId").val(data.modid);
+                    }
+                    else {
+                        $("#input_serverMapModId").val("");
+                    }
+                }
+
+                function settmod() {
+                    let target = $("#input_ark_TotalConversionMod");
+                    let opt = $("#tmodsel");
                     target.val(opt.val());
                 }
 

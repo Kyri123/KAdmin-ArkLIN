@@ -55,23 +55,21 @@ function setico($target, $ico = null) {
  */
 
 function convertstate($serverstate) {
-    if ($serverstate == 0) {
-        $serv_state = "{::lang::php::function_allg::state_off}";
-        $serv_color = "danger";
-    }
-    elseif ($serverstate == 1) {
-        $serv_state = "{::lang::php::function_allg::state_start}";
-        $serv_color = "info";
-    }
-    elseif ($serverstate == 2) {
-        $serv_state = "{::lang::php::function_allg::state_on}";
-        $serv_color = "success";
-    }
-    elseif ($serverstate == 3) {
-        $serv_state = "{::lang::php::function_allg::state_notinstalled}";
-        $serv_color = "warning";
-    }
-    return array("color" => $serv_color,"str" => $serv_state);
+    $state = [];
+
+    $state[0]["serv_state"] = "{::lang::php::function_allg::state_off}";
+    $state[0]["serv_color"] = "danger";
+
+    $state[1]["serv_state"] = "{::lang::php::function_allg::state_start}";
+    $state[1]["serv_color"] = "info";
+
+    $state[2]["serv_state"] = "{::lang::php::function_allg::state_on}";
+    $state[2]["serv_color"] = "success";
+
+    $state[3]["serv_state"] = "{::lang::php::function_allg::state_notinstalled}";
+    $state[3]["serv_color"] = "warning";
+
+    return array("color" => $state[$serverstate]["serv_color"],"str" => $state[$serverstate]["serv_state"]);
 }
 
 /**
@@ -227,7 +225,7 @@ function dirToArray($dir) {
  * Fileter \r \t
  *
  * @param string $str
- * @return void
+ * @return string
  */
 
 function ini_save_rdy(string $str) {
@@ -241,7 +239,7 @@ function ini_save_rdy(string $str) {
  *
  * @param  mixed $file
  * @param  mixed $diff
- * @return void
+ * @return bool
  */
 
 function timediff(String $file, Int $diff) {

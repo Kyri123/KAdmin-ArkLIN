@@ -1,20 +1,19 @@
-<div class="col-xl-9 col-md-8 mb-4">
-
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+<div class="col-12 mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark p-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="collapse navbar-collapse navbar-secondary" id="navbarColor03">
             <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link active" id="pills-am-tab" data-toggle="pill" href="#pills-am" role="tab" aria-controls="pills-am" aria-selected="true">ArkManager</a>
+                <li class="nav-item">
+                    <a class="nav-link active btn-dark p-3" id="pills-am-tab" data-toggle="pill" href="#pills-am" role="tab" aria-controls="pills-am" aria-selected="true">ArkManager</a>
                 </li>
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link" id="pills-as-tab" data-toggle="pill" href="#pills-as" role="tab" aria-controls="pills-as" aria-selected="false">ArkServer</a>
+                <li class="nav-item">
+                    <a class="nav-link btn-dark p-3" id="pills-as-tab" data-toggle="pill" href="#pills-as" role="tab" aria-controls="pills-as" aria-selected="false">ArkServer</a>
                 </li>
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link" id="pills-mods-tab" data-toggle="pill" href="#pills-mods" role="tab" aria-controls="pills-mods" aria-selected="false">Mods</a>
+                <li class="nav-item">
+                    <a class="nav-link btn-dark p-3" id="pills-mods-tab" data-toggle="pill" href="#pills-mods" role="tab" aria-controls="pills-mods" aria-selected="false">Mods</a>
                 </li>
             </ul>
             <form class="form-inline" action="#" method="POST" id="removeForm">
@@ -22,10 +21,10 @@
 
                     <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
                         <div class="btn-group">
-                            <button class="btn btn-primary btn-sm" type="button">
+                            <button class="btn btn-dark btn-sm" type="button">
                             {::lang::allg::logs::filter}: <b id="filter_txt">{::lang::allg::on}</b> <span class="d-none" id="filter">true</span>
                         </button>
-                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                             <div class="dropdown-menu">
@@ -37,10 +36,10 @@
 
                     <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
                         <div class="btn-group">
-                            <button class="btn btn-primary btn-sm" type="button">
+                            <button class="btn btn-dark btn-sm" type="button">
                             <b id="max">25</b>
                         </button>
-                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                             <div class="dropdown-menu">
@@ -56,13 +55,13 @@
 
                     <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="hidebar">
                         <div class="btn-group">
-                            <button class="btn btn-primary btn-sm" type="button">
+                            <button class="btn btn-dark btn-sm" type="button">
                                 <b>
                                     <i id="iconhide" class="null fas fa-check" aria-hidden="true"></i>
                                 </b>
                                 <span class="d-none" id="hide">Ja</span>
                             </button>
-                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu">
@@ -77,7 +76,7 @@
                     <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
                         <div class="btn-group">
                             <input type="hidden" name="clearlogs" value="true">
-                            <button class="btn btn-danger btn-sm" type="submit" id="removesubmit">
+                            <button class="btn btn-danger btn-sm mr-2" type="submit" id="removesubmit">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
                         </div>

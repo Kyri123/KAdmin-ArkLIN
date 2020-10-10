@@ -92,16 +92,17 @@ foreach ($dir as $k => $v) {
         $visit = null;
         if ($sitename == $url[3]) {
             include("php/subpage/serv/$v");
-            $visit = "aa_active";
+            $visit = "active";
             $exsists = true;
         }
         $tpl->r("__$sitename", $visit);
+        $tpl->rif("___$sitename", $visit == null);
     }
 }
 
 if (!$exsists) {
     include('php/subpage/serv/home.inc.php');
-    $tpl->r("__home", "aa_active");
+    $tpl->r("__home", "active");
 }
 $tpl->r("__home", null);
 
@@ -183,11 +184,16 @@ if ($player == null) {
     $player .= $list_tpl->load_var();
 }
 
-
-
+// Aktionen & Beschreibungen
 $action_list = "<option value=\"\">{::lang::servercenter::jobs::section::jobs::task::option::default}</option>"; $i = 0;
+$actioninfo_arr = [];
 foreach ($action_opt as $key) {
     $action_list .= "<option value=\"$key\">{::lang::php::cfg::action::$key}</option>";
+
+    // Aktionen Infos array für JS
+    $actioninfo_arr[$key]['title'] = "{::lang::php::cfg::action::$key}";
+    $actioninfo_arr[$key]['text'] = "{::lang::servercenter::infoaction::$key}";
+
     $i++;
 }
 
@@ -218,6 +224,7 @@ if ($l > $lmax) {
     $servername = substr($servername, 0 , $lmax) . " ...";
 }
 
+$mapbg = file_exists('app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg') ? '/app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg' : '/app/dist/img/backgrounds/bg.jpg';
 
 $tpl->r('action_list', $action_list);
 $tpl->r('para_list', $para_list);
@@ -238,6 +245,11 @@ $tpl->r('resp', $resp);
 $tpl->r('playerlist', $player);
 $tpl->r ('rcon_meld', $alert->rd(305, 3));
 $tpl->r ('cluster_meld', $resp_cluster);
+$tpl->r ('installed_int', $serv->isinstalled() == "TRUE" ? 1 : 0);
+$tpl->r ('exp_int', intval($user->expert()));
+$tpl->r ('timestamp', time());
+$tpl->r ('lang_arr', json_encode($actioninfo_arr));
+$tpl->r ('bg_img', $mapbg);
 $tpl->rif ('rcon', $serv->check_rcon());
 $tpl->rif ('ifin', $serv->cluster_in());
 $tpl->rif ('ifcadmin', $ifcadmin);

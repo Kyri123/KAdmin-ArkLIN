@@ -1,17 +1,21 @@
-
-<div class="col-xl-9 col-md-8 mb-4" onload="getmods('{cfg}')">
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+<div class="col-12 mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark p-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="collapse navbar-collapse navbar-secondary" id="navbarColor03">
             <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link active" id="pills-modactive-tab" data-toggle="pill" href="#pills-modactive" role="tab" aria-controls="pills-modactive" aria-selected="true">{::lang::servercenter::mods::nav::active}</a>
+                <li class="nav-item">
+                    <a  class="nav-link active btn-dark p-3" id="pills-modactive-tab" data-toggle="pill" href="#pills-modactive" role="tab" aria-controls="pills-modactive" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#modactive').toggleClass('d-lg-none', false)" onmouseleave="$('#modactive').toggleClass('d-lg-none', true)">
+                        <i class="nav-icon fas fa-check pr-1" aria-hidden="true"></i> <span id="modactive" class="d-lg-none">{::lang::servercenter::mods::nav::active}</span>
+                    </a>
                 </li>
-                <li class="nav-item" style="margin-right: 5px">
-                    <a class="nav-link" id="pills-modinstall-tab" data-toggle="pill" href="#pills-modinstall" role="tab" aria-controls="pills-modinstall" aria-selected="true">{::lang::servercenter::mods::nav::installed}</a>
+
+                <li class="nav-item">
+                    <a  class="nav-link btn-dark p-3" id="pills-modinstall-tab" data-toggle="pill" href="#pills-modinstall" role="tab" aria-controls="pills-modinstall" aria-selected="false" onclick="setdisplay('logbar', 'inline-flex'); setdisplay('hidebar', 'inline-flex')" onmouseenter="$('#modinstall').toggleClass('d-lg-none', false)" onmouseleave="$('#modinstall').toggleClass('d-lg-none', true)">
+                        <i class="nav-icon fas fa-save pr-1" aria-hidden="true"></i> <span id="modinstall" class="d-lg-none">{::lang::servercenter::mods::nav::installed}</span>
+                    </a>
                 </li>
             </ul>
         </div>

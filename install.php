@@ -9,7 +9,7 @@
 */
 
 // Standart Vars
-$title = $content = null;
+$title = $modal = $modals = $content = null;
 
 // Setzte Error auf 0
 ini_set('display_errors', 1);
@@ -19,7 +19,7 @@ ini_set('display_startup_errors', 1);
 $url = $_SERVER["REQUEST_URI"];
 $url = explode("/", $url);
 
-// Erstelle bestimmt Dateien
+// Erstelle bestimmt Ordner
 if(!file_exists("app/check")) mkdir("app/check");
 if(!file_exists("app/cache")) mkdir("app/cache");
 
@@ -64,7 +64,7 @@ $resp = null;
 
 // verarbeite
 $step = 0;
-if (isset($url[2])) $step = $url[2];
+if (isset($url[2]) && is_numeric($url[2])) $step = $url[2];
 for ($i=0;$i<20;$i++) {
     if ($step == $i) {
         include($dirs["include"]."step_$i.inc.php");

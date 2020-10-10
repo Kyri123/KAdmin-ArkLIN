@@ -13,7 +13,7 @@ if(file_exists('php/inc/pconfig.inc.php')) include('pconfig.inc.php');
 
 // allgmeine
 $sitename = "ArkAdmin";
-$version = '1.2.0';
+$version = '1.2.1';
 $ip = $_SERVER['SERVER_ADDR'];
 $maxpanel_server = 10;
 
