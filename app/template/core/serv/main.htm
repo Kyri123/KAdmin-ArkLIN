@@ -152,7 +152,7 @@
         setInterval(() => {
             getphp("/php/async/get/servercenter.main.async.php?cfg={cfg}&type=img&case=info", "serv_img");
 
-            $.get("/app/json/serverinfo/{cfg}.json", (data) => {
+            $.get("/app/json/serverinfo/{cfg}.json?time=" + Date.now(), (data) => {
                 let installed = {installed_int};
                 let expert = {exp_int};
                 let serv_state = "{::lang::php::function_allg::state_off}";
@@ -207,12 +207,11 @@
                     css = 'danger';
                 }
                 else if (data.next === "TRUE") {
-                    inhalt `{::lang::php::async::get::servercenter::main::action_closed}`;
+                    inhalt = `{::lang::php::async::get::servercenter::main::action_closed}`;
                     css = 'danger';
                 }
                 else if (data.next === "FALSE") {
-                    {!expert}inhalt = `<a href="javascript:void()" class="small-box-footer btn btn-sm btn-success disabled">{::lang::php::async::get::servercenter::main::action_pick}</a>`;{/!expert}
-                    {expert}inhalt = `<a href="javascript:void()" class="small-box-footer btn btn-sm btn-success" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;{/expert}
+                    inhalt = `<a href="javascript:void()" class="small-box-footer btn btn-sm btn-success" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;
                     css = 'success';
                 }
                 if($('#actions').html() !== inhalt) $('#actions').html(inhalt).attr('class',`description-header text-${css}`);
