@@ -190,7 +190,7 @@
                 // Spieler
                 let inhalt;
                 if(statecode === 2) {
-                    inhalt = `<a href="#" data-toggle="modal" data-target="#playerlist_modal">${data.aplayers} / ${data.players}</a>`;
+                    inhalt = `<a href="#" data-toggle="modal" data-target="#playerlist_modal" class="btn btn-sm btn-primary">${data.aplayers} / ${data.players}</a>`;
                 }
                 else {
                     inhalt = `${data.aplayers} / ${data.players}`;
@@ -203,7 +203,7 @@
                 // Action Card
                 let css;
                 if (data.next === "TRUE" && expert === 1) {
-                    inhalt = `<a href="javascript:void()" class="small-box-footer text-danger" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;
+                    inhalt = `<a href="javascript:void()" class="small-box-footer btn btn-sm btn-danger" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;
                     css = 'danger';
                 }
                 else if (data.next === "TRUE") {
@@ -211,7 +211,8 @@
                     css = 'danger';
                 }
                 else if (data.next === "FALSE") {
-                    inhalt = `<a href="javascript:void()" class="small-box-footer text-success" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;
+                    {!expert}inhalt = `<a href="javascript:void()" class="small-box-footer btn btn-sm btn-success disabled">{::lang::php::async::get::servercenter::main::action_pick}</a>`;{/!expert}
+                    {expert}inhalt = `<a href="javascript:void()" class="small-box-footer btn btn-sm btn-success" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;{/expert}
                     css = 'success';
                 }
                 if($('#actions').html() !== inhalt) $('#actions').html(inhalt).attr('class',`description-header text-${css}`);
