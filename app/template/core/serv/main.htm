@@ -58,20 +58,20 @@
                             {ifin}
                             <li class="nav-item" onmouseenter="$('#cluster').toggleClass('d-lg-none', false)" onmouseleave="$('#cluster').toggleClass('d-lg-none', true)">
                                 <a href="{permissions??cluster??show}/cluster{/permissions}{!permissions??cluster??show}#{/!permissions}" class="nav-link btn-dark p-3">
-                                    <i class="fas fa-random pr-2 pr-1" aria-hidden="true"></i><span id="cluster" class="d-lg-none"> {typestr} <b>{clustername}</b></span>
+                                    <i class="fas fa-random pr-2 pr-1" aria-hidden="true"></i> {typestr} <b>{clustername}</b>
                                 </a>
                             </li>{/ifin}
 
                             <li class="nav-item">
                                 <a href="/servercenter/{cfg}/home" class="nav-link {__home} btn-dark p-3" onmouseenter="$('#home').toggleClass('d-lg-none', false)" onmouseleave="$('#home').toggleClass('d-lg-none', true)">
-                                    <i class="nav-icon fas fa-home pr-1" aria-hidden="true"></i><span id="home" class="d-lg-none"> {::lang::servercenter::main::nav::home}</span>
+                                    <i class="nav-icon fas fa-home pr-1" aria-hidden="true"></i>{___home}<span id="home" class="d-lg-none">{/___home} {::lang::servercenter::main::nav::home}{___home}</span>{/___home}
                                 </a>
                             </li>
 
                             {permissions??server??{cfg}??statistiken??show}
                             <li class="nav-item">
                                 <a href="/servercenter/{cfg}/statistiken" class="nav-link {__statistiken} btn-dark p-3" onmouseenter="$('#statistiken').toggleClass('d-lg-none', false)" onmouseleave="$('#statistiken').toggleClass('d-lg-none', true)">
-                                    <i class="nav-icon fas fa-chart-bar pr-1" aria-hidden="true"></i><span id="statistiken" class="d-lg-none"> {::lang::servercenter::main::nav::statistiken}</span>
+                                    <i class="nav-icon fas fa-chart-bar pr-1" aria-hidden="true"></i>{___statistiken}<span id="statistiken" class="d-lg-none">{/___statistiken} {::lang::servercenter::main::nav::statistiken}{___statistiken}</span>{/___statistiken}
                                 </a>
                             </li>
                             {/permissions}
@@ -79,14 +79,14 @@
                             {modsupport}{permissions??server??{cfg}??mods??show}
                             <li class="nav-item ">
                                 <a href="/servercenter/{cfg}/mods" class="nav-link {__mods} btn-dark p-3" onmouseenter="$('#mods').toggleClass('d-lg-none', false)" onmouseleave="$('#mods').toggleClass('d-lg-none', true)">
-                                    <i class="nav-icon fas fa-cogs pr-1" aria-hidden="true"></i><span id="mods" class="d-lg-none"> {::lang::servercenter::main::nav::mods}</span>
+                                    <i class="nav-icon fas fa-cogs pr-1" aria-hidden="true"></i>{___mods}<span id="mods" class="d-lg-none">{/___mods} {::lang::servercenter::main::nav::mods}{___mods}</span>{/___mods}
                                 </a>
                             </li>{/permissions}{/modsupport}
 
                             {permissions??server??{cfg}??konfig??show}
                             <li class="nav-item ">
                                 <a href="/servercenter/{cfg}/konfig" class="nav-link {__konfig} btn-dark p-3" onmouseenter="$('#konfig').toggleClass('d-lg-none', false)" onmouseleave="$('#konfig').toggleClass('d-lg-none', true)">
-                                    <i class="nav-icon fa fa-file-code pr-1" aria-hidden="true"></i><span id="konfig" class="d-lg-none"> {::lang::servercenter::main::nav::config}</span>
+                                    <i class="nav-icon fa fa-file-code pr-1" aria-hidden="true"></i>{___konfig}<span id="konfig" class="d-lg-none">{/___konfig} {::lang::servercenter::main::nav::config}{___konfig}</span>{/___konfig}
                                 </a>
                             </li>
                             {/permissions}
@@ -94,15 +94,15 @@
                             {permissions??server??{cfg}??logs??show}
                             <li class="nav-item ">
                                 <a href="/servercenter/{cfg}/logs" class="nav-link {__logs} btn-dark p-3" onmouseenter="$('#logs').toggleClass('d-lg-none', false)" onmouseleave="$('#logs').toggleClass('d-lg-none', true)">
-                                    <i class="nav-icon fas fa-list pr-1" aria-hidden="true"></i><span id="logs" class="d-lg-none"> {::lang::servercenter::main::nav::logs}</span>
+                                    <i class="nav-icon fas fa-list pr-1" aria-hidden="true"></i>{___logs}<span id="logs" class="d-lg-none">{/___logs} {::lang::servercenter::main::nav::logs}{___logs}</span>{/___logs}
                                 </a>
                             </li>
                             {/permissions}
 
                             {permissions??server??{cfg}??backup??show}
                             <li class="nav-item ">
-                                <a href="/servercenter/{cfg}/backup" class="nav-link {__backups} btn-dark p-3" onmouseenter="$('#backups').toggleClass('d-lg-none', false)" onmouseleave="$('#backups').toggleClass('d-lg-none', true)">
-                                    <i class="nav-icon fas fa-file-archive pr-1" aria-hidden="true"></i><span id="backups" class="d-lg-none"> {::lang::servercenter::main::nav::backup}</span>
+                                <a href="/servercenter/{cfg}/backup" class="nav-link {__backup} btn-dark p-3" onmouseenter="$('#backups').toggleClass('d-lg-none', false)" onmouseleave="$('#backups').toggleClass('d-lg-none', true)">
+                                    <i class="nav-icon fas fa-file-archive pr-1" aria-hidden="true"></i>{___backup}<span id="backups" class="d-lg-none">{/___backup} {::lang::servercenter::main::nav::backup}{___backup}</span>{/___backup}
                                 </a>
                             </li>
                             {/permissions}
@@ -110,7 +110,7 @@
                             {permissions??server??{cfg}??filebrowser??show}
                             <li class="nav-item ">
                                 <a href="/servercenter/{cfg}/file_manager" class="nav-link {__file_manager} btn-dark p-3" onmouseenter="$('#file_manager').toggleClass('d-lg-none', false)" onmouseleave="$('#file_manager').toggleClass('d-lg-none', true)">
-                                    <i class="nav-icon fas fa-file pr-1" aria-hidden="true"></i><span id="file_manager" class="d-lg-none"> {::lang::servercenter::main::nav::files}</span>
+                                    <i class="nav-icon fas fa-file pr-1" aria-hidden="true"></i>{___file_manager}<span id="file_manager" class="d-lg-none">{/___file_manager} {::lang::servercenter::main::nav::files}{___file_manager}</span>{/___file_manager}
                                 </a>
                             </li>
                             {/permissions}
@@ -118,7 +118,7 @@
                             {permissions??server??{cfg}??saves??show}
                             <li class="nav-item">
                                 <a href="/servercenter/{cfg}/saves" class="nav-link {__saves} btn-dark p-3" onmouseenter="$('#saves').toggleClass('d-lg-none', false)" onmouseleave="$('#saves').toggleClass('d-lg-none', true)">
-                                    <i class="nav-icon fas fa-folder-open pr-1" aria-hidden="true"></i><span id="saves" class="d-lg-none"> {::lang::servercenter::main::nav::saves}</span>
+                                    <i class="nav-icon fas fa-folder-open pr-1" aria-hidden="true"></i>{___saves}<span id="saves" class="d-lg-none">{/___saves} {::lang::servercenter::main::nav::saves}{___saves}</span>{/___saves}
                                 </a>
                             </li>
                             {/permissions}
@@ -126,7 +126,7 @@
                             {permissions??server??{cfg}??jobs??show}
                             <li class="nav-item ">
                                 <a href="/servercenter/{cfg}/jobs" class="nav-link {__jobs} btn-dark p-3" onmouseenter="$('#jobs').toggleClass('d-lg-none', false)" onmouseleave="$('#jobs').toggleClass('d-lg-none', true)">
-                                    <i class="nav-icon fas fa-tasks pr-1" aria-hidden="true"></i><span id="jobs" class="d-lg-none"> {::lang::servercenter::main::nav::jobs}</span>
+                                    <i class="nav-icon fas fa-tasks pr-1" aria-hidden="true"></i>{___jobs}<span id="jobs" class="d-lg-none">{/___jobs} {::lang::servercenter::main::nav::jobs}{___jobs}</span>{/___jobs}
                                 </a>
                             </li>
                             {/permissions}
@@ -249,10 +249,8 @@
                             $('#actioninfo').toggleClass('d-none', true);
                             {expert}$('#custom_command').val('');
                             $("#forcethis").prop('checked', false);{/expert}
-                            } else {
-                                $("#action_resp").html(data.msg);
-                            }
-                        });
+                        }
+                    });
             }
             return false;
         });

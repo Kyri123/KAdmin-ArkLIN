@@ -96,6 +96,7 @@ foreach ($dir as $k => $v) {
             $exsists = true;
         }
         $tpl->r("__$sitename", $visit);
+        $tpl->rif("___$sitename", $visit == null);
     }
 }
 
