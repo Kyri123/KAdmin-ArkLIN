@@ -231,6 +231,8 @@
 
     <!-- ServerControllCenter -->
     <scc>
+        <state>Status</state>
+
         <tooltip>
             <create>
                 <title>Server Erstellen</title>
