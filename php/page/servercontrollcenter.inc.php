@@ -230,14 +230,16 @@ for ($i=0;$i<count($dir);$i++) {
     }
 }
 
+$resp .= $maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2) ? null : $alert->rd(309);
 
 // lade in TPL
 $tpl->r("list", $cfglist);
 $tpl->r("list_modal", $cfgmlist);
 $tpl->r("resp", $resp);
+$tpl->rif("not_max", $maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2));
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
-if($user->perm("servercontrollcenter/create")) $btns = '<span  data-toggle="popover_action" data-content="{::lang::scc::tooltip::create::text}" data-original-title="{::lang::scc::tooltip::create::title}">
+if($user->perm("servercontrollcenter/create") && $maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2)) $btns = '<span  data-toggle="popover_action" data-content="{::lang::scc::tooltip::create::text}" data-original-title="{::lang::scc::tooltip::create::title}">
                                                                 <a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver" title="">
                                                                     <span class="icon">
                                                                         <i class="fas fa-plus" aria-hidden="true"></i>

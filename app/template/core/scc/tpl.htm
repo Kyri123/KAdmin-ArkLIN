@@ -2,10 +2,15 @@
 <section class="content">
     <div class="row">
         {list}
+        {not_max}<div class="col-sm-6">
+                <div class="border border-success text-success align-content-center justify-content-center align-items-center d-flex card" style="font-size: 75px; width:100%; height:278px; border: 2px solid!important; cursor: pointer">
+                    <i class="fas fa-plus"></i>
+                </div>
+        </div>{/not_max}
     </div>
 </section>
 {list_modal}
-{permissions??servercontrollcenter??create}
+{permissions??servercontrollcenter??create}{not_max}
 <!-- Modal -->
 <form class="modal fade" id="addserver" tabindex="-1" method="post" action="#">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
@@ -42,4 +47,4 @@
             </div>
         </div>
     </div>
-</form>{/permissions}
+</form>{/not_max}{/permissions}
