@@ -1,39 +1,8 @@
 <div id="all_resp">{resp}</div>
 <section class="content">
-
-    <!-- Default box -->
-    <div class="card">
-        <div class="card-body p-0">
-            <div class=" table-responsive">
-                <table class="table table-striped projects mb-0">
-                    <thead>
-                        <tr class="bg-dark">
-                            <th style="width: 60px" class="text-center">
-                                {::lang::scc::table::map}
-                            </th>
-                            <th style="width: auto">
-                                {::lang::scc::table::servername}
-                            </th>
-                            <th>
-                                {::lang::scc::table::ip}
-                            </th>
-                            <th>
-                                {::lang::scc::table::cluster}
-                            </th>
-                            <th>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {list}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- /.card-body -->
+    <div class="row">
+        {list}
     </div>
-    <!-- /.card -->
-
 </section>
 {list_modal}
 {permissions??servercontrollcenter??create}

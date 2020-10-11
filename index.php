@@ -214,6 +214,7 @@ $tpl_b->r('urltop', $urltop);
 $tpl_b->r('g_alert', $g_alert);
 $tpl_b->rif ('if_g_alert', $g_alert_bool);
 $tpl_b->r("langlist", get_lang_list());
+$tpl_b->r("maxserver", $maxpanel_server);
 $tpl_b->r("rank", "<span class='text-".((!$user->perm("allg/is_admin")) ? "success" : "danger")."'>{::lang::php::userpanel::".((!$user->perm("allg/is_admin")) ? "user" : "admin")."}</span>");
 
 // Server Traffics
