@@ -29,7 +29,8 @@
             "arkmanager": 0
         },
         "logs": {
-            "show": 1
+            "show": 1,
+            "clear": 0
         },
         "backup": {
             "show": 1,
