@@ -118,56 +118,23 @@
         </div>
     </div>
 </div>
+
 {modal_list}
 
+
 <script>
-    $(function () {
-        // CPU
-        var diagramCanvas = $('#stats').get(0).getContext('2d');
-        var diagramData = {
-            labels  : [{labels}],
-            datasets: [
-                {
-                    backgroundColor     : 'rgba(23, 162, 184, 1)',
-                    borderColor         : 'rgba(20, 162, 184, 1)',
-                    pointRadius         : false,
-                    pointColor          : '#17a2b8',
-                    pointStrokeColor    : '#17a2b8',
-                    pointHighlightFill  : '#fff',
-                    pointHighlightStroke: 'rgba(220,220,220,1)',
-                    data: [{data}]
-                }
-            ]
-        }
+    // Vars die zur JS übergeben werden
 
-        var diagramOptions = {
-            maintainAspectRatio : false,
-            responsive : true,
-            legend: {
-                display: false
-            },
-            scales: {
-                xAxes: [{
-                    gridLines : {
-                        display : false,
-                    }
-                }],
-                yAxes: [{
-                    ticks: {
-                        max: {max},
-                        beginAtZero: false   // minimum value will be 0.
-                    },
-                    gridLines : {
-                        display : false,
-                    }
-                }]
-            }
-        }
+    // Allgemeine Vars
+    var vars = {};
+    vars.labels = [{labels}];
+    vars.data = [{data}];
+    vars.max = {max};
 
-        var diagram = new Chart(diagramCanvas, {
-            type: 'line',
-            data: diagramData,
-            options: diagramOptions
-        });
-    });
+    // Sprache
+    var lang = {};
+
+    // Sprache / Aktionen
+    var actions = {};
 </script>
+<script src="/app/dist/js/arkadmin2/sub_pages/servercenter/statistiken.js" type="application/javascript"></script>

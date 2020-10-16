@@ -20,7 +20,9 @@
             </ul>
         </div>
     </nav>
+
     <hr />
+
     <div class="card border-0 bg-transparent shadow-none" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
         <div class="tab-content" id="pills-tabContent">
 
@@ -82,114 +84,59 @@
                     </ul>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
 
 {!ifcmods}{permissions??server??{cfg}??mods??add}
-<form class="modal fade" id="addmod" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
-        <div class="modal-content">
-            <div class="modal-header bg-dark">
-                <h5 class="modal-title">{::lang::servercenter::mods::nav::add}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
+    <form class="modal fade" id="addmod" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h5 class="modal-title">{::lang::servercenter::mods::nav::add}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
 
-            <div class="modal-body p-0">
-                <table class="table table-striped mb-0">
-                    <tbody>
-                        <tr id="addmodinput">
-                            <td class="p-2">
-                                <div class="input-group mb-0">
-                                    <input type="text" name="url[]" class="form-control form-control-sm" placeholder="Worshop URL / ModID">
-                                    <button type="button" class="btn btn-sm btn-info" onclick="additem('#addmodinput')"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <div class="modal-body p-0">
+                    <table class="table table-striped mb-0">
+                        <tbody>
+                            <tr id="addmodinput">
+                                <td class="p-2">
+                                    <div class="input-group mb-0">
+                                        <input type="text" name="url[]" class="form-control form-control-sm" placeholder="Worshop URL / ModID">
+                                        <button type="button" class="btn btn-sm btn-info" onclick="additem('#addmodinput')"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::mods::modal::remove::btn_cancel}</button>
-                <button href="#del731604991" onclick="remove('731604991', false)" class="btn btn-success" name="addmod">{::lang::servercenter::mods::btn_add}</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::mods::modal::remove::btn_cancel}</button>
+                    <button href="#del731604991" onclick="remove('731604991', false)" class="btn btn-success" name="addmod">{::lang::servercenter::mods::btn_add}</button>
+                </div>
             </div>
         </div>
-    </div>
-</form>{/permissions}{/!ifcmods}
+    </form>
+{/permissions}{/!ifcmods}
+
 
 <script>
-    function get(installed) {
-        if(!installed) {
-            getphp("/php/async/get/servercenter.mods.async.php?cfg={cfg}&case=mods_active", "modlist");
-        }
-        else {
-            getphp("/php/async/get/servercenter.mods.async.php?cfg={cfg}&case=mods_installed", "modlist_loc");
-        }
-    }
+    // Vars die zur JS übergeben werden
 
-    function push(up, modid) {
-        let resp = "#all_resp";
+    // Allgemeine Vars
+    var vars = {};
+    vars.cfg = "{cfg}";
 
-        $.post("/php/async/post/servercenter.mods.async.php?case=push", {
-            "cfg": "{cfg}",
-            "action": up ? "up" : "down",
-            "modid": modid
-        }, (data) => {
-            console.log(data);
-            let json = JSON.parse(data);
+    // Sprache
+    var lang = {};
 
-            if(json.success) {
-                $(resp).html(json.msg);
-                get(false);
-            }
-        });
-    }
-    get(true); get(false);
-
-    function pushto(modid, to) {
-        let resp = "#all_resp";
-
-        $.post("/php/async/post/servercenter.mods.async.php?case=pushto", {
-            "cfg": "{cfg}",
-            "to": to,
-            "modid": modid
-        }, (data) => {
-            console.log(data);
-            let json = JSON.parse(data);
-
-            if(json.success) {
-                $(resp).html(json.msg);
-                get(false);
-            }
-        });
-    }
-
-    function remove(modid, installed) {
-        let resp = "#all_resp";
-        let modal = installed ? `#del_installed${modid}` : `#del${modid}`;
-
-        $.post(`/php/async/post/servercenter.mods.async.php?case=${installed ? "remove_installed" : "remove"}`, {
-            "cfg": "{cfg}",
-            "modid": modid
-        }, (data) => {
-            console.log(data);
-            let json = JSON.parse(data);
-
-            if(json.success) {
-                $(resp).html(json.msg);
-                $(modal).modal('hide')
-                $("div.modal-backdrop").remove();
-                get(installed);
-            }
-        });
-    }
-
-    function additem(id) {
-        var clone = $(id).clone(true);
-        $(id).after(clone)
-    }
+    // Sprache / Aktionen
+    var actions = {};
 </script>
+<script src="/app/dist/js/arkadmin2/sub_pages/servercenter/logs.js" type="application/javascript"></script>
 
