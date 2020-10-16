@@ -20,55 +20,19 @@
         </table>
         </div>
     </div>
+</div>
 
+<script>
+    // Vars die zur JS übergeben werden
 
-    <script>
-        // load server
-        var table = $("#tbody_files");
+    // Allgemeine Vars
+    var vars = {};
+    vars.cfg = "{cfg}";
 
-        loadfile("");
+    // Sprache
+    // null
 
-        function loadfile(p) {
-            var load_data = {
-                path: p,
-                serv: "{cfg}",
-                case: "load"
-            };
-            //lade loader;
-            $.get("/php/async/get/servercenter.file.async.php", load_data, (data) => {
-                table.html(data);
-
-                // lade nun liste
-                var get_data = {
-                    path: p,
-                    serv: "{cfg}",
-                    case: "files"
-                };
-                $.get("/php/async/get/servercenter.file.async.php", get_data, (re) => {
-                    table.html(re);
-                });
-            });
-        }
-
-        function removeline(f, id) {
-            var del_data = {
-                case: "del",
-                path: "",
-                file: f,
-                serv: "{cfg}"
-            };
-            $.get("/php/async/get/servercenter.file.async.php", del_data, (re) => {
-                var json = JSON.parse(re);
-                if (json.code == 200) {
-                    $(id).remove();
-                } else {
-                    var alert_data = {
-                        code: json.code,
-                    };
-                    $.get("/php/async/get/all.alert.async.php", alert_data, (alert) => {
-                        $("#all_resp").html(alert);
-                    });
-                }
-            });
-        }
-    </script>
+    // Sprache / Aktionen
+    // null
+</script>
+<script src="/app/dist/js/arkadmin2/sub_pages/servercenter/file_manager.js" type="application/javascript"></script>

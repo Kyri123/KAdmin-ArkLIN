@@ -221,20 +221,23 @@
     // Vars die zur JS übergeben werden
 
     // Allgemeine Vars
-    var lang_arr = {lang_arr};
-    var cfg = '{cfg}';
-    var installed = {installed_int};
-    var expert = {exp_int};
+    var vars = {};
+    vars.lang_arr = {lang_arr};
+    vars.cfg = '{cfg}';
+    vars.installed = {installed_int};
+    vars.expert = {exp_int};
 
     // Sprache
-    var state_off = "{::lang::php::function_allg::state_off}";
-    var state_notinstalled = "{::lang::php::function_allg::state_notinstalled}";
-    var state_on = "{::lang::php::function_allg::state_on}";
-    var state_start = "{::lang::php::function_allg::state_start}";
+    var lang = {};
+    lang.state_off = "{::lang::php::function_allg::state_off}";
+    lang.state_notinstalled = "{::lang::php::function_allg::state_notinstalled}";
+    lang.state_on = "{::lang::php::function_allg::state_on}";
+    lang.state_start = "{::lang::php::function_allg::state_start}";
+    lang.action_closed = `{::lang::php::async::get::servercenter::main::action_closed}`;
 
     // Sprache / Aktionen
-    var action_pick_d = `<a href="javascript:void()" class="small-box-footer btn btn-sm btn-danger" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;
-    var action_closed = `{::lang::php::async::get::servercenter::main::action_closed}`;
-    var action_pick_s = `<a href="javascript:void()" class="small-box-footer btn btn-sm btn-success" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;
+    var actions = {};
+    actions.pick_d = `<a href="javascript:void()" class="small-box-footer btn btn-sm btn-danger" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;
+    actions.pick_s = `<a href="javascript:void()" class="small-box-footer btn btn-sm btn-success" data-toggle="modal" data-target="#action">{::lang::php::async::get::servercenter::main::action_pick}</a>`;
 </script>
 <script src="/app/dist/js/arkadmin2/pages/servercenter.js" type="application/javascript"></script>

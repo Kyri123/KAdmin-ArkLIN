@@ -1,37 +1,37 @@
-getphp("/php/async/get/servercenter.main.async.php?cfg=" + cfg + "&type=cards&case=info", "server-stats");
+getphp("/php/async/get/servercenter.main.async.php?cfg=" + vars.cfg + "&type=cards&case=info", "server-stats");
 
 setInterval(() => {
-    getphp("/php/async/get/servercenter.main.async.php?cfg=" + cfg + "&type=img&case=info", "serv_img");
+    getphp("/php/async/get/servercenter.main.async.php?cfg=" + vars.cfg + "&type=img&case=info", "serv_img");
 
     var state_id = $('#state');
     var player_id = $('#player');
 
-    $.get("/app/json/serverinfo/" + cfg + ".json?time=" + Date.now(), (data) => {
-        let serv_state = state_off;
+    $.get("/app/json/serverinfo/" + vars.cfg + ".json?time=" + Date.now(), (data) => {
+        let serv_state = lang.state_off;
         let serv_color = "danger";
         let statecode = 0;
-        if (installed !== 1) {
-            serv_state = state_notinstalled;
+        if (vars.installed !== 1) {
+            serv_state = lang.state_notinstalled;
             serv_color = "warning";
             statecode = 3;
         }
         else if (data.listening === "Yes" && data.online === "Yes" && data.run === "Yes") {
-            serv_state = state_on;
+            serv_state = lang.state_on;
             serv_color = "success";
             statecode = 2;
         }
         else if (data.listening === "No" && data.online === "No" && data.run === "Yes") {
-            serv_state = state_start;
+            serv_state = lang.state_start;
             serv_color = "info";
             statecode = 1;
         }
         else if (data.listening === "Yes" && data.online === "No" && data.run === "Yes") {
-            serv_state = state_start;
+            serv_state = lang.state_start;
             serv_color = "info";
             statecode = 1;
         }
         else if (data.listening === "No" && data.online === "Yes" && data.run === "Yes") {
-            serv_state = state_start;
+            serv_state = lang.state_start;
             serv_color = "info";
             statecode = 1;
         }
@@ -49,21 +49,18 @@ setInterval(() => {
         }
         if(player_id.html() !== inhalt) player_id.html(inhalt);
 
-        // Actions
-
-
         // Action Card
         let css;
-        if (data.next === "TRUE" && expert === 1) {
-            inhalt = action_pick_d;
+        if (data.next === "TRUE" && vars.expert === 1) {
+            inhalt = actions.pick_d;
             css = 'danger';
         }
         else if (data.next === "TRUE") {
-            inhalt = action_closed;
+            inhalt = lang.action_closed;
             css = 'danger';
         }
         else if (data.next === "FALSE") {
-            inhalt = action_pick_s;
+            inhalt = actions.pick_s;
             css = 'success';
         }
         if($('#actions').html() !== inhalt) $('#actions').html(inhalt).attr('class',`description-header text-${css}`);
@@ -118,7 +115,7 @@ $("#action_form").submit(() => {
 
                     $("#action_sel").prop('selectedIndex',0);
                     $('#actioninfo').toggleClass('d-none', true);
-                    if(expert) {
+                    if(vars.expert) {
                         $('#custom_command').val('');
                         $("#forcethis").prop('checked', false);
                     }
@@ -143,12 +140,12 @@ $('#action_sel').change(() => {
         });
     });
 
-    if(lang_arr[action] === undefined) {
+    if(vars.lang_arr[action] === undefined) {
         $('#actioninfo').toggleClass('d-none', true);
     }
     else {
-        $('#actioninfo_title').text(lang_arr[action].title);
-        $('#actioninfo_text').text(lang_arr[action].text);
+        $('#actioninfo_title').text(vars.lang_arr[action].title);
+        $('#actioninfo_text').text(vars.lang_arr[action].text);
         $('#actioninfo').toggleClass('d-none', false);
     }
 });

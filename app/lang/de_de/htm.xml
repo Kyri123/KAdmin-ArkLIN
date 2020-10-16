@@ -654,8 +654,6 @@
 
         <config>
             <btn_save>Speichern</btn_save>
-            <sel>Deaktiviert</sel>
-            <nonsel>Aktiviert</nonsel>
             <th_config>Option</th_config>
             <th_input>Input</th_input>
             <custom>Extra hinzufügen</custom>
