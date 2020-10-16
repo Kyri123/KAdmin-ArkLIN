@@ -422,5 +422,11 @@
                 - logs
             </text>
         </c_308>
+
+        <!-- INFO | MaxServer -->
+        <c_309>
+            <title>Das Maximum von [b]{maxserver}[/b] wurde erreicht!</title>
+            <text>Das Maximum an Server wurde erreicht. Es kann kein Weiterer Server erstellt werden.</text>
+        </c_309>
     </alert>
 </lang>

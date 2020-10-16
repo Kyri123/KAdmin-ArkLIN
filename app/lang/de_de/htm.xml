@@ -231,12 +231,14 @@
 
     <!-- ServerControllCenter -->
     <scc>
-        <table>
-            <servername>Servername</servername>
-            <map>Karte</map>
-            <ip>Addresse</ip>
-            <cluster>Cluster System</cluster>
-        </table>
+        <state>Status</state>
+
+        <tooltip>
+            <create>
+                <title>Server Erstellen</title>
+                <text>Erstelle einen neuen Server (Maximal: {maxserver})</text>
+            </create>
+        </tooltip>
 
         <modal>
             <title>Server Erstellen</title>
@@ -247,7 +249,6 @@
         </modal>
 
         <list>
-            <map>Map: {map_str}</map>
             <remove>Löschen</remove>
             <modal>
                 <title>Löschen: {servername}</title>
@@ -653,8 +654,6 @@
 
         <config>
             <btn_save>Speichern</btn_save>
-            <sel>Deaktiviert</sel>
-            <nonsel>Aktiviert</nonsel>
             <th_config>Option</th_config>
             <th_input>Input</th_input>
             <custom>Extra hinzufügen</custom>

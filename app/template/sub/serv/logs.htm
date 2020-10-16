@@ -17,75 +17,60 @@
                 </li>
             </ul>
             <form class="form-inline" action="#" method="POST" id="removeForm">
-                <div class="form-inline">
-
-                    <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
-                        <div class="btn-group">
-                            <button class="btn btn-dark btn-sm" type="button">
+                <ul class="nav navbar-nav aa-nav ml-auto float-right" id="logbar">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle btn-dark p-3" href="#" id="filter_txt-drop" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {::lang::allg::logs::filter}: <b id="filter_txt">{::lang::allg::on}</b> <span class="d-none" id="filter">true</span>
-                        </button>
-                            <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="javascript:void(true);" onclick="set('{::lang::allg::on}', 'filter_txt');set('true', 'filter')">{::lang::allg::on}</a>
-                                <a class="dropdown-item" href="javascript:void(true);" onclick="set('{::lang::allg::off}', 'filter_txt');set('false', 'filter')">{::lang::allg::off}</a>
-                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="filter_txt-drop">
+                            <a class="dropdown-item" href="javascript:void(true);" onclick="set('{::lang::allg::on}', 'filter_txt');set('true', 'filter')">{::lang::allg::on}</a>
+                            <a class="dropdown-item" href="javascript:void(true);" onclick="set('{::lang::allg::off}', 'filter_txt');set('false', 'filter')">{::lang::allg::off}</a>
                         </div>
-                    </div>
+                    </li>
 
-                    <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
-                        <div class="btn-group">
-                            <button class="btn btn-dark btn-sm" type="button">
-                            <b id="max">25</b>
-                        </button>
-                            <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="javascript:void();" onclick="set(25, 'max')">25</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set(50, 'max')">50</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set(150, 'max')">150</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set(250, 'max')">250</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set(500, 'max')">500</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set('∞', 'max')">∞</a>
-                            </div>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle btn-dark p-3" href="#" id="max-drop" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Max: <b id="max">25</b>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="max-drop">
+                            <a class="dropdown-item" href="javascript:void;" onclick="set(25, 'max')">25</a>
+                            <a class="dropdown-item" href="javascript:void;" onclick="set(50, 'max')">50</a>
+                            <a class="dropdown-item" href="javascript:void;" onclick="set(150, 'max')">150</a>
+                            <a class="dropdown-item" href="javascript:void;" onclick="set(250, 'max')">250</a>
+                            <a class="dropdown-item" href="javascript:void;" onclick="set(500, 'max')">500</a>
+                            <a class="dropdown-item" href="javascript:void;" onclick="set('∞', 'max')">∞</a>
                         </div>
-                    </div>
+                    </li>
 
-                    <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="hidebar">
-                        <div class="btn-group">
-                            <button class="btn btn-dark btn-sm" type="button">
-                                <b>
-                                    <i id="iconhide" class="null fas fa-check" aria-hidden="true"></i>
-                                </b>
-                                <span class="d-none" id="hide">Ja</span>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="javascript:void();" onclick="set('Ja', 'hide');set_icon('fas', 'fa-check', 'iconhide')">
-                                    <i class="fas fa-check" aria-hidden="true"></i> {::lang::allg::logs::show}</a>
-                                <a class="dropdown-item" href="javascript:void();" onclick="set('Nein', 'hide');set_icon('fa', 'fa-times', 'iconhide')">
-                                    <i class="fa fa-times" aria-hidden="true"></i> {::lang::allg::logs::hide}</a>
-                            </div>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle btn-dark p-3" href="#" id="hide-drop" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i id="iconhide" class="null fas fa-check" aria-hidden="true"></i>
+                            <span class="d-none" id="hide">Ja</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="hide-drop">
+                            <a class="dropdown-item" href="javascript:void();" onclick="set('Ja', 'hide');set_icon('fas', 'fa-check', 'iconhide')">
+                                <i class="fas fa-check" aria-hidden="true"></i> {::lang::allg::logs::show}</a>
+                            <a class="dropdown-item" href="javascript:void();" onclick="set('Nein', 'hide');set_icon('fa', 'fa-times', 'iconhide')">
+                                <i class="fa fa-times" aria-hidden="true"></i> {::lang::allg::logs::hide}</a>
                         </div>
-                    </div>
+                    </li>
 
-                    <div class="m-1 ml-auto float-right btn-group" style="display: inline-flex;" id="logbar">
-                        <div class="btn-group">
-                            <input type="hidden" name="clearlogs" value="true">
-                            <button class="btn btn-danger btn-sm mr-2" type="submit" id="removesubmit">
+                    {permissions??server??{cfg}??logs??clear}
+                        <li class="nav-item" style="cursor: pointer">
+                            <a onclick="$('#removeForm').submit()" href="#" class="nav-link bg-danger btn-dark p-3">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
+                            </a>
+                        </li>
+                    {/permissions}
+                </ul>
 
-                </div>
+                <input type="hidden" name="clearlogs" value="true">
             </form>
+        </div>
     </nav>
+
     <hr />
+
     <div class="card shadow">
         <div class="tab-content" id="pills-tabContent">
 
@@ -110,87 +95,71 @@
                         </td>
                     </tr>
                 </table>
-                </div>
+            </div>
 
-                <div class="tab-pane fade" id="pills-as" role="tabpanel" aria-labelledby="pills-as-tab">
-                    <table class="table table-striped mb-0">
-                        <tr class="bg-dark">
-                            <th colspan="2" class="p-0">
-                                <div class="list-group-item bg-dark">
-                                    <h4 class="m-0">ArkServer</h4>
-                            </th>
-                        </tr>
-                    </table>
-                    <table class="table table-striped mb-0" id="livelog_ark">
-                        <tr>
-                            <td>
-                                <div class="row p-0">
-                                    <div class="col-12">
-                                        <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
-                                        <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
-                                    </div>
+            <div class="tab-pane fade" id="pills-as" role="tabpanel" aria-labelledby="pills-as-tab">
+                <table class="table table-striped mb-0">
+                    <tr class="bg-dark">
+                        <th colspan="2" class="p-0">
+                            <div class="list-group-item bg-dark">
+                                <h4 class="m-0">ArkServer</h4>
+                        </th>
+                    </tr>
+                </table>
+                <table class="table table-striped mb-0" id="livelog_ark">
+                    <tr>
+                        <td>
+                            <div class="row p-0">
+                                <div class="col-12">
+                                    <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                    <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
                                 </div>
-                            </td>
-                        </tr>
-                    </table>
-                    </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
-                    <div class="tab-pane fade" id="pills-mods" role="tabpanel" aria-labelledby="pills-mods-tab">
-                        <table class="table table-striped mb-0">
-                            <tr class="bg-dark">
-                                <th colspan="2" class="p-0">
-                                    <div class="list-group-item bg-dark">
-                                        <h4 class="m-0">ArkServer</h4>
-                                </th>
-                            </tr>
-                        </table>
-                        <div id="mods" class="d-none">true</div>
-                        <table class="table table-striped mb-0" id="livelog_mods">
-                            <tr>
-                                <td>
-                                    <div class="row p-0">
-                                        <div class="col-12">
-                                            <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
-                                            <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        </div>
-                    </div>
-                </div>
+            <div class="tab-pane fade" id="pills-mods" role="tabpanel" aria-labelledby="pills-mods-tab">
+                <table class="table table-striped mb-0">
+                    <tr class="bg-dark">
+                        <th colspan="2" class="p-0">
+                            <div class="list-group-item bg-dark">
+                                <h4 class="m-0">Mods</h4>
+                        </th>
+                    </tr>
+                </table>
+                <div id="mods" class="d-none">true</div>
+                <table class="table table-striped mb-0" id="livelog_mods">
+                    <tr>
+                        <td>
+                            <div class="row p-0">
+                                <div class="col-12">
+                                    <i class="text-black-50 fas fa-cog fa-spin -align-left position-absolute" style="font-size: 45px;color: rgba(0,0,0,.5)!important;" height="50" width="50"></i>
+                                    <div style="margin-left: 60px;">{::lang::servercenter::load}<br><span class="font-weight-light" style="font-size: 11px;">{::lang::servercenter::wait}</span></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
+    </div>
+</div>
 
-        <script>
-            setInterval(function() {
-                getlog('remote/serv/{path}/arkmanager.log', '{cfg}', 'livelog_am', 'max', 'hide', 'filter');
-                getlog('remote/serv/{path}/arkserver.log', '{cfg}', 'livelog_ark', 'max', 'hide', 'filter');
-                getlog('remote/serv/{path}/arkmanager.log', '{cfg}', 'livelog_mods', 'max', 'hide', 'filter', 'mods');
-            }, 1000);
 
-            $(document).on('click', '#removesubmit', function(e) {
-                e.preventDefault();
-                const sweetAlert = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-                sweetAlert.fire({
-                    title: '{::lang::allg::logs::alert}',
-                    text: "{::lang::allg::logs::alert_titel}",
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    cancelButtonText: '{::lang::allg::logs::cancel}',
-                    confirmButtonText: '{::lang::allg::logs::clear}'
-                }).then((result) => {
-                    if (result.value) {
-                        $('#removeForm').submit();
-                    }
-                });
-            });
-        </script>
+<script>
+    // Vars die zur JS übergeben werden
+
+    // Allgemeine Vars
+    var vars = {};
+    vars.cfg = "{cfg}";
+    vars.path = "{path}";
+
+    // Sprache
+    var lang = {};
+
+    // Sprache / Aktionen
+    var actions = {};
+</script>
+<script src="/app/dist/js/arkadmin2/sub_pages/servercenter/logs.js" type="application/javascript"></script>

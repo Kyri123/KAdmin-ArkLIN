@@ -1,42 +1,16 @@
 <div id="all_resp">{resp}</div>
 <section class="content">
-
-    <!-- Default box -->
-    <div class="card">
-        <div class="card-body p-0">
-            <div class=" table-responsive">
-                <table class="table table-striped projects mb-0">
-                    <thead>
-                        <tr class="bg-dark">
-                            <th style="width: 60px" class="text-center">
-                                {::lang::scc::table::map}
-                            </th>
-                            <th style="width: auto">
-                                {::lang::scc::table::servername}
-                            </th>
-                            <th>
-                                {::lang::scc::table::ip}
-                            </th>
-                            <th>
-                                {::lang::scc::table::cluster}
-                            </th>
-                            <th>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {list}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- /.card-body -->
+    <div class="row">
+        {list}
+        {not_max}<a class="col-lg-6 col-xl-4" data-toggle="modal" data-target="#addserver" href="#">
+                <div class="border border-success text-success align-content-center justify-content-center align-items-center d-flex card" style="font-size: 75px; width:100%; height:278px; border: 2px solid!important; cursor: pointer">
+                    <i class="fas fa-plus"></i>
+                </div>
+        </a>{/not_max}
     </div>
-    <!-- /.card -->
-
 </section>
 {list_modal}
-{permissions??servercontrollcenter??create}
+{permissions??servercontrollcenter??create}{not_max}
 <!-- Modal -->
 <form class="modal fade" id="addserver" tabindex="-1" method="post" action="#">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
@@ -73,4 +47,4 @@
             </div>
         </div>
     </div>
-</form>{/permissions}
+</form>{/not_max}{/permissions}

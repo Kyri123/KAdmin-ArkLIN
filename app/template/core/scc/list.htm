@@ -1,43 +1,57 @@
-{!ifmodal}<tr>
-    <td>
-        <a href="{map}" target="_blank"><img src="{map}" style="height: 75px;" /></a>
-    </td>
-    <td style="width: auto">
-            <span class="badge badge-{state_color}">{state_str}</span> {servername}
-            <br>
-            <small>
-                {::lang::scc::list::map}
-            </small>
-    </td>
-    <td class="project_progress">
-        <a href="{con_url}">{servadress}</a>
-        <br>
-        <small>
-            <a href="{ARKSERV}">{ARKSERV}</a>
-        </small>
-    </td>
-    <td>
-        {ifincluster}
-            <a href="/cluster#{clusterid}">{clustername}</a>
-        {/ifincluster}
-        {!ifincluster}
-            {clustername}
-        {/!ifincluster}
-    </td>
-    <td class="project-actions text-right">
-        {permissions??server??{cfg}??show}<a class="btn btn-primary btn-sm" href="/servercenter/{cfg}" target="_blank">
-            <i class="fas fa-folder">
-            </i>
-            ServerCenter
-        </a>{/permissions}
-        {permissions??servercontrollcenter??delete}<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#remove{cfg}">
-            <i class="fas fa-trash">
-            </i>
-            {::lang::scc::list::remove}
-        </a>{/permissions}
-    </td>
-</tr>
-{/!ifmodal}{ifmodal}{permissions??servercontrollcenter??delete}
+{!ifmodal}<div class="col-lg-6 col-xl-4">
+    <div class="card card-widget widget-user">
+        <div class="card bg-dark card-widget widget-user mb-0">
+            <div class="row p-2" title="Breedable Creatures Bundle">
+                <div class="col-12 text-center">
+                    <h5 class="text-center left d-inline pt-3 pl-0 m-0">
+                        {servername}
+                    </h5>
+                </div>
+
+            </div>
+        </div>
+        <div class="widget-user-header text-white" style="background: url('{bg_img}') center center;">
+            {ifincluster}
+                <h5 title="Structures Plus (S+)" class="widget-user-desc text-bold text-center border" style="background-color: rgb(66 66 66 / 58%)!important;">
+                    <a href="/cluster#{clusterid}" class="text-light">{clustername}</a>
+                </h5>
+            {/ifincluster}
+        </div>
+        <div class="widget-user-image" id="serv_img" style="top: 124px;z-index: 1000"><img src="{server_img}" style="border-top-width: 3px!important;height: 90px;width: 90px;background-color: #001f3f" class="border-secondary"></div>
+        <div class="card card-widget widget-user mb-0">
+            <div class="text-left left d-inline" style="width:50%;padding-right: 45px;">
+                <a {permissions??server??{cfg}??show}href="/servercenter/{cfg}"{/permissions} target="_blank" style="width: 100%" class="btn btn-dark {!permissions??server??{cfg}??show}disabled{/permissions}"><i class="fas fa-server" aria-hidden="true"></i></a>
+            </div>
+            <div class="right-no-top ml-auto d-inline" style="width:50%;padding-left: 45px;">
+                <a style="width: 100%" class="text-white btn btn-danger {!permissions??servercontrollcenter??delete}disabled{/!permissions}" {permissions??servercontrollcenter??delete}data-toggle="modal" data-target="#remove{cfg}"{/permissions}><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="card-footer p-0">
+            <div class="row">
+                <div class="col-sm-4 border-right border-sm-right">
+                    <div class="description-block">
+                        <h5 class="description-header"><b><a href="{con_url}">{servadress}</a></b></h5>
+                        <span class="description-text">IP</span>
+                    </div>
+                </div>
+                <div class="col-sm-4 border-right border-sm-right">
+                    <div class="description-block">
+                        <h5 class="description-header"><b class="text-{state_color}">{state_str}</b></h5>
+                        <span class="description-text">{::lang::scc::state}</span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="description-block">
+                        <h5 class="description-header"><b>{map_str}</b></h5>
+                        <span class="description-text">Map</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>{/!ifmodal}
+
+{ifmodal}{permissions??servercontrollcenter??delete}
 <!-- Modal -->
 <form class="modal fade" id="remove{cfg}" tabindex="-1" method="post" action="#">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">

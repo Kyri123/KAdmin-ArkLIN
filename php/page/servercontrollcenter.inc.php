@@ -188,6 +188,9 @@ for ($i=0;$i<count($dir);$i++) {
         $serv_state = $converted["str"];
         $serv_color = $converted["color"];
 
+        $mapbg = file_exists('app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg') ? '/app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg' : '/app/dist/img/backgrounds/bg.jpg';
+        $mapimg = file_exists('app/dist/img/igmap/' . $serv->cfg_read('serverMap') . '.jpg') ? '/app/dist/img/igmap/' . $serv->cfg_read('serverMap') . '.jpg' : '/app/dist/img/logo/ark.png';
+
         $map_path = "app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
         if (!file_exists($map_path)) $map_path = "app/dist/img/igmap/ark.png";
         $list->r("map", $map_path);
@@ -203,9 +206,11 @@ for ($i=0;$i<count($dir);$i++) {
         $list->r('con_url', $data["connect"]);
         $list->r('ARKSERV', $data["ARKServers"]);
 
+        $list->r('bg_img', $mapbg);
+        $list->r('server_img', $mapimg);
+
         $list->rif ("ifmodal", false);
         $cfglist .= $list->load_var();
-
 
         $list = new Template("list.htm", $tpl_dir);
         $list->load();
@@ -225,16 +230,19 @@ for ($i=0;$i<count($dir);$i++) {
     }
 }
 
+$resp .= $maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2) ? null : $alert->rd(309);
 
 // lade in TPL
 $tpl->r("list", $cfglist);
 $tpl->r("list_modal", $cfgmlist);
 $tpl->r("resp", $resp);
+$tpl->rif("not_max", $maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2));
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
-if($user->perm("servercontrollcenter/create")) $btns = '<a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
-            <span class="icon">
-                <i class="fas fa-plus" aria-hidden="true"></i>
-            </span>
-            <span class="text">{::lang::php::scc::btn_addserver}</span>
-        </a>';
+if($user->perm("servercontrollcenter/create") && $maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2)) $btns = '<span  data-toggle="popover_action" data-content="{::lang::scc::tooltip::create::text}" data-original-title="{::lang::scc::tooltip::create::title}">
+                                                                <a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver" title="">
+                                                                    <span class="icon">
+                                                                        <i class="fas fa-plus" aria-hidden="true"></i>
+                                                                    </span>
+                                                                </a>
+                                                            </span>';

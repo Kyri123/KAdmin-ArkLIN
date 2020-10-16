@@ -12,10 +12,10 @@
 if(file_exists('php/inc/pconfig.inc.php')) include('pconfig.inc.php');
 
 // allgmeine
-$sitename = "ArkAdmin";
-$version = '1.2.1';
+$sitename = "ArkAdmin2";
+$version = '1.2.2';
 $ip = $_SERVER['SERVER_ADDR'];
-$maxpanel_server = 10;
+$maxpanel_server = 12;
 
 // Webserver
 $webserver['url'] = 'https://data.chiraya.de/';
