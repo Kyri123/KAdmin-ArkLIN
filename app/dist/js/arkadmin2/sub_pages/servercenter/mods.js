@@ -8,6 +8,8 @@ function get(installed) {
     }
 }
 
+get(true); get(false);
+
 function push(up, modid) {
     let resp = "#all_resp";
 
@@ -25,7 +27,6 @@ function push(up, modid) {
         }
     });
 }
-get(true); get(false);
 
 function pushto(modid, to) {
     let resp = "#all_resp";
@@ -58,7 +59,7 @@ function remove(modid, installed) {
 
         if(json.success) {
             $(resp).html(json.msg);
-            $(modal).modal('hide')
+            $(modal).modal('hide');
             $("div.modal-backdrop").remove();
             get(installed);
         }
