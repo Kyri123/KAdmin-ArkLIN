@@ -1,16 +1,16 @@
-getphp("/php/async/get/servercenter.main.async.php?cfg=" + vars.cfg + "&type=cards&case=info", "server-stats");
+getphp("/php/async/get/servercenter.main.async.php?cfg=" + varser.cfg + "&type=cards&case=info", "server-stats");
 
 setInterval(() => {
-    getphp("/php/async/get/servercenter.main.async.php?cfg=" + vars.cfg + "&type=img&case=info", "serv_img");
+    getphp("/php/async/get/servercenter.main.async.php?cfg=" + varser.cfg + "&type=img&case=info", "serv_img");
 
     var state_id = $('#state');
     var player_id = $('#player');
 
-    $.get("/app/json/serverinfo/" + vars.cfg + ".json?time=" + Date.now(), (data) => {
+    $.get("/app/json/serverinfo/" + varser.cfg + ".json?time=" + Date.now(), (data) => {
         let serv_state = lang.state_off;
         let serv_color = "danger";
         let statecode = 0;
-        if (vars.installed !== 1) {
+        if (varser.installed !== 1) {
             serv_state = lang.state_notinstalled;
             serv_color = "warning";
             statecode = 3;
@@ -51,7 +51,7 @@ setInterval(() => {
 
         // Action Card
         let css;
-        if (data.next === "TRUE" && vars.expert === 1) {
+        if (data.next === "TRUE" && varser.expert === 1) {
             inhalt = actions.pick_d;
             css = 'danger';
         }
@@ -115,7 +115,7 @@ $("#action_form").submit(() => {
 
                     $("#action_sel").prop('selectedIndex',0);
                     $('#actioninfo').toggleClass('d-none', true);
-                    if(vars.expert) {
+                    if(varser.expert) {
                         $('#custom_command').val('');
                         $("#forcethis").prop('checked', false);
                     }
@@ -140,12 +140,12 @@ $('#action_sel').change(() => {
         });
     });
 
-    if(vars.lang_arr[action] === undefined) {
+    if(varser.lang_arr[action] === undefined) {
         $('#actioninfo').toggleClass('d-none', true);
     }
     else {
-        $('#actioninfo_title').text(vars.lang_arr[action].title);
-        $('#actioninfo_text').text(vars.lang_arr[action].text);
+        $('#actioninfo_title').text(varser.lang_arr[action].title);
+        $('#actioninfo_text').text(varser.lang_arr[action].text);
         $('#actioninfo').toggleClass('d-none', false);
     }
 });

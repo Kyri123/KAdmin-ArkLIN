@@ -63,6 +63,6 @@ app.use(session({
 app.use('/', router);
 
 console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Server (Webserver): \x1b[36mhttp://${ip.address()}:${config.port}/`);
-logger.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Server (Webserver): \x1b[36mhttp://${ip.address()}:${config.port}/`);
+logger.log(`[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Server (Webserver): \x1b[36mhttp://${ip.address()}:${config.port}/`);
 
 module.exports = app;
