@@ -240,7 +240,7 @@
                 <all>
                     <getlog>
                         <no_log_found>[b][c=info]Info:[/c][/b] Kein log gefunden!</no_log_found>
-                        <toolarge>Zulang wird verborgen...</toolarge>
+                        <toolarge>Zu lang wird verborgen...</toolarge>
                     </getlog>
                 </all>
                 <servercenter>

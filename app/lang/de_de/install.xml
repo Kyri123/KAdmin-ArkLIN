@@ -125,8 +125,7 @@
             <text>[b]Crontab[/b]
                 Stelle sicher dass der ArkAdmin-Server richtig eingestellt ist.
                 Wenn der Crontab abgerufen wird wird der Abschluss der Installation freigeben [hr][b]Regestrierung[/b]
-                Erstelle nun ein Account: [a="/registration" blank]Klick mich![/a]
-                Dein Code lautet: [b]{code}[/b]</text>
+                Dein Regestrierungs Code lautet: [b]{code}[/b]</text>
         </step4>
 
     </install>
