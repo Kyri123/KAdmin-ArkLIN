@@ -94,6 +94,7 @@ if(isset($_SESSION["id"])) {
 
     // Erfasse IP
     $path = "app/json/user/".md5($_SESSION["id"]).".json";
+    if(!file_exists($path)) file_put_contents($path, "{}") ? null : null;
     if(file_exists($path)) {
         $json = $helper->file_to_json($path, true);
         $json["ip"] = getRealIpAddr();
