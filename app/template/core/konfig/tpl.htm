@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-3 col-sm-12 mb-3">
-        <ul class="nav nav-pills nav-sidebar flex-column nav-legacy navbar-dark border border-secondary" style="margin-top:0px">
+        <ul class="nav nav-pills nav-sidebar flex-column nav-legacy navbar-dark border border-secondary aa_nav" style="margin-top:0px">
             <li class="nav-item">
                 <a id="pills-panel-tab" data-toggle="pill" href="#pills-panel" role="tab" aria-controls="pills-panel" aria-selected="true" class="active show nav-link aa_nav_small_hover">
                     <i class="nav-icon fa fa-edit" aria-hidden="true"></i>
@@ -46,7 +46,7 @@
             </li>
             {/permissions}
 
-            {permissions??allg??api}
+            {permissions??all??api}
             <li class="nav-item">
                 <a id="pills-api-tab" href="#pills-api" role="tab" aria-controls="pills-api" data-toggle="pill" aria-selected="true" class="nav-link aa_nav_small_hover">
                     <i class="nav-icon fas fa-sitemap" aria-hidden="true"></i>
@@ -155,21 +155,38 @@
                     </table> {/steamcmdsys}
                 </form>
                 {/permissions}
-                {permissions??config??aa_show}
+
+                {permissions??all??api}
                 <!-- API -->
                 <form action="#save" method="post" class="tab-pane fade" id="pills-api" role="tabpanel" aria-labelledby="pills-api-tab">
                     <div class="list-group-item bg-dark">
                         <h4>API</h4>
                     </div>
                     <table class="table table-striped mb-0" id="form">
-                        <thead>
-                        <tr>
-                            <th style="width: 25%">{::lang::servercenter::config::th_config}</th>
-                            <th>{::lang::servercenter::config::th_input}</th>
-                        </tr>
-                        </thead>
                         <tbody id="tbody">
-                        {webhelper}
+                            <tr>
+                                <td>
+                                    <div class="form-group clearfix m-0">
+                                        <div class="{!API_ACTIVE}icheck-danger{/!API_ACTIVE}{API_ACTIVE}icheck-success{/API_ACTIVE} d-inline" id="API_INPUT_BOX">
+                                            <input name="json[konfig]" type="checkbox" id="API_INPUT" onchange="toggle_API()" {API_ACTIVE}checked{/API_ACTIVE}>
+                                            <label for="API_INPUT">{::lang::servercenter::config::api::actvie}</label>
+                                        </div>
+                                        <div id="API_INFO" {!API_ACTIVE}style="display: none"{/!API_ACTIVE}>
+                                            <hr>
+                                            <p>
+                                                {::lang::servercenter::config::api::infos}
+                                            </p>
+                                            <p>
+                                                {::lang::servercenter::config::api::key}: <b>{API_KEY}</b>
+                                            </p>
+                                            <hr>
+                                            <p>
+                                                {::lang::servercenter::config::api::doc}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </form>
@@ -178,3 +195,17 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Vars die zur JS übergeben werden
+
+    // Allgemeine Vars
+    var vars = {};
+
+    // Sprache
+    var lang = {};
+
+    // Sprache / Aktionen
+    var actions = {};
+</script>
+<script src="/app/dist/js/arkadmin2/pages/config.js" type="application/javascript"></script>

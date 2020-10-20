@@ -26,6 +26,7 @@ $resp = null;
 $limit = $helper->file_to_json("app/json/panel/aas_min.json", true);
 $maxi = $helper->file_to_json("app/json/panel/aas_max.json", true);
 
+$API_path = "php/inc/api.json";
 $ppath = "php/inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
 $wpath = 'arkadmin_server/config/server.json';
@@ -40,6 +41,18 @@ if (!isset($array["apikey"])) $array["apikey"] = null;
 if (!isset($array["show_err"])) $array["show_err"] = 0;
 if (!isset($array["steamcmddir"])) $array["steamcmddir"] = "/home/steam/Steam/";
 $helper->savejson_exsists($array, $ppath);
+
+//Erstelle wenn nicht vorhanden API Datei mit inhalt
+if(!file_exists($API_path)) {
+    $API_array = array(
+        "active" => 0,
+        "key" => md5(rndbit(20)) . "_" . md5($ip)
+    );
+    $helper->savejson_create($API_array, $API_path);
+}
+else {
+    $API_array = $helper->file_to_json($API_path, true);
+}
 
 //tpl
 $tpl = new Template('tpl.htm', $tpl_dir);
@@ -248,11 +261,8 @@ else {
     $steamcmd_exsists = false;
 }
 
-
 $tpl->r("steamcmd_info", (($steamcmd_exsists) ? null : $alert->rd(306, 3, 0, 0, 0, 0)));
 $tpl->r("info_CMD", $alert->rd(307, 3, 0, 0, 0, 0));
-$tpl->rif("steamcmdsys", $steamcmd_exsists);
-$tpl->rif("steamfile", $steamcmd_workshop_exsists);
 $tpl->r("cache_link", $cachelink);
 $tpl->r("cache_text", $cachetext);
 $tpl->r("arkmanager", (file_exists($apath)) ? file_get_contents($apath) : "");
@@ -260,6 +270,11 @@ $tpl->r("templatecfg", (file_exists($tpath)) ? file_get_contents($tpath) : "");
 $tpl->r("option_panel", $option_panel);
 $tpl->r('webhelper', $option_server);
 $tpl->r("resp", $resp);
+$tpl->r("API_KEY", $API_array["key"]);
+
+$tpl->rif("API_ACTIVE", boolval($API_array["active"]));
+$tpl->rif("steamcmdsys", $steamcmd_exsists);
+$tpl->rif("steamfile", $steamcmd_workshop_exsists);
 
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-edit\" aria-hidden=\"true\"></i>";

@@ -68,6 +68,14 @@
     color: #3a83cc;
 }
 
+.aa_nav li a {
+    color: #fff!important;
+}
+
+.aa_nav li a.active {
+    color: #3c8dbc!important;
+    border-left: 3px solid #3c8dbc!important;
+}
 
 
 @media (min-width: 576px) {

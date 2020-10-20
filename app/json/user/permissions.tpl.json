@@ -2,7 +2,8 @@
     "all": {
         "is_admin": 0,
         "manage_aas": 0,
-        "show_traffic": 1
+        "show_traffic": 1,
+        "api": 0
     },
     "servercontrollcenter": {
         "show": 1,
