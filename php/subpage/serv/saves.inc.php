@@ -175,6 +175,20 @@ elseif(isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
     $resp = $alert->rd(99);
 }
 
+// Entferne Savegame
+if (isset($_POST["removeall"]) && $user->perm("$perm/saves/remove")) {
+    $savedir = $serv->dir_save();
+    if(del_dir($savedir)) {
+        mkdir($savedir);
+        $resp = $alert->rd(101);
+    }
+    else {
+        $resp = $alert->rd(1);
+    }
+}
+elseif(isset($_POST["removeall"])) {
+    $resp = $alert->rd(99);
+}
 
 $urls = '/servercenter/'.$url[2].'/mods/';
 

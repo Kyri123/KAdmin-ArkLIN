@@ -42,7 +42,6 @@
         <on>An</on>
         <off>Aus</off>
 
-
         <send_done>Gesendet</send_done>
         <send_done_chat>Gesendet (Es kann ein paar Sekunden dauern bis es angezeigt wird)</send_done_chat>
         <send_fail>Fehler</send_fail>
@@ -694,6 +693,13 @@
                 <text>Lade Dateien einfach über eine tar.gz Datei runter</text>
                 <info>Wähle aus welche Dateien du downloaden möchtest</info>
             </zip>
+
+            <remove_all>
+                <title>Löschen Bestätigen!</title>
+                <txt>Bist du dir sicher dass du [b]ALLE[/b] Speicherstände entfernen möchtest?</txt>
+                <btn_cancel>Abbrechen</btn_cancel>
+                <btn_close>Löschen</btn_close>
+            </remove_all>
         </saves>
     </servercenter>
 </lang>

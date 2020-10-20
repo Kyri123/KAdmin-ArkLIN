@@ -124,6 +124,7 @@ if (isset($_POST["savepanel"]) && $user->perm("config/panel_save")) {
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");
     $filter_link = array("servlocdir","arklocdir","steamcmddir");
+    $json = $helper->file_to_json($ppath, true);
 
     for ($i=0;$i<count($a_key);$i++) {
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "1") $a_value[$i] = 1;

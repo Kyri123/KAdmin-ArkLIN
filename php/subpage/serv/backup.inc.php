@@ -83,10 +83,17 @@ if (isset($_POST["playthisin"]) && $user->perm("$perm/backup/playin")) {
     $state = $serv->statecode();
     $cpath = $serv->dir_save(true)."/Config/LinuxServer/";
 
+    $find = array($serv->name().".", ".tar.bz2");
+    $replace = array(null, null);
+    $filename = str_replace($find, $replace, $dir_array[$key][$i]);
+    $path = "app/cache/".$filename;
+
+    if(file_exists($path)) del_dir($path);
+
     try {
         // Entpacke Tar
-        $phar = new PharData($path);
-        $phar->extractTo('cache');
+        $phar = new PharData($serv->dir_backup()."/".$key."/".$dir_array[$key][$i]);
+        $phar->extractTo('app/cache');
         $cont = true;
     } catch (Exception $e) {
         // Melde: Datei konnte nicht Entpackt werden
@@ -94,10 +101,6 @@ if (isset($_POST["playthisin"]) && $user->perm("$perm/backup/playin")) {
         $cont = false;
     }
     if ($cont && $state == 0) {
-        $find = array($serv->name().".", ".tar.bz2");
-        $replace = array(null, null);
-        $filename = str_replace($find, $replace, $dir_array[$key][$i]);
-        $path = "cache/".$filename."/";
         $dir_array = dirToArray($path);
 
         if (in_array("remall", $opt)) {
@@ -106,37 +109,39 @@ if (isset($_POST["playthisin"]) && $user->perm("$perm/backup/playin")) {
         }
 
         for ($i=0;$i<count($dir_array);$i++) {
-            $info = pathinfo($path.$dir_array[$i]);
-            $ending = $info["extension"];
+            if(isset($dir_array[$i])) {
+                $info = pathinfo($path."/".$dir_array[$i]);
+                $ending = $info["extension"];
 
-            // Spiele wenn gewünscht Welten ein
-            if (in_array("world", $opt) && $ending == "ark") {
-                if (file_exists($spath."/".$dir_array[$i])) unlink($spath."/".$dir_array[$i]);
-                rename($path.$dir_array[$i], $spath."/".$dir_array[$i]);
-            }
-            elseif (!(in_array("world", $opt)) && $ending == "ark") {
-                unlink($path.$dir_array[$i]);
-            }
+                // Spiele wenn gewünscht Welten ein
+                if (in_array("world", $opt) && $ending == "ark") {
+                    if (file_exists($spath."/".$dir_array[$i])) unlink($spath."/".$dir_array[$i]);
+                    rename($path."/".$dir_array[$i], $spath."/".$dir_array[$i]);
+                }
+                elseif (!(in_array("world", $opt)) && $ending == "ark") {
+                    unlink($path."/".$dir_array[$i]);
+                }
 
-            // Spiele wenn gewünscht Inis ein
-            if (in_array("ini", $opt) && $ending == "ini") {
-                if (file_exists($cpath.$dir_array[$i])) unlink($cpath.$dir_array[$i]);
-                rename($path.$dir_array[$i], $cpath.$dir_array[$i]);
-            }
-            elseif (!(in_array("ini", $opt)) && $ending == "ini") {
-                unlink($path.$dir_array[$i]);
-            }
+                // Spiele wenn gewünscht Inis ein
+                if (in_array("ini", $opt) && $ending == "ini") {
+                    if (file_exists($cpath.$dir_array[$i])) unlink($cpath.$dir_array[$i]);
+                    rename($path."/".$dir_array[$i], $cpath.$dir_array[$i]);
+                }
+                elseif (!(in_array("ini", $opt)) && $ending == "ini") {
+                    unlink($path."/".$dir_array[$i]);
+                }
 
-            // Spiele wenn gewünscht Profile & Stämme ein
-            if (in_array("playerandtribes", $opt) && ($ending == "arkprofile" || $ending == "arktribe")) {
-                if (file_exists($spath."/".$dir_array[$i])) unlink($spath."/".$dir_array[$i]);
-                rename($path.$dir_array[$i], $spath."/".$dir_array[$i]);
-            }
-            elseif (!(in_array("playerandtribes", $opt)) && ($ending == "arkprofile" || $ending == "arktribe")) {
-                unlink($path.$dir_array[$i]);
+                // Spiele wenn gewünscht Profile & Stämme ein
+                if (in_array("playerandtribes", $opt) && ($ending == "arkprofile" || $ending == "arktribe")) {
+                    if (file_exists($spath."/".$dir_array[$i])) unlink($spath."/".$dir_array[$i]);
+                    rename($path."/".$dir_array[$i], $spath."/".$dir_array[$i]);
+                }
+                elseif (!(in_array("playerandtribes", $opt)) && ($ending == "arkprofile" || $ending == "arktribe")) {
+                    unlink($path."/".$dir_array[$i]);
+                }
             }
         }
-        rmdir($path);
+        del_dir($path);
         // Melde: Backup eingespielt
         $resp = $alert->rd(106);
     } else {

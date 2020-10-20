@@ -3,7 +3,7 @@
     border-top-width: 1px!important;
 }
 
-.aa_nav_hover {
+.aa_nav_hover .aa_nav_small_hover {
     border-color: #343a40;
     border-left: 3px solid transparent;
 }
@@ -11,6 +11,12 @@
 .aa_nav_hover:hover {
     background-color: rgba(255, 255, 255, .1) !important;
     color: #fff;
+    border-color: #a7a7a7;
+}
+
+.aa_nav_small_hover:hover {
+    background-color: rgba(255, 255, 255, .1) !important;
+    color: #fff!important;
     border-color: #a7a7a7;
 }
 
