@@ -59,12 +59,164 @@ include('php/inc/template_preinz.inc.php');
 // API
 
 // Prüfe auf berechtigung der API abfrage
-if(!isset($_GET["response"]) && !isset($_GET["key"]) || isset($_GET["key"]) && $_GET["key"] != $ckonfig["api_key"]) {
+$API_path           = "php/inc/api.json";
+$API_array          = $helper->file_to_json($API_path);
+$API_active         = boolval($API_array["active"]);
+$API_key            = $API_array["key"];
+
+$API_VALIDE_REQUEST = array(
+    "allserver",
+    "serverinfo",
+    "statistiken"
+);
+
+if(!isset($_GET["request"]) && !isset($_GET["key"]) || isset($_GET["key"]) && $_GET["key"] != $API_key) {
     echo '{"permissions": false}';
 }
 else {
-    if($_GET["key"] == $ckonfig["api_key"]) {
+    $API_RESPONSE = array();
+    $API_REQUEST = $_GET["request"];
+    if(!in_array($API_REQUEST, $API_VALIDE_REQUEST)) {
+        echo '{"request": "not found"}';
+    }
+    else {
+        /* LEGENDE
+         * ! = Pflichtfeld
+         * ? = Optional
+         * Pflicht/Opt | Var | Option | Beschreibung
+         */
 
+        /* REQUEST: allserver
+         *
+         * Gibt aus Welche Server es gibt
+         * ! | opt | full / lite | Wieviele Infos sollen die je jeweiligen Server enthalten: full mit alle dazugehörigen Infos | lite nur Namen
+         */
+        if($API_REQUEST == "allserver") {
+            if(isset($_GET["opt"]) && ($_GET["opt"] == "full" || $_GET["opt"] == "lite")) {
+                // Lite
+                if($_GET["opt"] == "lite") {
+                    $ALL_PATH = "app/json/serverinfo/all.json";
+                    if(file_exists($ALL_PATH)) {
+                        $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
+
+                        foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
+                            $RESPONSE["response"]["server"][] = str_replace(".cfg", null, $ITEM);
+                        }
+
+                        echo json_encode($RESPONSE);
+                    }
+                    else {
+                        echo '{"request": false}';
+                    }
+                }
+
+                // Full
+                elseif($_GET["opt"] == "full") {
+                    $ALL_PATH = "app/json/serverinfo/all.json";
+                    if(file_exists($ALL_PATH)) {
+                        $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
+
+                        foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
+                            $servername = str_replace(".cfg", null, $ITEM);
+                            $SERVER_PATH = "app/json/serverinfo/$servername.json";
+                            if(file_exists($SERVER_PATH)) {
+                                $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
+
+                                if(isset($SERVER_ARRAY["warning_count"]))   unset($SERVER_ARRAY["warning_count"]);
+                                if(isset($SERVER_ARRAY["error_count"]))     unset($SERVER_ARRAY["error_count"]);
+                                if(isset($SERVER_ARRAY["error"]))           unset($SERVER_ARRAY["error"]);
+                                if(isset($SERVER_ARRAY["warning"]))         unset($SERVER_ARRAY["warning"]);
+
+                                $server = new server($servername);
+
+                                $SERVER_ARRAY["mods"]       = $server->cfg_read("ark_GameModIds");
+                                $SERVER_ARRAY["statecode"]  = $server->statecode();
+                                $SERVER_ARRAY["server_ip"]  = "$ip:".$server->cfg_read("ark_QueryPort");
+
+                                $RESPONSE["response"]["server"][$servername] = $SERVER_ARRAY;
+                            }
+                        }
+
+                        echo json_encode($RESPONSE);
+                    }
+                    else {
+                        echo '{"request": false}';
+                    }
+                }
+            }
+            else {
+                echo '{"request": false}';
+            }
+        }
+
+        /* REQUEST: serverinfo
+         *
+         * Gibt aus Welche Server es gibt
+         * ! | server | xyz | Servernamen
+         */
+        if($API_REQUEST == "serverinfo") {
+            $SERVER_NAME = isset($_GET["server"]) ? $_GET["server"] : "unknown";
+            if(file_exists("remote/arkmanager/instances/$SERVER_NAME.cfg")) {
+                $SERVER_PATH = "app/json/serverinfo/$SERVER_NAME.json";
+                if(file_exists($SERVER_PATH)) {
+                    $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
+
+                    if(isset($SERVER_ARRAY["warning_count"]))   unset($SERVER_ARRAY["warning_count"]);
+                    if(isset($SERVER_ARRAY["error_count"]))     unset($SERVER_ARRAY["error_count"]);
+                    if(isset($SERVER_ARRAY["error"]))           unset($SERVER_ARRAY["error"]);
+                    if(isset($SERVER_ARRAY["warning"]))         unset($SERVER_ARRAY["warning"]);
+
+                    $server = new server($SERVER_NAME);
+
+                    $SERVER_ARRAY["mods"]       = $server->cfg_read("ark_GameModIds");
+                    $SERVER_ARRAY["statecode"]  = $server->statecode();
+                    $SERVER_ARRAY["server_ip"]  = "$ip:".$server->cfg_read("ark_QueryPort");
+
+                    $RESPONSE["response"]["serverinfo"] = $SERVER_ARRAY;
+                    echo json_encode($RESPONSE);
+                }
+                else {
+                    echo '{"request": false}';
+                }
+            }
+            else {
+                echo '{"request": false}';
+            }
+        }
+
+        /* REQUEST: statistiken
+         *
+         * Gibt die Statisken aus
+         * ! | server | servername | Name des Servers
+         * ? | max | int !=< 1 | Wieviele Datensätze sollen ausgegeben werden
+         * ? | order | DESC / ASC | Wie soll geordnet werden
+         */
+        if($API_REQUEST == "statistiken") {
+            if(isset($_GET["server"])) {
+                $SERVER_NAME = $_GET["server"];
+                if(file_exists("remote/arkmanager/instances/$SERVER_NAME.cfg")) {
+                    $MAX = isset($_GET["max"]) ? intval($_GET["max"]) : 100;
+                    if($MAX < 1) $MAX = 1;
+                    $ORDER = isset($_GET["order"]) ? ($_GET["max"] == "ASC" ? "ASC" : "DESC") : "DESC";
+
+                    $query = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = '$SERVER_NAME' ORDER BY `time` $ORDER LIMIT $MAX";
+                    $mycon->query($query);
+                    if($mycon->numRows() > 0) {
+                        $RESPONSE["response"]["statistiken"] = $mycon->fetchAll();
+                        echo json_encode($RESPONSE);
+                    }
+                    else {
+                        echo '{"request": false}';
+                    }
+                }
+                else {
+                    echo '{"request": false}';
+                }
+            }
+            else {
+                echo '{"request": false}';
+            }
+        }
     }
 }
 

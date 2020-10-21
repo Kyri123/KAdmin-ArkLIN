@@ -32,21 +32,21 @@ $apath = "remote/arkmanager/arkmanager.cfg";
 $wpath = 'arkadmin_server/config/server.json';
 $tpath = 'app/data/template.cfg';
 $array = $helper->file_to_json($ppath, true);
-if (!isset($array["clusterestart"])) $array["clusterestart"] = 0;
-if (!isset($array["uninstall_mod"])) $array["uninstall_mod"] = 0;
-if (!isset($array["install_mod"])) $array["install_mod"] = 0;
-if (!isset($array["servlocdir"])) $array["servlocdir"] = 0;
-if (!isset($array["arklocdir"])) $array["arklocdir"] = null;
-if (!isset($array["apikey"])) $array["apikey"] = null;
-if (!isset($array["show_err"])) $array["show_err"] = 0;
-if (!isset($array["steamcmddir"])) $array["steamcmddir"] = "/home/steam/Steam/";
+if (!isset($array["clusterestart"]))    $array["clusterestart"] = 0;
+if (!isset($array["uninstall_mod"]))    $array["uninstall_mod"] = 0;
+if (!isset($array["install_mod"]))      $array["install_mod"] = 0;
+if (!isset($array["servlocdir"]))       $array["servlocdir"] = 0;
+if (!isset($array["arklocdir"]))        $array["arklocdir"] = null;
+if (!isset($array["apikey"]))           $array["apikey"] = null;
+if (!isset($array["show_err"]))         $array["show_err"] = 0;
+if (!isset($array["steamcmddir"]))      $array["steamcmddir"] = "/home/steam/Steam/";
 $helper->savejson_exsists($array, $ppath);
 
 //Erstelle wenn nicht vorhanden API Datei mit inhalt
 if(!file_exists($API_path)) {
     $API_array = array(
         "active" => 0,
-        "key" => md5(rndbit(20)) . "_" . md5($ip)
+        "key" => md5(rndbit(20))
     );
     $helper->savejson_create($API_array, $API_path);
 }
@@ -271,6 +271,9 @@ $tpl->r("option_panel", $option_panel);
 $tpl->r('webhelper', $option_server);
 $tpl->r("resp", $resp);
 $tpl->r("API_KEY", $API_array["key"]);
+$tpl->r("website", ($_SERVER['HTTPS'] == "on" ? "https://" : "http://") . $_SERVER['HTTP_HOST']);
+
+
 
 $tpl->rif("API_ACTIVE", boolval($API_array["active"]));
 $tpl->rif("steamcmdsys", $steamcmd_exsists);

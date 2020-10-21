@@ -2,15 +2,19 @@
 
 <div class="row">
     <div class="col-lg-3 col-sm-12">
-        <ul class="list-group list-group-flush border">
-            <li class="list-group-item bg-dark">
-                <h4>{::lang::usersettings::navigation}</h4>
+        <ul class="nav nav-pills nav-sidebar flex-column navbar-dark border border-secondary aa_nav" style="margin-top:0px">
+            <li class="nav-item">
+                <a id="pills-settings-tab" data-toggle="pill" href="#pills-settings" role="tab" aria-controls="pills-settings" aria-selected="true" class="active show nav-link aa_nav_small_hover">
+                    <i class="nav-icon fa fa-edit" aria-hidden="true"></i>
+                    {::lang::usersettings::settings}
+                </a>
             </li>
-            <li class="list-group-item">
-                <a id="pills-home-tab" data-toggle="pill" href="#pills-settings" role="tab" aria-controls="pills-settings" aria-selected="true">{::lang::usersettings::settings}</a>
-            </li>
-            <li class="list-group-item">
-                <a id="pills-profile-tab" data-toggle="pill" href="#pills-expsettings" role="tab" aria-controls="pills-expsettings" aria-selected="false">{::lang::usersettings::expsettings}</a>
+
+            <li class="nav-item">
+                <a id="pills-expsettings-tab" data-toggle="pill" href="#pills-expsettings" role="tab" aria-controls="pills-expsettings" aria-selected="true" class="nav-link aa_nav_small_hover">
+                    <i class="nav-icon fa fa-edit" aria-hidden="true"></i>
+                    {::lang::usersettings::expsettings}
+                </a>
             </li>
         </ul>
     </div>

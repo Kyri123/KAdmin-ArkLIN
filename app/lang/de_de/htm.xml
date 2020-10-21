@@ -226,6 +226,30 @@
             <true>Ja</true>
             <false>Nein</false>
         </opt>
+
+        <api>
+            <active>API Aktivieren</active>
+            <infos>Deine API ist nun Aktiv und kann Genutzt werden. Die Dokumentation findest du weiter unten.</infos>
+            <key>Dein API Key lautet:</key>
+
+            <doc>
+                <allserver>Gibt Informationen über alle Server aus</allserver>
+                <allserver_vars>[Optional] [b]opt=lite|full[/b] - Standart: [b]lite[/b]
+                    [b]lite[/b] Gibt nur Die Instanznamen der Server wieder
+                    [b]full[/b] Gibt Instanznamen und weitere Informationen wieder wie z.B.: den Statuscode</allserver_vars>
+
+                <statistiken>Gibt die Statistiken eines Servers aus</statistiken>
+                <statistiken_vars>[Pflicht] [b]server=xyz[/b]
+                    Name der Server Instance diese kann z.B. über "allserver" ermittelt werden[hr][Optional] [b]max=1-1000[/b] - Standart: [b]100[/b]
+                    Wieviele Datensätze sollen ausgeben werden (1-1000) [hr][Optional] [b]order=DESC|ASC[/b] - Standart: [b]DESC[/b]
+                    [b]DESC[/b] Ordnet die Datensätze nach Zeit aufsteigend
+                    [b]ASC[/b] Ordnet die Datensätze nach Zeit absteigend </statistiken_vars>
+
+                <serverinfo>Gibt Informationen über einen bestimmten Server aus</serverinfo>
+                <serverinfo_vars>[Pflicht] [b]server=xyz[/b]
+                    Name der Server Instance diese kann z.B. über "allserver" ermittelt werden</serverinfo_vars>
+            </doc>
+        </api>
     </config>
 
     <!-- ServerControllCenter -->

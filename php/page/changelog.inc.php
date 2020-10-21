@@ -52,7 +52,8 @@ $name = array(
     "<strong>Crontab",
     "<strong>Shell",
     "<strong>Statusabfrage & Statistiken",
-    "<strong>Logs"
+    "<strong>Logs",
+    "<strong>API"
 );
 $withicon = array(
     "<strong><i class='fas fa-code'></i> Intern",
@@ -81,7 +82,8 @@ $withicon = array(
     "<strong><i class=\"fa fa-server\"></i> Webserver",
     "<strong><i class=\"fas fa-terminal\"></i> Shell",
     "<strong><i class=\"fas fa-chart-bar\"></i> Statusabfrage & Statistiken",
-    "<strong><i class=\"fas fa-list\"></i> Logs"
+    "<strong><i class=\"fas fa-list\"></i> Logs",
+    "<strong><i class=\"fas fa-sitemap\"></i> API"
 );
 
 //tpl

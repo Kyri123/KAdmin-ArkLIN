@@ -88,18 +88,18 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$per
 
     // Wenn Spieler
     if (strpos($file_name, 'profile') !== false) {
-        $file['name1'] = $savedir.'/'.$file_name;
-        $file['tname'] = str_replace('.arkprofile', null, $file_name);
-        $file['name2'] = str_replace('.arkprofile', '.profilebak', $file_name);
-        $file['name2'] = $savedir.'/'.$file['name2'];
+        $filename_1 = $savedir.'/'.$file_name;
+        $filetname = str_replace('.arkprofile', null, $file_name);
+        $filename_2 = str_replace('.arkprofile', '.profilebak', $file_name);
+        $filename_2 = $savedir.'/'.$filename_2;
         $del[0] = 0;
         $del[1] = 0;
 
-        if (file_exists($file['name1'])) {
-            if (unlink($file['name1']));
+        if (file_exists($filename_1)) {
+            if (unlink($filename_1));
         }
-        if (file_exists($file['name2'])) {
-            if (unlink($file['name2']));
+        if (file_exists($filename_2)) {
+            if (unlink($filename_2));
         }
 
         $path = 'app/json/saves/player_'.$serv->name().'.json';
@@ -107,7 +107,7 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$per
 
         for ($i=0;$i<count($json);$i++) {
             $pl = $jhelper->player($json, $i);
-            if ($file['tname'] == $pl->SteamId) {
+            if ($filetname == $pl->SteamId) {
                 unset($json[$i]);
                 break;
             }
@@ -122,20 +122,20 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$per
 
     // Wenn Stamm
     elseif (strpos($file_name, 'tribe') !== false) {
-        $file['name1'] = $savedir.'/'.$file_name;
-        $file['tname'] = str_replace('.arktribe', null, $file_name);
-        $file['name2'] = str_replace('.arktribe', '.tribebak', $file_name);
-        $file['name2'] = $savedir.'/'.$file['name2'];
+        $filename_1 = $savedir.'/'.$file_name;
+        $filetname = str_replace('.arktribe', null, $file_name);
+        $filename_2 = str_replace('.arktribe', '.tribebak', $file_name);
+        $filename_2 = $savedir.'/'.$filename_2;
         $del[0] = 0;
         $del[1] = 0;
 
         print_r($file);
 
-        if (file_exists($file['name1'])) {
-            if (unlink($file['name1']));
+        if (file_exists($filename_1)) {
+            if (unlink($filename_1));
         }
-        if (file_exists($file['name2'])) {
-            if (unlink($file['name2']));
+        if (file_exists($filename_2)) {
+            if (unlink($filename_2));
         }
         print_r($del);
 
@@ -143,7 +143,7 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$per
         $json = $helper->file_to_json($path);
         for ($i=0;$i<count($json);$i++) {
             $pl = $jhelper->tribe($json, $i);
-            if ($file['tname'] == $pl->Id) {
+            if ($filetname == $pl->Id) {
                 unset($json[$i]); break;
             }
         }
@@ -157,12 +157,12 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$per
 
     // Wenn Welt
     elseif (strpos($file_name, '.ark') !== false) {
-        $file['name1'] = $savedir.'/'.$file_name;
-        $file['tname'] = str_replace('.ark', null, $file_name);
-        if (unlink($file['name1'])) {
+        $filename = $savedir.'/'.$file_name;
+        $filetname = str_replace('.ark', null, $file_name);
+        if (unlink($filename)) {
             $arr = dirToArray($serv->dir_save());
             for ($i=0;$i<count($arr);$i++) {
-                if (strpos($arr[$i], $file['tname']) !== false) {
+                if (strpos($arr[$i], $filetname) !== false) {
                     if (file_exists($savedir.'/'.$arr[$i])) unlink($savedir.'/'.$arr[$i]);
                 }
             }

@@ -169,20 +169,59 @@
                                     <div class="form-group clearfix m-0">
                                         <div class="{!API_ACTIVE}icheck-danger{/!API_ACTIVE}{API_ACTIVE}icheck-success{/API_ACTIVE} d-inline" id="API_INPUT_BOX">
                                             <input name="json[konfig]" type="checkbox" id="API_INPUT" onchange="toggle_API()" {API_ACTIVE}checked{/API_ACTIVE}>
-                                            <label for="API_INPUT">{::lang::servercenter::config::api::actvie}</label>
+                                            <label for="API_INPUT">{::lang::config::api::active}</label>
                                         </div>
                                         <div id="API_INFO" {!API_ACTIVE}style="display: none"{/!API_ACTIVE}>
                                             <hr>
                                             <p>
-                                                {::lang::servercenter::config::api::infos}
+                                                {::lang::config::api::infos}
                                             </p>
                                             <p>
-                                                {::lang::servercenter::config::api::key}: <b>{API_KEY}</b>
+                                                {::lang::config::api::key} <b>{API_KEY}</b>
                                             </p>
                                             <hr>
-                                            <p>
-                                                {::lang::servercenter::config::api::doc}
-                                            </p>
+
+                                            <!-- allserver -->
+                                            <div class="mb-2">
+                                                <div class="border border-secondary bg-dark p-2">
+                                                    <span class="badge badge-info">GET</span>
+                                                    <code>{website}/api.php?key={API_KEY}&request=allserver&opt={lite|full}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                    <code>{::lang::config::api::doc::allserver_vars}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                        {::lang::config::api::doc::allserver}
+                                                </div>
+                                            </div>
+
+                                            <!-- serverinfo -->
+                                            <div class="mb-2">
+                                                <div class="border border-secondary bg-dark p-2">
+                                                    <span class="badge badge-info">GET</span>
+                                                    <code>{website}/api.php?key={API_KEY}&request=serverinfo&server={xyz}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                    <code>{::lang::config::api::doc::serverinfo_vars}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                    {::lang::config::api::doc::serverinfo}
+                                                </div>
+                                            </div>
+
+                                            <!-- statistiken -->
+                                            <div class="mb-2">
+                                                <div class="border border-secondary bg-dark p-2">
+                                                    <span class="badge badge-info">GET</span>
+                                                    <code>{website}/api.php?key={API_KEY}&request=statistiken&max={1-1000}&order={DESC/ASC}&server={xyz}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                    <code>{::lang::config::api::doc::statistiken_vars}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                    {::lang::config::api::doc::statistiken}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>

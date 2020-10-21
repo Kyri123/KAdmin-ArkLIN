@@ -42,7 +42,7 @@
 
         <aside class="main-sidebar sidebar-dark-primary">
             <a href="/" class="brand-link elevation-5">
-                <span class="brand-text font-weight-light"><b>Ark</b>Admin<b>2</b> {aa_version}</span>
+                <span class="brand-text font-weight-light"><b>Ark</b>Admin<b>2</b></span>
                 <div class="ribbon-wrapper">
                     <div class="ribbon bg-success">
                         Beta
@@ -261,13 +261,12 @@
                 </div>
             </section>
         </div>
-        <nav class="main-footer navbar navbar-expand navbar-light elevation-2">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    {::lang::allg::pageload}
-                </li>
-            </ul>
-        </nav>
+        <footer class="main-footer">
+            {::lang::allg::pageload}
+            <a href="/changelog" class="float-right d-none d-sm-inline-block">
+                <b>Version</b> {aa_version}
+            </a>
+        </footer>
 
     </div>
 
