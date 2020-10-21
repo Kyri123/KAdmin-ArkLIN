@@ -83,6 +83,7 @@ $withicon = array(
     "<strong><i class=\"fas fa-terminal\"></i> Shell",
     "<strong><i class=\"fas fa-chart-bar\"></i> Statusabfrage & Statistiken",
     "<strong><i class=\"fas fa-list\"></i> Logs",
+    "<strong><i class=\"fas fa-sitemap\"></i> API",
     "<strong><i class=\"fas fa-sitemap\"></i> API"
 );
 
