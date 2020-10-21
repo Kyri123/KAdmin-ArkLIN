@@ -9,12 +9,27 @@
 }
 
 .aa_nav_hover:hover {
+    border-left: 3px solid rgba(255, 255, 255, .5);
+}
+
+.aa_nav_small_hover {
+    margin: 0 0 0 0!important;
+    border-left: 3px solid transparent;
+    background-color: transparent!important;
+}
+
+.aa_nav_small_hover:hover {
+    background-color: transparent!important;
+}
+
+.aa_nav_hover:hover {
     background-color: rgba(255, 255, 255, .1) !important;
     color: #fff;
     border-color: #a7a7a7;
 }
 
 .aa_nav_small_hover:hover {
+    border-left: 3px solid rgba(255, 255, 255, .5);
     background-color: rgba(255, 255, 255, .1) !important;
     color: #fff!important;
     border-color: #a7a7a7;

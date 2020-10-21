@@ -67,14 +67,14 @@ if (is_array($player_json)) {
     }
 }
 
-$ifslave = ($serv->cluster_type() == 0 && $serv->cluster_in());
-$ifcadmin = ($serv->cluster_admin() && $ifslave && $serv->cluster_in());
-$ifckonfig = ($serv->cluster_konfig() && $ifslave && $serv->cluster_in());
-$ifwhitelist = ($serv->cluster_whitelist() && $ifslave && $serv->cluster_in());
-$ifcmods = ($serv->cluster_mods() && $ifslave && $serv->cluster_in());
+$ifslave        = ($serv->cluster_type() == 0   && $serv->cluster_in());
+$ifcadmin       = ($serv->cluster_admin()       && $ifslave             && $serv->cluster_in());
+$ifckonfig      = ($serv->cluster_konfig()      && $ifslave             && $serv->cluster_in());
+$ifwhitelist    = ($serv->cluster_whitelist()   && $ifslave             && $serv->cluster_in());
+$ifcmods        = ($serv->cluster_mods()        && $ifslave             && $serv->cluster_in());
 
-$servername = $serv->cfg_read('ark_SessionName');
-$qport = $serv->cfg_read('ark_QueryPort');
+$servername     = $serv->cfg_read('ark_SessionName');
+$qport          = $serv->cfg_read('ark_QueryPort');
 
 //tpl
 $tpl = new Template('main.htm', $tpl_dir);
@@ -117,42 +117,59 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
         $list_tpl->load();
 
         // Hole Daten
+        $fsteamid = null;
         foreach($steamapi_user as $k => $v) {
-            if($v["personaname"] == $player_online[$i]["name"]) {
+            if(isset($player_online[$i]["name"]) && $v["personaname"]) if($v["personaname"] == $player_online[$i]["name"]) {
                 $fsteamid = $k;
                 break;
             }
         }
-        $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$fsteamid."'";
-        $query = $mycon->query($query);
 
-        if($query->numRows() > 0) {
-            $row = $query->fetchArray();
+        $found = true;
+        if($fsteamid != null) {
+            $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$fsteamid."'";
+            $query = $mycon->query($query);
 
-            $img = $steamapi_user[$fsteamid]["avatar"];
-            $SteamId = $fsteamid;
-            $surl = $steamapi_user[$fsteamid]["profileurl"];
-            $steamname = $steamapi_user[$fsteamid]["personaname"];
-            $IG_level = $row["Level"];
-            $xp = $row["ExperiencePoints"];
-            $SpielerID = $row["id"];
-            $FileUpdated = $row["FileUpdated"];
-            $TribeId = $row["TribeId"];
-            $TotalEngramPoints = $row["TotalEngramPoints"];
-            $TribeName = $row["TribeName"];
-            $IG_name = $row["CharacterName"] == "" ? $player_online[$i]["name"] : $row["CharacterName"];
+            if($query->numRows() > 0) {
+                $row = $query->fetchArray();
+
+                $img                = $steamapi_user[$fsteamid]["avatar"];
+                $SteamId            = $fsteamid;
+                $surl               = $steamapi_user[$fsteamid]["profileurl"];
+                $steamname          = $steamapi_user[$fsteamid]["personaname"];
+                $IG_level           = $row["Level"];
+                $xp                 = $row["ExperiencePoints"];
+                $SpielerID          = $row["id"];
+                $FileUpdated        = $row["FileUpdated"];
+                $TribeId            = $row["TribeId"];
+                $TotalEngramPoints  = $row["TotalEngramPoints"];
+                $TribeName          = $row["TribeName"];
+                $IG_name            = $row["CharacterName"] == "" ? (!isset($player_online[$i]["name"]) ? "Unkown" : $player_online[$i]["name"]) : $row["CharacterName"];
+            }
+            else {
+                $found = false;
+            }
         }
         else {
-            $img = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/";
-            $surl = "#unknown";
-            $steamname = $player_online[$i]["name"];
-            $SteamId = $fsteamid;
-            $xp = $SpielerID = $TotalEngramPoints = 0;
-            $FileUpdated = time();
-            $TribeId = 7;
-            $TribeName = null;
-            $IG_name = $player_online[$i]["name"];
+            $found = false;
         }
+
+        if(!$found) {
+            $xp                     = 0;
+            $SpielerID              = 0;
+            $TotalEngramPoints      = 0;
+            $SteamId                = $fsteamid;
+            $img                    = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/";
+            $surl                   = "#unknown";
+            $steamname              = $player_online[$i]["name"];
+            $FileUpdated            = time();
+            $TribeId                = 7;
+            $TribeName              = null;
+            $IG_name                = $player_online[$i]["name"];
+            $IG_level               = 0;
+        }
+
+        $time = TimeCalc($player_online[$i]["time"], ($player_online[$i]["time"] > 3600 ? "h" : "m"), "disabled");
 
         $list_tpl->r('tribe', (($TribeName != null) ? $TribeName : '{::lang::php::sc::notribe}'));
         $list_tpl->r('IG:name', $IG_name);
@@ -167,7 +184,6 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
         $list_tpl->r('SpielerID', $SpielerID);
         $list_tpl->r('TEP', $TotalEngramPoints);
         $list_tpl->r('TID', $TribeId);
-        $time = TimeCalc($player_online[$i]["time"], ($player_online[$i]["time"] > 3600 ? "h" : "m"), "disabled");
         $list_tpl->r('IG:online', round($time["int"], 2) . ' ' . $time["lang"]);
         $list_tpl->rif ('empty', true);
 
