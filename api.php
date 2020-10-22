@@ -92,56 +92,56 @@ else {
          * ! | opt | full / lite | Wieviele Infos sollen die je jeweiligen Server enthalten: full mit alle dazugehörigen Infos | lite nur Namen
          */
         if($API_REQUEST == "allserver") {
-            if(isset($_GET["opt"]) && ($_GET["opt"] == "full" || $_GET["opt"] == "lite")) {
-                // Lite
-                if($_GET["opt"] == "lite") {
-                    $ALL_PATH = "app/json/serverinfo/all.json";
-                    if(file_exists($ALL_PATH)) {
-                        $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
+            $opt = isset($_GET["opt"]) ? ($_GET["opt"] == "full" ? "full" : "lite") : "lite";
 
-                        foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
-                            $RESPONSE["response"]["server"][] = str_replace(".cfg", null, $ITEM);
-                        }
+            // Lite
+            if($opt == "lite") {
+                $ALL_PATH = "app/json/serverinfo/all.json";
+                if(file_exists($ALL_PATH)) {
+                    $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
 
-                        echo json_encode($RESPONSE);
+                    foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
+                        $RESPONSE["response"]["server"][] = str_replace(".cfg", null, $ITEM);
                     }
-                    else {
-                        echo '{"request": false}';
-                    }
+
+                    echo json_encode($RESPONSE);
                 }
+                else {
+                    echo '{"request": false}';
+                }
+            }
 
-                // Full
-                elseif($_GET["opt"] == "full") {
-                    $ALL_PATH = "app/json/serverinfo/all.json";
-                    if(file_exists($ALL_PATH)) {
-                        $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
+            // Full
+            elseif($opt == "full") {
+                $ALL_PATH = "app/json/serverinfo/all.json";
+                if(file_exists($ALL_PATH)) {
+                    $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
 
-                        foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
-                            $servername = str_replace(".cfg", null, $ITEM);
-                            $SERVER_PATH = "app/json/serverinfo/$servername.json";
-                            if(file_exists($SERVER_PATH)) {
-                                $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
+                    foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
+                        $servername = str_replace(".cfg", null, $ITEM);
+                        $SERVER_PATH = "app/json/serverinfo/$servername.json";
+                        if(file_exists($SERVER_PATH)) {
+                            $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
 
-                                if(isset($SERVER_ARRAY["warning_count"]))   unset($SERVER_ARRAY["warning_count"]);
-                                if(isset($SERVER_ARRAY["error_count"]))     unset($SERVER_ARRAY["error_count"]);
-                                if(isset($SERVER_ARRAY["error"]))           unset($SERVER_ARRAY["error"]);
-                                if(isset($SERVER_ARRAY["warning"]))         unset($SERVER_ARRAY["warning"]);
+                            if(isset($SERVER_ARRAY["warning_count"]))   unset($SERVER_ARRAY["warning_count"]);
+                            if(isset($SERVER_ARRAY["error_count"]))     unset($SERVER_ARRAY["error_count"]);
+                            if(isset($SERVER_ARRAY["error"]))           unset($SERVER_ARRAY["error"]);
+                            if(isset($SERVER_ARRAY["warning"]))         unset($SERVER_ARRAY["warning"]);
 
-                                $server = new server($servername);
+                            $server = new server($servername);
 
-                                $SERVER_ARRAY["mods"]       = $server->cfg_read("ark_GameModIds");
-                                $SERVER_ARRAY["statecode"]  = $server->statecode();
-                                $SERVER_ARRAY["server_ip"]  = "$ip:".$server->cfg_read("ark_QueryPort");
+                            $SERVER_ARRAY["mods"]       = $server->cfg_read("ark_GameModIds");
+                            $SERVER_ARRAY["statecode"]  = $server->statecode();
+                            $SERVER_ARRAY["server_ip"]  = "$ip:".$server->cfg_read("ark_QueryPort");
 
-                                $RESPONSE["response"]["server"][$servername] = $SERVER_ARRAY;
-                            }
+                            $RESPONSE["response"]["server"][$servername] = $SERVER_ARRAY;
                         }
+                    }
 
-                        echo json_encode($RESPONSE);
-                    }
-                    else {
-                        echo '{"request": false}';
-                    }
+                    echo json_encode($RESPONSE);
+                }
+                else {
+                    echo '{"request": false}';
                 }
             }
             else {
