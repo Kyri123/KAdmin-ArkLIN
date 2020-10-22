@@ -271,7 +271,7 @@ $tpl->r("option_panel", $option_panel);
 $tpl->r('webhelper', $option_server);
 $tpl->r("resp", $resp);
 $tpl->r("API_KEY", $API_array["key"]);
-$tpl->r("website", ($_SERVER['HTTPS'] == "on" ? "https://" : "http://") . $_SERVER['HTTP_HOST']);
+$tpl->r("website", (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST']);
 
 
 
