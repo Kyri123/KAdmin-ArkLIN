@@ -25,15 +25,23 @@
                 </li>
             </ul>
 
-            {permissions??server??{cfg}??saves??download}
                 <ul class="nav navbar-nav aa-nav ml-auto float-right">
+                    {permissions??server??{cfg}??saves??download}
+                        <li class="nav-item">
+                            <a class="nav-link bg-info btn-dark p-3" data-toggle="modal" data-target="#createzip" href="#none" role="tab" aria-controls="pills-am" aria-selected="true">
+                                <i class="fa fa-file-archive-o" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    {/permissions}
+
+                    {permissions??server??{cfg}??saves??download}
                     <li class="nav-item">
-                        <a class="nav-link bg-info btn-dark p-3" id="pills-am-tab" data-toggle="modal" data-target="#createzip" href="#none" role="tab" aria-controls="pills-am" aria-selected="true">
-                            <i class="fa fa-file-archive-o" aria-hidden="true"></i>
+                        <a class="nav-link bg-danger btn-dark p-3" data-toggle="modal" data-target="#removeall" href="#none" role="tab" aria-controls="pills-am" aria-selected="true">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                         </a>
                     </li>
+                    {/permissions}
                 </ul>
-            {/permissions}
         </div>
     </nav>
     <hr />
@@ -129,6 +137,29 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::main::modal::send_command::btn_close}</button>
                     <button type="submit" class="btn btn-primary" name="zip">{::lang::servercenter::main::modal::send_command::btn_send}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{/permissions}
+
+
+{permissions??server??{cfg}??saves??remove}
+    <div class="modal fade" id="removeall" tabindex="-1" role="dialog" aria-labelledby="createzip" aria-hidden="true">
+        <form class="modal-dialog modal-xl" role="document" style="max-width: 700px" method="POST" action="#">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">{::lang::servercenter::saves::remove_all::title}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="text-white" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pl-4">
+                    {::lang::servercenter::saves::remove_all::txt}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::saves::remove_all::btn_cancel}</button>
+                    <button type="submit" class="btn btn-danger" name="removeall">{::lang::servercenter::saves::remove_all::btn_close}</button>
                 </div>
             </div>
         </form>

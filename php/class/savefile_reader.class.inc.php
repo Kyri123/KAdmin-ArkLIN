@@ -110,7 +110,7 @@ class TribeFileParser
     }
 
     // Experimentell! {
-    private function GetMemberOfTribe($path) {
+    private static function GetMemberOfTribe($path) {
         $cont = file_get_contents($path);
         $cont = preg_replace('/[\x01-\x09\x0B\x0C\x0E-\x1F\x7F]/', null, $cont);
         $cont = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', ' ', $cont);

@@ -26,20 +26,33 @@ $resp = null;
 $limit = $helper->file_to_json("app/json/panel/aas_min.json", true);
 $maxi = $helper->file_to_json("app/json/panel/aas_max.json", true);
 
+$API_path = "php/inc/api.json";
 $ppath = "php/inc/custom_konfig.json";
 $apath = "remote/arkmanager/arkmanager.cfg";
 $wpath = 'arkadmin_server/config/server.json';
 $tpath = 'app/data/template.cfg';
 $array = $helper->file_to_json($ppath, true);
-if (!isset($array["clusterestart"])) $array["clusterestart"] = 0;
-if (!isset($array["uninstall_mod"])) $array["uninstall_mod"] = 0;
-if (!isset($array["install_mod"])) $array["install_mod"] = 0;
-if (!isset($array["servlocdir"])) $array["servlocdir"] = 0;
-if (!isset($array["arklocdir"])) $array["arklocdir"] = null;
-if (!isset($array["apikey"])) $array["apikey"] = null;
-if (!isset($array["show_err"])) $array["show_err"] = 0;
-if (!isset($array["steamcmddir"])) $array["steamcmddir"] = "/home/steam/Steam/";
+if (!isset($array["clusterestart"]))    $array["clusterestart"] = 0;
+if (!isset($array["uninstall_mod"]))    $array["uninstall_mod"] = 0;
+if (!isset($array["install_mod"]))      $array["install_mod"] = 0;
+if (!isset($array["servlocdir"]))       $array["servlocdir"] = 0;
+if (!isset($array["arklocdir"]))        $array["arklocdir"] = null;
+if (!isset($array["apikey"]))           $array["apikey"] = null;
+if (!isset($array["show_err"]))         $array["show_err"] = 0;
+if (!isset($array["steamcmddir"]))      $array["steamcmddir"] = "/home/steam/Steam/";
 $helper->savejson_exsists($array, $ppath);
+
+//Erstelle wenn nicht vorhanden API Datei mit inhalt
+if(!file_exists($API_path)) {
+    $API_array = array(
+        "active" => 0,
+        "key" => md5(rndbit(20))
+    );
+    $helper->savejson_create($API_array, $API_path);
+}
+else {
+    $API_array = $helper->file_to_json($API_path, true);
+}
 
 //tpl
 $tpl = new Template('tpl.htm', $tpl_dir);
@@ -124,6 +137,7 @@ if (isset($_POST["savepanel"]) && $user->perm("config/panel_save")) {
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");
     $filter_link = array("servlocdir","arklocdir","steamcmddir");
+    $json = $helper->file_to_json($ppath, true);
 
     for ($i=0;$i<count($a_key);$i++) {
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "1") $a_value[$i] = 1;
@@ -247,11 +261,8 @@ else {
     $steamcmd_exsists = false;
 }
 
-
 $tpl->r("steamcmd_info", (($steamcmd_exsists) ? null : $alert->rd(306, 3, 0, 0, 0, 0)));
 $tpl->r("info_CMD", $alert->rd(307, 3, 0, 0, 0, 0));
-$tpl->rif("steamcmdsys", $steamcmd_exsists);
-$tpl->rif("steamfile", $steamcmd_workshop_exsists);
 $tpl->r("cache_link", $cachelink);
 $tpl->r("cache_text", $cachetext);
 $tpl->r("arkmanager", (file_exists($apath)) ? file_get_contents($apath) : "");
@@ -259,6 +270,14 @@ $tpl->r("templatecfg", (file_exists($tpath)) ? file_get_contents($tpath) : "");
 $tpl->r("option_panel", $option_panel);
 $tpl->r('webhelper', $option_server);
 $tpl->r("resp", $resp);
+$tpl->r("API_KEY", $API_array["key"]);
+$tpl->r("website", (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST']);
+
+
+
+$tpl->rif("API_ACTIVE", boolval($API_array["active"]));
+$tpl->rif("steamcmdsys", $steamcmd_exsists);
+$tpl->rif("steamfile", $steamcmd_workshop_exsists);
 
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-edit\" aria-hidden=\"true\"></i>";

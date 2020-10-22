@@ -2,26 +2,58 @@
 
 <div class="row">
     <div class="col-lg-3 col-sm-12 mb-3">
-        <ul class="list-group list-group-flush border">
-            <li class="list-group-item bg-dark">
-                <h4>{::lang::allg::navigation}</h4>
+        <ul class="nav nav-pills nav-sidebar flex-column navbar-dark border border-secondary aa_nav" style="margin-top:0px">
+            <li class="nav-item">
+                <a id="pills-panel-tab" data-toggle="pill" href="#pills-panel" role="tab" aria-controls="pills-panel" aria-selected="true" class="active show nav-link aa_nav_small_hover">
+                    <i class="nav-icon fa fa-edit" aria-hidden="true"></i>
+                    Panel
+                </a>
             </li>
-            <li class="list-group-item">
-                <a id="pills-panel-tab" data-toggle="pill" href="#pills-panel" role="tab" aria-controls="pills-panel" aria-selected="true">Panel</a>
-            </li>
+
             {permissions??config??show_default}
-            <li class="list-group-item">
-                <a id="pills-templatecfg-tab" data-toggle="pill" href="#pills-templatecfg" role="tab" aria-controls="pills-templatecfg" aria-selected="false">Template.cfg</a>
-            </li>{/permissions} {permissions??config??aa_show}
-            <li class="list-group-item">
-                <a id="pills-config-tab" data-toggle="pill" href="#pills-config" role="tab" aria-controls="pills-config" aria-selected="false">ArkAdmin-Server</a>
-            </li>{/permissions} {permissions??config??am_show}
-            <li class="list-group-item">
-                <a id="pills-aa-tab" data-toggle="pill" href="#pills-aa" role="tab" aria-controls="pills-aa" aria-selected="false">ArkManager</a>
-            </li>{/permissions} {permissions??config??scmd_show}
-            <li class="list-group-item">
-                <a id="pills-steamcmd-tab" data-toggle="pill" href="#pills-steamcmd" role="tab" aria-controls="pills-steamcmd" aria-selected="false">SteamCMD</a>
-            </li>{/permissions}
+                <li class="nav-item">
+                    <a id="pills-templatecfg-tab" href="#pills-templatecfg" role="tab" aria-controls="pills-templatecfg" data-toggle="pill" aria-selected="true" class="nav-link aa_nav_small_hover">
+                        <i class="nav-icon fa fa-file" aria-hidden="true"></i>
+                        Template.cfg
+                    </a>
+                </li>
+            {/permissions}
+
+            {permissions??config??aa_show}
+            <li class="nav-item">
+                <a id="pills-config-tab" href="#pills-config" role="tab" aria-controls="pills-config" data-toggle="pill" aria-selected="true" class="nav-link aa_nav_small_hover">
+                    <i class="nav-icon fa fa-server" aria-hidden="true"></i>
+                    ArkAdmin-Server
+                </a>
+            </li>
+            {/permissions}
+
+            {permissions??config??am_show}
+            <li class="nav-item">
+                <a id="pills-aa-tab" href="#pills-aa" role="tab" aria-controls="pills-aa" data-toggle="pill" aria-selected="true" class="nav-link aa_nav_small_hover">
+                    <i class="nav-icon fas fa-file-code" aria-hidden="true"></i>
+                    ArkManager
+                </a>
+            </li>
+            {/permissions}
+
+            {permissions??config??scmd_show}
+            <li class="nav-item">
+                <a id="pills-steamcmd-tab" href="#pills-steamcmd" role="tab" aria-controls="pills-steamcmd" data-toggle="pill" aria-selected="true" class="nav-link aa_nav_small_hover">
+                    <i class="nav-icon fa fa-steam" aria-hidden="true"></i>
+                    SteamCMD
+                </a>
+            </li>
+            {/permissions}
+
+            {permissions??all??api}
+            <li class="nav-item">
+                <a id="pills-api-tab" href="#pills-api" role="tab" aria-controls="pills-api" data-toggle="pill" aria-selected="true" class="nav-link aa_nav_small_hover">
+                    <i class="nav-icon fas fa-sitemap" aria-hidden="true"></i>
+                    API
+                </a>
+            </li>
+            {/permissions}
         </ul>
     </div>
 
@@ -123,7 +155,96 @@
                     </table> {/steamcmdsys}
                 </form>
                 {/permissions}
+
+                {permissions??all??api}
+                <!-- API -->
+                <form action="#save" method="post" class="tab-pane fade" id="pills-api" role="tabpanel" aria-labelledby="pills-api-tab">
+                    <div class="list-group-item bg-dark">
+                        <h4>API</h4>
+                    </div>
+                    <table class="table table-striped mb-0" id="form">
+                        <tbody id="tbody">
+                            <tr>
+                                <td>
+                                    <div class="form-group clearfix m-0">
+                                        <div class="{!API_ACTIVE}icheck-danger{/!API_ACTIVE}{API_ACTIVE}icheck-success{/API_ACTIVE} d-inline" id="API_INPUT_BOX">
+                                            <input name="json[konfig]" type="checkbox" id="API_INPUT" onchange="toggle_API()" {API_ACTIVE}checked{/API_ACTIVE}>
+                                            <label for="API_INPUT">{::lang::config::api::active}</label>
+                                        </div>
+                                        <div id="API_INFO" {!API_ACTIVE}style="display: none"{/!API_ACTIVE}>
+                                            <hr>
+                                            <p>
+                                                {::lang::config::api::infos}
+                                            </p>
+                                            <p>
+                                                {::lang::config::api::key} <b>{API_KEY}</b>
+                                            </p>
+                                            <hr>
+
+                                            <!-- allserver -->
+                                            <div class="mb-2">
+                                                <div class="border border-secondary bg-dark p-2">
+                                                    <span class="badge badge-info">GET</span>
+                                                    <code>{website}/api.php?key={API_KEY}&request=allserver&opt={lite|full}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                    <code>{::lang::config::api::doc::allserver_vars}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                        {::lang::config::api::doc::allserver}
+                                                </div>
+                                            </div>
+
+                                            <!-- serverinfo -->
+                                            <div class="mb-2">
+                                                <div class="border border-secondary bg-dark p-2">
+                                                    <span class="badge badge-info">GET</span>
+                                                    <code>{website}/api.php?key={API_KEY}&request=serverinfo&server={xyz}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                    <code>{::lang::config::api::doc::serverinfo_vars}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                    {::lang::config::api::doc::serverinfo}
+                                                </div>
+                                            </div>
+
+                                            <!-- statistiken -->
+                                            <div class="mb-2">
+                                                <div class="border border-secondary bg-dark p-2">
+                                                    <span class="badge badge-info">GET</span>
+                                                    <code>{website}/api.php?key={API_KEY}&request=statistiken&max={1-1000}&order={DESC/ASC}&server={xyz}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                    <code>{::lang::config::api::doc::statistiken_vars}</code>
+                                                </div>
+                                                <div class="border border-top-0 border-secondary p-2">
+                                                    {::lang::config::api::doc::statistiken}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+                {/permissions}
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Vars die zur JS übergeben werden
+
+    // Allgemeine Vars
+    var vars = {};
+
+    // Sprache
+    var lang = {};
+
+    // Sprache / Aktionen
+    var actions = {};
+</script>
+<script src="/app/dist/js/arkadmin2/pages/config.js" type="application/javascript"></script>

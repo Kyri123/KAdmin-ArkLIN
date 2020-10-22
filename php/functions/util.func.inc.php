@@ -101,7 +101,7 @@ function del_dir($dir) {
                     {
                         unlink( $dir."/".$file );
                     } else {
-                        unlink($dir.'/'.$file);
+                        del_dir($dir.'/'.$file);
                     }
                 }
             }

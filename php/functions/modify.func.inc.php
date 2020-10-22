@@ -220,7 +220,7 @@ function alog($str) {
         $modid = trim($modid[1]);
         $modid = str_replace('Updating mod ', null, $modid);
         $modid = str_replace(" ", null, $modid);
-        $str = $time.' <b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
+        if(isset($steamapi_mods[$modid]["title"])) $str = $time.' <b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
     }
     if (strpos($str, '] Mod') !== false) {
         $time = explode('[', $str);
@@ -231,13 +231,12 @@ function alog($str) {
         $modid = str_replace(" ", null, $modid);
         $modid = str_replace("Mod", null, $modid);
         $modid = str_replace("updated", null, $modid);
-        $str = $time.' <b class="text-success">Update done: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
+        if(isset($steamapi_mods[$modid]["title"])) $str = $time.' <b class="text-success">Update done: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
     }
     if (strpos($str, 'Updating mod') !== false) {
-        $modid = str_replace('Updating mod ', null, $str);
-        $modid = str_replace(" ", null, $modid);
-        $modid = trim($modid);
-        $str = '<b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
+        $str_EXP = explode(" ", $str);
+        $modid = trim($str_EXP[5]);
+        if(isset($steamapi_mods[$modid]["title"])) $str = '<b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
     }
     if (strpos($str, 'not fully downloaded') !== false) {
         $modid = str_replace(' not fully downloaded - retrying', null, $str);
