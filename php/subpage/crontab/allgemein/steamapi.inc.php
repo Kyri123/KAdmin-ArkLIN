@@ -9,7 +9,7 @@
 */
 
 
-$file = 'app/json/serverinfo/all.json';
+$file = __ADIR__.'/app/json/serverinfo/all.json';
 $cfg_json = $helper->file_to_json($file);
 
 $sid_array = $modid_array = array();
@@ -83,7 +83,7 @@ foreach ($json as $key => $item) {
     $i++;
 }
 
-$path = "app/json/steamapi";
+$path = __ADIR__."/app/json/steamapi";
 
 $helper->savejson_create($player_array, "$path/user.json");
 $helper->savejson_create($mod_array, "$path/mods.json");

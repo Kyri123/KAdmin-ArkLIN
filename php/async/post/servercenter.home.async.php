@@ -20,7 +20,7 @@ switch ($case) {
     case "rconsend":
         $serv = new server($_POST['cfg']);
         $cfg = $serv->name();
-        $json = file_get_contents('app/json/serverinfo/'.$serv->name().'.json');
+        $json = file_get_contents(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json');
         $server = json_decode($json);
 
         if($user->perm("server/$cfg/home/rcon_send")) {
@@ -53,7 +53,7 @@ switch ($case) {
                         $resp = $rcon->get_response();
                         $alert->code = 107;
                         $msg = $alert->re();
-                        $log = 'app/json/saves/rconlog_'.$serv->name().'.txt';
+                        $log = __ADIR__.'/app/json/saves/rconlog_'.$serv->name().'.txt';
                         if (file_exists($log)) {
                             $file = file_get_contents($log);
                             $file = $file."\n".time().'(-/-)['.$user.'] '.$command;
@@ -80,7 +80,7 @@ switch ($case) {
     // CASE: LiveChat Send Chat
     case "igchatsend":
         $serv = new server($_POST['cfg']);
-        $json = file_get_contents('app/json/serverinfo/'.$serv->name().'.json');
+        $json = file_get_contents(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json');
         $server = json_decode($json);
 
         if($user->perm("server/$cfg/home/livechat_send")) {

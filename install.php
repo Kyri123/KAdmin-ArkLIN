@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 /*
  * *******************************************************************************************
  * @author:  Oliver Kaufmann (Kyri123)
@@ -7,6 +7,8 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+
+define("__ADIR__", __DIR__);
 
 // Standart Vars
 $title = $modal = $modals = $content = null;
@@ -20,39 +22,39 @@ $url = $_SERVER["REQUEST_URI"];
 $url = explode("/", $url);
 
 // Erstelle bestimmt Ordner
-if(!file_exists("app/check")) mkdir("app/check");
-if(!file_exists("app/cache")) mkdir("app/cache");
+if(!file_exists(__ADIR__."/app/check")) mkdir(__ADIR__."/app/check");
+if(!file_exists(__ADIR__."/app/cache")) mkdir(__ADIR__."/app/cache");
 
 // Hole alle benötigten Klassen
-include('php/class/helper.class.inc.php');
+include(__ADIR__.'/php/class/helper.class.inc.php');
 $helper = new helper();
-include('php/inc/template_preinz.inc.php');
-include('php/class/xml_helper.class.php');
-include('php/class/Template.class.inc.php'); 
-include('php/class/alert.class.inc.php');
+include(__ADIR__.'/php/inc/template_preinz.inc.php');
+include(__ADIR__.'/php/class/xml_helper.class.php');
+include(__ADIR__.'/php/class/Template.class.inc.php');
+include(__ADIR__.'/php/class/alert.class.inc.php');
 
 // Include functions
-include('php/functions/allg.func.inc.php');
-include('php/functions/check.func.inc.php');
-include('php/functions/modify.func.inc.php');
-include('php/functions/traffic.func.inc.php');
-include('php/functions/util.func.inc.php');
+include(__ADIR__.'/php/functions/allg.func.inc.php');
+include(__ADIR__.'/php/functions/check.func.inc.php');
+include(__ADIR__.'/php/functions/modify.func.inc.php');
+include(__ADIR__.'/php/functions/traffic.func.inc.php');
+include(__ADIR__.'/php/functions/util.func.inc.php');
 
 // MySQL
-include("php/class/mysql.class.inc.php");
+include(__ADIR__."/php/class/mysql.class.inc.php");
 
 // Installer Klassen
-include("install/php/class/check.class.inc.php");
+include(__ADIR__."install/php/class/check.class.inc.php");
 
 // Erstelle hauptverzeichnise und Klassen
-$check = new check("install/data/check.json");
+$check = new check(__ADIR__."install/data/check.json");
 $alert = new alert();
 
 // Verzeichnisse
-$dirs["main"] = "install/";
+$dirs["main"] = __ADIR__."/install/";
 $dirs["tpl"] = $dirs["main"]."template/";
 $dirs["data"] = $dirs["main"]."data/";
-$dirs["php"] = $dirs["main"]."php/";
+$dirs["php"] = $dirs["main"]."/php/";
 $dirs["class"] = $dirs["php"]."class/";
 $dirs["function"] = $dirs["php"]."function/";
 $dirs["include"] = $dirs["php"]."include/";

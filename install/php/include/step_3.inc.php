@@ -11,8 +11,8 @@ $resp = null;
 $sitetpl= new Template("step3.htm", $dirs["tpl"]);
 $sitetpl->load();
 $complete = false;
-$ppath = "php/inc/custom_konfig.json";
-if(!file_put_contents("app/check/subdone", "true")) {
+$ppath = __ADIR__."/php/inc/custom_konfig.json";
+if(!file_put_contents(__ADIR__."/app/check/subdone", "true")) {
     $resp = $alert->rd(1);
 }
 
@@ -28,14 +28,14 @@ if (isset($_POST["savepanel"])) {
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "1") $a_value[$i] = 1;
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "0") $a_value[$i] = 0;
         if (in_array($a_key[$i], $filter_link)) {
-            if ($a_key[$i] == "servlocdir" && readlink("remote/serv") != $a_value[$i]) {
-                $loc = "remote/serv";
+            if ($a_key[$i] == "servlocdir" && readlink(__ADIR__."/remote/serv") != $a_value[$i]) {
+                $loc = __ADIR__."/remote/serv";
                 if (file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 symlink($target, $loc);
             }
-            elseif ($a_key[$i] == "arklocdir" && readlink("remote/arkmanager") != $a_value[$i]) {
-                $loc = "remote/arkmanager";
+            elseif ($a_key[$i] == "arklocdir" && readlink(__ADIR__."/remote/arkmanager") != $a_value[$i]) {
+                $loc = __ADIR__."/remote/arkmanager";
                 if (file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 symlink($target, $loc);
@@ -49,15 +49,15 @@ if (isset($_POST["savepanel"])) {
     $json_str = $helper->json_to_str($json);
     if (file_put_contents($ppath, $json_str)) {
         $link1 = false; $link2 = false;
-        if (file_put_contents("remote/arkmanager/check", "done")) {
-            unlink("remote/arkmanager/check");
+        if (file_put_contents(__ADIR__."/remote/arkmanager/check", "done")) {
+            unlink(__ADIR__."/remote/arkmanager/check");
             $link1 = true;
         }
         else {
             $resp = $alert->rd(1);
         }
-        if (file_put_contents("remote/serv/check", "done")) {
-            unlink("remote/arkmanager/check");
+        if (file_put_contents(__ADIR__."/remote/serv/check", "done")) {
+            unlink(__ADIR__."/remote/arkmanager/check");
             $link2 = true;
         }
         else {

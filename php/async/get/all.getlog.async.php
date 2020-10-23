@@ -115,10 +115,10 @@ $z = 1;
 
 
 } else {
-    $content = '<tr><td>{::lang::php::async::get::all::getlog::no_log_found}</i></td></tr>';
+    $content = '<tr><td>{::lang::php::async::get::all::getlog::no_log_found} '.$file.'</i></td></tr>';
 }
 
-$tpl = new Template("content.htm", "app/template/universally/default/");
+$tpl = new Template("content.htm", __ADIR__."/app/template/universally/default/");
 $tpl->load();
 $tpl->r("content", $content);
 $tpl->echo();

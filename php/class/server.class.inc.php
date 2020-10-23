@@ -29,8 +29,8 @@ class server extends Rcon {
      */
     public function __construct(String $serv) {
         $this->serv = $serv;
-        if (file_exists('remote/arkmanager/instances/'.$serv.'.cfg')) {
-            $this->cfg = parse_ini_file('remote/arkmanager/instances/'.$serv.'.cfg');
+        if (file_exists(__ADIR__.'/remote/arkmanager/instances/'.$serv.'.cfg')) {
+            $this->cfg = parse_ini_file(__ADIR__.'/remote/arkmanager/instances/'.$serv.'.cfg');
             $this->serverfound = true;
             return TRUE;
         } else {
@@ -56,7 +56,7 @@ class server extends Rcon {
      */
     public function isinstalled(bool $bool = false) {
         $dir = $this->cfg_read('arkserverroot');
-        $dir = str_replace('/data/ark_serv_dir/', 'remote/serv/', $dir);
+        $dir = str_replace('/data/ark_serv_dir/', __ADIR__.'/remoteserv/', $dir);
         $dir = $dir.'/ShooterGame/Binaries/Linux/ShooterGameServer';
         if (file_exists($dir)) {
             if ($bool) return true;
@@ -76,7 +76,7 @@ class server extends Rcon {
         global $servlocdir;
         
         $dir = $this->cfg_read('arkserverroot');
-        $path = str_replace($servlocdir, "remote/serv/", $dir);
+        $path = str_replace($servlocdir, __ADIR__."/remote/serv/", $dir);
 
         return $path;
     }
@@ -111,7 +111,7 @@ class server extends Rcon {
         global $servlocdir;
 
         $dir = $this->cfg_read('arkbackupdir');
-        $path = str_replace($servlocdir, "remote/serv/", $dir);
+        $path = str_replace($servlocdir, __ADIR__."/remote/serv/", $dir);
 
         return $path;
     }
@@ -120,11 +120,14 @@ class server extends Rcon {
      * Gibt das Verzeichnis der Spielstände
      *
      * @param bool $getmaindir Hauptverzeichnis der Speicherdateien (true) oder Unterverzeichnis der Speicherdateien (false)
+     * @param bool $getmaindir Verwende $ROOT statt __ADIR__
      * @return string
      */
-    public function dir_save(bool $getmaindir = false) {
+    public function dir_save(bool $getmaindir = false, bool $getROOTDIR = false) {
+        global $ROOT;
 
         $path = $this->dir_main();
+        if($getROOTDIR) $path = str_replace(__ADIR__, $ROOT, $path);
         if ($getmaindir) {
             $path = $path."/ShooterGame/Saved";
         }
@@ -169,7 +172,7 @@ class server extends Rcon {
         }
         $doc = $_SERVER['DOCUMENT_ROOT'];
         $log = $doc.'/app/data/shell_resp/log/'.$this->name().'/last.log';
-        $doc_state_file = 'app/data/shell_resp/state/'.$this->name().'.state';
+        $doc_state_file = __ADIR__.'/app/data/shell_resp/state/'.$this->name().'.state';
         $doc_state = $doc.'/'.$doc_state_file;
         $command = 'arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
         $command = str_replace("\r", null, $command);
@@ -187,7 +190,7 @@ class server extends Rcon {
         if ($mycon->query($query)) {
             file_put_contents($doc_state_file, "FALSE");
 
-            $path = "app/json/serverinfo/" . $this->name() . ".json";
+            $path = __ADIR__."/app/json/serverinfo/" . $this->name() . ".json";
             $data = $helper->file_to_json($path);
             $data["next"] = 'TRUE';
             $helper->savejson_create($data, $path);
@@ -203,7 +206,7 @@ class server extends Rcon {
      * @return false|string
      */
     public function cfg_get_str() {
-        return file_get_contents('remote/arkmanager/instances/'.$this->serv.'.cfg');
+        return file_get_contents(__ADIR__.'/remote/arkmanager/instances/'.$this->serv.'.cfg');
     }
 
     /**
@@ -269,7 +272,7 @@ class server extends Rcon {
     public function cfg_save() {
 
         if ($this->cfg_check("arkserverroot") && $this->cfg_check("logdir") && $this->cfg_check("arkbackupdir")) {
-            $this->write_ini_file($this->cfg, 'remote/arkmanager/instances/'.$this->serv.'.cfg');
+            $this->write_ini_file($this->cfg, __ADIR__.'/remote/arkmanager/instances/'.$this->serv.'.cfg');
             return true;
         } else {
             return false;
@@ -297,7 +300,7 @@ class server extends Rcon {
     public function statecode() {
         global $helper;
 
-        $path = "app/json/serverinfo/" . $this->name() . ".json";
+        $path = __ADIR__."/app/json/serverinfo/" . $this->name() . ".json";
         $data = $helper->file_to_json($path);
 
         $serverstate = 0;
@@ -327,7 +330,7 @@ class server extends Rcon {
     public function status() {
         global $helper;
 
-        $path = "app/json/serverinfo/" . $this->name() . ".json";
+        $path = __ADIR__."/app/json/serverinfo/" . $this->name() . ".json";
         $data = $helper->file_to_json($path);
         $class = new data_server();
 
@@ -459,7 +462,7 @@ class server extends Rcon {
      */
     public function cluster_load() {
         global $helper;
-        $clusterjson_path = "app/json/panel/cluster_data.json";
+        $clusterjson_path = __ADIR__."/app/json/panel/cluster_data.json";
         $infos["in"] = false;
         if (file_exists($clusterjson_path)) {
             $json = $helper->file_to_json($clusterjson_path);

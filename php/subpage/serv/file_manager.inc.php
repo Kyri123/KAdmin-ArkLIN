@@ -15,11 +15,11 @@ if (!$user->perm("$perm/filebrowser/show")) {
 }
 
 $pagename = '{::lang::php::sc::page::file_manager::pagename}';
-$page_tpl = new Template('file_manager.htm', 'app/template/sub/serv/');
+$page_tpl = new Template('file_manager.htm', __ADIR__.'/app/template/sub/serv/');
 $page_tpl->load();
-$urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
+$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::file_manager::urltop}</li>';
-$dir = "remote/serv";
+$dir = __ADIR__."/remote/serv";
 $path = false;
 $fdir = null;
 

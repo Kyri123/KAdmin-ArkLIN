@@ -9,7 +9,7 @@
                         <i class="fas fa-edit"></i>
                     </span>
                 </a>{/permissions} {permissions??server??{cfg}??jobs??toggle}
-                <a href="/servercenter/{cfg}/jobs/toggle/{i}" class="btn btn-{toggle_btn_color} btn-sm mr-1">
+                <a href="{ROOT}/servercenter/{cfg}/jobs/toggle/{i}" class="btn btn-{toggle_btn_color} btn-sm mr-1">
                     <span class="icon text-white">
                                     <i class="{toggle_icon}" ></i>
                                 </span>
@@ -26,7 +26,7 @@
 </li>
 {permissions??server??{cfg}??jobs??edit}
 <!-- Modal Edit -->
-<form class="modal fade" id="edit{rnd}" tabindex="-1" method="post" action="/servercenter/{cfg}/jobs" style="display: none;" aria-hidden="true">
+<form class="modal fade" id="edit{rnd}" tabindex="-1" method="post" action="{ROOT}/servercenter/{cfg}/jobs" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
             <div class="modal-header ">
@@ -131,7 +131,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::saves::modal::remove::btn_cancel}</button>
-                <a onclick="trigger_post('/servercenter/{cfg}/jobs/', {'delete':'true', 'i':'{i}'})" href="#" class="btn btn-danger" name="del">{::lang::servercenter::list::saves::modal::remove::btn_close}</a>
+                <a onclick="trigger_post('{ROOT}/servercenter/{cfg}/jobs/', {'delete':'true', 'i':'{i}'})" href="#" class="btn btn-danger" name="del">{::lang::servercenter::list::saves::modal::remove::btn_close}</a>
             </div>
         </div>
     </div>

@@ -57,7 +57,7 @@ class alert extends helper {
      * @return void
      */
     private function inz() {
-        $this->tpl = new Template("tpl.htm", "app/template/universally/alert/");
+        $this->tpl = new Template("tpl.htm", __ADIR__."/app/template/universally/alert/");
         $this->tpl->load();
 
         $key = 'c_'.$this->code;

@@ -35,7 +35,7 @@ class helper {
      * @return false|void
      */
     public function remotefile_to_json(String $path, String $filename, int $differ = 0, Bool $array = true) {
-        $filename = 'app/cache/'.$filename;
+        $filename = __ADIR__.'/app/cache/'.$filename;
         $diff = 0;
         $string = null;
 
@@ -145,7 +145,7 @@ class helper {
      * @return int
      */
     public function gethelperdiff() {
-        $path = "app/check/webhelper";
+        $path = __ADIR__."/app/check/webhelper";
         $lastcheck = (file_exists($path)) ? intval(file_get_contents($path)) : 0;
         $diff = time() - $lastcheck;
         return $diff;

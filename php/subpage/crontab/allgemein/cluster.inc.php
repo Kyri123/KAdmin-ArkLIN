@@ -9,7 +9,7 @@
 */
 
 // Cluster System
-$json = $helper->file_to_json("app/json/panel/cluster_data.json");
+$json = $helper->file_to_json(__ADIR__."/app/json/panel/cluster_data.json");
 
 foreach ($json as $k => $v) {
     // Cluster System (Synchronisation)

@@ -301,6 +301,8 @@
 
     // Allgemeine Vars
     var vars = {};
+    vars.ROOT = '{ROOT}';
+    vars.ADIR = '{ADIR}';
     vars.cfg = "{cfg}";
     vars.lchatlog = "{lchatlog}";
     vars.rconlog = "{rconlog}";
@@ -314,4 +316,4 @@
     // Sprache / Aktionen
     var actions = {};
 </script>
-<script src="/app/dist/js/arkadmin2/sub_pages/servercenter/home.js" type="application/javascript"></script>
+<script src="/app/dist/js/arkadmin2/sub_pages/servercenter/home.js?t={TIMESTAMP}" type="application/javascript"></script>

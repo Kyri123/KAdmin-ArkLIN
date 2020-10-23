@@ -18,8 +18,8 @@ function changelog($str) {
 
 
 // Vars
-$tpl_dir = 'app/template/core/changelog/';
-$tpl_dir_all = 'app/template/all/';
+$tpl_dir = __ADIR__.'/app/template/core/changelog/';
+$tpl_dir_all = __ADIR__.'/app/template/all/';
 $setsidebar = false;
 $pagename = 'Changelogs';
 $urltop = '<li class="breadcrumb-item">Changelogs</li>';

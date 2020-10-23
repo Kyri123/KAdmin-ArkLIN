@@ -52,7 +52,7 @@ function check_webhelper() {
         $string = html_entity_decode(trim(utf8_encode($json_string)));
         $string = str_replace("\n", null, $string);
 
-        $curr = (file_exists("arkadmin_server/data/version.txt")) ? trim(file_get_contents("arkadmin_server/data/version.txt")) : "curr_not_found";
+        $curr = (file_exists(__ADIR__."/arkadmin_server/data/version.txt")) ? trim(file_get_contents(__ADIR__."/arkadmin_server/data/version.txt")) : "curr_not_found";
         $run = json_decode($string, true)["version"];
         return ($curr == $run) ? true : false;
     }

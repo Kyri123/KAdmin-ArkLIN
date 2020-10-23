@@ -46,8 +46,8 @@ function read_xml($array, $key) {
 }
 
 $lang_pick = isset($_COOKIE["lang"]) ? $_COOKIE["lang"] : "de_de";
-$langfile = "app/lang/".$lang_pick."/";
-if (!file_exists($langfile)) $langfile = "app/lang/de_de/";
+$langfile = __ADIR__."/app/lang/".$lang_pick."/";
+if (!file_exists($langfile)) $langfile = __ADIR__."/app/lang/de_de/";
 
 // Lade Sprachdateien
 $arr = scandir($langfile);

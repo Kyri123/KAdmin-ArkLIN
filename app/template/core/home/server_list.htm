@@ -3,7 +3,7 @@
         <img src="{img}" alt="{name}" class="img-size-50">
     </div>
     <div class="product-info">
-        {permissions??server??{cfg}??show}<a href="/servercenter/{cfg}" class="product-title">{name} {version}</a>{/permissions}
+        {permissions??server??{cfg}??show}<a href="{ROOT}/servercenter/{cfg}" class="product-title">{name} {version}</a>{/permissions}
         {!permissions??server??{cfg}??show}<span class="product-title">{name} {version}</span>{/!permissions}
             <span class="badge badge-{color} float-right">{state_str}</span>
         <span class="product-description">

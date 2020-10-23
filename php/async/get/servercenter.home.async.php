@@ -30,7 +30,7 @@ switch ($case) {
         }
         if(is_countable($arr) && is_array($arr) && count($arr) > 0) {
             for ($i=0;$i<count($arr);$i++) {
-                $list_tpl = new Template('whitelist.htm', 'app/template/lists/serv/jquery/');
+                $list_tpl = new Template('whitelist.htm', __ADIR__.'/app/template/lists/serv/jquery/');
                 $list_tpl->load();
 
                 $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$arr[$i]."'";
@@ -55,7 +55,7 @@ switch ($case) {
             }
         }
         else {
-            $list_tpl = new Template('whitelist.htm', 'app/template/lists/serv/jquery/');
+            $list_tpl = new Template('whitelist.htm', __ADIR__.'/app/template/lists/serv/jquery/');
             $list_tpl->load();
 
             $list_tpl->r("sid", 0);

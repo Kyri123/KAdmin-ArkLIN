@@ -14,7 +14,7 @@ if(!$user->perm("cluster/show")) {
 }
 
 // Vars
-$tpl_dir = 'app/template/core/cluster/';
+$tpl_dir = __ADIR__.'/app/template/core/cluster/';
 $setsidebar = false;
 $cfglist = null;
 $pagename = "{::lang::php::cluster::pagename}";
@@ -23,7 +23,7 @@ $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 $tpl = new Template("tpl.htm", $tpl_dir);
 $tpl->load();
 
-$clusterjson_path = "app/json/panel/cluster_data.json";
+$clusterjson_path = __ADIR__."/app/json/panel/cluster_data.json";
 
 // Hole Cluster Array / Json
 if (!file_exists($clusterjson_path)) if (!file_put_contents($clusterjson_path, "[]")) die;
@@ -350,7 +350,7 @@ foreach ($json as $mk => $mv) {
     $list .= $listtpl->load_var();
 }
 
-$cfg_array = $helper->file_to_json("app/json/serverinfo/all.json");
+$cfg_array = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
 $sel_serv = null;
 foreach ($cfg_array["cfgs"] as $key) {
     $cfg = str_replace(".cfg", null, $key);

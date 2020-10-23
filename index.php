@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 /*
  * *******************************************************************************************
  * @author:  Oliver Kaufmann (Kyri123)
@@ -8,12 +8,14 @@
  * *******************************************************************************************
 */
 
+define("__ADIR__", __DIR__);
+
 // hide errors
 $stime = microtime(true);
-include('php/inc/config.inc.php');
-include('php/class/helper.class.inc.php');
+include(__ADIR__.'/php/inc/config.inc.php');
+include(__ADIR__.'/php/class/helper.class.inc.php');
 $helper = new helper();
-$ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
+$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
 $site_name = $content = null;
 
 // Deaktiviere Error anzeige
@@ -22,7 +24,7 @@ ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["sho
 if(isset($ckonfig["show_err"])) error_reporting(E_ALL);
 
 //check install
-if (!file_exists("app/check/subdone")) {
+if (!file_exists(__ADIR__."/app/check/subdone")) {
     header('Location: /install.php');
     exit;
 }
@@ -34,41 +36,53 @@ $setsidebar = $g_alert_bool = false;
 
 //start SessionS
 session_start();
+
+// Löse URL auf
+$ROOT           = str_replace("index.php", null, $_SERVER["SCRIPT_NAME"]);
+$ROOT           = substr($ROOT, 0, -1);
+
+$REQUEST_URI    = str_replace($ROOT, null, $_SERVER["REQUEST_URI"]);
+$ROOT_TPL       = __DIR__."/app/template";
+
+$PAGE_EXP       = $REQUEST_URI != "" ? explode("/", $REQUEST_URI) : array();
+
+$page           = isset($PAGE_EXP[0]) ? $PAGE_EXP[0] : "home";
+
 // read URL
-$url = $surl = $_SERVER["REQUEST_URI"];
-$url = explode("/", $url);
+$surl           = $_SERVER["REQUEST_URI"];
+$url            = $PAGE_EXP;
 if ($url[1] == "" || $url[1] == "favicon.ico") {
-    header('Location: /home');
+    header("Location: $ROOT/home");
     exit;
 }
 
 // Connent to MYSQL
-include('php/class/mysql.class.inc.php');
+include(__ADIR__.'/php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 
-$check_json = $helper->file_to_json("app/data/sql_check.json");
-if($mycon->is && !$check_json["checked"]) include('php/inc/auto_update_sql_DB.inc.php');
+$check_json = $helper->file_to_json(__ADIR__."/app/data/sql_check.json");
+if($mycon->is && !$check_json["checked"]) include(__ADIR__.'/php/inc/auto_update_sql_DB.inc.php');
 
 // Include functions
-include('php/functions/allg.func.inc.php');
-include('php/functions/check.func.inc.php');
-include('php/functions/modify.func.inc.php');
-include('php/functions/traffic.func.inc.php');
-include('php/functions/util.func.inc.php');
+include(__ADIR__.'/php/functions/allg.func.inc.php');
+include(__ADIR__.'/php/functions/check.func.inc.php');
+include(__ADIR__.'/php/functions/modify.func.inc.php');
+include(__ADIR__.'/php/functions/traffic.func.inc.php');
+include(__ADIR__.'/php/functions/util.func.inc.php');
 
 // include classes
-include('php/class/xml_helper.class.php');
-include('php/class/Template.class.inc.php');
-include('php/class/alert.class.inc.php');
-include('php/class/rcon.class.inc.php');
-include('php/class/savefile_reader.class.inc.php');
-include('php/class/user.class.inc.php');
-include('php/class/steamAPI.class.inc.php');
-include('php/class/server.class.inc.php');
-include('php/class/jobs.class.inc.php');
+include(__ADIR__.'/php/class/xml_helper.class.php');
+include(__ADIR__.'/php/class/Template.class.inc.php');
+include(__ADIR__.'/php/class/alert.class.inc.php');
+include(__ADIR__.'/php/class/rcon.class.inc.php');
+include(__ADIR__.'/php/class/savefile_reader.class.inc.php');
+include(__ADIR__.'/php/class/user.class.inc.php');
+include(__ADIR__.'/php/class/steamAPI.class.inc.php');
+include(__ADIR__.'/php/class/server.class.inc.php');
+include(__ADIR__.'/php/class/jobs.class.inc.php');
 
 // include inz
-include('php/inc/template_preinz.inc.php');
+include(__ADIR__.'/php/inc/template_preinz.inc.php');
 
 //create class_var
 $alert = new alert();
@@ -93,7 +107,7 @@ if(isset($_SESSION["id"])) {
     }
 
     // Erfasse IP
-    $path = "app/json/user/".md5($_SESSION["id"]).".json";
+    $path = __ADIR__."/app/json/user/".md5($_SESSION["id"]).".json";
     if(!file_exists($path)) file_put_contents($path, "{}") ? null : null;
     if(file_exists($path)) {
         $json = $helper->file_to_json($path, true);
@@ -103,34 +117,34 @@ if(isset($_SESSION["id"])) {
 }
 
 // Allgemein SteamAPI Arrays
-$steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();
-$steamapi_user = (file_exists("app/json/steamapi/user.json")) ? $helper->file_to_json("app/json/steamapi/user.json", true) : array();
+$steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/mods.json", true) : array();
+$steamapi_user = (file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/user.json", true) : array();
 
 // include util
-include('php/inc/session.inc.php');
+include(__ADIR__.'/php/inc/session.inc.php');
 
 //create globals vars
 $API_Key = $ckonfig['apikey'];
 $servlocdir = $ckonfig['servlocdir'];
 $expert = $user->expert();
 $jobs = new jobs();
-$all = $helper->file_to_json("app/json/serverinfo/all.json");
+$all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
 
 // lade Permissions
-$permissions_default = $helper->file_to_json("app/json/user/permissions.tpl.json");
+$permissions_default = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
 if(
-    !file_exists("app/json/user/".(isset($_SESSION["id"]) ? md5($_SESSION["id"]) : null).".permissions.json") &&
+    !file_exists(__ADIR__."/app/json/user/".(isset($_SESSION["id"]) ? md5($_SESSION["id"]) : null).".permissions.json") &&
     isset($_SESSION["id"])
-) $helper->savejson_create($permissions_default, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
-$permissions = (isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json("app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json("app/json/user/permissions.tpl.json");
+) $helper->savejson_create($permissions_default, __ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json");
+$permissions = (isset($_SESSION["id"]) && file_exists(__ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json(__ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
 $permissions = array_replace_recursive($permissions_default, $permissions);
 
 // gehe Rechte der Server durch
 $servers_perm = array();
-$file = 'app/json/serverinfo/all.json';
+$file = __ADIR__.'/app/json/serverinfo/all.json';
 $server = $all["cfgs_only_name"];
 foreach ($server as $item) {
-    $perm_file = file_get_contents("app/json/user/permissions_servers.tpl.json");
+    $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
     $perm_file = str_replace("{cfg}", $item, $perm_file);
     $default = $helper->str_to_json($perm_file);
     if(isset($permissions["server"][$item])) {
@@ -149,8 +163,8 @@ if (isset($_SESSION["id"])) {
 // Define default page
 $page = $url[1];
 
-if (file_exists('php/page/'.$page.'.inc.php')) {
-    include('php/page/'.$page.'.inc.php');
+if (file_exists(__ADIR__.'/php/page/'.$page.'.inc.php')) {
+    include(__ADIR__.'/php/page/'.$page.'.inc.php');
 } else {
     header("Location: /404");
     exit;
@@ -158,21 +172,21 @@ if (file_exists('php/page/'.$page.'.inc.php')) {
 
 // Website
 // Load template
-$tpl_h = new Template("head.htm", "app/template/core/index/");
+$tpl_h = new Template("head.htm", __ADIR__."/app/template/core/index/");
 $tpl_h->load();
 
-$tpl_b = new Template("body.htm", "app/template/core/index/");
+$tpl_b = new Template("body.htm", __ADIR__."/app/template/core/index/");
 $tpl_b->load();
 
-$tpl_f = new Template("foother.htm", "app/template/core/index/");
+$tpl_f = new Template("foother.htm", __ADIR__."/app/template/core/index/");
 $tpl_f->load();
 
 // lade Global_Alerts
-include('php/inc/global_alert.inc.php');
+include(__ADIR__.'/php/inc/global_alert.inc.php');
 
 // Include
-include('php/inc/server.inc.php');
-include('php/inc/nav_curr.inc.php');
+include(__ADIR__.'/php/inc/server.inc.php');
+include(__ADIR__.'/php/inc/nav_curr.inc.php');
 
 // Define pagename for login & registration
 if ($page == "login" || $page == "registration") {
@@ -201,7 +215,11 @@ if($user->perm("all/manage_aas")) $btns .= '
 // replace
 $tpl_h->r('time', time());
 
-$path_webhelper = "app/check/webhelper";
+$tpl_h->r("ROOT", $ROOT);
+$tpl_b->r("ROOT", $ROOT);
+$tpl_f->r("ROOT", $ROOT);
+
+$path_webhelper = __ADIR__."/app/check/webhelper";
 $tpl_b->r('pagename', $pagename);
 $tpl_b->r('pageicon', $pageicon);
 $tpl_h->r('pagename', $pagename);
@@ -224,12 +242,12 @@ $tpl_b->r('curr_server', $all["onserv"]);
 $tpl_b->r('off_server', (count($all["cfgs"]) - $all["onserv"]));
 $tpl_b->r('count_server_perc', perc($all["onserv"], count($all["cfgs"])));
 $tpl_b->r('cpu_perc', cpu_perc());
-$tpl_b->r('free', bitrechner(disk_free_space("remote/serv"), "B", "GB"));
-$tpl_b->r('free_max', bitrechner(disk_total_space("remote/serv"), "B", "GB"));
+$tpl_b->r('free', bitrechner(disk_free_space(__ADIR__."/remote/serv"), "B", "GB"));
+$tpl_b->r('free_max', bitrechner(disk_total_space(__ADIR__."/remote/serv"), "B", "GB"));
 $tpl_b->r('ram_used', str_replace("MB", "GB", bitrechner(mem_array()[1], "B", "GB")));
 $tpl_b->r('ram_max', str_replace("MB", "GB", bitrechner(mem_array()[0], "B", "GB")));
 $tpl_b->r('ram_perc', mem_perc());
-$tpl_b->r('free_perc', (100 - perc(disk_free_space("remote/serv"), disk_total_space("remote/serv"))));
+$tpl_b->r('free_perc', (100 - perc(disk_free_space(__ADIR__."/remote/serv"), disk_total_space(__ADIR__."/remote/serv"))));
 $tpl_b->r('perc_on', perc(1, 9));
 $ifnot_traffic = false;
 $check = array("changelog", "404");
@@ -239,53 +257,55 @@ $tpl_b->rif ("ifchangelog", $ifnot_traffic);
 $tpl_b->r("ltime", round((microtime(true) - $stime), 2));
 
 // Site Builder
-if ($page != "login" && $page != "registration" && $page != "crontab" && isset($_SESSION['id']) && file_exists("app/check/done")) {
+if ($page != "login" && $page != "registration" && $page != "crontab" && isset($_SESSION['id']) && file_exists(__ADIR__."/app/check/done")) {
     $tpl_h->echo();
     $tpl_b->echo();
     $tpl_f->echo();
 } else {
 
     // Login
-    if ($page == "login" && file_exists("app/check/done") && !isset($_SESSION['id'])) {
+    if ($page == "login" && file_exists(__ADIR__."/app/check/done") && !isset($_SESSION['id'])) {
         if (isset($_SESSION["id"])) {
             header('Location: /home');
             exit;
         }
         $tpl_h->echo();
+        $tpl_login->r("ROOT", $ROOT);
         $tpl_login->r("langlist", get_lang_list());
         $tpl_login->echo();
     }
 
     // Registration
-    elseif ($page == "registration" && file_exists("app/check/subdone") && !isset($_SESSION['id'])) {
+    elseif ($page == "registration" && file_exists(__ADIR__."/app/check/subdone") && !isset($_SESSION['id'])) {
         if (isset($_SESSION["id"])) {
             header('Location: /home');
             exit;
         }
         $tpl_h->echo();
+        $tpl_register->r("ROOT", $ROOT);
         $tpl_register->r("langlist", get_lang_list());
         $tpl_register->echo();
     }
 
     // Crontab
-    elseif ($page == "crontab" && file_exists("app/check/done")) {
+    elseif ($page == "crontab" && file_exists(__ADIR__."/app/check/done")) {
         $tpl_h->echo();
         $tpl_crontab->echo();
     }
 
     // Forward installer
-    elseif (!file_exists("app/check/subdone")) {
+    elseif (!file_exists(__ADIR__."/app/check/subdone")) {
         header('Location: /install.php');
         exit;
     } else {
         // Forward installer (registration)
-        if (file_exists("app/check/subdone") && !file_exists("app/check/done")) {
+        if (file_exists(__ADIR__."/app/check/subdone") && !file_exists(__ADIR__."/app/check/done")) {
             header('Location: /registration');
             exit;
         }
 
         // Forward not loggedin
-        elseif (file_exists("app/check/done")) {
+        elseif (file_exists(__ADIR__."/app/check/done")) {
             header('Location: /login');
             exit;
         }

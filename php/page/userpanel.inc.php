@@ -14,8 +14,8 @@ if(!$user->perm("userpanel/show")) {
 }
 
 // Vars
-$tpl_dir        = 'app/template/core/userpanel/';
-$tpl_dir_all    = 'app/template/all/';
+$tpl_dir        = __ADIR__.'/app/template/core/userpanel/';
+$tpl_dir_all    = __ADIR__.'/app/template/all/';
 $setsidebar     = false;
 $cfglist        = null;
 $pagename       = "{::lang::php::userpanel::pagename}";
@@ -58,7 +58,7 @@ elseif(isset($_POST["add"]))  {
 if (isset($_POST["editperm"]) && $user->perm("all/is_admin")) {
     $perm = $_POST["permissions"];
     $userid = $_POST["userid"];
-    if($helper->savejson_create($perm, "app/json/user/".md5($userid).".permissions.json")) {
+    if($helper->savejson_create($perm, __ADIR__."/app/json/user/".md5($userid).".permissions.json")) {
         $resp = $alert->rd(102);
     }
     else {
@@ -93,8 +93,8 @@ if (isset($_POST["del"]) && $user->perm("userpanel/delete_user")) {
     $tpl->r("del_username", $kuser->read("username"));
     $query = "DELETE FROM `ArkAdmin_users` WHERE (`id`='".$id."')";
     if ($mycon->query($query)) {
-        if(file_exists("app/json/user/".md5($id).".permissions.json")) unlink("app/json/user/".md5($id).".permissions.json");
-        if(file_exists("app/json/user/".md5($id).".json")) unlink("app/json/user/".md5($id).".json");
+        if(file_exists(__ADIR__."/app/json/user/".md5($id).".permissions.json")) unlink(__ADIR__."/app/json/user/".md5($id).".permissions.json");
+        if(file_exists(__ADIR__."/app/json/user/".md5($id).".json")) unlink(__ADIR__."/app/json/user/".md5($id).".json");
         $mycon->query("DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$id."')");
         $alert->code = 101;
         $alert->overwrite_text = '{::lang::php::userpanel::removed_user}';
@@ -137,7 +137,7 @@ elseif (isset($url[4]) && $url[2] == "tban") {
 
 // Benutzer Liste
 $query      = 'SELECT * FROM `ArkAdmin_users`';
-$dir        = dirToArray('remote/arkmanager/instances/');
+$dir        = dirToArray(__ADIR__.'/remote/arkmanager/instances/');
 $userarray  = $mycon->query($query)->fetchAll();
 $userlist   = null; $userlist_modal = null;
 for ($i=1;$i<count($userarray);$i++) {

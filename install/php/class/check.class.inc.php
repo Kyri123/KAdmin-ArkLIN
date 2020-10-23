@@ -89,7 +89,7 @@ class check extends helper {
 
             // Prüfe ArkAdmin-Server
             case "aa":
-                $webserver = json_decode(file_get_contents("arkadmin_server/config/server.json") ,true);
+                $webserver = json_decode(file_get_contents(__ADIR__."/arkadmin_server/config/server.json") ,true);
                 $webserver["port"] = (isset($webserver["port"])) ? $webserver["port"] : 30000;
                 $header = @get_headers("http://127.0.0.1:".$webserver['port']."/");
                 $this->state = (is_array($header)) ? 2 : 0;

@@ -15,9 +15,9 @@ if (!$user->perm("$perm/konfig/show")) {
 }
 
 $pagename = '{::lang::php::sc::page::konfig::pagename}';
-$page_tpl = new Template('konfig.htm', 'app/template/sub/serv/');
+$page_tpl = new Template('konfig.htm', __ADIR__.'/app/template/sub/serv/');
 $page_tpl->load();
-$urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
+$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}</li>';
 
 // arkmanager.cfg Speichern (Normaler Modus)
@@ -52,7 +52,7 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
 
     $cfg = ini_save_rdy($cfg);
     $cfg = str_replace("Array", null, $cfg);
-    $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
+    $path = __ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg';
     // Prüfe ob Datei beschrieben wurde
     if (file_put_contents($path, $cfg)) {
         // Melde: Erfolg
@@ -120,7 +120,7 @@ else {
 if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $user->perm("$perm/konfig/arkmanager")) {
     $txtarea = $_POST['txtarea'];
     $cfg = ini_save_rdy($txtarea);
-    $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';
+    $path = __ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg';
     // Wenn Datei geschreiben wurde
     if (file_put_contents($path, $cfg)) {
         // Melde: Erofolg
@@ -276,7 +276,7 @@ if ($serv->isinstalled()) {
     }
 
     $serv->cfg_get();
-    $ini = parse_ini_file('remote/arkmanager/instances/'.$url[2].'.cfg', false);
+    $ini = parse_ini_file(__ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg', false);
     if(!isset($ini["ark_GameModIds"])) $ini["ark_GameModIds"] = "";
     if(!isset($ini["serverMapModId"])) $ini["serverMapModId"] = "";
     // Gehe ini Durch um Editor zu erstellen
@@ -297,7 +297,7 @@ if ($serv->isinstalled()) {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="setmap()" id="mapsel">
                         <option value="">{::lang::allg::default::select}</option>';
 
-                    $mapjson = $helper->file_to_json("app/json/panel/maps.json");
+                    $mapjson = $helper->file_to_json(__ADIR__."/app/json/panel/maps.json");
                     foreach ($mapjson as $map => $infos) {
                         if(($infos["mod"] == 1 && $serv->mod_support()) || $infos["mod"] == 0)
                             $add .= '<option id="'.$map.'" value="'.$map.'" data-mod="'.$infos["mod"].'" data-modid="'.$infos["modid"].'" '.($map == $val ? "selected" : null).'>
@@ -313,7 +313,7 @@ if ($serv->isinstalled()) {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="settmod()" id="tmodsel">
                         <option value="">{::lang::allg::default::select}</option>';
 
-                    $tmodjson = $helper->file_to_json("app/json/panel/tmods.json");
+                    $tmodjson = $helper->file_to_json(__ADIR__."/app/json/panel/tmods.json");
                     foreach ($tmodjson as $tmod => $infos) {
                         if(($infos["offi"] == 0 && $serv->mod_support()) || $infos["offi"] == 1)
                             $add .= '<option value="'.$infos["modid"].'" '.($infos["modid"] == $val ? "selected" : null).'>
@@ -358,7 +358,7 @@ foreach($inis as $mk => $mv) {
         if(is_array($mv)) foreach($mv as $sk => $sv) {
 
             $it = null;
-            $tpl_sec = new Template("section.htm", "app/template/lists/serv/konfig/");
+            $tpl_sec = new Template("section.htm", __ADIR__."/app/template/lists/serv/konfig/");
             $tpl_sec->load();
             
             // items
@@ -367,7 +367,7 @@ foreach($inis as $mk => $mv) {
                 if(is_array($iv)) {
                     $name = $ik;
                     foreach($iv as $pk => $pv) {
-                        $tpl_item = new Template("item.htm", "app/template/lists/serv/konfig/");
+                        $tpl_item = new Template("item.htm", __ADIR__."/app/template/lists/serv/konfig/");
                         $tpl_item->load();
         
                         $tpl_item->r("sk", $sk);
@@ -379,7 +379,7 @@ foreach($inis as $mk => $mv) {
                     }
                 }
                 else {
-                    $tpl_item = new Template("item.htm", "app/template/lists/serv/konfig/");
+                    $tpl_item = new Template("item.htm", __ADIR__."/app/template/lists/serv/konfig/");
                     $tpl_item->load();
     
                     $tpl_item->r("sk", $sk);
@@ -406,7 +406,7 @@ foreach($inis as $mk => $mv) {
 }
 
 // Erstelle Flaggen liste und verarbeite gesetzte Flaggen
-$flags_json = $helper->file_to_json("app/json/panel/flags.json", true);
+$flags_json = $helper->file_to_json(__ADIR__."/app/json/panel/flags.json", true);
 $i = 0;
 foreach($flags_json as $k => $v) {
     $sel = (in_array("arkflag_$v", $flags)) ? 'checked="true"' : null;
@@ -438,7 +438,7 @@ $page_tpl->r('gus', $gus);
 $page_tpl->r('game', $game);
 $page_tpl->r('engine', $engine);
 $page_tpl->r('eventlist', $eventlist);
-$page_tpl->r('amcfg', file_get_contents('remote/arkmanager/instances/'.$url[2].'.cfg'));
+$page_tpl->r('amcfg', file_get_contents(__ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg'));
 $page_tpl->rif('expert', $user->expert());
 $page_tpl->rif('show', $show);
 $panel = $page_tpl->load_var();

@@ -10,9 +10,9 @@
 
 // Erstelle Dateien & Verzeichnis...
 $dirs = array(
-    "app/check/",
-    "app/json/user/",
-    "app/json/servercfg",
+    __ADIR__."/app/check/",
+    __ADIR__."/app/json/user/",
+    __ADIR__."/app/json/servercfg",
     "cache"
 );
 
@@ -20,8 +20,8 @@ $dirs = array(
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
         $serv = new server($dir[$i]);
-        $dirs[] = 'app/data/shell_resp/log/'.$serv->name();
-        $dirs[] = 'app/data/shell_resp/state/'.$serv->name();
+        $dirs[] = __ADIR__.'/app/data/shell_resp/log/'.$serv->name();
+        $dirs[] = __ADIR__.'/app/data/shell_resp/state/'.$serv->name();
         $dirs[] = $serv->cfg_read("logdir");
         $dirs[] = $serv->cfg_read("arkserverroot");
         $dirs[] = $serv->cfg_read("arkbackupdir");
@@ -37,10 +37,10 @@ for($i=0;$i<count($dirs);$i++) {
 //Erstelle Default Dateien
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
-        if (!file_exists('app/data/shell_resp/log/'.$serv->name().'/last.log')) file_put_contents('app/data/shell_resp/log/'.$serv->name().'/last.log', null);
-        if (!file_exists('app/json/serverinfo/'.$serv->name().'.json')) file_put_contents('app/json/serverinfo/'.$serv->name().'.json', '{}');
+        if (!file_exists(__ADIR__.'/app/data/shell_resp/log/'.$serv->name().'/last.log')) file_put_contents(__ADIR__.'/app/data/shell_resp/log/'.$serv->name().'/last.log', null);
+        if (!file_exists(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json')) file_put_contents(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json', '{}');
     }
 }
 
 // schreibe lesen vom Webhelper
-file_put_contents("app/check/webhelper", time());
+file_put_contents(__ADIR__."/app/check/webhelper", time());

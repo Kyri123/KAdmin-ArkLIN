@@ -14,23 +14,23 @@ if(!$user->perm("config/show")) {
 }
 
 // Vars
-$tpl_dir = 'app/template/core/konfig/';
-$tpl_dir_all = 'app/template/all/';
+$tpl_dir = __ADIR__.'/app/template/core/konfig/';
+$tpl_dir_all = __ADIR__.'/app/template/all/';
 $setsidebar = false;
 $cfglist = null;
 $pagename = "{::lang::php::config::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
-$syslpath = "remote/steamcmd";
+$syslpath = __ADIR__."/remote/steamcmd";
 $workshop = "$syslpath/steamapps/workshop/appworkshop_346110.acf";
 $resp = null;
-$limit = $helper->file_to_json("app/json/panel/aas_min.json", true);
-$maxi = $helper->file_to_json("app/json/panel/aas_max.json", true);
+$limit = $helper->file_to_json(__ADIR__."/app/json/panel/aas_min.json", true);
+$maxi = $helper->file_to_json(__ADIR__."/app/json/panel/aas_max.json", true);
 
-$API_path = "php/inc/api.json";
-$ppath = "php/inc/custom_konfig.json";
-$apath = "remote/arkmanager/arkmanager.cfg";
-$wpath = 'arkadmin_server/config/server.json';
-$tpath = 'app/data/template.cfg';
+$API_path = __ADIR__."/php/inc/api.json";
+$ppath = __ADIR__."/php/inc/custom_konfig.json";
+$apath = __ADIR__."/remote/arkmanager/arkmanager.cfg";
+$wpath = __ADIR__.'/arkadmin_server/config/server.json';
+$tpath = __ADIR__.'/app/data/template.cfg';
 $array = $helper->file_to_json($ppath, true);
 if (!isset($array["clusterestart"]))    $array["clusterestart"] = 0;
 if (!isset($array["uninstall_mod"]))    $array["uninstall_mod"] = 0;
@@ -143,20 +143,20 @@ if (isset($_POST["savepanel"]) && $user->perm("config/panel_save")) {
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "1") $a_value[$i] = 1;
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "0") $a_value[$i] = 0;
         if (in_array($a_key[$i], $filter_link)) {
-            if ($a_key[$i] == "servlocdir" && readlink("remote/serv") != $a_value[$i]) {
-                $loc = "remote/serv";
+            if ($a_key[$i] == "servlocdir" && readlink(__ADIR__."/remote/serv") != $a_value[$i]) {
+                $loc = __ADIR__."/remote/serv";
                 if (is_link($loc) || file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
             }
-            elseif ($a_key[$i] == "arklocdir" && readlink("remote/arkmanager") != $a_value[$i]) {
-                $loc = "remote/arkmanager";
+            elseif ($a_key[$i] == "arklocdir" && readlink(__ADIR__."/remote/arkmanager") != $a_value[$i]) {
+                $loc = __ADIR__."/remote/arkmanager";
                 if (is_link($loc) || file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;
             }
-            elseif ($a_key[$i] == "steamcmddir" && (readlink("remote/steamcmd") != $a_value[$i] || !file_exists("remote/steamcmd"))) {
-                $loc = "remote/steamcmd";
+            elseif ($a_key[$i] == "steamcmddir" && (readlink(__ADIR__."/remote/steamcmd") != $a_value[$i] || !file_exists(__ADIR__."/remote/steamcmd"))) {
+                $loc = __ADIR__."/remote/steamcmd";
                 if (is_link($loc) || file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 $resp .= (!symlink($target, $loc)) ? $alert->rd(30, 1) : null;

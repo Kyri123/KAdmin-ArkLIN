@@ -15,10 +15,10 @@ if (!$user->perm("$perm/jobs/show")) {
 }
 
 $pagename = '{::lang::php::sc::page::jobs::pagename}';
-$page_tpl = new Template('jobs.htm', 'app/template/sub/serv/');
+$page_tpl = new Template('jobs.htm', __ADIR__.'/app/template/sub/serv/');
 $page_tpl->load();
 $page_tpl->debug(true);
-$urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
+$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::jobs::urltop}</li>';
 
 $page_tpl->r('cfg' ,$url[2]);
@@ -254,7 +254,7 @@ $query = 'SELECT * FROM `ArkAdmin_jobs` WHERE `server` = \''.$serv->name().'\'';
 if($mycon->query($query)->numRows() > 0) {
     $json = $mycon->query($query)->fetchAll();
     foreach($json as $key => $value) {
-        $list = new Template('jobs.htm', 'app/template/lists/serv/jobs/');
+        $list = new Template('jobs.htm', __ADIR__.'/app/template/lists/serv/jobs/');
         $list->load();
         $list->rif ('empty', true);
         if ($value['active'] == 0) {

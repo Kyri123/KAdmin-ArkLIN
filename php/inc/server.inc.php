@@ -13,14 +13,14 @@ $count_serv_1 = 0;
 $count_serv_max = 0;
 
 
-$dir = $helper->file_to_json("app/json/serverinfo/all.json")["cfgs"];
+$dir = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json")["cfgs"];
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
         $servername = $dir[$i];
         $serv = new server($servername);
         $serv->cluster_load();
         $count_serv_max++;
-        $tpl_serv = new Template("item_list.htm", "app/template/core/serv/");
+        $tpl_serv = new Template("item_list.htm", __ADIR__."/app/template/core/serv/");
         $tpl_serv->load();
 
         $status = convertstate($serv->statecode());

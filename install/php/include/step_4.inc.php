@@ -11,7 +11,7 @@
 $sitetpl= new Template("step4.htm", $dirs["tpl"]);
 $sitetpl->load();
 $complete = false;
-$ppath = "php/inc/custom_konfig.json";
+$ppath = __ADIR__."/php/inc/custom_konfig.json";
 
 
 

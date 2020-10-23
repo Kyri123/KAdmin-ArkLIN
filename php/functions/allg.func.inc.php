@@ -16,12 +16,12 @@
 
 function get_lang_list() {
     $re = null;
-    $dir = dirToArray("app/lang");
+    $dir = dirToArray(__ADIR__."/app/lang");
     foreach($dir as $k => $v) {
-        $ftpl = new Template("lang.htm", "app/template/universally/default/");
+        $ftpl = new Template("lang.htm", __ADIR__."/app/template/universally/default/");
         $ftpl->load();
 
-        $xml = new xml_helper("app/lang/$k/info.xml");
+        $xml = new xml_helper(__ADIR__."/app/lang/$k/info.xml");
         $arr = $xml->array();
 
         $ftpl->r("lang_icon", $arr["icon_path"]);

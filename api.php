@@ -10,10 +10,10 @@
 
 // hide errors
 $stime = microtime(true);
-include('php/inc/config.inc.php');
-include('php/class/helper.class.inc.php');
+include(__ADIR__.'/php/inc/config.inc.php');
+include(__ADIR__.'/php/class/helper.class.inc.php');
 $helper = new helper();
-$ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
+$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
 $site_name = $content = null;
 
 // Deaktiviere Error anzeige
@@ -21,7 +21,7 @@ ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 
 //check install
-if (!file_exists("app/check/subdone")) {
+if (!file_exists(__ADIR__."/app/check/subdone")) {
     header('Location: /install.php');
     exit;
 }
@@ -32,34 +32,34 @@ $pagename = $pageimg = $titlename = $sidebar = $btns = $urltop = $g_alert = $pag
 $setsidebar = $g_alert_bool = false;
 
 // Connent to MYSQL
-include('php/class/mysql.class.inc.php');
+include(__ADIR__.'/php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 
 // Include functions
-include('php/functions/allg.func.inc.php');
-include('php/functions/check.func.inc.php');
-include('php/functions/modify.func.inc.php');
-include('php/functions/traffic.func.inc.php');
-include('php/functions/util.func.inc.php');
+include(__ADIR__.'/php/functions/allg.func.inc.php');
+include(__ADIR__.'/php/functions/check.func.inc.php');
+include(__ADIR__.'/php/functions/modify.func.inc.php');
+include(__ADIR__.'/php/functions/traffic.func.inc.php');
+include(__ADIR__.'/php/functions/util.func.inc.php');
 
 // include classes
-include('php/class/xml_helper.class.php');
-include('php/class/Template.class.inc.php');
-include('php/class/alert.class.inc.php');
-include('php/class/rcon.class.inc.php');
-include('php/class/savefile_reader.class.inc.php');
-include('php/class/user.class.inc.php');
-include('php/class/steamAPI.class.inc.php');
-include('php/class/server.class.inc.php');
-include('php/class/jobs.class.inc.php');
+include(__ADIR__.'/php/class/xml_helper.class.php');
+include(__ADIR__.'/php/class/Template.class.inc.php');
+include(__ADIR__.'/php/class/alert.class.inc.php');
+include(__ADIR__.'/php/class/rcon.class.inc.php');
+include(__ADIR__.'/php/class/savefile_reader.class.inc.php');
+include(__ADIR__.'/php/class/user.class.inc.php');
+include(__ADIR__.'/php/class/steamAPI.class.inc.php');
+include(__ADIR__.'/php/class/server.class.inc.php');
+include(__ADIR__.'/php/class/jobs.class.inc.php');
 
 // include inz
-include('php/inc/template_preinz.inc.php');
+include(__ADIR__.'/php/inc/template_preinz.inc.php');
 
 // API
 
 // Prüfe auf berechtigung der API abfrage
-$API_path           = "php/inc/api.json";
+$API_path           = __ADIR__."/php/inc/api.json";
 $API_array          = $helper->file_to_json($API_path);
 $API_active         = boolval($API_array["active"]);
 $API_key            = $API_array["key"];
@@ -96,7 +96,7 @@ else {
 
             // Lite
             if($opt == "lite") {
-                $ALL_PATH = "app/json/serverinfo/all.json";
+                $ALL_PATH = __ADIR__."/app/json/serverinfo/all.json";
                 if(file_exists($ALL_PATH)) {
                     $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
 
@@ -113,13 +113,13 @@ else {
 
             // Full
             elseif($opt == "full") {
-                $ALL_PATH = "app/json/serverinfo/all.json";
+                $ALL_PATH = __ADIR__."/app/json/serverinfo/all.json";
                 if(file_exists($ALL_PATH)) {
                     $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
 
                     foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
                         $servername = str_replace(".cfg", null, $ITEM);
-                        $SERVER_PATH = "app/json/serverinfo/$servername.json";
+                        $SERVER_PATH = __ADIR__."/app/json/serverinfo/$servername.json";
                         if(file_exists($SERVER_PATH)) {
                             $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
 
@@ -156,8 +156,8 @@ else {
          */
         if($API_REQUEST == "serverinfo") {
             $SERVER_NAME = isset($_GET["server"]) ? $_GET["server"] : "unknown";
-            if(file_exists("remote/arkmanager/instances/$SERVER_NAME.cfg")) {
-                $SERVER_PATH = "app/json/serverinfo/$SERVER_NAME.json";
+            if(file_exists(__ADIR__."/remote/arkmanager/instances/$SERVER_NAME.cfg")) {
+                $SERVER_PATH = __ADIR__."/app/json/serverinfo/$SERVER_NAME.json";
                 if(file_exists($SERVER_PATH)) {
                     $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
 
@@ -194,7 +194,7 @@ else {
         if($API_REQUEST == "statistiken") {
             if(isset($_GET["server"])) {
                 $SERVER_NAME = $_GET["server"];
-                if(file_exists("remote/arkmanager/instances/$SERVER_NAME.cfg")) {
+                if(file_exists(__ADIR__."/remote/arkmanager/instances/$SERVER_NAME.cfg")) {
                     $MAX = isset($_GET["max"]) ? intval($_GET["max"]) : 100;
                     if($MAX < 1) $MAX = 1;
                     $ORDER = isset($_GET["order"]) ? ($_GET["max"] == "ASC" ? "ASC" : "DESC") : "DESC";

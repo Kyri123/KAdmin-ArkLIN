@@ -9,11 +9,11 @@
 */
 
 // Vars
-$tpl_dir = 'app/template/core/usersettings/';
+$tpl_dir = __ADIR__.'/app/template/core/usersettings/';
 $resp = null; $logout = false;
 $pagename = "{::lang::usersettings::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
-$path = "app/json/user/".md5($_SESSION["id"]).".json";
+$path = __ADIR__."/app/json/user/".md5($_SESSION["id"]).".json";
 
 // Speichern (Benutzerdaten)
 if(isset($_POST["saveuser"])) {

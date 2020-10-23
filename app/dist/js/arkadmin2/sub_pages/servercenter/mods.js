@@ -1,10 +1,10 @@
 
 function get(installed) {
     if(!installed) {
-        getphp(`/php/async/get/servercenter.mods.async.php?cfg=${vars.cfg}&case=mods_active`, "modlist");
+        getphp(`${vars.ROOT}/php/async/get/servercenter.mods.async.php?cfg=${vars.cfg}&case=mods_active`, "modlist");
     }
     else {
-        getphp(`/php/async/get/servercenter.mods.async.php?cfg=${vars.cfg}&case=mods_installed`, "modlist_loc");
+        getphp(`${vars.ROOT}/php/async/get/servercenter.mods.async.php?cfg=${vars.cfg}&case=mods_installed`, "modlist_loc");
     }
 }
 
@@ -13,7 +13,7 @@ get(true); get(false);
 function push(up, modid) {
     let resp = "#all_resp";
 
-    $.post("/php/async/post/servercenter.mods.async.php?case=push", {
+    $.post(`${vars.ROOT}/php/async/post/servercenter.mods.async.php?case=push`, {
         "cfg": vars.cfg,
         "action": up ? "up" : "down",
         "modid": modid
@@ -31,7 +31,7 @@ function push(up, modid) {
 function pushto(modid, to) {
     let resp = "#all_resp";
 
-    $.post("/php/async/post/servercenter.mods.async.php?case=pushto", {
+    $.post(`${vars.ROOT}/php/async/post/servercenter.mods.async.php?case=pushto`, {
         "cfg": vars.cfg,
         "to": to,
         "modid": modid
@@ -50,7 +50,7 @@ function remove(modid, installed) {
     let resp = "#all_resp";
     let modal = installed ? `#del_installed${modid}` : `#del${modid}`;
 
-    $.post(`/php/async/post/servercenter.mods.async.php?case=${installed ? "remove_installed" : "remove"}`, {
+    $.post(`${vars.ROOT}/php/async/post/servercenter.mods.async.php?case=${installed ? "remove_installed" : "remove"}`, {
         "cfg": vars.cfg,
         "modid": modid
     }, (data) => {

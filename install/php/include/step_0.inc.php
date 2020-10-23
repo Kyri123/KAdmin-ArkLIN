@@ -11,11 +11,11 @@
 $sitetpl= new Template("step0.htm", $dirs["tpl"]);
 $sitetpl->load();
 $list_opt = null;
-$tpl_dir = 'app/template/core/konfig/';
+$tpl_dir = __ADIR__.'/app/template/core/konfig/';
 
-$wpath = 'arkadmin_server/config/server.json';
-$limit = $helper->file_to_json("app/json/panel/aas_min.json", true);
-$maxi = $helper->file_to_json("app/json/panel/aas_max.json", true);
+$wpath = __ADIR__.'/arkadmin_server/config/server.json';
+$limit = $helper->file_to_json(__ADIR__."/app/json/panel/aas_min.json", true);
+$maxi = $helper->file_to_json(__ADIR__."/app/json/panel/aas_max.json", true);
 $json = $check->json;
 
 // Speicher ArkAdmin-Server Einstellungen
@@ -49,9 +49,9 @@ if (isset($_POST["savewebhelper"])) {
 }
 
 // Lese Konfig und gebe sie zum bearbeiten frei
-$servercfg = $helper->file_to_json('arkadmin_server/config/server.json', true);
+$servercfg = $helper->file_to_json(__ADIR__.'/arkadmin_server/config/server.json', true);
 foreach($servercfg as $key => $value) {
-    $list = new Template("opt.htm", 'app/template/core/konfig/');
+    $list = new Template("opt.htm", __ADIR__.'/app/template/core/konfig/');
     $list->load();
     $list->rif ("ifbool", false);
     $list->rif ("ifnum", is_numeric($value));

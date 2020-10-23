@@ -1,7 +1,7 @@
 
 // toggle whitelist
 function toggle_white(sid, cfg, caser) {
-    $.post("/php/async/post/servercenter.home.async.php", {
+    $.post(`${vars.ROOT}/php/async/post/servercenter.home.async.php`, {
         "sid": sid,
         "cfg": cfg,
         "case": caser
@@ -14,12 +14,12 @@ function toggle_white(sid, cfg, caser) {
 // load whitelist
 function load_white() {
     let target = $("#whitelist");
-    $.get("/php/async/get/servercenter.home.async.php", {
+    $.get(`${vars.ROOT}/php/async/get/servercenter.home.async.php`, {
         "cfg": vars.cfg,
         "case": "load"
     }, (re) => {
         target.html(re);
-        $.get("/php/async/get/servercenter.home.async.php", {
+        $.get(`${vars.ROOT}/php/async/get/servercenter.home.async.php`, {
             "cfg": vars.cfg,
             "case": "loadwhite"
         }, (re) => {
@@ -32,7 +32,7 @@ $(document).ready(function() {
 
     // send whitelist
     $("#sendwhitelist").submit(function(e) {
-        $.post("/php/async/post/servercenter.home.async.php", $(this).serialize(), (resp) => {
+        $.post(`${vars.ROOT}/php/async/post/servercenter.home.async.php`, $(this).serialize(), (resp) => {
             $("#SteamID").val('');
             $("#all_resp").html(resp);
             load_white();
@@ -50,7 +50,7 @@ $(document).ready(function() {
         tx = $("#rcon_text");
         let text = tx.val();
 
-        $.post("/php/async/post/servercenter.home.async.php?case=rconsend", {
+        $.post(`${vars.ROOT}/php/async/post/servercenter.home.async.php?case=rconsend`, {
             cfg: cfg,
             user: user,
             text: text
@@ -81,7 +81,7 @@ $('#sendchat').click(function(e) {
     let tx = $("#livechat_text");
     let text = tx.val();
 
-    $.post("/php/async/post/servercenter.home.async.php?case=igchatsend", {
+    $.post(`${vars.ROOT}/php/async/post/servercenter.home.async.php?case=igchatsend`, {
         cfg: cfg,
         user: user,
         text: text
@@ -102,12 +102,12 @@ $('#sendchat').click(function(e) {
         }, "JSON");
 });
 
-getlog(`app/data/shell_resp/log/${vars.cfg}/last.log`, vars.cfg, 'livelog', 'max', 'hide', "filter", "mods", "home");
+getlog(`${vars.ADIR}/app/data/shell_resp/log/${vars.cfg}/last.log`, vars.cfg, 'livelog', 'max', 'hide', "filter", "mods", "home");
 getlog(vars.lchatlog, vars.cfg, 'lchatlog', 'max', 'hide', "filter", "mods", "home");
 getlog(vars.rconlog, vars.cfg, 'rconlog', 'max', 'hide', "filter", "mods", "home");
 
 setInterval(function() {
-    getlog(`app/data/shell_resp/log/${vars.cfg}/last.log`, vars.cfg, 'livelog', 'max', 'hide', "filter", "mods", "home");
+    getlog(`${vars.ADIR}/app/data/shell_resp/log/${vars.cfg}/last.log`, vars.cfg, 'livelog', 'max', 'hide', "filter", "mods", "home");
 }, 1000);
 
 setInterval(function() {

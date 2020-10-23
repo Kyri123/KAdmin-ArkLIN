@@ -15,9 +15,9 @@ if (!$user->perm("$perm/logs/show")) {
 }
 
 $pagename = '{::lang::php::sc::page::logs::pagename}';
-$page_tpl = new Template('logs.htm', 'app/template/sub/serv/');
+$page_tpl = new Template('logs.htm', __ADIR__.'/app/template/sub/serv/');
 $page_tpl->load();
-$urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
+$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::logs::urltop}</li>';
 $resp = null;
 

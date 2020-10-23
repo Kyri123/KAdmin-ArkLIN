@@ -65,7 +65,7 @@ switch ($case) {
 
             // sende command
             $server = new server($cfg);
-            $json = json_decode(file_get_contents('app/json/serverinfo/'.$cfg.'.json'));
+            $json = json_decode(file_get_contents(__ADIR__.'/app/json/serverinfo/'.$cfg.'.json'));
             $force = (isset($_POST["force"])) ? true : false;
             if($errorMSG == "") {
                 if (!$serv->send_action($send_shell, $force)) {
@@ -85,7 +85,7 @@ switch ($case) {
             // Close server
             $json->next = 'TRUE';
             $json = json_encode($json);
-            file_put_contents('app/json/serverinfo/'.$cfg.'.json', $json);
+            file_put_contents(__ADIR__.'/app/json/serverinfo/'.$cfg.'.json', $json);
 
             echo json_encode(['code'=>200, 'msg'=>$msg]);
             exit;

@@ -9,9 +9,9 @@
 */
 
 $pagename = '{::lang::php::sc::page::home::pagename}';
-$page_tpl = new Template('home.htm', 'app/template/sub/serv/');
+$page_tpl = new Template('home.htm', __ADIR__.'/app/template/sub/serv/');
 $page_tpl->load();
-$urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
+$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::home::urltop}</li>';
 $adminlist_admin = $userlist_admin = null;
 
@@ -24,7 +24,7 @@ $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoChe
 if(!file_exists($cheatfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($cheatfile, " ");
 if(!file_exists($whitelistfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($whitelistfile, " ");
 
-$playerjson = $helper->file_to_json('app/json/steamapi/profile_allg.json', true);
+$playerjson = $helper->file_to_json(__ADIR__.'/app/json/steamapi/profile_allg.json', true);
 $playerjs = isset($playerjson["response"]["players"]) ? $playerjson["response"]["players"] : [];
 $count = (is_countable($playerjs)) ? count($playerjs): false;
 
@@ -85,8 +85,8 @@ elseif(isset($_POST["rm"])) {
 
 $serv->cfg_read('arkserverroot');
 $savedir = $serv->dir_save();
-$player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.json', false);
-$tribe_json = $helper->file_to_json('app/json/saves/tribes_'.$serv->name().'.json', false);
+$player_json = $helper->file_to_json(__ADIR__.'/app/json/saves/player_'.$serv->name().'.json', false);
+$tribe_json = $helper->file_to_json(__ADIR__.'/app/json/saves/tribes_'.$serv->name().'.json', false);
 if (!is_array($player_json)) $player_json = array();
 if (!is_array($tribe_json)) $tribe_json = array();
 
@@ -107,7 +107,7 @@ if ($serv->isinstalled() && $user->perm("$perm/home/admin_show")) {
 
         if(is_countable($arr) && is_array($arr) && count($arr) > 0) {
             for ($i=0;$i<count($arr);$i++) {
-                $list_tpl = new Template('user_admin.htm', 'app/template/lists/serv/home/');
+                $list_tpl = new Template('user_admin.htm', __ADIR__.'/app/template/lists/serv/home/');
                 $list_tpl->load();
 
                 $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$arr[$i]."'";
@@ -135,7 +135,7 @@ if ($serv->isinstalled() && $user->perm("$perm/home/admin_show")) {
         }
     }
     if($adminlist_admin == null) {
-        $list_tpl = new Template('whitelist.htm', 'app/template/lists/serv/jquery/');
+        $list_tpl = new Template('whitelist.htm', __ADIR__.'/app/template/lists/serv/jquery/');
         $list_tpl->load();
 
         $list_tpl->r("sid", 0);
@@ -186,8 +186,8 @@ $page_tpl->rif ('ifwhitelist', $ifwhitelist);
 $page_tpl->rif ('rcon', $serv->check_rcon());
 $page_tpl->rif ('lchatactive', $lchatactive);
 $page_tpl->rif ('whiteactive', $serv->cfg_check("arkflag_exclusivejoin"));
-$page_tpl->r('lchatlog', $serv->dir_save(true).'/Logs/ServerPanel.log');
-$page_tpl->r('rconlog', 'app/json/saves/rconlog_'.$serv->name().'.txt');
+$page_tpl->r('lchatlog', $serv->dir_save(true, true).'/Logs/ServerPanel.log');
+$page_tpl->r('rconlog', "$ROOT/app/json/saves/rconlog_".$serv->name().'.txt');
 $page_tpl->r('whiteactive_meld', $white_alert);
 $page_tpl->r("userlist_admin", $userlist_admin);
 $page_tpl->r("adminlist_admin", $adminlist_admin);
