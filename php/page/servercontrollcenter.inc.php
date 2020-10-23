@@ -203,8 +203,8 @@ for ($i=0;$i<count($dir);$i++) {
         $list->r("state_str", $serv_state);
         $list->r("state_color", $serv_color);
         $list->r('servadress', $ip.":".$serv->cfg_read("ark_QueryPort"));
-        $list->r('con_url', $data["connect"]);
-        $list->r('ARKSERV', $data["ARKServers"]);
+        $list->r('con_url', isset($data["connect"]) ? $data["connect"] : null);
+        $list->r('ARKSERV', isset($data["ARKServers"]) ? $data["ARKServers"] : null);
 
         $list->r('bg_img', $mapbg);
         $list->r('server_img', $mapimg);
