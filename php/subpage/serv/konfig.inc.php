@@ -46,8 +46,10 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
             $cfg .= "arkflag_".$flag[$i].'="True"'."\n";
         }
     }
+    else {
+        $cfg .= $flag;
+    }
 
-    $cfg .= $flag;
     $cfg = ini_save_rdy($cfg);
     $cfg = str_replace("Array", null, $cfg);
     $path = 'remote/arkmanager/instances/'.$url[2].'.cfg';

@@ -24,26 +24,34 @@ $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoChe
 if(!file_exists($cheatfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($cheatfile, " ");
 if(!file_exists($whitelistfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($whitelistfile, " ");
 
-$playerjson = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true);
+$playerjson = $helper->file_to_json('app/json/steamapi/profile_allg.json', true);
 $playerjs = isset($playerjson["response"]["players"]) ? $playerjson["response"]["players"] : [];
 $count = (is_countable($playerjs)) ? count($playerjs): false;
 
 // Administrator hinzufügen
 if (isset($_POST["addadmin"]) && $user->perm("$perm/home/admin_send")) {
     $id = $_POST["id"];
+    $cheatcontent = file_get_contents($cheatfile);
+
     // SteamID bzw Input prüfen
     if(is_numeric($id) && $id > 700000000) {
-        for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$i = $ix; break;};
-        $content = file_get_contents($cheatfile)."\n$id";
-        if (file_put_contents($cheatfile, $content)) {
-            // Melde: Abschluss (Hinzugefügt)
-            $alert->code = 100;
-            $alert->r("name", strval($playerjs[$i]["personaname"]));
-            $alert->overwrite_text = "{::lang::php::sc::page::home::add_admin}";
-            $resp = $alert->re();
-        } else {
-            // Melde: Schreib/Lese Fehler
-            $resp = $alert->rd(1);
+        if(!strpos($cheatcontent, $id)) {
+            for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$i = $ix; break;};
+            $content = file_get_contents($cheatfile)."\n$id";
+            if (file_put_contents($cheatfile, $content)) {
+                // Melde: Abschluss (Hinzugefügt)
+                $alert->code = 100;
+                $alert->r("name", isset($playerjs[$i]["personaname"]) ? strval($playerjs[$i]["personaname"]) : $id);
+                $alert->overwrite_text = "{::lang::php::sc::page::home::add_admin}";
+                $resp = $alert->re();
+            } else {
+                // Melde: Schreib/Lese Fehler
+                $resp = $alert->rd(1);
+            }
+        }
+        else {
+            // Melde: Mutiple
+            $resp = $alert->rd(5);
         }
     } else {
         // Melde: Input Fehler
@@ -55,8 +63,8 @@ elseif(isset($_POST["addadmin"])) {
 }
 
 // Entfernte von Adminliste
-if (isset($url[4]) && isset($url[5]) && $url[4] == 'rm' && $user->perm("$perm/home/admin_send")) {
-    $id = $url[5];
+if (isset($_POST["rm"]) && $user->perm("$perm/home/admin_send")) {
+    $id = $_POST["stid"];
     $content = file_get_contents($cheatfile);
     // Prüfe ob die ID exsistent ist
     if (substr_count($content, $id) > 0) {
@@ -70,7 +78,7 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == 'rm' && $user->perm("$perm/ho
         }
     }
 }
-elseif(isset($_POST["addadmin"])) {
+elseif(isset($_POST["rm"])) {
     $resp = $alert->rd(99);
 }
 

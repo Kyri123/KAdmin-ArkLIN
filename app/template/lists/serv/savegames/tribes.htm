@@ -66,7 +66,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::saves::modal::remove::btn_cancel}</button>
-                <a href="{rm_url}" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::saves::modal::remove::btn_close}</a>
+                <a onclick="trigger_post('/servercenter/{cfg}/saves/', {'remove':'true', 'file':'{file}'})" href="#" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::saves::modal::remove::btn_close}</a>
             </div>
         </div>
     </div>

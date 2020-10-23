@@ -131,7 +131,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::saves::modal::remove::btn_cancel}</button>
-                <a href="/servercenter/{cfg}/jobs/delete/{i}" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::saves::modal::remove::btn_close}</a>
+                <a onclick="trigger_post('/servercenter/{cfg}/jobs/', {'delete':'true', 'i':'{i}'})" href="#" class="btn btn-danger" name="del">{::lang::servercenter::list::saves::modal::remove::btn_close}</a>
             </div>
         </div>
     </div>

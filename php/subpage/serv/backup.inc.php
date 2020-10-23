@@ -28,8 +28,8 @@ $dir_array = dirToArray($serv->dir_backup());
 $y = 0; $list = null;
 
 // entferne ein Backup verzeichnis
-if (isset($url[4]) && isset($url[5]) && $url[4] == "removemain" && $user->perm("$perm/backup/remove")) {
-    $key = $url[5];
+if (isset($_POST["removemain"]) && $user->perm("$perm/backup/remove")) {
+    $key = $_POST["file"];
     $path = $serv->dir_backup()."/".$key;
     if (file_exists($path)) {
         if (del_dir($path)) {
@@ -44,14 +44,14 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "removemain" && $user->perm("
         $resp = $alert->rd(1);
     }
 }
-elseif(isset($url[4]) && isset($url[5]) && $url[4] == "removemain") {
+elseif(isset($_POST["removemain"])) {
     $resp = $alert->rd(99);
 }
 
 // entferne ein Backup
-if (isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove" && $user->perm("$perm/backup/remove")) {
-    $key = $url[5];
-    $i = $url[6];
+if (isset($_POST["remove"]) && $user->perm("$perm/backup/remove")) {
+    $key = $_POST["file"];
+    $i = $_POST["i"];
     $path = $serv->dir_backup()."/".$key."/".$dir_array[$key][$i];
     $filename = $dir_array[$key][$i];
     if (file_exists($path)) {
@@ -67,7 +67,7 @@ if (isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove" &&
         $resp = $alert->rd(1);
     }
 }
-elseif(isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove") {
+elseif(isset($_POST["remove"])) {
     $resp = $alert->rd(99);
 }
 

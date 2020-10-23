@@ -80,10 +80,10 @@ elseif(isset($_POST["zip"])) {
 }
 
 // Entferne Savegame
-if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$perm/saves/remove")) {
+if (isset($_POST["remove"]) && $user->perm("$perm/saves/remove")) {
 
     // Setzte Vars
-    $file_name = $url[5];
+    $file_name = $_POST["file"];
     $savedir = $serv->dir_save();
 
     // Wenn Spieler
@@ -171,7 +171,7 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$per
         }
     }
 }
-elseif(isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
+elseif(isset($_POST["remove"])) {
     $resp = $alert->rd(99);
 }
 
@@ -264,11 +264,14 @@ if($count !== false) {
         $list_tpl->r('url', $surl);
         $list_tpl->r('img', $img);
         $list_tpl->r('steamname', $steamname);
-        $list_tpl->r('rm_url', '/servercenter/' . $serv->name() . '/saves/remove/' . $SteamId . '.arkprofile');
         $list_tpl->r('EP', $xp);
         $list_tpl->r('SpielerID', $SpielerID);
         $list_tpl->r('TEP', $TotalEngramPoints);
         $list_tpl->r('TID', $TribeId);
+        $list_tpl->r('file', $SteamId.'.arkprofile');
+        $list_tpl->r('cfg', $serv->name());
+
+
         $list_tpl->rif ('empty', false);
 
         $file = $savedir.'/'.$SteamId.'.arkprofile';
@@ -335,8 +338,8 @@ if(is_countable($tribe_save)) {
             $list_tpl->r('id', $rows["Id"]);
             $file = $savedir.'/'.$rows["Id"].'.arktribe';
             $list_tpl->r('durl', "/".$file);
-
-            $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$rows["Id"].'.arktribe');
+            $list_tpl->r('file', $rows["Id"].'.arktribe');
+            $list_tpl->r('cfg', $serv->name());
 
             $tribe .= $list_tpl->load_var();
             $list_tpl = null;
@@ -365,8 +368,8 @@ if(is_countable($dirarr)) {
                 $list_tpl->r('update', converttime($time));
                 $list_tpl->r('durl', "/".$file);
                 $list_tpl->r('rnd', rndbit(10));
-
-                $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$dirarr[$i]);
+                $list_tpl->r('file', $dirarr[$i]);
+                $list_tpl->r('cfg', $serv->name());
 
                 if (!strpos($name, 'profile') && $date_array["year"] == null) {
                     $world .= $list_tpl->load_var();

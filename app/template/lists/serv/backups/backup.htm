@@ -34,7 +34,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::backup::_2_::modal::remove::btn_cancel}</button>
-                <a href="/servercenter/{cfg}/backups/removemain/{key}" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::backup::_2_::modal::remove::btn_del}</a>
+                <a onclick="trigger_post('/servercenter/{cfg}/backup/', {'removemain':'true', 'file':'{key}'})" href="#" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::backup::_2_::modal::remove::btn_del}</a>
             </div>
         </div>
     </div>

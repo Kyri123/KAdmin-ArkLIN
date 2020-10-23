@@ -135,8 +135,8 @@ elseif(isset($_POST['edit'])) {
 }
 
 // Entferne Jobs
-if (isset($url[5]) && $url[4] == "delete" && $user->perm("$perm/jobs/remove")) {
-    $i = $url[5];
+if (isset($_POST['delete']) && $user->perm("$perm/jobs/remove")) {
+    $i = $_POST['i'];
     $i = intval($i);
     $query = 'SELECT * FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';
     if($mycon->query($query)->numRows() > 0) {
@@ -153,7 +153,7 @@ if (isset($url[5]) && $url[4] == "delete" && $user->perm("$perm/jobs/remove")) {
         $resp = $alert->rd(16);
     }
 }
-elseif(isset($url[5]) && $url[4] == "delete") {
+elseif(isset($_POST['delete'])) {
     $reps = $alert->rd(99);
 }
 
