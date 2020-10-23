@@ -12,8 +12,8 @@ $dir = dirToArray(__ADIR__."/php/page");
 foreach ($dir as $k => $v) {
     if (!is_array($v)) {
         $sitename = str_replace(".inc.php", null, $v);
-        $visit = "aa_nav_hover";
-        if ($sitename == $page) $visit = "aa_main_active aa_nav_hover";
+        $visit = "";
+        if ($sitename == $page) $visit = "active";
         $tpl_b->r("_$sitename", $visit);
     }
 }
