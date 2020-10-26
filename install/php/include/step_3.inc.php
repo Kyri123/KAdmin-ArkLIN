@@ -17,14 +17,20 @@ if(!file_put_contents(__ADIR__."/app/check/subdone", "true")) {
 }
 
 
-if (!file_exists("remote")) mkdir("remote");
+if (!file_exists(__ADIR__."/remote")) mkdir(__ADIR__."/remote");
 if (isset($_POST["savepanel"])) {
     $a_key = $_POST["key"];
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");
     $filter_link = array("servlocdir","arklocdir");
+    $check = array(
+        "servlocdir",
+        "arklocdir",
+        "steamcmddir"
+    );
 
     for ($i=0;$i<count($a_key);$i++) {
+        if(in_array($a_key[$i], $check)) if(substr($a_value[$i], -1) != "/") $a_value[$i] .= "/";
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "1") $a_value[$i] = 1;
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "0") $a_value[$i] = 0;
         if (in_array($a_key[$i], $filter_link)) {
@@ -64,7 +70,7 @@ if (isset($_POST["savepanel"])) {
             $resp = $alert->rd(1);
         }
         if ($link1 && $link2) {
-            header("Location: /install.php/4");
+            header("Location: $ROOT/install.php/4");
             exit;
         } else {
             $resp = $alert->rd(30);

@@ -114,6 +114,18 @@ if (isset($_POST["savewebhelper"]) && $user->perm("config/aa_save")) {
         $jsons[$a_key[$i]] = $a_value[$i];
     }
 
+    // Teste Endwerte
+    $check = array(
+        "WebPath",
+        "AAPath",
+        "ServerPath",
+        "SteamPath"
+    );
+    foreach ($check as $ITEM) {
+        if(substr($jsons[$ITEM], -1) == "/") $jsons[$ITEM] = substr($jsons[$ITEM], 0, -1);
+    }
+    if(substr($jsons["HTTP"], -1) != "/") $jsons["HTTP"] .= "/";
+
     // Speichern
     $json_str = $helper->json_to_str($jsons);
     if($allok) {
@@ -138,8 +150,14 @@ if (isset($_POST["savepanel"]) && $user->perm("config/panel_save")) {
     $filter_bool = array("install_mod","uninstall_mod");
     $filter_link = array("servlocdir","arklocdir","steamcmddir");
     $json = $helper->file_to_json($ppath, true);
+    $check = array(
+        "servlocdir",
+        "arklocdir",
+        "steamcmddir"
+    );
 
     for ($i=0;$i<count($a_key);$i++) {
+        if(in_array($a_key[$i], $check)) if(substr($a_value[$i], -1) != "/") $a_value[$i] .= "/";
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "1") $a_value[$i] = 1;
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "0") $a_value[$i] = 0;
         if (in_array($a_key[$i], $filter_link)) {
@@ -186,6 +204,8 @@ foreach($panelconfig as $key => $value) {
     $list = new Template("opt.htm", $tpl_dir);
     $list->load();
 
+    $ro = null;
+
     $bool = array("uninstall_mod", "install_mod", "clusterestart", "expert", "show_err");
     if (in_array($key, $bool)) {
         $list->rif ("ifbool", true);
@@ -214,6 +234,7 @@ foreach($panelconfig as $key => $value) {
         $list->r("keym", "panel::$key");
         $list->r("value", $value);
     }
+    $list->r("readonly", $ro);
     $option_panel .= $list->load_var();
 }
 
@@ -230,11 +251,19 @@ $option_server = null;
 foreach($servercfg as $key => $value) {
     $list = new Template("opt.htm", $tpl_dir);
     $list->load();
+
+    $ro = null;
+    if($key == "WebPath") {
+        $value = __ADIR__;
+        $ro = "readonly";
+    }
+
     $list->rif ("ifbool", false);
     $list->rif ("ifnum", is_numeric($value));
     $list->rif ("iftxt", !is_numeric($value));
     $list->rif("ifmin", isset($limit[$key]));
     $list->rif("ifmax", isset($maxi[$key]));
+    $list->r("readonly", $ro);
     $list->r("key", $key);
     $list->r("keym", "aa::$key");
     $list->r("value", $value);

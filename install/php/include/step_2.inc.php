@@ -38,7 +38,7 @@ if (isset($_POST["send"])) {
             $array["dbpass"] = $dbpass;
             $array["dbname"] = $dbname;
             if ($helper->savejson_create($array, __ADIR__."/arkadmin_server/config/mysql.json")) {
-                header("Location: /install.php/3");
+                header("Location: $ROOT/install.php/3");
                 exit;
             }
             else {

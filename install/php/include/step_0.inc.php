@@ -34,11 +34,23 @@ if (isset($_POST["savewebhelper"])) {
         $jsons[$a_key[$i]] = $a_value[$i];
     }
 
+    $check = array(
+        "WebPath",
+        "AAPath",
+        "ServerPath",
+        "SteamPath"
+    );
+    foreach ($check as $ITEM) {
+        if(substr($jsons[$ITEM], -1) == "/") $jsons[$ITEM] = substr($jsons[$ITEM], 0, -1);
+    }
+    if(substr($jsons["HTTP"], -1) != "/") $jsons["HTTP"] .= "/";
+
+    var_dump($jsons);
     // Speichern
     $json_str = $helper->json_to_str($jsons);
     if($allok) {
         if (file_put_contents($wpath, $json_str)) {
-            header("Location: /install.php/1");
+            header("Location: $ROOT/install.php/1");
         } else {
             $resp .= $alert->rd(1);
         }
@@ -53,11 +65,19 @@ $servercfg = $helper->file_to_json(__ADIR__.'/arkadmin_server/config/server.json
 foreach($servercfg as $key => $value) {
     $list = new Template("opt.htm", __ADIR__.'/app/template/core/konfig/');
     $list->load();
+
+    $ro = null;
+    if($key == "WebPath") {
+        $value = __ADIR__;
+        $ro = "readonly";
+    }
+
     $list->rif ("ifbool", false);
     $list->rif ("ifnum", is_numeric($value));
     $list->rif ("iftxt", !is_numeric($value));
     $list->rif("ifmin", isset($limit[$key]));
     $list->rif("ifmax", isset($maxi[$key]));
+    $list->r("readonly", $ro);
     $list->r("key", $key);
     $list->r("keym", "aa::$key");
     $list->r("value", $value);

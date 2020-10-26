@@ -15,6 +15,7 @@ if(isset($_GET["mod_rewrite"])) {
 }
 
 define("__ADIR__", __DIR__);
+if(file_exists(__ADIR__."/app/check/done") && file_exists(__ADIR__."install.php")) unlink(__ADIR__."install.php");
 
 // hide errors
 $stime = microtime(true);

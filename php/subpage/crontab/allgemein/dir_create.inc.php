@@ -13,15 +13,13 @@ $dirs = array(
     __ADIR__."/app/check/",
     __ADIR__."/app/json/user/",
     __ADIR__."/app/json/servercfg",
-    "cache"
+    __ADIR__."/app/cache"
 );
 
 // suche Server verzeichnisse
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
         $serv = new server($dir[$i]);
-        $dirs[] = __ADIR__.'/app/data/shell_resp/log/'.$serv->name();
-        $dirs[] = __ADIR__.'/app/data/shell_resp/state/'.$serv->name();
         $dirs[] = $serv->cfg_read("logdir");
         $dirs[] = $serv->cfg_read("arkserverroot");
         $dirs[] = $serv->cfg_read("arkbackupdir");

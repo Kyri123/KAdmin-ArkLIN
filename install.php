@@ -86,4 +86,18 @@ $tpl->r("time", time());
 $tpl->r("content", $content);
 $tpl->r("code", "7c90c6595f7cb4d2aa0e");
 $tpl->r("ROOT", $ROOT);
+$tpl->r("__ADIR__", __ADIR__);
 $tpl->echo();
+
+if($complete) {
+    // Abschluss
+    file_put_contents(__ADIR__."/app/check/done", "true");
+
+    if (!file_exists(__ADIR__."/app/json/saves")) mkdir(__ADIR__."/app/json/saves");
+    if (!file_exists(__ADIR__."/app/data/serv")) mkdir(__ADIR__."/app/data/serv");
+    if (!file_exists(__ADIR__."/app/data/config")) mkdir(__ADIR__."/app/data/config");
+    if (!file_exists(__ADIR__."/app/cache")) mkdir(__ADIR__."/app/cache");
+
+    del_dir(__ADIR__."/install/sites");
+    del_dir(__ADIR__."/install");
+}
