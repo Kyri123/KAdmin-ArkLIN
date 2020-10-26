@@ -20,5 +20,14 @@ $sitetpl->r("error", $resp);
 $title = "{::lang::install::step3::title}";
 $content = $sitetpl->load_var();
 
+// Abschluss
+file_put_contents(__ADIR__."/app/check/done", "true");
 
+if (!file_exists(__ADIR__."/app/json/saves")) mkdir(__ADIR__."/app/json/saves");
+if (!file_exists(__ADIR__."/app/data/serv")) mkdir(__ADIR__."/app/data/serv");
+if (!file_exists(__ADIR__."/app/data/config")) mkdir(__ADIR__."/app/data/config");
+if (!file_exists(__ADIR__."/cache")) mkdir(__ADIR__."/cache");
 
+del_dir(__ADIR__."/install/sites");
+del_dir(__ADIR__."/install");
+unlink(__ADIR__."/install.php");

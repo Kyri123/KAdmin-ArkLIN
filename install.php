@@ -10,6 +10,9 @@
 
 define("__ADIR__", __DIR__);
 
+$ROOT           = str_replace(["install.php"], null, $_SERVER["SCRIPT_NAME"]);
+$ROOT           = substr($ROOT, 0, -1);
+
 // Standart Vars
 $title = $modal = $modals = $content = null;
 
@@ -44,10 +47,10 @@ include(__ADIR__.'/php/functions/util.func.inc.php');
 include(__ADIR__."/php/class/mysql.class.inc.php");
 
 // Installer Klassen
-include(__ADIR__."install/php/class/check.class.inc.php");
+include(__ADIR__."/install//php/class/check.class.inc.php");
 
 // Erstelle hauptverzeichnise und Klassen
-$check = new check(__ADIR__."install/data/check.json");
+$check = new check(__ADIR__."/install//data/check.json");
 $alert = new alert();
 
 // Verzeichnisse
@@ -82,4 +85,5 @@ $tpl->r("pagename", "Installer");
 $tpl->r("time", time());
 $tpl->r("content", $content);
 $tpl->r("code", "7c90c6595f7cb4d2aa0e");
+$tpl->r("ROOT", $ROOT);
 $tpl->echo();

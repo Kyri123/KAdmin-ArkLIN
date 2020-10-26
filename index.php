@@ -8,6 +8,12 @@
  * *******************************************************************************************
 */
 
+// für Installer
+if(isset($_GET["mod_rewrite"])) {
+    echo array_key_exists('HTTP_MOD_REWRITE', $_SERVER) ? '{"HTTP_MOD_REWRITE":"on"}' : '{}';
+    exit;
+}
+
 define("__ADIR__", __DIR__);
 
 // hide errors
