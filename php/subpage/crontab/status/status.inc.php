@@ -8,11 +8,11 @@
  * *******************************************************************************************
 */
 
-$ipath = 'remote/arkmanager/instances/';
+$ipath = __ADIR__.'/remote/arkmanager/instances/';
 $dir = scandir($ipath);
 $json_all['onserv'] = $json_all['maxserv'] = 0;
 
-$file = 'app/json/serverinfo/all.json';
+$file = __ADIR__.'/app/json/serverinfo/all.json';
 for ($i=0;$i<count($dir);$i++) {
     $ifile = $ipath.$dir[$i];
     // wenn es ein Verzeichnis ist skippe
@@ -24,12 +24,12 @@ for ($i=0;$i<count($dir);$i++) {
     if ($ifile_info['extension'] == "cfg" && strpos($ifile_info['filename'], "example") !== true) {
         $servdata = $serv = new server($ifile_info['filename']);
         // erstelle STATUS
-        $raw = 'app/json/serverinfo/raw_'.$serv->name().'.json';
+        $raw = __ADIR__.'/app/json/serverinfo/raw_'.$serv->name().'.json';
         if (file_exists($raw)) {
             $checkit = true; $server = null;
 
-            $jsonfile = 'app/json/serverinfo/'.$serv->name().'.json';
-            $raw_jsonfile = $helper->file_to_json('app/json/serverinfo/raw_'.$serv->name().'.json');
+            $jsonfile = __ADIR__.'/app/json/serverinfo/'.$serv->name().'.json';
+            $raw_jsonfile = $helper->file_to_json(__ADIR__.'/app/json/serverinfo/raw_'.$serv->name().'.json');
             $server = $helper->file_to_json($jsonfile);
             
             // setzte Default daten
@@ -52,10 +52,10 @@ for ($i=0;$i<count($dir);$i++) {
             $server['run'] = ($server['run'] === true) ? "Yes" : "No";
 
             // lese Status für die Ausführung von Aktionen
-            $statefile = 'app/data/shell_resp/state/'.$serv->name().'.state';
+            $statefile = __ADIR__.'/app/data/shell_resp/state/'.$serv->name().'.state';
             if (!file_exists($statefile)) file_put_contents($statefile, 'TRUE');
             $serv_state = trim(file_get_contents($statefile));
-            $log = 'app/data/shell_resp/log/'.$serv->name().'/last.log';
+            $log = __ADIR__.'/app/data/shell_resp/log/'.$serv->name().'/last.log';
             if ($serv_state == 'TRUE' || !timediff($log, ($webserver['config']['ShellIntervall'] / 1000 + 3))) {
                 $server['next'] = 'FALSE';
             }

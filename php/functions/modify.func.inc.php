@@ -94,7 +94,7 @@ function sh_crontab($str) {
 
 function alog($str) {
     global $helper;
-    $steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();
+    $steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/mods.json", true) : array();
 
     $search  = array(
         '', // 9
@@ -295,7 +295,7 @@ function perm_to_htm(array $array, $keys = null) {
     $str = null;
     if(isset($fullarray["all"]["is_admin"]) && $fullarray["all"]["is_admin"] == 1) {
         // Erstelle Head
-        $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
+        $tpl = new Template("edit.htm", __ADIR__."/app/template/lists/userpanel/");
         $tpl->load();
         $tpl->rif("is_array", true);
         $tpl->r("key", "{::lang::php::userpanel::permissions::all}");
@@ -305,7 +305,7 @@ function perm_to_htm(array $array, $keys = null) {
         $tpl = null;
 
         // Erstelle Input
-        $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
+        $tpl = new Template("edit.htm", __ADIR__."/app/template/lists/userpanel/");
         $tpl->load();
         $tpl->rif("is_array", false);
         $tpl->r("key", "{::lang::php::userpanel::permissions::is_admin}");
@@ -318,17 +318,17 @@ function perm_to_htm(array $array, $keys = null) {
     else {
         foreach ($array as $key => $item) {
             if(!in_array($key, $ignore_perm)) {
-                $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
+                $tpl = new Template("edit.htm", __ADIR__."/app/template/lists/userpanel/");
                 $tpl->load();
                 $tpl->rif("is_array", is_array($item));
                 if(is_array($item)) {
                     if($keys == "[server]") {
-                        if(file_exists("remote/arkmanager/instances/$key.cfg")) {
+                        if(file_exists(__ADIR__."/remote/arkmanager/instances/$key.cfg")) {
                             if(isset($item["is_server_admin"]) && $item["is_server_admin"] == 1) {
                                 $serv = new server($key);
 
                                 // Erstelle Head
-                                $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
+                                $tpl = new Template("edit.htm", __ADIR__."/app/template/lists/userpanel/");
                                 $tpl->load();
                                 $tpl->rif("is_array", true);
                                 $tpl->r("key", $serv->cfg_read("ark_SessionName"));
@@ -338,7 +338,7 @@ function perm_to_htm(array $array, $keys = null) {
                                 $tpl = null;
 
                                 // Erstelle Input
-                                $tpl = new Template("edit.htm", "app/template/lists/userpanel/");
+                                $tpl = new Template("edit.htm", __ADIR__."/app/template/lists/userpanel/");
                                 $tpl->load();
                                 $tpl->rif("is_array", false);
                                 $tpl->r("key", "{::lang::php::userpanel::permissions::is_server_admin}");

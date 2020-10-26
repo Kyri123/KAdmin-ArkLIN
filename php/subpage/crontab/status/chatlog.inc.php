@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 
-$ipath = 'remote/arkmanager/instances/';
+$ipath = __ADIR__.'/remote/arkmanager/instances/';
 $dir = scandir($ipath);
 
 for ($i=0;$i<count($dir);$i++) {
@@ -67,7 +67,7 @@ for ($i=0;$i<count($dir);$i++) {
             //serverPLAYER
             //Überarbeiten???
             $player = array();
-            $pl = 'app/json/saves/pl_'.$serv->name().'.players';
+            $pl = __ADIR__.'/app/json/saves/pl_'.$serv->name().'.players';
             $rcon->send_command('listplayers');
             $p_str = $rcon->get_response();
 

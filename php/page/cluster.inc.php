@@ -14,7 +14,7 @@ if(!$user->perm("cluster/show")) {
 }
 
 // Vars
-$tpl_dir = 'app/template/core/cluster/';
+$tpl_dir = __ADIR__.'/app/template/core/cluster/';
 $setsidebar = false;
 $cfglist = null;
 $pagename = "{::lang::php::cluster::pagename}";
@@ -23,27 +23,27 @@ $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 $tpl = new Template("tpl.htm", $tpl_dir);
 $tpl->load();
 
-$clusterjson_path = "app/json/panel/cluster_data.json";
+$clusterjson_path = __ADIR__."/app/json/panel/cluster_data.json";
 
 // Hole Cluster Array / Json
 if (!file_exists($clusterjson_path)) if (!file_put_contents($clusterjson_path, "[]")) die;
 $json = $helper->file_to_json($clusterjson_path);
 
 //Entferne Cluster
-if (isset($url[3]) && $url[2] == "removecluster" && $user->perm("cluster/delete")) {
-    $key = $url[3];
+if (isset($_POST["removecluster"]) && $user->perm("cluster/delete")) {
+    $key = $_POST["key"];
     if (isset($json[$key])) unset($json[$key]);
     $helper->savejson_exsists($json, $clusterjson_path);
     header("Location: /cluster"); exit;
 }
-elseif(isset($url[3]) && $url[2] == "removecluster") {
+elseif(isset($_POST["removecluster"])) {
     $resp = $alert->rd(99);
 }
 
 // Entferne Server vom Cluster
-if (isset($url[4]) && $url[2] == "remove" && $user->perm("cluster/remove_server")) {
-    $key = $url[3];
-    $cfg = $url[4];
+if (isset($_POST["remove"]) && $user->perm("cluster/remove_server")) {
+    $key = $_POST["key"];
+    $cfg = $_POST["cfg"];
     $array = array_column($json[$key]["servers"], 'server');
     foreach ($array as $k => $v) {
         if ($v == $cfg) {
@@ -54,15 +54,15 @@ if (isset($url[4]) && $url[2] == "remove" && $user->perm("cluster/remove_server"
     $helper->savejson_exsists($json, $clusterjson_path);
     header("Location: /cluster"); exit;
 }
-elseif(isset($url[4]) && $url[2] == "remove") {
+elseif(isset($_POST["remove"])) {
     $resp = $alert->rd(99);
 }
 
 // Toggle Type vom Server (Master/Slave)
-if (isset($url[5]) && $url[2] == "settype" && $user->perm("cluster/toogle_master")) {
-    $key = $url[3];
-    $cfgkey = $url[4];
-    $to = $url[5];
+if (isset($_POST["settype"]) && $user->perm("cluster/toogle_master")) {
+    $key = $_POST["key"];
+    $cfgkey = $_POST["cfg"];
+    $to = $_POST["set"];
     if ($to > 0) {
         $to = 1;
         $i = 0;
@@ -85,7 +85,7 @@ if (isset($url[5]) && $url[2] == "settype" && $user->perm("cluster/toogle_master
     $helper->savejson_exsists($json, $clusterjson_path);
     header("Location: /cluster"); exit;
 }
-elseif(isset($url[5]) && $url[2] == "settype") {
+elseif(isset($_POST["settype"])) {
     $resp = $alert->rd(99);
 }
 
@@ -147,14 +147,14 @@ if (isset($_POST["editcluster"]) && $user->perm("cluster/edit_options")) {
     $sync["whitelist"] = true; if (!isset($_POST["whitelist"])) $sync["whitelist"] = false;
 
     // options / rules
-    $opt["NoTransferFromFiltering"] = true; if (!isset($_POST["NoTransferFromFiltering"])) $opt["NoTransferFromFiltering"] = false;
-    $opt["NoTributeDownloads"] = true; if (!isset($_POST["NoTributeDownloads"])) $opt["NoTributeDownloads"] = false;
-    $opt["PreventDownloadSurvivors"] = true; if (!isset($_POST["PreventDownloadSurvivors"])) $opt["PreventDownloadSurvivors"] = false;
-    $opt["PreventUploadSurvivors"] = true; if (!isset($_POST["PreventUploadSurvivors"])) $opt["PreventUploadSurvivors"] = false;
-    $opt["PreventDownloadItems"] = true; if (!isset($_POST["PreventDownloadItems"])) $opt["PreventDownloadItems"] = false;
-    $opt["PreventUploadItems"] = true; if (!isset($_POST["PreventUploadItems"])) $opt["PreventUploadItems"] = false;
-    $opt["PreventDownloadDinos"] = true; if (!isset($_POST["PreventDownloadDinos"])) $opt["PreventDownloadDinos"] = false;
-    $opt["PreventUploadDinos"] = true; if (!isset($_POST["PreventUploadDinos"])) $opt["PreventUploadDinos"] = false;
+    $opt["NoTransferFromFiltering"]     = isset($_POST["NoTransferFromFiltering"]);
+    $opt["NoTributeDownloads"]          = isset($_POST["NoTributeDownloads"]);
+    $opt["PreventDownloadSurvivors"]    = isset($_POST["PreventDownloadSurvivors"]);
+    $opt["PreventUploadSurvivors"]      = isset($_POST["PreventUploadSurvivors"]);
+    $opt["PreventDownloadItems"]        = isset($_POST["PreventDownloadItems"]);
+    $opt["PreventUploadItems"]          = isset($_POST["PreventUploadItems"]);
+    $opt["PreventDownloadDinos"]        = isset($_POST["NoTransferFromFiltering"]);
+    $opt["PreventUploadDinos"]          = isset($_POST["PreventDownloadDinos"]);
 
     if ($cluster != null && ($clustermd5 == $json[$i]["clusterid"] || array_search($clustermd5, array_column($json, 'clusterid')) === FALSE)) {
         $json[$i]["name"] = $cluster;
@@ -195,14 +195,14 @@ if (isset($_POST["add"]) && $user->perm("cluster/create")) {
     $sync["whitelist"] = true; if (!isset($_POST["whitelist"])) $sync["whitelist"] = false;
 
     // options / rules
-    $opt["NoTransferFromFiltering"] = true; if (!isset($_POST["NoTransferFromFiltering"])) $opt["NoTransferFromFiltering"] = false;
-    $opt["NoTributeDownloads"] = true; if (!isset($_POST["NoTributeDownloads"])) $opt["NoTributeDownloads"] = false;
-    $opt["PreventDownloadSurvivors"] = true; if (!isset($_POST["PreventDownloadSurvivors"])) $opt["PreventDownloadSurvivors"] = false;
-    $opt["PreventUploadSurvivors"] = true; if (!isset($_POST["PreventUploadSurvivors"])) $opt["PreventUploadSurvivors"] = false;
-    $opt["PreventDownloadItems"] = true; if (!isset($_POST["PreventDownloadItems"])) $opt["PreventDownloadItems"] = false;
-    $opt["PreventUploadItems"] = true; if (!isset($_POST["PreventUploadItems"])) $opt["PreventUploadItems"] = false;
-    $opt["PreventDownloadDinos"] = true; if (!isset($_POST["PreventDownloadDinos"])) $opt["PreventDownloadDinos"] = false;
-    $opt["PreventUploadDinos"] = true; if (!isset($_POST["PreventUploadDinos"])) $opt["PreventUploadDinos"] = false;
+    $opt["NoTransferFromFiltering"]     = isset($_POST["NoTransferFromFiltering"]);
+    $opt["NoTributeDownloads"]          = isset($_POST["NoTributeDownloads"]);
+    $opt["PreventDownloadSurvivors"]    = isset($_POST["PreventDownloadSurvivors"]);
+    $opt["PreventUploadSurvivors"]      = isset($_POST["PreventUploadSurvivors"]);
+    $opt["PreventDownloadItems"]        = isset($_POST["PreventDownloadItems"]);
+    $opt["PreventUploadItems"]          = isset($_POST["PreventUploadItems"]);
+    $opt["PreventDownloadDinos"]        = isset($_POST["NoTransferFromFiltering"]);
+    $opt["PreventUploadDinos"]          = isset($_POST["PreventDownloadDinos"]);
 
     if ($cluster != null && (count($json) < 1 || array_search($clustermd5, array_column($json, 'clusterid')) === FALSE)) {
 
@@ -241,11 +241,11 @@ elseif(isset($_POST["add"])) {
 
 $i = 0;
 foreach ($json as $mk => $mv) {
-    $old = $json[$mk]["servers"];
-    $json[$mk]["servers"] = array();
+    $old                    = $json[$mk]["servers"];
+    $json[$mk]["servers"]   = array();
     foreach ($old as $k => $v) {
-        $array["server"] = $v["server"];
-        $array["type"] = $v["type"];
+        $array["server"]    = $v["server"];
+        $array["type"]      = $v["type"];
         array_push($json[$mk]["servers"], $array);
         $i++;
     }
@@ -264,35 +264,52 @@ foreach ($json as $mk => $mv) {
 
     $count = 0; if (isset($json[$mk]["servers"])) $count = count($json[$mk]["servers"]);
 
+    $imgarr     = array();
+
+    $imgarr[0]["map"]   = "$ROOT/app/dist/img/igmap/ark.png";
+    $imgarr[0]["bg"]    = "$ROOT/app/dist/img/igmap/bg.jpg";
+    $k                  = 1;
+
     if ($count > 0) {
         $x = 0;
         foreach ($json[$mk]["servers"] as $key) {
             $listserv = new Template("_lists.htm", $tpl_dir);
             $listserv->load();
             $listserv->rif ("ifserver", true);
-            $server = new server($key["server"]);
-            $data = $server->status();
 
-            $color_type = "green";
-            $master = false;
+            $server         = new server($key["server"]);
+            $data           = $server->status();
+            $color_type     =    "green";
+            $master         = false;
+
             if ($key["type"] > 0) {
                 $color_type = "blue";
-                $master = true;
+                $master     = true;
             }
 
             $listserv->rif ("ifmaster", $master);
-            $listserv->r("servername", $server->cfg_read("ark_SessionName"));
-            $listserv->r("cfg", $server->name());
-            $listserv->r("cfgkey", $x);
-            $listserv->r("key", $mk);
-            $listserv->r("curr", $data->aplayers);
-            $listserv->r("type", $clustertype[$key["type"]]);
-            $listserv->r("max", $server->cfg_read("ark_MaxPlayers"));
-            $listserv->r("color", convertstate($server->statecode())["color"]);
-            $listserv->r("color_type", $color_type);
-            $listserv->r("state", convertstate($server->statecode())["str"]);
+            $listserv->r("servername",      $server->cfg_read("ark_SessionName"));
+            $listserv->r("cfg",             $server->name());
+            $listserv->r("cfgkey",          $x);
+            $listserv->r("key",             $mk);
+            $listserv->r("curr",            $data->aplayers);
+            $listserv->r("type",            $clustertype[$key["type"]]);
+            $listserv->r("max",             $server->cfg_read("ark_MaxPlayers"));
+            $listserv->r("color",           convertstate($server->statecode())["color"]);
+            $listserv->r("color_type",      $color_type);
+            $listserv->r("state",           convertstate($server->statecode())["str"]);
 
-            $x++;
+            $map_file   = __ADIR__."/app/dist/img/igmap/".$server->cfg_read("serverMap").".jpg";
+            $map_path   = "$ROOT/app/dist/img/igmap/".$server->cfg_read("serverMap").".jpg";
+            if (file_exists($map_file)) $imgarr[$k]["map"] = $map_path;
+
+            $map_file   = __ADIR__."/app/dist/img/backgrounds/".$server->cfg_read("serverMap").".jpg";
+            $map_path   = "$ROOT/app/dist/img/backgrounds/".$server->cfg_read("serverMap").".jpg";
+            if (file_exists($map_file)) $imgarr[$k]["bg"] = $map_path;
+
+            $map_file   = $map_path = null;
+
+            $k++; $x++;
 
             $serverlist .= $listserv->load_var();
         }
@@ -302,55 +319,59 @@ foreach ($json as $mk => $mv) {
     $list_opt = null;
 
     //sync
-    if ($json[$mk]["sync"]["admin"]) $list_sync .= "<tr><td>Admins</td></tr>";
-    if ($json[$mk]["sync"]["mods"]) $list_sync .= "<tr><td>Mods</td></tr>";
-    if ($json[$mk]["sync"]["konfig"]) $list_sync .= "<tr><td>Config</td></tr>";
-    if ($json[$mk]["sync"]["whitelist"]) $list_sync .= "<tr><td>Whitelist</td></tr>";
+    if ($json[$mk]["sync"]["admin"])        $list_sync .= "<tr><td>Admins</td></tr>";
+    if ($json[$mk]["sync"]["mods"])         $list_sync .= "<tr><td>Mods</td></tr>";
+    if ($json[$mk]["sync"]["konfig"])       $list_sync .= "<tr><td>Config</td></tr>";
+    if ($json[$mk]["sync"]["whitelist"])    $list_sync .= "<tr><td>Whitelist</td></tr>";
 
-    $listtpl->rif ("Administratoren", $json[$mk]["sync"]["admin"]);
-    $listtpl->rif ("Mods", $json[$mk]["sync"]["mods"]);
-    $listtpl->rif ("Konfigurationen", $json[$mk]["sync"]["konfig"]);
-    $listtpl->rif ("whitelist", $json[$mk]["sync"]["whitelist"]);
+    $listtpl->rif ("Administratoren",   $json[$mk]["sync"]["admin"]);
+    $listtpl->rif ("Mods",              $json[$mk]["sync"]["mods"]);
+    $listtpl->rif ("Konfigurationen",   $json[$mk]["sync"]["konfig"]);
+    $listtpl->rif ("whitelist",         $json[$mk]["sync"]["whitelist"]);
     //opt
-    if ($json[$mk]["opt"]["NoTransferFromFiltering"]) $list_opt .= "<tr><td>NoTransferFromFiltering</td></tr>";
-    if ($json[$mk]["opt"]["NoTributeDownloads"]) $list_opt .= "<tr><td>NoTributeDownloads</td></tr>";
-    if ($json[$mk]["opt"]["PreventDownloadSurvivors"]) $list_opt .= "<tr><td>PreventDownloadSurvivors</td></tr>";
-    if ($json[$mk]["opt"]["PreventUploadSurvivors"]) $list_opt .= "<tr><td>PreventUploadSurvivors</td></tr>";
-    if ($json[$mk]["opt"]["PreventDownloadItems"]) $list_opt .= "<tr><td>PreventDownloadItems</td></tr>";
-    if ($json[$mk]["opt"]["PreventUploadItems"]) $list_opt .= "<tr><td>PreventUploadItems</li></tr>";
-    if ($json[$mk]["opt"]["PreventDownloadDinos"]) $list_opt .= "<tr><td>PreventDownloadDinos</td></tr>";
-    if ($json[$mk]["opt"]["PreventUploadDinos"]) $list_opt .= "<tr><td>PreventUploadDinos</td></tr>";
+    if ($json[$mk]["opt"]["NoTransferFromFiltering"])   $list_opt .= "<tr><td>NoTransferFromFiltering</td></tr>";
+    if ($json[$mk]["opt"]["NoTributeDownloads"])        $list_opt .= "<tr><td>NoTributeDownloads</td></tr>";
+    if ($json[$mk]["opt"]["PreventDownloadSurvivors"])  $list_opt .= "<tr><td>PreventDownloadSurvivors</td></tr>";
+    if ($json[$mk]["opt"]["PreventUploadSurvivors"])    $list_opt .= "<tr><td>PreventUploadSurvivors</td></tr>";
+    if ($json[$mk]["opt"]["PreventDownloadItems"])      $list_opt .= "<tr><td>PreventDownloadItems</td></tr>";
+    if ($json[$mk]["opt"]["PreventUploadItems"])        $list_opt .= "<tr><td>PreventUploadItems</li></tr>";
+    if ($json[$mk]["opt"]["PreventDownloadDinos"])      $list_opt .= "<tr><td>PreventDownloadDinos</td></tr>";
+    if ($json[$mk]["opt"]["PreventUploadDinos"])        $list_opt .= "<tr><td>PreventUploadDinos</td></tr>";
 
 
-    $listtpl->rif ("NoTransferFromFiltering", $json[$mk]["opt"]["NoTransferFromFiltering"]);
-    $listtpl->rif ("NoTributeDownloads", $json[$mk]["opt"]["NoTributeDownloads"]);
-    $listtpl->rif ("PreventDownloadSurvivors", $json[$mk]["opt"]["PreventDownloadSurvivors"]);
-    $listtpl->rif ("PreventUploadSurvivors", $json[$mk]["opt"]["PreventUploadSurvivors"]);
-    $listtpl->rif ("PreventDownloadItems", $json[$mk]["opt"]["PreventDownloadItems"]);
-    $listtpl->rif ("PreventUploadItems", $json[$mk]["opt"]["PreventUploadItems"]);
-    $listtpl->rif ("PreventDownloadDinos", $json[$mk]["opt"]["PreventDownloadDinos"]);
-    $listtpl->rif ("PreventUploadDinos", $json[$mk]["opt"]["PreventUploadDinos"]);
+    $listtpl->rif ("NoTransferFromFiltering",       $json[$mk]["opt"]["NoTransferFromFiltering"]);
+    $listtpl->rif ("NoTributeDownloads",            $json[$mk]["opt"]["NoTributeDownloads"]);
+    $listtpl->rif ("PreventDownloadSurvivors",      $json[$mk]["opt"]["PreventDownloadSurvivors"]);
+    $listtpl->rif ("PreventUploadSurvivors",        $json[$mk]["opt"]["PreventUploadSurvivors"]);
+    $listtpl->rif ("PreventDownloadItems",          $json[$mk]["opt"]["PreventDownloadItems"]);
+    $listtpl->rif ("PreventUploadItems",            $json[$mk]["opt"]["PreventUploadItems"]);
+    $listtpl->rif ("PreventDownloadDinos",          $json[$mk]["opt"]["PreventDownloadDinos"]);
+    $listtpl->rif ("PreventUploadDinos",            $json[$mk]["opt"]["PreventUploadDinos"]);
 
     if (count($json[$mk]["servers"]) == 0 || array_search(1, array_column($json[$mk]["servers"], 'type')) === FALSE) {
         $alert_r = $alert->rd(203, 3);
     }
 
-    if ($serverlist == null) $serverlist = "<tr><td colspan='5'>Kein Server wurde gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#addservtocluster".$json[$mk]["clusterid"]."\">Server Hinzufügen</a> </td></tr>";
-    if ($list_sync == null) $list_sync = "<tr><td colspan='5'>Synchronisation wurde nicht gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#options".$json[$mk]["clusterid"]."\">Einstellungen</a> </td></tr>";
-    if ($list_opt == null) $list_opt = "<tr><td colspan='5'>Keine Optionen wurde gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#options".$json[$mk]["clusterid"]."\">Einstellungen</a> </td></tr>";
+    if ($serverlist == null)    $serverlist = "<tr><td colspan='5'>Kein Server wurde gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#addservtocluster".$json[$mk]["clusterid"]."\">Server Hinzufügen</a> </td></tr>";
+    if ($list_sync == null)     $list_sync  = "<tr><td colspan='5'>Synchronisation wurde nicht gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#options".$json[$mk]["clusterid"]."\">Einstellungen</a> </td></tr>";
+    if ($list_opt == null)      $list_opt   = "<tr><td colspan='5'>Keine Optionen wurde gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#options".$json[$mk]["clusterid"]."\">Einstellungen</a> </td></tr>";
 
-    $listtpl->r("alert", $alert_r);
-    $listtpl->r("key", $mk);
-    $listtpl->r("list_sync", $list_sync);
-    $listtpl->r("list_opt", $list_opt);
-    $listtpl->r("servercount", $count);
-    $listtpl->r("serverlist", $serverlist);
-    $listtpl->r("clustername", $json[$mk]["name"]);
-    $listtpl->r("clusterid", $json[$mk]["clusterid"]);
+    $ki     = rand(0, (count($imgarr)-1));
+
+    $listtpl->r("alert",        $alert_r);
+    $listtpl->r("key",          $mk);
+    $listtpl->r("list_sync",    $list_sync);
+    $listtpl->r("list_opt",     $list_opt);
+    $listtpl->r("servercount",  $count);
+    $listtpl->r("serverlist",   $serverlist);
+    $listtpl->r("clustername",  $json[$mk]["name"]);
+    $listtpl->r("clusterid",    $json[$mk]["clusterid"]);
+    $listtpl->r("img",          $imgarr[$ki]["map"]);
+    $listtpl->r("bgimg",        $imgarr[$ki]["bg"]);
     $list .= $listtpl->load_var();
 }
 
-$cfg_array = $helper->file_to_json("app/json/serverinfo/all.json");
+$cfg_array = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
 $sel_serv = null;
 foreach ($cfg_array["cfgs"] as $key) {
     $cfg = str_replace(".cfg", null, $key);

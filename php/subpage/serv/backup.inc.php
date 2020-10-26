@@ -15,10 +15,10 @@ if (!$user->perm("$perm/backup/show")) {
 }
 
 $pagename = '{::lang::php::sc::page::backup::pagename}';
-$page_tpl = new Template('backup.htm', 'app/template/sub/serv/');
+$page_tpl = new Template('backup.htm', __ADIR__.'/app/template/sub/serv/');
 $page_tpl->load();
 $page_tpl->debug(true);
-$urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
+$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::backup::urltop}</li>';
 
 $page_tpl->r('cfg' ,$url[2]);
@@ -28,8 +28,8 @@ $dir_array = dirToArray($serv->dir_backup());
 $y = 0; $list = null;
 
 // entferne ein Backup verzeichnis
-if (isset($url[4]) && isset($url[5]) && $url[4] == "removemain" && $user->perm("$perm/backup/remove")) {
-    $key = $url[5];
+if (isset($_POST["removemain"]) && $user->perm("$perm/backup/remove")) {
+    $key = $_POST["file"];
     $path = $serv->dir_backup()."/".$key;
     if (file_exists($path)) {
         if (del_dir($path)) {
@@ -44,14 +44,14 @@ if (isset($url[4]) && isset($url[5]) && $url[4] == "removemain" && $user->perm("
         $resp = $alert->rd(1);
     }
 }
-elseif(isset($url[4]) && isset($url[5]) && $url[4] == "removemain") {
+elseif(isset($_POST["removemain"])) {
     $resp = $alert->rd(99);
 }
 
 // entferne ein Backup
-if (isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove" && $user->perm("$perm/backup/remove")) {
-    $key = $url[5];
-    $i = $url[6];
+if (isset($_POST["remove"]) && $user->perm("$perm/backup/remove")) {
+    $key = $_POST["file"];
+    $i = $_POST["i"];
     $path = $serv->dir_backup()."/".$key."/".$dir_array[$key][$i];
     $filename = $dir_array[$key][$i];
     if (file_exists($path)) {
@@ -67,7 +67,7 @@ if (isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove" &&
         $resp = $alert->rd(1);
     }
 }
-elseif(isset($url[4]) && isset($url[5]) && isset($url[6]) && $url[4] == "remove") {
+elseif(isset($_POST["remove"])) {
     $resp = $alert->rd(99);
 }
 
@@ -86,14 +86,14 @@ if (isset($_POST["playthisin"]) && $user->perm("$perm/backup/playin")) {
     $find = array($serv->name().".", ".tar.bz2");
     $replace = array(null, null);
     $filename = str_replace($find, $replace, $dir_array[$key][$i]);
-    $path = "app/cache/".$filename;
+    $path = __ADIR__."/app/cache/".$filename;
 
     if(file_exists($path)) del_dir($path);
 
     try {
         // Entpacke Tar
         $phar = new PharData($serv->dir_backup()."/".$key."/".$dir_array[$key][$i]);
-        $phar->extractTo('app/cache');
+        $phar->extractTo(__ADIR__.'/app/cache');
         $cont = true;
     } catch (Exception $e) {
         // Melde: Datei konnte nicht Entpackt werden
@@ -158,7 +158,7 @@ elseif(isset($_POST["playthisin"])) {
 $dir_array = dirToArray($serv->dir_backup());
 foreach ($dir_array as $key => $value) {
     $list2 = null;
-    $listtpl = new Template('backup.htm', 'app/template/lists/serv/backups/');
+    $listtpl = new Template('backup.htm', __ADIR__.'/app/template/lists/serv/backups/');
     $listtpl->load();
     $rndb = rndbit(50);
     $listtpl->r("rndb", $rndb);
@@ -168,7 +168,7 @@ foreach ($dir_array as $key => $value) {
 
     // Suche nach Backups
     for ($i=0;$i<count($dir_array[$key]);$i++) {
-        $list2tpl = new Template('backup_sub.htm', 'app/template/lists/serv/backups/');
+        $list2tpl = new Template('backup_sub.htm', __ADIR__.'/app/template/lists/serv/backups/');
         $list2tpl->load();
         $rndb = "modal".$y.$i;
         $list2tpl->r("rndb", $rndb);
@@ -194,7 +194,7 @@ foreach ($dir_array as $key => $value) {
 }
 if ($list == null) {
     // Gebe aus dass keine Backups gefunden wurden
-    $listtpl = new Template('backup.htm', 'app/template/lists/serv/backups/');
+    $listtpl = new Template('backup.htm', __ADIR__.'/app/template/lists/serv/backups/');
     $listtpl->load();
     $listtpl->rif ("ifemtpy", true);
     $list .= $listtpl->load_var();

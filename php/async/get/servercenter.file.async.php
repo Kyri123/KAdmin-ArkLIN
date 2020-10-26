@@ -12,7 +12,7 @@ require('../main.inc.php');
 $cfg = $_GET['serv'];
 $serv = new server($cfg);
 $case = $_GET['case'];
-$ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
+$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
 $servlocdir = $ckonfig['servlocdir'];
 $dir = $servlocdir.$_GET["path"];
 $dirp = $_GET["path"];
@@ -26,7 +26,7 @@ switch ($case) {
             if(strpos($serv->cfg_read("arkserverroot"), $servlocdir) !== false && file_exists($serv->cfg_read("arkserverroot"))) $dir_scan[] = str_replace($servlocdir, null, $serv->cfg_read("arkserverroot"));
             if(strpos($serv->cfg_read("logdir"), $servlocdir) !== false && file_exists($serv->cfg_read("logdir"))) $dir_scan[] = str_replace($servlocdir, null, $serv->cfg_read("logdir"));
             if(strpos($serv->cfg_read("arkbackupdir"), $servlocdir) !== false && file_exists($serv->cfg_read("arkbackupdir"))) $dir_scan[] = str_replace($servlocdir, null, $serv->cfg_read("arkbackupdir"));
-            if(file_exists("remote/serv/cluster/")) $dir_scan[] = "cluster";
+            if(file_exists(__ADIR__."/remote/serv/cluster/")) $dir_scan[] = "cluster";
         }
         else {
             $dir_scan = scandir($dir);
@@ -38,7 +38,7 @@ switch ($case) {
         foreach($dir_scan as $item) {
             if($item != "." && $item != "..") {
                 $target = "$dir/$item";
-                $list = new Template("file_manager.htm", "app/template/lists/serv/jquery/");
+                $list = new Template("file_manager.htm", __ADIR__."/app/template/lists/serv/jquery/");
                 $list->load();
 
                 $fileinfos = pathinfo( $target);
@@ -64,7 +64,7 @@ switch ($case) {
             }
             elseif($item == "..") {
                 $target = $dir;
-                $list = new Template("file_manager.htm", "app/template/lists/serv/jquery/");
+                $list = new Template("file_manager.htm", __ADIR__."/app/template/lists/serv/jquery/");
                 $list->load();
 
                 $dirpz = "$dirp/";
@@ -96,7 +96,7 @@ switch ($case) {
 
 
     case "load":
-        $list = new Template("load_file_manager.htm", "app/template/universally/jquery/");
+        $list = new Template("load_file_manager.htm", __ADIR__."/app/template/universally/jquery/");
         $list->load();
         $list->echo();
     break;

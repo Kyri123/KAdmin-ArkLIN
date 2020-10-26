@@ -134,7 +134,7 @@
                         <h4>SteamCMD</h4>
                         {steamcmdsys}{steamfile}{permissions??config??scmd_clear}
                         <div class="right">
-                            <a href="/config/clear/steamcmd" class="btn btn-primary">{::lang::config::clear}</a>
+                            <a href="{ROOT}/config/clear/steamcmd" class="btn btn-primary">{::lang::config::clear}</a>
                         </div>{/permissions}{/steamfile}{/steamcmdsys}
                     </div>
                     {info_CMD}{steamcmd_info} {steamcmdsys}
@@ -240,6 +240,7 @@
 
     // Allgemeine Vars
     var vars = {};
+    vars.ROOT = '{ROOT}';
 
     // Sprache
     var lang = {};

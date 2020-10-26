@@ -18,8 +18,8 @@ if (!$user->perm("$perm/mods/show") || !$serv->mod_support()) {
 $pagename = '{::lang::php::sc::page::saves::pagename}';
 $resp = null;
 $urls = '/servercenter/'.$url[2].'/mods/';
-$page_tpl = new Template('mods.htm', 'app/template/sub/serv/');
-$urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
+$page_tpl = new Template('mods.htm', __ADIR__.'/app/template/sub/serv/');
+$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::saves::urltop}</li>';
 
 // Mods Hinzufügen

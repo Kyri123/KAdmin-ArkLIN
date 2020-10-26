@@ -15,8 +15,8 @@ if (!$user->perm("$perm/saves/show")) {
 }
 
 $pagename = '{::lang::php::sc::page::mods::pagename}';
-$page_tpl = new Template('saves.htm', 'app/template/sub/serv/');
-$urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
+$page_tpl = new Template('saves.htm', __ADIR__.'/app/template/sub/serv/');
+$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::mods::pagename}</li>';
 $jhelper = new player_json_helper();
 
@@ -25,8 +25,8 @@ $c_pl = $c_t = $w_t = 0;
 
 // erstelle Zip download
 if (isset($_POST["zip"]) && $user->perm("$perm/saves/download")) {
-    if(!file_exists("app/downloads")) mkdir("app/downloads");
-    $zipfile = "app/downloads/savegames.tar";
+    if(!file_exists(__ADIR__."/app/downloads")) mkdir(__ADIR__."/app/downloads");
+    $zipfile = __ADIR__."/app/downloads/savegames.tar";
     
     $save = isset($_POST["save"]);
     $tribe = isset($_POST["tribe"]);
@@ -80,10 +80,10 @@ elseif(isset($_POST["zip"])) {
 }
 
 // Entferne Savegame
-if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$perm/saves/remove")) {
+if (isset($_POST["remove"]) && $user->perm("$perm/saves/remove")) {
 
     // Setzte Vars
-    $file_name = $url[5];
+    $file_name = $_POST["file"];
     $savedir = $serv->dir_save();
 
     // Wenn Spieler
@@ -102,7 +102,7 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$per
             if (unlink($filename_2));
         }
 
-        $path = 'app/json/saves/player_'.$serv->name().'.json';
+        $path = __ADIR__.'/app/json/saves/player_'.$serv->name().'.json';
         $json = $helper->file_to_json($path);
 
         for ($i=0;$i<count($json);$i++) {
@@ -139,7 +139,7 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$per
         }
         print_r($del);
 
-        $path = 'app/json/saves/tribes_'.$serv->name().'.json';
+        $path = __ADIR__.'/app/json/saves/tribes_'.$serv->name().'.json';
         $json = $helper->file_to_json($path);
         for ($i=0;$i<count($json);$i++) {
             $pl = $jhelper->tribe($json, $i);
@@ -171,7 +171,7 @@ if (isset($url[4]) && $url[4] == 'remove' && isset($url[5]) && $user->perm("$per
         }
     }
 }
-elseif(isset($url[4]) && $url[4] == 'remove' && isset($url[5])) {
+elseif(isset($_POST["remove"])) {
     $resp = $alert->rd(99);
 }
 
@@ -197,9 +197,9 @@ $savedir = $serv->dir_save();
 
 // Listen
 $player = null;
-$tribe_json = $helper->file_to_json('app/json/saves/tribes_'.$serv->name().'.json', false);
-$player_json = $helper->file_to_json('app/json/saves/player_'.$serv->name().'.json', false);
-$playerjson = $helper->file_to_json('app/json/steamapi/profile_savegames_'.$serv->name().'.json', true);
+$tribe_json = $helper->file_to_json(__ADIR__.'/app/json/saves/tribes_'.$serv->name().'.json', false);
+$player_json = $helper->file_to_json(__ADIR__.'/app/json/saves/player_'.$serv->name().'.json', false);
+$playerjson = $helper->file_to_json(__ADIR__.'/app/json/steamapi/profile_savegames_'.$serv->name().'.json', true);
 $playerjs = isset($playerjson["response"]["players"]) ? $playerjson["response"]["players"] : [];
 $jhelper = new player_json_helper();
 
@@ -223,7 +223,7 @@ foreach ($dir_arr as $file) {
 $count = (is_countable($player_save)) ? count($player_save) : false;
 if($count !== false) {
     for ($i=0;$i<$count;$i++) {
-        $list_tpl = new Template('saves.htm', 'app/template/lists/serv/savegames/');
+        $list_tpl = new Template('saves.htm', __ADIR__.'/app/template/lists/serv/savegames/');
         $list_tpl->load();
 
         // Hole
@@ -264,11 +264,14 @@ if($count !== false) {
         $list_tpl->r('url', $surl);
         $list_tpl->r('img', $img);
         $list_tpl->r('steamname', $steamname);
-        $list_tpl->r('rm_url', '/servercenter/' . $serv->name() . '/saves/remove/' . $SteamId . '.arkprofile');
         $list_tpl->r('EP', $xp);
         $list_tpl->r('SpielerID', $SpielerID);
         $list_tpl->r('TEP', $TotalEngramPoints);
         $list_tpl->r('TID', $TribeId);
+        $list_tpl->r('file', $SteamId.'.arkprofile');
+        $list_tpl->r('cfg', $serv->name());
+
+
         $list_tpl->rif ('empty', false);
 
         $file = $savedir.'/'.$SteamId.'.arkprofile';
@@ -285,7 +288,7 @@ $tribe = null; $c_t = 0;
 // Stämme Liste
 if(is_countable($tribe_save)) {
     for ($i = 0; $i < count($tribe_save); $i++) {
-        $list_tpl = new Template('tribes.htm', 'app/template/lists/serv/savegames/');
+        $list_tpl = new Template('tribes.htm', __ADIR__.'/app/template/lists/serv/savegames/');
         $list_tpl->load();
 
         // Hole Daten von MySQL
@@ -310,7 +313,7 @@ if(is_countable($tribe_save)) {
                         $row = $query->fetchArray();
                         $row["SteamId"] = intval($row["SteamId"]);
 
-                        $playerlist_tpl = new Template('tribes_user.htm', 'app/template/lists/serv/savegames/');
+                        $playerlist_tpl = new Template('tribes_user.htm', __ADIR__.'/app/template/lists/serv/savegames/');
                         $playerlist_tpl->load();
 
                         $playerlist_tpl->r('IG:name', $row["CharacterName"]);
@@ -335,8 +338,8 @@ if(is_countable($tribe_save)) {
             $list_tpl->r('id', $rows["Id"]);
             $file = $savedir.'/'.$rows["Id"].'.arktribe';
             $list_tpl->r('durl', "/".$file);
-
-            $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$rows["Id"].'.arktribe');
+            $list_tpl->r('file', $rows["Id"].'.arktribe');
+            $list_tpl->r('cfg', $serv->name());
 
             $tribe .= $list_tpl->load_var();
             $list_tpl = null;
@@ -354,7 +357,7 @@ if(is_countable($dirarr)) {
         if (strpos($dirarr[$i], '.ark')) {
             $file = $savedir.'/'.$dirarr[$i];
             if (file_exists($file)) {
-                $list_tpl = new Template('world.htm', 'app/template/lists/serv/savegames/');
+                $list_tpl = new Template('world.htm', __ADIR__.'/app/template/lists/serv/savegames/');
                 $list_tpl->load();
                 $time = filemtime($file);
 
@@ -365,8 +368,8 @@ if(is_countable($dirarr)) {
                 $list_tpl->r('update', converttime($time));
                 $list_tpl->r('durl', "/".$file);
                 $list_tpl->r('rnd', rndbit(10));
-
-                $list_tpl->r('rm_url', '/servercenter/'.$serv->name().'/saves/remove/'.$dirarr[$i]);
+                $list_tpl->r('file', $dirarr[$i]);
+                $list_tpl->r('cfg', $serv->name());
 
                 if (!strpos($name, 'profile') && $date_array["year"] == null) {
                     $world .= $list_tpl->load_var();

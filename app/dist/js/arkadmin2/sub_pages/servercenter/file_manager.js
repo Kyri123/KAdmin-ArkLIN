@@ -10,7 +10,7 @@ function loadfile(p) {
         case: "load"
     };
     //lade loader;
-    $.get("/php/async/get/servercenter.file.async.php", load_data, (data) => {
+    $.get(`${vars.ROOT}/php/async/get/servercenter.file.async.php`, load_data, (data) => {
         table.html(data);
 
         // lade nun liste
@@ -19,7 +19,7 @@ function loadfile(p) {
             serv: vars.cfg,
             case: "files"
         };
-        $.get("/php/async/get/servercenter.file.async.php", get_data, (re) => {
+        $.get(`${vars.ROOT}/php/async/get/servercenter.file.async.php`, get_data, (re) => {
             table.html(re);
         });
     });
@@ -32,7 +32,7 @@ function removeline(f, id) {
         serv: vars.cfg,
         case: "del"
     };
-    $.get("/php/async/get/servercenter.file.async.php", del_data, (re) => {
+    $.get(`${vars.ROOT}/php/async/get/servercenter.file.async.php`, del_data, (re) => {
         let json = JSON.parse(re);
         if (json.code == 200) {
             $(id).remove();
@@ -40,7 +40,7 @@ function removeline(f, id) {
             let alert_data = {
                 code: json.code,
             };
-            $.get("/php/async/get/all.alert.async.php", alert_data, (alert) => {
+            $.get(`${vars.ROOT}/php/async/get/all.alert.async.php`, alert_data, (alert) => {
                 $("#all_resp").html(alert);
             });
         }

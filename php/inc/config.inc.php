@@ -9,18 +9,18 @@
 */
 
 // Mysql
-if(file_exists('php/inc/pconfig.inc.php')) include('pconfig.inc.php');
+if(file_exists(__ADIR__.'/php/inc/pconfig.inc.php')) include(__ADIR__.'/php/inc/pconfig.inc.php');
 
 // allgmeine
 $sitename = "ArkAdmin2";
-$version = '1.3.0';
+$version = '1.3.1';
 $ip = $_SERVER['SERVER_ADDR'];
 $maxpanel_server = 12;
 
 // Webserver
 $webserver['url'] = 'https://data.chiraya.de/';
 $webserver['changelog'] = $webserver['url'].'changelog.json';
-$webserver['config'] = json_decode(file_get_contents("arkadmin_server/config/server.json") ,true);
+$webserver['config'] = json_decode(file_get_contents(__ADIR__."/arkadmin_server/config/server.json") ,true);
 $webserver['config']["port"] = (isset($webserver['config']["port"])) ? $webserver['config']["port"] : 30000;
 
 // Webserver Platzhalter

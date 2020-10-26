@@ -73,7 +73,8 @@ class check extends helper {
 
             // Prüfe Rewrite aktiv
             case "mod_rewrite":
-                $this->state = (array_key_exists('HTTP_MOD_REWRITE', $_SERVER)) ? 2 : 0;
+                $JSON = parent::remotefile_to_json((isset($_SERVER["HTTPS"]) ? ($_SERVER["HTTPS"] == "on" ? "https" : "http") : "http") ."://".$_SERVER["HTTP_HOST"]."/?mod_rewrite", "mod_rewrite");
+                $this->state = (array_key_exists('HTTP_MOD_REWRITE', $JSON)) ? 2 : 0;
             break;
 
             // Prüfe Linux
@@ -89,7 +90,7 @@ class check extends helper {
 
             // Prüfe ArkAdmin-Server
             case "aa":
-                $webserver = json_decode(file_get_contents("arkadmin_server/config/server.json") ,true);
+                $webserver = json_decode(file_get_contents(__ADIR__."/arkadmin_server/config/server.json") ,true);
                 $webserver["port"] = (isset($webserver["port"])) ? $webserver["port"] : 30000;
                 $header = @get_headers("http://127.0.0.1:".$webserver['port']."/");
                 $this->state = (is_array($header)) ? 2 : 0;

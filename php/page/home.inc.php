@@ -9,7 +9,7 @@
 */
 
 // Vars
-$tpl_dir = 'app/template/core/home/';
+$tpl_dir = __ADIR__.'/app/template/core/home/';
 $setsidebar = false;
 $pagename = "{::lang::php::home::pagename}";
 $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
@@ -22,7 +22,7 @@ $tpl->load();
 
 
 // Server
-$all = $helper->file_to_json("app/json/serverinfo/all.json");
+$all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
 $a_cfg = $all["cfgs"];
 $count_server = count($a_cfg);
 
@@ -44,8 +44,9 @@ foreach ($a_cfg as $key => $value) {
     $vs = null;
     if ($data->version != null) $vs = " - V.".$data->version;
 
-    $map_path = "app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
-    if (!file_exists($map_path)) $map_path = "app/dist/img/igmap/ark.png";
+    $map_file = __ADIR__."/app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
+    $map_path = "$ROOT/app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
+    if (!file_exists($map_file)) $map_path = "$ROOT/app/dist/img/igmap/ark.png";
 
     $l = strlen($name); $lmax = 25;
     if ($l > $lmax) {

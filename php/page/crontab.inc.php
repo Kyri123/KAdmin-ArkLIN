@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 
-$tpl_crontab = new Template('crontab.htm', 'app/template/core/system/');
+$tpl_crontab = new Template('crontab.htm', __ADIR__.'/app/template/core/system/');
 $tpl_crontab->load();
 $re = null;
 $root_dir = $_SERVER['DOCUMENT_ROOT'];
@@ -17,7 +17,7 @@ $pagename = 'Crontab';
 $job = $url[2];
 $re = null;
 $time = time();
-$subpage = "php/subpage/crontab";
+$subpage = __ADIR__."/php/subpage/crontab";
 
 $timediff['shell'] = 20;
 $timediff['player'] = 8;
@@ -32,10 +32,10 @@ function filter_end ($str) {
 } 
 
 // Dir_creater
-$dir = dirToArray('remote/arkmanager/instances/');
+$dir = dirToArray(__ADIR__.'/remote/arkmanager/instances/');
 include("$subpage/allgemein/dir_create.inc.php");
 
-if (!file_exists("app/data/checked")) file_put_contents("app/data/checked", "checked"); // Schreibe dass der Crontab abgerufen wurde
+if (!file_exists(__ADIR__."/app/data/checked")) file_put_contents(__ADIR__."/app/data/checked", "checked"); // Schreibe dass der Crontab abgerufen wurde
 
 // Für Spielerliste
 elseif ($job == "player") {

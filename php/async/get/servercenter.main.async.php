@@ -7,6 +7,7 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+$ROOT = str_replace("/php/async/main.inc.php", null, $_SERVER["SCRIPT_NAME"]);
 
 require('../main.inc.php');
 $cfg = $_GET['cfg'];
@@ -16,10 +17,10 @@ switch ($case) {
     // CASE: Info
     case "info":
         $serv = new server($cfg);
-        $tpl = new Template("server.htm", "app/template/core/serv/");
+        $tpl = new Template("server.htm", __ADIR__."/app/template/core/serv/");
         $tpl->load();
         $i = false;
-        $path = "app/json/serverinfo/" . $serv->name() . ".json";
+        $path = __ADIR__."/app/json/serverinfo/" . $serv->name() . ".json";
         $data = $helper->file_to_json($path);
 
         // Status
@@ -80,12 +81,13 @@ switch ($case) {
 
         $tpl->r("cfg", $serv->name());
 
-        $map_path = "app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
-        if (!file_exists($map_path)) $map_path = "app/dist/img/igmap/ark.png";
+        $map_file = __ADIR__."/app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
+        $map_path = "$ROOT/app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
+        if (!file_exists($map_file)) $map_path = "$ROOT/app/dist/img/igmap/ark.png";
 
         if ($_GET["type"] == "cards") $string = $tpl->load_var();
-        if ($_GET["type"] == "img") $string = '<img src="/'.$map_path.'" style="border-radius: 25rem !important;border-top-width: 3px!important;height: 90px;width: 90px;background-color: #001f3f" class="border-'.$serv_color.'">';
-        if ($_GET["type"] == "imgtop") $string = '<img src="/'.$map_path.'" style="border-width: 3px!important;background-color: #001f3f" class="img-size-50 border border-'.$serv_color.'">';
+        if ($_GET["type"] == "img") $string = '<img src="'.$map_path.'" style="border-radius: 25rem !important;border-top-width: 3px!important;height: 90px;width: 90px;background-color: #001f3f" class="border-'.$serv_color.'">';
+        if ($_GET["type"] == "imgtop") $string = '<img src="'.$map_path.'" style="border-width: 3px!important;background-color: #001f3f" class="img-size-50 border border-'.$serv_color.'">';
 
         echo $string;
         break;

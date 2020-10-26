@@ -15,8 +15,8 @@ if(!$user->perm("servercontrollcenter/show")) {
 
 
 // Vars
-$tpl_dir = 'app/template/core/scc/';
-$tpl_dir_all = 'app/template/all/';
+$tpl_dir = __ADIR__.'/app/template/core/scc/';
+$tpl_dir_all = __ADIR__.'/app/template/all/';
 $setsidebar = false;
 $cfglist = $cfgmlist = null;
 $pagename = "{::lang::php::scc::pagename}";
@@ -29,10 +29,10 @@ $tpl->load();
 
 if (isset($_POST["add"]) && $user->perm("servercontrollcenter/create")) {
     //prüfe ob das Maximum erreicht wurde
-    if($maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2)) {
+    if($maxpanel_server > (count(scandir(__ADIR__."/remote/arkmanager/instances"))-2)) {
         while (true) {
             $name = rndbit(5);
-            $path = "remote/arkmanager/instances/".$name.".cfg";
+            $path = __ADIR__."/remote/arkmanager/instances/".$name.".cfg";
             if (!file_exists($path)) {
                 break;
             }
@@ -45,7 +45,7 @@ if (isset($_POST["add"]) && $user->perm("servercontrollcenter/create")) {
         $ark_Port = $_POST["port"][0];
         $ark_RCONPort = $_POST["port"][2];
 
-        $cfg = file_get_contents('app/data/template.cfg');
+        $cfg = file_get_contents(__ADIR__.'/app/data/template.cfg');
         $find = array(
             "{arkserverroot}",
             "{logdir}",
@@ -77,8 +77,8 @@ if (isset($_POST["add"]) && $user->perm("servercontrollcenter/create")) {
                     $serv->cfg_save();
 
                     // Speicher Rechte für den Benutzer
-                    if(isset($_SESSION["id"]) && file_exists("app/json/user/".md5($_SESSION["id"]).".permissions.json")) {
-                        $perm_file = file_get_contents("app/json/user/permissions_servers.tpl.json");
+                    if(isset($_SESSION["id"]) && file_exists(__ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json")) {
+                        $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
                         $perm_file = str_replace("{cfg}", $name, $perm_file);
                         $default = $helper->str_to_json($perm_file);
                         $default[$name]["is_server_admin"] = 1;
@@ -91,7 +91,7 @@ if (isset($_POST["add"]) && $user->perm("servercontrollcenter/create")) {
                             $user_permissions["server"] += $default;
                         }
 
-                        $helper->savejson_create($user_permissions, "app/json/user/".md5($_SESSION["id"]).".permissions.json");
+                        $helper->savejson_create($user_permissions, __ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json");
                     }
                 } else {
                     $resp = $alert->rd(1);
@@ -122,24 +122,24 @@ if (isset($_POST["del"]) && $user->perm("servercontrollcenter/delete")) {
     $server = $serv->name();
 
     // Setze Vars
-    $path = "app/json/serverinfo/$server.json";
+    $path = __ADIR__."/app/json/serverinfo/$server.json";
     $data = $helper->file_to_json($path);
     $arkservdir = $serv->cfg_read("arkserverroot");
     $arklogdir = $serv->cfg_read("logdir");
     $arkbkdir = $serv->cfg_read("arkbackupdir");
     $serverstate = $serv->statecode();
 
-    $path_cfg = "remote/arkmanager/instances/$server.cfg";
+    $path_cfg = __ADIR__."/remote/arkmanager/instances/$server.cfg";
     $jobs->set($serv->name());
     if (file_exists($path_cfg) && ($serverstate == 0 || $serverstate == 3)) {
         if (unlink($path_cfg)) {
             // Entferne alle Dateien von dem Server
-            if (file_exists("app/json/serverinfo/$server.json")) unlink("app/json/serverinfo/$server.json");
-            if (file_exists("app/json/saves/tribes_$server.json")) unlink("app/json/saves/tribes_$server.json");
-            if (file_exists("app/json/serverinfo/pl_$server.players")) unlink("app/json/serverinfo/pl_$server.players");
-            if (file_exists("app/json/serverinfo/chat_$server.log")) unlink("app/json/serverinfo/chat_$server.log");
-            if (file_exists("app/json/serverinfo/player_$server.json")) unlink("app/json/serverinfo/player_$server.json");
-            if (file_exists("app/json/servercfg/jobs_$server.json")) unlink("app/json/servercfg/jobs_$server.json");
+            if (file_exists(__ADIR__."/app/json/serverinfo/$server.json")) unlink(__ADIR__."/app/json/serverinfo/$server.json");
+            if (file_exists(__ADIR__."/app/json/saves/tribes_$server.json")) unlink(__ADIR__."/app/json/saves/tribes_$server.json");
+            if (file_exists(__ADIR__."/app/json/serverinfo/pl_$server.players")) unlink(__ADIR__."/app/json/serverinfo/pl_$server.players");
+            if (file_exists(__ADIR__."/app/json/serverinfo/chat_$server.log")) unlink(__ADIR__."/app/json/serverinfo/chat_$server.log");
+            if (file_exists(__ADIR__."/app/json/serverinfo/player_$server.json")) unlink(__ADIR__."/app/json/serverinfo/player_$server.json");
+            if (file_exists(__ADIR__."/app/json/servercfg/jobs_$server.json")) unlink(__ADIR__."/app/json/servercfg/jobs_$server.json");
 
             // Wenn gewünscht entferne Verzeichnisse vom Server
             if (in_array('deinstall', $opt)) {
@@ -172,7 +172,7 @@ elseif (isset($_POST["del"])) {
     $resp = $alert->rd(99);
 }
 
-$dir = dirToArray('remote/arkmanager/instances/');
+$dir = dirToArray(__ADIR__.'/remote/arkmanager/instances/');
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
         $serv = new server($dir[$i]);
@@ -180,7 +180,7 @@ for ($i=0;$i<count($dir);$i++) {
         $list = new Template("list.htm", $tpl_dir);
         $list->load();
 
-        $path = "app/json/serverinfo/" . $serv->name() . ".json";
+        $path = __ADIR__."/app/json/serverinfo/" . $serv->name() . ".json";
         $data = $helper->file_to_json($path);
 
         $serverstate = $serv->statecode();
@@ -188,11 +188,11 @@ for ($i=0;$i<count($dir);$i++) {
         $serv_state = $converted["str"];
         $serv_color = $converted["color"];
 
-        $mapbg = file_exists('app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg') ? '/app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg' : '/app/dist/img/backgrounds/bg.jpg';
-        $mapimg = file_exists('app/dist/img/igmap/' . $serv->cfg_read('serverMap') . '.jpg') ? '/app/dist/img/igmap/' . $serv->cfg_read('serverMap') . '.jpg' : '/app/dist/img/logo/ark.png';
+        $mapbg = file_exists(__ADIR__.'/app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg') ? '/app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg' : '/app/dist/img/backgrounds/bg.jpg';
+        $mapimg = file_exists(__ADIR__.'/app/dist/img/igmap/' . $serv->cfg_read('serverMap') . '.jpg') ? '/app/dist/img/igmap/' . $serv->cfg_read('serverMap') . '.jpg' : '/app/dist/img/logo/ark.png';
 
-        $map_path = "app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
-        if (!file_exists($map_path)) $map_path = "app/dist/img/igmap/ark.png";
+        $map_path = __ADIR__."/app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
+        if (!file_exists($map_path)) $map_path = __ADIR__."/app/dist/img/igmap/ark.png";
         $list->r("map", $map_path);
         $list->r("cfg", $serv->name());
         $list->r("servername", $serv->cfg_read("ark_SessionName"));
@@ -203,8 +203,8 @@ for ($i=0;$i<count($dir);$i++) {
         $list->r("state_str", $serv_state);
         $list->r("state_color", $serv_color);
         $list->r('servadress', $ip.":".$serv->cfg_read("ark_QueryPort"));
-        $list->r('con_url', $data["connect"]);
-        $list->r('ARKSERV', $data["ARKServers"]);
+        $list->r('con_url', isset($data["connect"]) ? $data["connect"] : null);
+        $list->r('ARKSERV', isset($data["ARKServers"]) ? $data["ARKServers"] : null);
 
         $list->r('bg_img', $mapbg);
         $list->r('server_img', $mapimg);
@@ -215,7 +215,7 @@ for ($i=0;$i<count($dir);$i++) {
         $list = new Template("list.htm", $tpl_dir);
         $list->load();
 
-        $list->r("map", "app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg");
+        $list->r("map", __ADIR__."/app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg");
         $list->r("cfg", $serv->name());
         $list->r("servername", $serv->cfg_read("ark_SessionName"));
         $list->r("map_str", $serv->cfg_read("serverMap"));
@@ -230,16 +230,16 @@ for ($i=0;$i<count($dir);$i++) {
     }
 }
 
-$resp .= $maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2) ? null : $alert->rd(309);
+$resp .= $maxpanel_server > (count(scandir(__ADIR__."/remote/arkmanager/instances"))-2) ? null : $alert->rd(309);
 
 // lade in TPL
 $tpl->r("list", $cfglist);
 $tpl->r("list_modal", $cfgmlist);
 $tpl->r("resp", $resp);
-$tpl->rif("not_max", $maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2));
+$tpl->rif("not_max", $maxpanel_server > (count(scandir(__ADIR__."/remote/arkmanager/instances"))-2));
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
-if($user->perm("servercontrollcenter/create") && $maxpanel_server > (count(scandir("remote/arkmanager/instances"))-2)) $btns = '<span  data-toggle="popover_action" data-content="{::lang::scc::tooltip::create::text}" data-original-title="{::lang::scc::tooltip::create::title}">
+if($user->perm("servercontrollcenter/create") && $maxpanel_server > (count(scandir(__ADIR__."/remote/arkmanager/instances"))-2)) $btns = '<span  data-toggle="popover_action" data-content="{::lang::scc::tooltip::create::text}" data-original-title="{::lang::scc::tooltip::create::title}">
                                                                 <a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver" title="">
                                                                     <span class="icon">
                                                                         <i class="fas fa-plus" aria-hidden="true"></i>

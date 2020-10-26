@@ -15,8 +15,8 @@ if (!$user->perm("$perm/statistiken/show")) {
 }
 
 $pagename = '{::lang::php::sc::page::statistiken::pagename}';
-$page_tpl = new Template('statistiken.htm', 'app/template/sub/serv/');
-$urltop = '<li class="breadcrumb-item"><a href="/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
+$page_tpl = new Template('statistiken.htm', __ADIR__.'/app/template/sub/serv/');
+$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::statistiken::pagename}</li>';
 $server = $serv->name();
 
@@ -61,9 +61,9 @@ if($mycon->numRows() > 0) {
         $infos = json_decode($string, true);
 
         // Erstelle Templates
-        $list_item = new Template("items.htm", "app/template/lists/serv/statistiken/");
+        $list_item = new Template("items.htm", __ADIR__."/app/template/lists/serv/statistiken/");
         $list_item->load();
-        $list_modal = new Template("modals.htm", "app/template/lists/serv/statistiken/");
+        $list_modal = new Template("modals.htm", __ADIR__."/app/template/lists/serv/statistiken/");
         $list_modal->load();
 
         // TODO: Remove;

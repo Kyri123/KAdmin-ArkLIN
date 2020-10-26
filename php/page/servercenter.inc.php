@@ -8,15 +8,15 @@
  * *******************************************************************************************
 */
 
-if (!file_exists("remote/arkmanager/instances/".$url[2].".cfg")) {
+if (!file_exists(__ADIR__."/remote/arkmanager/instances/".$url[2].".cfg")) {
    header("Location: /404");
    exit;
 }
 
 // Vars
-$tpl_dir = 'app/template/core/serv/';
-$tpl_dir_lists = 'app/template/lists/serv/main/';
-$tpl_dir_all = 'app/template/all/';
+$tpl_dir = __ADIR__.'/app/template/core/serv/';
+$tpl_dir_lists = __ADIR__.'/app/template/lists/serv/main/';
+$tpl_dir_all = __ADIR__.'/app/template/all/';
 $setsidebar = false; $resp_cluster = null;
 $serv = new server($url[2]);
 exec("ps ax | grep ".$serv->status()->pid, $checkpid); // Prüfe ob der Server Läuft
@@ -42,7 +42,7 @@ elseif(isset($url[5]) && $url[4] == "kill") {
 }
 
 //erstelle SteamAPI von OnlineSpieler
-$pl_json = $helper->file_to_json('app/json/saves/pl_' . $serv->name() . '.players', false);
+$pl_json = $helper->file_to_json(__ADIR__.'/app/json/saves/pl_' . $serv->name() . '.players', false);
 $arr_pl = array();
 if (is_array($pl_json)) {
     for ($i = 0; $i < count($pl_json); $i++) {
@@ -51,7 +51,7 @@ if (is_array($pl_json)) {
 }
 
 //erstelle SteamAPI von OnlineSpieler
-$pl_json = $helper->file_to_json('app/json/saves/pl_' . $serv->name() . '.players', false);
+$pl_json = $helper->file_to_json(__ADIR__.'/app/json/saves/pl_' . $serv->name() . '.players', false);
 $arr_pl = array();
 if (is_array($pl_json)) {
     for ($i = 0; $i < count($pl_json); $i++) {
@@ -59,7 +59,7 @@ if (is_array($pl_json)) {
     }
 }
 //erstelle SteamAPI von Savegames
-$player_json = $helper->file_to_json('app/json/saves/player_' . $serv->name() . '.json', false);
+$player_json = $helper->file_to_json(__ADIR__.'/app/json/saves/player_' . $serv->name() . '.json', false);
 $arr_player = array();
 if (is_array($player_json)) {
     for ($i = 0; $i < count($player_json); $i++) {
@@ -80,18 +80,18 @@ $qport          = $serv->cfg_read('ark_QueryPort');
 $tpl = new Template('main.htm', $tpl_dir);
 $tpl->load();
 
-$globa_json = json_decode(file_get_contents('app/json/serverinfo/'.$url[2].'.json'));
+$globa_json = json_decode(file_get_contents(__ADIR__.'/app/json/serverinfo/'.$url[2].'.json'));
 
 $url[3] = (isset($url[3])) ? $url[3] : "home";
 $ssite = $url[3];
-$dir = dirToArray("php/subpage/serv");
+$dir = dirToArray(__ADIR__."/php/subpage/serv");
 $exsists = false;
 foreach ($dir as $k => $v) {
     if (!is_array($v)) {
         $sitename = str_replace(".inc.php", null, $v);
         $visit = null;
         if ($sitename == $url[3]) {
-            include("php/subpage/serv/$v");
+            include(__ADIR__."/php/subpage/serv/$v");
             $visit = "active";
             $exsists = true;
         }
@@ -101,7 +101,7 @@ foreach ($dir as $k => $v) {
 }
 
 if (!$exsists) {
-    include('php/subpage/serv/home.inc.php');
+    include(__ADIR__.'/php/subpage/serv/home.inc.php');
     $tpl->r("__home", "active");
 }
 $tpl->r("__home", null);
@@ -113,7 +113,7 @@ $player_online = $serv->status()->aplayersarr;
 // Spieler
 if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0 && $user->perm("$perm/show_players")) {
     for ($i = 0; $i < count($player_online); $i++) {
-        $list_tpl = new Template('user.htm', 'app/template/lists/serv/main/');
+        $list_tpl = new Template('user.htm', __ADIR__.'/app/template/lists/serv/main/');
         $list_tpl->load();
 
         // Hole Daten
@@ -191,7 +191,7 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
     }
 }
 if ($player == null) {
-    $list_tpl = new Template('user.htm', 'app/template/lists/serv/main/');
+    $list_tpl = new Template('user.htm', __ADIR__.'/app/template/lists/serv/main/');
     $list_tpl->load();
     $list_tpl->r('img', "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/");
     $list_tpl->rif ('empty', false);
@@ -214,12 +214,12 @@ foreach ($action_opt as $key) {
 }
 
 // JS if & array
-$json_para = $helper->file_to_json("app/json/panel/parameter.json");
+$json_para = $helper->file_to_json(__ADIR__."/app/json/panel/parameter.json");
 $para_list = null;
 $z = 0;
 for ($i=0;$i<count($json_para);$i++) {
     $name = str_replace("--", null, $json_para[$i]["parameter"]);
-    $para = new Template('parameter.htm', 'app/template/core/serv/');
+    $para = new Template('parameter.htm', __ADIR__.'/app/template/core/serv/');
     $para->load();
     
     $t0 = $json_para[$i]["type"] == 0;
@@ -240,7 +240,7 @@ if ($l > $lmax) {
     $servername = substr($servername, 0 , $lmax) . " ...";
 }
 
-$mapbg = file_exists('app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg') ? '/app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg' : '/app/dist/img/backgrounds/bg.jpg';
+$mapbg = file_exists(__ADIR__.'/app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg') ? '/app/dist/img/backgrounds/' . $serv->cfg_read('serverMap') . '.jpg' : '/app/dist/img/backgrounds/bg.jpg';
 
 $tpl->r('action_list', $action_list);
 $tpl->r('para_list', $para_list);
@@ -266,6 +266,9 @@ $tpl->r ('exp_int', intval($user->expert()));
 $tpl->r ('timestamp', time());
 $tpl->r ('lang_arr', json_encode($actioninfo_arr));
 $tpl->r ('bg_img', $mapbg);
+$tpl->r ('ROOT', $ROOT);
+$tpl->r ('ADIR', __ADIR__);
+$tpl->r ('TIMESTAMP', time());
 $tpl->rif ('rcon', $serv->check_rcon());
 $tpl->rif ('ifin', $serv->cluster_in());
 $tpl->rif ('ifcadmin', $ifcadmin);
@@ -287,7 +290,7 @@ $content = $tpl->load_var();
 $running = false;
 foreach ($checkpid as $item) if(strpos($item, $serv->name())) $running = true;
 if($running && $user->perm("$perm/kill")) $btns .= '
-        <a href="/servercenter/'.$serv->name().'/'.$url[3].'/kill/'.$serv->status()->pid.'" class="btn btn-outline-danger btn-icon-split rounded-0" 
+        <a href="{ROOT}/servercenter/'.$serv->name().'/'.$url[3].'/kill/'.$serv->status()->pid.'" class="btn btn-outline-danger btn-icon-split rounded-0" 
         data-toggle="popover_action" title="" data-content="{::lang::servercenter::kill_text}" data-original-title="{::lang::servercenter::kill_titel}">
             <span class="icon">
                 <i class="fas fa-power-off"></i>

@@ -8,12 +8,16 @@
  * *******************************************************************************************
 */
 
-chdir('../../../');
-include('php/inc/config.inc.php');
-include('php/class/helper.class.inc.php');
+define("__ADIR__", __DIR__."/../..");
+chdir("../../");
+$ROOT = str_replace($_SERVER["DOCUMENT_ROOT"], null, __DIR__);
+$ROOT = str_replace("/php/async", null, $ROOT);
+
+include(__ADIR__.'/php/inc/config.inc.php');
+include(__ADIR__.'/php/class/helper.class.inc.php');
 
 $helper = new helper();
-$ckonfig = $helper->file_to_json('php/inc/custom_konfig.json', true);
+$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
 
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
@@ -22,28 +26,28 @@ if(isset($ckonfig["show_err"])) error_reporting(E_ALL);
 // Starte Session
 session_start();
 
-include('php/class/mysql.class.inc.php');
+include(__ADIR__.'/php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 
 // Importiere Funktionen
-include('php/functions/allg.func.inc.php');
-include('php/functions/check.func.inc.php');
-include('php/functions/modify.func.inc.php');
-include('php/functions/traffic.func.inc.php');
-include('php/functions/util.func.inc.php');
+include(__ADIR__.'/php/functions/allg.func.inc.php');
+include(__ADIR__.'/php/functions/check.func.inc.php');
+include(__ADIR__.'/php/functions/modify.func.inc.php');
+include(__ADIR__.'/php/functions/traffic.func.inc.php');
+include(__ADIR__.'/php/functions/util.func.inc.php');
 
 // Importiere Klassen
-include('php/class/user.class.inc.php');
-include('php/class/steamAPI.class.inc.php');
-include('php/class/savefile_reader.class.inc.php');
-include('php/class/Template.class.inc.php');
-include('php/class/rcon.class.inc.php');
-include('php/class/server.class.inc.php');
-include('php/class/alert.class.inc.php');
-include('php/class/jobs.class.inc.php');
+include(__ADIR__.'/php/class/user.class.inc.php');
+include(__ADIR__.'/php/class/steamAPI.class.inc.php');
+include(__ADIR__.'/php/class/savefile_reader.class.inc.php');
+include(__ADIR__.'/php/class/Template.class.inc.php');
+include(__ADIR__.'/php/class/rcon.class.inc.php');
+include(__ADIR__.'/php/class/server.class.inc.php');
+include(__ADIR__.'/php/class/alert.class.inc.php');
+include(__ADIR__.'/php/class/jobs.class.inc.php');
 
 // include inz
-include('php/inc/template_preinz.inc.php');
+include(__ADIR__.'/php/inc/template_preinz.inc.php');
 
 // Define vars
 date_default_timezone_set('Europe/Amsterdam');
@@ -56,6 +60,6 @@ $jobs = new jobs();
 $permissions = $user->permissions;
 
 // Allgemein SteamAPI Arrays
-$steamapi_mods = (file_exists("app/json/steamapi/mods.json")) ? $helper->file_to_json("app/json/steamapi/mods.json", true) : array();
-$steamapi_user = (file_exists("app/json/steamapi/user.json")) ? $helper->file_to_json("app/json/steamapi/user.json", true) : array();
+$steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/mods.json", true) : array();
+$steamapi_user = (file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/user.json", true) : array();
 

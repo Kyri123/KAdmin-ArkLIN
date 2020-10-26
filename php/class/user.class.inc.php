@@ -47,15 +47,15 @@ class userclass extends helper
             $this->frech = $this->mycon->query($query)->fetchArray();
 
             // Lade Rechte
-            $permissions_default = parent::file_to_json("app/json/user/permissions.tpl.json");
-            $permissions = (file_exists("app/json/user/".md5($id).".permissions.json")) ? parent::file_to_json("app/json/user/".md5($id).".permissions.json") : parent::file_to_json("app/json/user/permissions.tpl.json");
+            $permissions_default = parent::file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
+            $permissions = (file_exists(__ADIR__."/app/json/user/".md5($id).".permissions.json")) ? parent::file_to_json(__ADIR__."/app/json/user/".md5($id).".permissions.json") : parent::file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
             $permissions = array_replace_recursive($permissions_default, $permissions);
 
             // gehe Rechte der Server durch
-            $file = 'app/json/serverinfo/all.json';
+            $file = __ADIR__.'/app/json/serverinfo/all.json';
             $server = parent::file_to_json($file, true)["cfgs_only_name"];
             foreach ($server as $item) {
-                $perm_file = file_get_contents("app/json/user/permissions_servers.tpl.json");
+                $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
                 $perm_file = str_replace("{cfg}", $item, $perm_file);
                 $default = parent::str_to_json($perm_file);
                 if(isset($permissions["server"][$item])) {
@@ -124,7 +124,7 @@ class userclass extends helper
         // Prüfe ob Benutzer gesetzt ist
         if ($this->myconisset && $this->id != 0) {
             $id = md5($this->id);
-            $path = "app/json/user/$id.json";
+            $path = __ADIR__."/app/json/user/$id.json";
             if (file_exists($path)) {
                 $json = parent::file_to_json($path, true);
                 if(isset($json["expert"])) {
@@ -152,7 +152,7 @@ class userclass extends helper
         // Prüfe ob Benutzer gesetzt ist
         if ($this->myconisset && $this->id != 0) {
             $id = md5($this->id);
-            $path = "app/json/user/$id.json";
+            $path = __ADIR__."/app/json/user/$id.json";
             if (file_exists($path)) {
                 $json = parent::file_to_json($path, true);
                 if(isset($json[$mode])) {

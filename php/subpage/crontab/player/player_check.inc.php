@@ -8,7 +8,7 @@
  * *******************************************************************************************
 */
 
-$ipath = 'remote/arkmanager/instances/';
+$ipath = __ADIR__.'/remote/arkmanager/instances/';
 $dir = scandir($ipath);
 for ($i=0;$i<count($dir);$i++) {
     $ifile = $ipath.$dir[$i];
@@ -23,9 +23,9 @@ for ($i=0;$i<count($dir);$i++) {
         $serv = new server($ifile_info['filename']);
 
         // Erstelle logdateien
-        $log = 'app/json/saves/chat_'.$serv->name().'.log';
+        $log = __ADIR__.'/app/json/saves/chat_'.$serv->name().'.log';
         if (!file_exists($log)) file_put_contents($log, " ");
-        $pl = 'app/json/saves/pl_'.$serv->name().'.players';
+        $pl = __ADIR__.'/app/json/saves/pl_'.$serv->name().'.players';
         if (!file_exists($pl)) file_put_contents($pl, " ");
 
         if ($serv->isinstalled() == "TRUE") {

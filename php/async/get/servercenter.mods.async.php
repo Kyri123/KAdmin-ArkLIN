@@ -31,7 +31,7 @@ switch ($case) {
         $imgb = -1;
         if ($total_count > 0 && $serv->cfg_read('ark_GameModIds') != "") {
             for ($i=0;$i<count($mods);$i++) {
-                $tpl = new Template('mods.htm', 'app/template/lists/serv/jquery/');
+                $tpl = new Template('mods.htm', __ADIR__.'/app/template/lists/serv/jquery/');
                 $tpl->load();
                 $curr_id = $mods[$i];
 
@@ -102,7 +102,7 @@ switch ($case) {
 
         // Wenn kein Mod Gefunden wurde
         if($resp == null) {
-            $tpl = new Template('content.htm', 'app/template/universally/default/');
+            $tpl = new Template('content.htm', __ADIR__.'/app/template/universally/default/');
             $tpl->load();
             $tpl->r('content', '<ul class="list-group ml-2 mr-2" style="border:0; width: 100%">
                                     <div class="list-group-item bg-warning">
@@ -155,7 +155,7 @@ switch ($case) {
                 isset($value["time_updated"]) &&
                 isset($value["title"]) 
             ) {
-                $tpl = new Template('mods_local.htm', 'app/template/lists/serv/jquery/');
+                $tpl = new Template('mods_local.htm', __ADIR__.'/app/template/lists/serv/jquery/');
                 $tpl->load();
                 $path = $serv->dir_main()."/ShooterGame/Content/Mods/".$value["publishedfileid"];
                 $installed = (file_exists($path) && in_array($value["publishedfileid"], $mods));
@@ -195,7 +195,7 @@ switch ($case) {
 
         // Wenn kein Mod Gefunden wurde
         if($resp == null) {
-            $tpl = new Template('content.htm', 'app/template/universally/default/');
+            $tpl = new Template('content.htm', __ADIR__.'/app/template/universally/default/');
             $tpl->load();
             $tpl->r('content', '<ul class="list-group ml-2 mr-2" style="border:0; width: 100%">
                                     <div class="list-group-item bg-warning">

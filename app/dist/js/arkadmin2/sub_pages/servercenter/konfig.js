@@ -48,7 +48,7 @@ function addsection(id) {
             "case": "create_section",
             "section": val
         };
-        $.get("/php/async/get/servercenter.konfig.async.php", data, (re) => {
+        $.get(`${vars.ROOT}/php/async/get/servercenter.konfig.async.php`, data, (re) => {
             target.after(re);
             if (!section.hasClass("border-success")) section.toggleClass("border-success");
             if (section.hasClass("border-danger")) section.toggleClass("border-danger");
@@ -68,7 +68,7 @@ function additem(id, section) {
         "case": "create",
         "section": section
     };
-    $.get("/php/async/get/servercenter.konfig.async.php", data, (re) => {
+    $.get(`${vars.ROOT}/php/async/get/servercenter.konfig.async.php`, data, (re) => {
         $("#" + id).after(re);
     });
 }

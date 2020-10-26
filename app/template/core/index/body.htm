@@ -21,12 +21,12 @@
                         <div class="dropdown-divider"></div>
                         {servers}
                         {permissions??servercontrollcenter??show}
-                            <a href="/servercontrollcenter" class="dropdown-item dropdown-footer bg-success">{::lang::allg::nav::btn_createserver}</a>
+                            <a href="{ROOT}/servercontrollcenter" class="dropdown-item dropdown-footer bg-success">{::lang::allg::nav::btn_createserver}</a>
                         {/permissions}
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link aa_nav_hover" data-toggle="dropdown" href="#" aria-expanded="true">
+                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
                         <i class="fas fa-language text-lg"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
@@ -40,8 +40,9 @@
 
 
 
-        <aside class="main-sidebar sidebar-dark-primary">
-            <a href="/" class="brand-link elevation-5">
+        <aside class="main-sidebar sidebar-dark-primary border-right  border-secondary elevation-5">
+            <a href="{ROOT}/" class="brand-link elevation-5">
+                <img src="https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png" alt="Logo" class="ml-3 mr-2" style="height: 25px!important;">
                 <span class="brand-text font-weight-light"><b>Ark</b>Admin<b>2</b></span>
                 <div class="ribbon-wrapper">
                     <div class="ribbon bg-success">
@@ -51,25 +52,28 @@
             </a>
 
             <div class="sidebar">
-                <a class="user-panel mt-3 pb-0 mb-0 d-flex border-0" href="/usersettings">
-                    <div class="image">
-                        <img src="https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png">
+                <a class="user-panel mt-3 pb-0 mb-0 d-flex border-0" href="{ROOT}/usersettings" style="text-decoration: none!important;">
+                    <div class="image" style="top:50%">
+                        <i class="nav-icon fas fa-user-circle" style="font-size: 35px" aria-hidden="true"></i>
                     </div>
-                    <div class="info">
-                        <span class="d-block">{::lang::allg::nav::hello_user} {rank} {user}</span>
+                    <div class="info" style="margin-top:-10px">
+                        <span class="text-sm">{::lang::allg::nav::hello_user}</span><br>
+                        <span class="text-sm">{rank} {user}</span>
                     </div>
                 </a>
 
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
+
                         <li class="nav-item">
-                            <a href="/usersettings" class="nav-link {_usersettings}">
-                                <i class="nav-icon fas fa-cogs"></i>
+                            <a href="{ROOT}/usersettings" class="nav-link {_usersettings}">
+                                <i class="nav-icon fas fa-users-cog"></i>
                                 <p>
                                     {::lang::allg::nav::tooltip::usersettings}
                                 </p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="javascript:void" data-toggle="modal" data-target="#logoutmodal" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
@@ -86,7 +90,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
                         <div class="mt-2 mb-2 user-panel"></div>
                         <li class="nav-item">
-                            <a href="/" class="nav-link {_home}">
+                            <a href="{ROOT}/" class="nav-link {_home}">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     {::lang::allg::nav::home}
@@ -94,7 +98,7 @@
                             </a>
                         </li>
                         {permissions??servercontrollcenter??show}<li class="nav-item">
-                            <a href="/servercontrollcenter" class="nav-link {_servercontrollcenter}">
+                            <a href="{ROOT}/servercontrollcenter" class="nav-link {_servercontrollcenter}">
                                 <i class="nav-icon fa fa-server"></i>
                                 <p>
                                     {::lang::allg::nav::scc}
@@ -102,7 +106,7 @@
                             </a>
                         </li>{/permissions}
                         {permissions??cluster??show}<li class="nav-item">
-                            <a href="/cluster" class="nav-link {_cluster}">
+                            <a href="{ROOT}/cluster" class="nav-link {_cluster}">
                                 <i class="nav-icon fas fa-random"></i>
                                 <p>
                                     {::lang::allg::nav::cluster}
@@ -110,7 +114,7 @@
                             </a>
                         </li>{/permissions}
                         {permissions??userpanel??show}<li class="nav-item">
-                            <a href="/userpanel" class="nav-link {_userpanel}">
+                            <a href="{ROOT}/userpanel" class="nav-link {_userpanel}">
                                 <i class="nav-icon fa fa-users"></i>
                                 <p>
                                     {::lang::allg::nav::userpanel}
@@ -118,7 +122,7 @@
                             </a>
                         </li>{/permissions}
                         {permissions??config??show}<li class="nav-item">
-                            <a href="/config" class="nav-link {_config}">
+                            <a href="{ROOT}/config" class="nav-link {_config}">
                                 <i class="nav-icon fa fa-edit"></i>
                                 <p>
                                     {::lang::allg::nav::config}
@@ -126,7 +130,7 @@
                             </a>
                         </li>{/permissions}
                         <li class="nav-item">
-                            <a href="/changelog" class="nav-link {_changelog} {curr_changelog_css} ">
+                            <a href="{ROOT}/changelog" class="nav-link {_changelog} {curr_changelog_css} ">
                                 <i class="nav-icon fa fa-book"></i>
                                 <p>
                                     {::lang::allg::nav::changelog} {curr_changelog}
@@ -136,7 +140,7 @@
 
                         <div class="mt-2 mb-2 user-panel"></div>
                         <li class="nav-item">
-                            <a href="https://discord.gg/uXxsqXD" target="_blank" class="nav-link aa_nav_hover">
+                            <a href="https://discord.gg/uXxsqXD" target="_blank" class="nav-link">
                                 <i class="nav-icon fab fa-discord"></i>
                                 <p>
                                     Discord
@@ -144,7 +148,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="https://github.com/Kyri123/Arkadmin" target="_blank" class="nav-link aa_nav_hover">
+                            <a href="https://github.com/Kyri123/Arkadmin" target="_blank" class="nav-link">
                                 <i class="nav-icon fab fa-github"></i>
                                 <p>
                                     Github
@@ -152,7 +156,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="https://trello.com/b/5eSrM5Ww" target="_blank" class="nav-link aa_nav_hover">
+                            <a href="https://trello.com/b/5eSrM5Ww" target="_blank" class="nav-link">
                                 <i class="nav-icon fab fa-trello"></i>
                                 <p>
                                     Trello
@@ -160,7 +164,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=68PT9KPRABVCU&source=url" target="_blank" class="nav-link aa_nav_hover">
+                            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=68PT9KPRABVCU&source=url" target="_blank" class="nav-link">
                                 <i class="nav-icon fa fa-paypal" aria-hidden="true"></i>
                                 <p>
                                     {::lang::allg::nav::donate}
@@ -180,7 +184,7 @@
                     <a class="navbar-brand" href="#">{pageicon} {pagename}</a>
 
                     <ol class="breadcrumb ml-auto m-0 bg-light">
-                        <li class="breadcrumb-item"><a href="/">ArkAdmin 2</a></li>
+                        <li class="breadcrumb-item"><a href="{ROOT}/">ArkAdmin 2</a></li>
                         {urltop}
                     </ol>
                 </nav>
@@ -263,7 +267,7 @@
         </div>
         <footer class="main-footer">
             {::lang::allg::pageload}
-            <a href="/changelog" class="float-right d-none d-sm-inline-block">
+            <a href="{ROOT}/changelog" class="float-right d-none d-sm-inline-block">
                 <b>Version</b> {aa_version}
             </a>
         </footer>
@@ -283,7 +287,7 @@
                 <div class="modal-body">{::lang::allg::nav::modal::logout::body}</div>
                 <div class="modal-footer">
                     <button class="btn btn-success" type="button" data-dismiss="modal">{::lang::allg::nav::modal::logout::btn_cancel}</button>
-                    <a class="btn btn-danger" href="/logout">{::lang::allg::nav::modal::logout::btn_logout}</a>
+                    <a class="btn btn-danger" href="{ROOT}/logout">{::lang::allg::nav::modal::logout::btn_logout}</a>
                 </div>
             </div>
         </div>

@@ -1,12 +1,12 @@
-getphp("/php/async/get/servercenter.main.async.php?cfg=" + varser.cfg + "&type=cards&case=info", "server-stats");
+getphp(`${varser.ROOT}/php/async/get/servercenter.main.async.php?cfg=${varser.cfg}&type=cards&case=info`, "server-stats");
 
 setInterval(() => {
-    getphp("/php/async/get/servercenter.main.async.php?cfg=" + varser.cfg + "&type=img&case=info", "serv_img");
+    getphp(`${varser.ROOT}/php/async/get/servercenter.main.async.php?cfg=${varser.cfg}&type=img&case=info`, "serv_img");
 
     var state_id = $('#state');
     var player_id = $('#player');
 
-    $.get("/app/json/serverinfo/" + varser.cfg + ".json?time=" + Date.now(), (data) => {
+    $.get(`${varser.ROOT}/app/json/serverinfo/${varser.cfg}.json?time=${Date.now()}`, (data) => {
         let serv_state = lang.state_off;
         let serv_color = "danger";
         let statecode = 0;
@@ -96,7 +96,7 @@ $("#action_form").submit(() => {
         $("#beta").toggleClass('is-invalid', false);
 
         // führe Aktion aus
-        $.post("/php/async/post/servercenter.main.async.php?case=action", $("#action_form").serialize())
+        $.post(`${varser.ROOT}/php/async/post/servercenter.main.async.php?case=action`, $("#action_form").serialize())
             .done(function(data) {
                 data = JSON.parse(data);
                 if (data.code != 404) {
@@ -105,7 +105,7 @@ $("#action_form").submit(() => {
                     $('#action').modal('hide');
 
                     // resette alles auf Standart
-                    $.getJSON("/app/json/panel/parameter.json?t={timestamp}", function(data) {
+                    $.getJSON(`${varser.ROOT}/app/json/panel/parameter.json?t=${DATE.now()}`, function(data) {
                         $.each(data, (i, item) => {
                             if (item.type == 0) $(item.id_js).prop('checked', false);
                             if (item.type == 1) $(item.id_js).val('');
@@ -127,7 +127,7 @@ $("#action_form").submit(() => {
 
 $('#action_sel').change(() => {
     var action = $("#action_sel").val();
-    $.getJSON("/app/json/panel/parameter.json?t={timestamp}", function(data) {
+    $.getJSON(`${varser.ROOT}/app/json/panel/parameter.json?t=${DATE.now()}`, function(data) {
         $.each(data, (i, item) => {
             if (item.type == 0) $(item.id_js).prop('checked', false);
             if (item.type == 1) $(item.id_js).val('');

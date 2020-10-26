@@ -13,14 +13,14 @@
         <div class="widget-user-header text-white" style="background: url('{bg_img}') center center;">
             {ifincluster}
                 <h5 title="Structures Plus (S+)" class="widget-user-desc text-bold text-center border" style="background-color: rgb(66 66 66 / 58%)!important;">
-                    <a href="/cluster#{clusterid}" class="text-light">{clustername}</a>
+                    <a href="{ROOT}/cluster#{clusterid}" class="text-light">{clustername}</a>
                 </h5>
             {/ifincluster}
         </div>
         <div class="widget-user-image" id="serv_img" style="top: 124px;z-index: 1000"><img src="{server_img}" style="border-top-width: 3px!important;height: 90px;width: 90px;background-color: #001f3f" class="border-secondary"></div>
         <div class="card card-widget widget-user mb-0">
             <div class="text-left left d-inline" style="width:50%;padding-right: 45px;">
-                <a {permissions??server??{cfg}??show}href="/servercenter/{cfg}"{/permissions} target="_blank" style="width: 100%" class="btn btn-dark {!permissions??server??{cfg}??show}disabled{/permissions}"><i class="fas fa-server" aria-hidden="true"></i></a>
+                <a {permissions??server??{cfg}??show}href="{ROOT}/servercenter/{cfg}"{/permissions} target="_blank" style="width: 100%" class="btn btn-dark {!permissions??server??{cfg}??show}disabled{/permissions}"><i class="fas fa-server" aria-hidden="true"></i></a>
             </div>
             <div class="right-no-top ml-auto d-inline" style="width:50%;padding-left: 45px;">
                 <a style="width: 100%" class="text-white btn btn-danger {!permissions??servercontrollcenter??delete}disabled{/!permissions}" {permissions??servercontrollcenter??delete}data-toggle="modal" data-target="#remove{cfg}"{/permissions}><i class="fa fa-trash-o" aria-hidden="true"></i></a>

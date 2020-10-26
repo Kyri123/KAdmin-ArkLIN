@@ -8,12 +8,12 @@
  * *******************************************************************************************
 */
 
-$dir = dirToArray("php/page");
+$dir = dirToArray(__ADIR__."/php/page");
 foreach ($dir as $k => $v) {
     if (!is_array($v)) {
         $sitename = str_replace(".inc.php", null, $v);
-        $visit = "aa_nav_hover";
-        if ($sitename == $page) $visit = "aa_main_active aa_nav_hover";
+        $visit = "";
+        if ($sitename == $page) $visit = "active";
         $tpl_b->r("_$sitename", $visit);
     }
 }
@@ -57,7 +57,7 @@ $tpl_b->r('curr_changelog_css', (($n_changelog != null) ? "aa_update_active" : n
 if(isset($_SESSION["id"]) && isset($_COOKIE["lang"])) {
     $json = null;
     $uid = md5($_SESSION["id"]);
-    $path = "app/json/user/$uid.json";
+    $path = __ADIR__."/app/json/user/$uid.json";
     // speichern wenn die json existiert
     if(file_exists($path)) {
         $json = $helper->file_to_json($path);

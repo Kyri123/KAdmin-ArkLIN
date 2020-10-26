@@ -16,7 +16,7 @@ switch ($case) {
     // CASE: Whitelist list
     case "create":
         $section = $_GET["section"];
-        $list = new Template("add.htm", "app/template/lists/serv/konfig/");
+        $list = new Template("add.htm", __ADIR__."/app/template/lists/serv/konfig/");
         $list->load();
         $list->r("sk", $section);
         $list->rif("item", true);
@@ -26,7 +26,7 @@ switch ($case) {
 
     case "create_section":
         $section = $_GET["section"];
-        $list = new Template("add.htm", "app/template/lists/serv/konfig/");
+        $list = new Template("add.htm", __ADIR__."/app/template/lists/serv/konfig/");
         $list->load();
         $list->r("sk", $section);
         $list->rif("item", false);

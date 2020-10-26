@@ -48,12 +48,12 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::list::backup::_2_::modal::remove::btn_cancel}</button>
-                <a href="/servercenter/{cfg}/backups/remove/{key}/{i}" type="submit" class="btn btn-danger" name="del">{::lang::servercenter::list::backup::_2_::modal::remove::btn_del}</a>
+                <a onclick="trigger_post('{ROOT}/servercenter/{cfg}/backup/', {'remove':'true', 'file':'{key}', 'i':'{i}'})" href="#" class="btn btn-danger" name="del">{::lang::servercenter::list::backup::_2_::modal::remove::btn_del}</a>
             </div>
         </div>
     </div>
 </form>{/permissions} {permissions??server??{cfg}??backup??playin}
-<form class="modal fade" id="{rndb}" tabindex="-1" method="post" action="/servercenter/{cfg}/backup">
+<form class="modal fade" id="{rndb}" tabindex="-1" method="post" action="{ROOT}/servercenter/{cfg}/backup">
     <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
         <div class="modal-content">
             <div class="modal-header">

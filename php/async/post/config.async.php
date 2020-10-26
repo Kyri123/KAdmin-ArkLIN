@@ -16,7 +16,7 @@ $case = isset($_GET["case"]) ? $_GET["case"] : "nocase";
 switch ($case) {
     // CASE: RCON send command
     case "editAPI":
-        $API_path = "php/inc/api.json";
+        $API_path = __ADIR__."/php/inc/api.json";
         $int = $_POST["active"] == "true" ? 1 : 0;
 
         $API_array = $helper->file_to_json($API_path, true);

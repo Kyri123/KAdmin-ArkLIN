@@ -21,7 +21,7 @@ if (isset($_POST["send"])) {
     error_reporting(0);
     $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
     if ($mycon->is) {
-        $sql = file("app/sql/sql.sql");
+        $sql = file(__ADIR__."/app/sql/sql.sql");
         foreach ($sql as $query) {
             $mycon->query($query);
         }
@@ -32,13 +32,13 @@ if (isset($_POST["send"])) {
 \$dbpass = '".$dbpass."';
 \$dbname = '".$dbname."';
 ?>";
-        if (file_put_contents("php/inc/pconfig.inc.php", $str)) {
+        if (file_put_contents(__ADIR__."/php/inc/pconfig.inc.php", $str)) {
             $array["dbhost"] = $dbhost;
             $array["dbuser"] = $dbuser;
             $array["dbpass"] = $dbpass;
             $array["dbname"] = $dbname;
-            if ($helper->savejson_create($array, "arkadmin_server/config/mysql.json")) {
-                header("Location: /install.php/3");
+            if ($helper->savejson_create($array, __ADIR__."/arkadmin_server/config/mysql.json")) {
+                header("Location: $ROOT/install.php/3");
                 exit;
             }
             else {

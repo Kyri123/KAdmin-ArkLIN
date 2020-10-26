@@ -14,7 +14,7 @@
 class steamapi extends helper {
 
     private $API_Key;
-    private $jsonpath = "app/json/steamapi/";
+    private $jsonpath = __ADIR__."/app/json/steamapi/";
 
     public $modid;
 
@@ -23,7 +23,7 @@ class steamapi extends helper {
      */
     public function __construct()
     {
-        $ckonfig = parent::file_to_json('php/inc/custom_konfig.json', true);
+        $ckonfig = parent::file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
         $this->API_Key = $ckonfig['apikey'];
     }
 

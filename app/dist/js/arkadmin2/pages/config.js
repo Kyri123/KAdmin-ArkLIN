@@ -3,7 +3,7 @@ function toggle_API() {
     let box = $('#API_INPUT_BOX');
     let info = $('#API_INFO');
 
-    var done = $.post("/php/async/post/config.async.php?case=editAPI", {
+    $.post(`${vars.ROOT}/php/async/post/config.async.php?case=editAPI`, {
         "active": input.is(':checked')
     })
         .done((data) => {
