@@ -448,6 +448,7 @@
                 <saves>Savegames</saves>
                 <files>Simple Filebrowser</files>
                 <statistiken>Statistiken</statistiken>
+                <banner>Serverbanner</banner>
             </nav>
 
             <modal>

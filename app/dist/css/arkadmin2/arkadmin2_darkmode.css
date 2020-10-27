@@ -77,6 +77,18 @@
     color: #457eba !important;
 }
 
+.text-primary {
+    color: #55baf3 !important;
+}
+
+a {
+    color: #55baf3;
+}
+
+a:hover {
+    color: #0090ff;
+}
+
 a.bg-light, a.bg-light:active {
      background-color: #343a40 !important;
 }
@@ -147,4 +159,8 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #343a40!important;
     border-color: #343a40!important;
     color: #fff;
+}
+
+.dropdown > * {
+    border-color: #343a40!important;
 }

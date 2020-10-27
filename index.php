@@ -55,6 +55,12 @@ $PAGE_EXP       = $REQUEST_URI != "" ? explode("/", $REQUEST_URI) : array();
 
 $page           = isset($PAGE_EXP[0]) ? $PAGE_EXP[0] : "home";
 
+// API
+$API_path           = __ADIR__."/php/inc/api.json";
+$API_array          = $helper->file_to_json($API_path);
+$API_ACTIVE         = boolval($API_array["active"]);
+$API_KEY            = $API_array["key"];
+
 // read URL
 $surl           = $_SERVER["REQUEST_URI"];
 $url            = $PAGE_EXP;

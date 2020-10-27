@@ -1,0 +1,39 @@
+<div class="col-12 mb-4">
+    <div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+        <div class="tab-content" id="pills-tabContent">
+            <table class="table table-striped mb-0" style="border: 0!important;">
+                <thead>
+                    <tr class="bg-dark">
+                        <th colspan="4" class="p-0" style="border: 0!important;">
+                            <div class="list-group-item bg-dark">
+                                <h4 class="m-0">{::lang::php::sc::page::statistiken::pagename} ({cdata} {::lang::php::sc::page::statistiken::datas})</h4>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{modal_list}
+
+
+<script>
+    // Vars die zur JS übergeben werden
+
+    // Allgemeine Vars
+    var vars = {};
+    vars.ROOT = '{ROOT}';
+    vars.labels = [{labels}];
+    vars.data = [{data}];
+    vars.max = {max};
+
+    // Sprache
+    var lang = {};
+
+    // Sprache / Aktionen
+    var actions = {};
+</script>
+<script src="/app/dist/js/arkadmin2/sub_pages/servercenter/statistiken.js?t={TIMESTAMP}" type="application/javascript"></script>
