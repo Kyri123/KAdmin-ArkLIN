@@ -8,6 +8,8 @@
  * *******************************************************************************************
 */
 
+define("__ADIR__", __DIR__);
+
 // hide errors
 $stime = microtime(true);
 include(__ADIR__.'/php/inc/config.inc.php');
@@ -64,160 +66,36 @@ $API_array          = $helper->file_to_json($API_path);
 $API_active         = boolval($API_array["active"]);
 $API_key            = $API_array["key"];
 
-$API_VALIDE_REQUEST = array(
-    "allserver",
-    "serverinfo",
-    "statistiken"
-);
+if($_GET["key"] == $API_key && $API_active) {
+    $mapjson = $helper->file_to_json(__ADIR__."/app/json/panel/maps.json");
 
-if(!isset($_GET["request"]) && !isset($_GET["key"]) || isset($_GET["key"]) && $_GET["key"] != $API_key) {
-    echo '{"permissions": false}';
+    $serv = new server($_GET["server"]);
+
+    $tpl = new Template("", __ADIR__."/app/template/universally/default/banner.htm");
+    $tpl->load();
+
+    $state_info = $serv->status();
+
+    $tpl->r("width"         , $_GET["width"]);
+    $tpl->r("bg"            , $_GET["bg"]);
+    $tpl->r("a"             , $_GET["a"]);
+    $tpl->r("txt"           , $_GET["txt"]);
+    $tpl->r("border"        , $_GET["border"]);
+
+    $tpl->r("statecolor"    , $serv->statecode() == 2 ? "green" : "red");
+
+    $tpl->r("statetxt"      , $_GET["border"]);
+    $tpl->r("curr"          , count($state_info->aplayersarr));
+    $tpl->r("ip"            , $_GET["ip"].":".$serv->cfg_read(ark_QueryPort));
+    $tpl->r("max"           , $serv->cfg_read("ark_MaxPlayers"));
+    $tpl->r("mapstr"        , isset($mapjson[$serv->cfg_read("serverMap")]) ? $mapjson[$serv->cfg_read("serverMap")]["name"] : $serv->cfg_read("serverMap"));
+    $tpl->r("headurl"       , $state_info->ARKServers);
+    $tpl->r("servername"    , $serv->cfg_read("ark_SessionName"));
+
+    $tpl->echo();
 }
 else {
-    $API_RESPONSE = array();
-    $API_REQUEST = $_GET["request"];
-    if(!in_array($API_REQUEST, $API_VALIDE_REQUEST)) {
-        echo '{"request": "not found"}';
-    }
-    else {
-        /* LEGENDE
-         * ! = Pflichtfeld
-         * ? = Optional
-         * Pflicht/Opt | Var | Option | Beschreibung
-         */
-
-        /* REQUEST: allserver
-         *
-         * Gibt aus Welche Server es gibt
-         * ! | opt | full / lite | Wieviele Infos sollen die je jeweiligen Server enthalten: full mit alle dazugehörigen Infos | lite nur Namen
-         */
-        if($API_REQUEST == "allserver") {
-            $opt = isset($_GET["opt"]) ? ($_GET["opt"] == "full" ? "full" : "lite") : "lite";
-
-            // Lite
-            if($opt == "lite") {
-                $ALL_PATH = __ADIR__."/app/json/serverinfo/all.json";
-                if(file_exists($ALL_PATH)) {
-                    $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
-
-                    foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
-                        $RESPONSE["response"]["server"][] = str_replace(".cfg", null, $ITEM);
-                    }
-
-                    echo json_encode($RESPONSE);
-                }
-                else {
-                    echo '{"request": false}';
-                }
-            }
-
-            // Full
-            elseif($opt == "full") {
-                $ALL_PATH = __ADIR__."/app/json/serverinfo/all.json";
-                if(file_exists($ALL_PATH)) {
-                    $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
-
-                    foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
-                        $servername = str_replace(".cfg", null, $ITEM);
-                        $SERVER_PATH = __ADIR__."/app/json/serverinfo/$servername.json";
-                        if(file_exists($SERVER_PATH)) {
-                            $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
-
-                            if(isset($SERVER_ARRAY["warning_count"]))   unset($SERVER_ARRAY["warning_count"]);
-                            if(isset($SERVER_ARRAY["error_count"]))     unset($SERVER_ARRAY["error_count"]);
-                            if(isset($SERVER_ARRAY["error"]))           unset($SERVER_ARRAY["error"]);
-                            if(isset($SERVER_ARRAY["warning"]))         unset($SERVER_ARRAY["warning"]);
-
-                            $server = new server($servername);
-
-                            $SERVER_ARRAY["mods"]       = $server->cfg_read("ark_GameModIds");
-                            $SERVER_ARRAY["statecode"]  = $server->statecode();
-                            $SERVER_ARRAY["server_ip"]  = "$ip:".$server->cfg_read("ark_QueryPort");
-
-                            $RESPONSE["response"]["server"][$servername] = $SERVER_ARRAY;
-                        }
-                    }
-
-                    echo json_encode($RESPONSE);
-                }
-                else {
-                    echo '{"request": false}';
-                }
-            }
-            else {
-                echo '{"request": false}';
-            }
-        }
-
-        /* REQUEST: serverinfo
-         *
-         * Gibt aus Welche Server es gibt
-         * ! | server | xyz | Servernamen
-         */
-        if($API_REQUEST == "serverinfo") {
-            $SERVER_NAME = isset($_GET["server"]) ? $_GET["server"] : "unknown";
-            if(file_exists(__ADIR__."/remote/arkmanager/instances/$SERVER_NAME.cfg")) {
-                $SERVER_PATH = __ADIR__."/app/json/serverinfo/$SERVER_NAME.json";
-                if(file_exists($SERVER_PATH)) {
-                    $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
-
-                    if(isset($SERVER_ARRAY["warning_count"]))   unset($SERVER_ARRAY["warning_count"]);
-                    if(isset($SERVER_ARRAY["error_count"]))     unset($SERVER_ARRAY["error_count"]);
-                    if(isset($SERVER_ARRAY["error"]))           unset($SERVER_ARRAY["error"]);
-                    if(isset($SERVER_ARRAY["warning"]))         unset($SERVER_ARRAY["warning"]);
-
-                    $server = new server($SERVER_NAME);
-
-                    $SERVER_ARRAY["mods"]       = $server->cfg_read("ark_GameModIds");
-                    $SERVER_ARRAY["statecode"]  = $server->statecode();
-                    $SERVER_ARRAY["server_ip"]  = "$ip:".$server->cfg_read("ark_QueryPort");
-
-                    $RESPONSE["response"]["serverinfo"] = $SERVER_ARRAY;
-                    echo json_encode($RESPONSE);
-                }
-                else {
-                    echo '{"request": false}';
-                }
-            }
-            else {
-                echo '{"request": false}';
-            }
-        }
-
-        /* REQUEST: statistiken
-         *
-         * Gibt die Statisken aus
-         * ! | server | servername | Name des Servers
-         * ? | max | int !=< 1 | Wieviele Datensätze sollen ausgegeben werden
-         * ? | order | DESC / ASC | Wie soll geordnet werden
-         */
-        if($API_REQUEST == "statistiken") {
-            if(isset($_GET["server"])) {
-                $SERVER_NAME = $_GET["server"];
-                if(file_exists(__ADIR__."/remote/arkmanager/instances/$SERVER_NAME.cfg")) {
-                    $MAX = isset($_GET["max"]) ? intval($_GET["max"]) : 100;
-                    if($MAX < 1) $MAX = 1;
-                    $ORDER = isset($_GET["order"]) ? ($_GET["max"] == "ASC" ? "ASC" : "DESC") : "DESC";
-
-                    $query = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = '$SERVER_NAME' ORDER BY `time` $ORDER LIMIT $MAX";
-                    $mycon->query($query);
-                    if($mycon->numRows() > 0) {
-                        $RESPONSE["response"]["statistiken"] = $mycon->fetchAll();
-                        echo json_encode($RESPONSE);
-                    }
-                    else {
-                        echo '{"request": false}';
-                    }
-                }
-                else {
-                    echo '{"request": false}';
-                }
-            }
-            else {
-                echo '{"request": false}';
-            }
-        }
-    }
+    echo '{"permissions": false}';
 }
 
 

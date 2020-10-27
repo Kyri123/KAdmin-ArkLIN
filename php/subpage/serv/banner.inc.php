@@ -20,7 +20,9 @@ $urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/
 $urltop .= '<li class="breadcrumb-item">{::lang::servercenter::main::nav::banner}</li>';
 
 
+$page_tpl->r('url', (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/");
 $page_tpl->r('apikey', $API_KEY);
+$page_tpl->r('ip', $ip);
 $panel = $page_tpl->load_var();
 
 $player = null;
