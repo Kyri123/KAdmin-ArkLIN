@@ -1,3 +1,8 @@
+function set_style(style) {
+    document.cookie = "style=" + style + "; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+    location.reload();
+}
+
 function set_lang(lang) {
     document.cookie = "lang=" + lang + "; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT";
     location.reload();
