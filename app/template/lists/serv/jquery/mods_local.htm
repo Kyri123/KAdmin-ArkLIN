@@ -1,6 +1,6 @@
 
 <div class="col-lg-6 col-xl-3">
-    <div class="card card-widget widget-user">
+    <div class="card card-widget widget-user item-box">
         <div class="card bg-dark card-widget widget-user mb-0">
             <div class="row p-2" title="{title_full}">
                 <div class="{!hide}col-9{/!hide}{hide}col-12{/hide}">
@@ -53,7 +53,7 @@
                 </div>
             </div>
         </div>
-        {!hide}<div class="p-0 border-top" title="{title_full}">
+        {!hide}<div class="p-0 border-0" title="{title_full}">
         <select class="form-control-sm border-light" {ifcmods}disabled{/ifcmods} style="width: 100%" onchange="pushto('{modid}', this.value)">
         <option>{::lang::servercenter::mods::pos}</option>
         {!ifcmods}{poslist}{/!ifcmods}
