@@ -142,3 +142,9 @@ h1, h2, h3, h4, h5, h6 {
 .item-box > .card-footer {
     background-color: #4d565f!important;
 }
+
+.input-group-text {
+    background-color: #343a40!important;
+    border-color: #343a40!important;
+    color: #fff;
+}
