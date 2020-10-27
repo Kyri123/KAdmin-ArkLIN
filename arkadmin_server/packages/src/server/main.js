@@ -15,11 +15,7 @@ const status = require("./comp/status");
 const NodeSSH = require('node-ssh');
 const sshK = require("../../../config/ssh");
 const mysql = require("mysql");
-const http = require('http');
-const url = require('url');
 const updater = require("./comp/updater");
-const ip = require("ip");
-const md5 = require('md5');
 
 global.version = fs.readFileSync("data/version.txt", 'utf8');
 global.started = Date.now();

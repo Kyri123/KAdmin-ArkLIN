@@ -23,7 +23,7 @@ for ($i=0;$i<count($dir);$i++) {
         
         $serv = new server($ifile_info["filename"]);
         // Verbinde alle Chatlogs
-        echo $path_tolog = $serv->dir_save(true).'/Logs/'; echo "<br>";
+        $path_tolog = $serv->dir_save(true).'/Logs/';
         if(file_exists($path_tolog) && is_dir($path_tolog)) {
             $dirlog = scandir($path_tolog);
             asort($dirlog);
@@ -52,7 +52,7 @@ for ($i=0;$i<count($dir);$i++) {
             
             // Speicher Log
             $log_file = $path_tolog.'ServerPanel.log';
-            echo file_put_contents($log_file, $log);
+            file_put_contents($log_file, $log);
         }
 
         // erstelle Spielerliste (Online)

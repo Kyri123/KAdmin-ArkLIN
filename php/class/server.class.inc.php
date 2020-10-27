@@ -170,11 +170,10 @@ class server extends Rcon {
         if ($this->status()->next == 'TRUE' && !$force) {
             return false;
         }
-        $doc = $_SERVER['DOCUMENT_ROOT'];
-        $log = $doc.'/app/data/shell_resp/log/'.$this->name().'/last.log';
+
+        $log = __ADIR__.'/app/data/shell_resp/log/'.$this->name().'/last.log';
         $doc_state_file = __ADIR__.'/app/data/shell_resp/state/'.$this->name().'.state';
-        $doc_state = $doc.'/'.$doc_state_file;
-        $command = 'arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
+        $command = 'arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state_file.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
         $command = str_replace("\r", null, $command);
 
         // Füge Kommand zur DB hinzu
