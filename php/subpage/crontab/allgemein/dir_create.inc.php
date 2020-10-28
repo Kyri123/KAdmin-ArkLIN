@@ -20,6 +20,7 @@ $dirs = array(
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
         $serv = new server($dir[$i]);
+        $dirs[] = __ADIR__."/app/data/shell_resp/log/".$serv->name();
         $dirs[] = $serv->cfg_read("logdir");
         $dirs[] = $serv->cfg_read("arkserverroot");
         $dirs[] = $serv->cfg_read("arkbackupdir");
@@ -35,6 +36,7 @@ for($i=0;$i<count($dirs);$i++) {
 //Erstelle Default Dateien
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
+        if (!file_exists(__ADIR__."/app/data/shell_resp/log/".$serv->name()."/last.log")) file_put_contents(" ", __ADIR__."/app/data/shell_resp/log/".$serv->name()."/last.log");
         if (!file_exists(__ADIR__.'/app/data/shell_resp/log/'.$serv->name().'/last.log')) file_put_contents(__ADIR__.'/app/data/shell_resp/log/'.$serv->name().'/last.log', null);
         if (!file_exists(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json')) file_put_contents(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json', '{}');
     }
