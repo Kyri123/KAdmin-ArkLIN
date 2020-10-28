@@ -67,25 +67,19 @@
                                 <div class="table-responsive">
                                     <table class="table table-striped mb-0" style="width: 100%;">
                                         <tbody>
+                                            {form_GUS}
                                             <tr class="bg-dark">
-                                                <th colspan="2" class="p-0" style="border: 0!important;">
+                                                <th colspan="2" class="p-0">
                                                     <div class="list-group-item bg-dark">
-                                                        <h4 class="m-0">GameUserSettings.ini</h4>
+                                                        <h4 class="m-0">{::lang::servercenter::config::custom}</h4>
                                                     </div>
                                                 </th>
                                             </tr>
-                                            <tr id="tbody_GUS">
-                                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
-                                                <td class="p-2">
-                                                    <div class="input-group mb-0">
-                                                        <input type="text" class="form-control form-control-sm" id="tbody_GUS_section">
-                                                        <div class="input-group-append">
-                                                            <span onclick="addsection('#tbody_GUS')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                        </div>
-                                                    </div>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom">{form_GUS_rest}</textarea>
                                                 </td>
                                             </tr>
-                                            {form_GUS}
                                         </tbody>
                                     </table>
                                 </div>
@@ -123,25 +117,19 @@
                                 <div class="table-responsive">
                                     <table class="table table-striped mb-0">
                                         <tbody>
+                                            {form_GAME}
                                             <tr class="bg-dark">
-                                                <th colspan="2" class="p-0" style="border: 0!important;">
+                                                <th colspan="2" class="p-0">
                                                     <div class="list-group-item bg-dark">
-                                                        <h4 class="m-0">Game.ini</h4>
+                                                        <h4 class="m-0">{::lang::servercenter::config::custom}</h4>
                                                     </div>
                                                 </th>
                                             </tr>
-                                            <tr id="tbody_Game">
-                                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
-                                                <td class="p-2">
-                                                    <div class="input-group mb-0">
-                                                        <input type="text" class="form-control form-control-sm" id="tbody_Game_section">
-                                                        <div class="input-group-append">
-                                                            <span onclick="addsection('#tbody_Game')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                        </div>
-                                                    </div>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom">{form_GAME_rest}</textarea>
                                                 </td>
                                             </tr>
-                                            {form_GAME}
                                         </tbody>
                                     </table>
                                 </div>
@@ -179,25 +167,19 @@
                                 <div class="table-responsive">
                                     <table class="table table-striped mb-0">
                                         <tbody>
+                                            {form_ENGINE}
                                             <tr class="bg-dark">
-                                                <th colspan="2" class="p-0" style="border: 0!important;">
+                                                <th colspan="2" class="p-0">
                                                     <div class="list-group-item bg-dark">
-                                                        <h4 class="m-0">Engine.ini</h4>
+                                                        <h4 class="m-0">{::lang::servercenter::config::custom}</h4>
                                                     </div>
                                                 </th>
                                             </tr>
-                                            <tr id="tbody_Game">
-                                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
-                                                <td class="p-2">
-                                                    <div class="input-group mb-0">
-                                                        <input type="text" class="form-control form-control-sm" id="tbody_Game_section">
-                                                        <div class="input-group-append">
-                                                            <span onclick="addsection('#tbody_Game')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                        </div>
-                                                    </div>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom">{form_ENGINE_rest}</textarea>
                                                 </td>
                                             </tr>
-                                            {form_ENGINE}
                                         </tbody>
                                     </table>
                                 </div>

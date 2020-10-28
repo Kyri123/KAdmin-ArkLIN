@@ -21,7 +21,7 @@ $page_tpl->r('SESSION_USERNAME' ,$user->read("username"));
 // Erstelle Dateien wenn die nicht exsistieren
 $cheatfile = $serv->dir_save(true)."/AllowedCheaterSteamIDs.txt";
 $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
-if(!file_exists($cheatfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($cheatfile, " ");
+if(!file_exists($cheatfile) && file_exists($serv->dir_save(true))) file_put_contents($cheatfile, " ");
 if(!file_exists($whitelistfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($whitelistfile, " ");
 
 $playerjson = $helper->file_to_json(__ADIR__.'/app/json/steamapi/profile_allg.json', true);

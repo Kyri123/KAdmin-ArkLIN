@@ -363,7 +363,7 @@ class server extends Rcon {
 
         $path = $this->dir_main();
         $dir = $path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini;
-        if (file_exists($dir)) {
+        if (file_exists($dir) && fileperms($dir)) {
             $this->ini = parse_ini_file($dir, $group, INI_SCANNER_RAW);
             $this->inipath = $dir;
             return TRUE;

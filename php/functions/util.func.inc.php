@@ -282,3 +282,137 @@ function getRealIpAddr()
     }
     return $ip;
 }
+
+/**
+ * Konvertiere Default zu Ini compati
+ *
+ * @param array $ARR
+ * @return array
+ */
+function convert_ini(array $ARR) {
+    $RETURN = array();
+    foreach ($ARR as $key => $item) {
+        foreach ($item as $KEY => $ITEM) {
+            if(isset($ITEM["default"])) {
+                $RETURN[$key][$KEY] = $ITEM["default"];
+            } else {
+                foreach ($ITEM as $KEY2 => $ITEM2) {
+                    $RETURN[$key][$KEY][] = $ITEM2["default"];
+                }
+            }
+        }
+    }
+    return $RETURN;
+}
+
+/**
+ * Konvertiere Ini zur Form
+ *
+ * @param string $INI
+ * @param array $ARR
+ * @param array $DEFAULT
+ * @return array
+ */
+function create_ini_form(array $ARR, string $INI, array $DEFAULT) {
+
+    $RETURN = $REST = null;
+
+    $INARR = $INI == "Game" ? [
+        "PlayerBaseStatMultipliers",
+        "PerLevelStatsMultiplier_Player",
+        "PerLevelStatsMultiplier_DinoWild",
+        "PerLevelStatsMultiplier_DinoTamed",
+        "PerLevelStatsMultiplier_DinoTamed_Add",
+        "PerLevelStatsMultiplier_DinoTamed_Affinity"
+    ] : [];
+
+    $former_use = [
+        "ServerSettings",
+        "SessionSettings",
+        "/Script/Engine.GameSession",
+        "/Game/PrimalEarth/CoreBlueprints/TestGameMode.TestGameMode_C",
+        "/script/shootergame.shootergamemode",
+        "/script/onlinesubsystemutils.ipnetdriver",
+        "/script/engine.player"
+    ];
+
+    foreach ($ARR as $key => $item) {
+        $ITEMS = null;
+
+        if(in_array($key, $former_use)) {
+            $tpl_sec = new Template("section_new.htm", __ADIR__."/app/template/lists/serv/konfig/");
+            $tpl_sec->load();
+        }
+        else {
+            $REST .= "\n[$key]\n";
+        }
+
+        foreach ($item as $KEY => $ITEM) {
+            if(!is_array($ITEM)) {
+                if(in_array($key, $former_use) && ($INI != "Game" || isset($DEFAULT[$key][$KEY]))) {
+                    $tpl_i1 = new Template("item_new.htm", __ADIR__."/app/template/lists/serv/konfig/");
+                    $tpl_i1->load();
+
+                    $TYPE = isset($DEFAULT[$key][$KEY]) ? $DEFAULT[$key][$KEY]["type"] : "string";
+
+                    $tpl_i1->rif("float", $TYPE == "float");
+                    $tpl_i1->rif("string", $TYPE == "string");
+                    $tpl_i1->rif("bool", $TYPE == "bool");
+                    $tpl_i1->rif("int", $TYPE == "int");
+
+                    if($TYPE == "int") $ITEM = round($ITEM,0);
+
+                    $tpl_i1->r("name", "ini[$key][$KEY]");
+                    $tpl_i1->r("opt", $KEY);
+                    $tpl_i1->r("value", $ITEM);
+                    $tpl_i1->r("True", ($TYPE == "bool" && $ITEM == "True") ? "selected" : "");
+                    $tpl_i1->r("False", ($TYPE == "bool" && $ITEM == "False") ? "selected" : "");
+                    $tpl_i1->r("max", $TYPE == "float" ? round((($ITEM < 1 ? 1 : $ITEM) * 10), 0) : "1");
+
+                    $ITEMS .= $tpl_i1->load_var();
+                }
+                else {
+                    $REST .= "$KEY=$ITEM\n";
+                }
+            } elseif(in_array($KEY, $INARR)) {
+                foreach ($ITEM as $KEY2 => $ITEM2) {
+                    if(in_array($key, $former_use)) {
+                        $tpl_i1 = new Template("item_new.htm", __ADIR__."/app/template/lists/serv/konfig/");
+                        $tpl_i1->load();
+
+                        $TYPE = isset($DEFAULT[$key][$KEY][$KEY2]) ? $DEFAULT[$key][$KEY][$KEY2]["type"] : "string";
+
+                        $tpl_i1->rif("float", $TYPE == "float");
+                        $tpl_i1->rif("string", $TYPE == "string");
+                        $tpl_i1->rif("bool", $TYPE == "bool");
+                        $tpl_i1->rif("int", $TYPE == "int");
+
+                        if($TYPE == "int") $ITEM2 = round($ITEM2,0);
+
+                        $tpl_i1->r("name", "ini[$key][$KEY][$KEY2]");
+                        $tpl_i1->r("opt", $KEY."[$KEY2]");
+                        $tpl_i1->r("value", $ITEM2);
+                        $tpl_i1->r("True", ($TYPE == "bool" && $ITEM2 == "True") ? "selected" : "");
+                        $tpl_i1->r("False", ($TYPE == "bool" && $ITEM2 == "False") ? "selected" : "");
+                        $tpl_i1->r("max", $TYPE == "float" ? round((($ITEM2 < 1 ? 1 : $ITEM2) * 10), 0) : "1");
+
+                        $ITEMS .= $tpl_i1->load_var();
+                    }
+                    else {
+                        $REST .= "$KEY=$ITEM\n";
+                    }
+                }
+            }
+        }
+
+        if(in_array($key, $former_use)) {
+            $tpl_sec->rif("hidden", /*$key == "/Script/ShooterGame.ShooterGameUserSettings"*/false);
+            $tpl_sec->r("name", $key);
+            $tpl_sec->r("items", $ITEMS);
+
+            $RETURN .= $tpl_sec->load_var();
+        }
+    }
+
+    return ["form" => $RETURN, "rest" => $REST];
+}

@@ -1,5 +1,15 @@
 {
   "ServerSettings": {
+    "RCONEnabled": {
+      "type": "bool",
+      "default": "True"
+    },
+
+    "RCONPort": {
+      "type": "int",
+      "default": "27020"
+    },
+
     "MaxTributeDinos": {
       "type": "int",
       "default": "20"
@@ -245,11 +255,6 @@
       "default": "1.0"
     },
 
-    "DinoCountMultiplier": {
-      "type": "bool",
-      "default": "False"
-    },
-
     "BanListURL": {
       "type": "string",
       "default": "http://arkdedicated.com/banlist.txt"
@@ -273,11 +278,6 @@
     "TributeCharacterExpirationSeconds": {
       "type": "int",
       "default": "86400"
-    },
-
-    "TributeCharacterExpirationSeconds": {
-      "type": "float",
-      "default": "15.0"
     },
 
     "CrossARKAllowForeignDinoDownloads": {
@@ -420,77 +420,49 @@
       "default": "True"
     },
 
-    "StructurePickupHoldDuration": {
+    "OxygenSwimSpeedStatMultiplier": {
       "type": "float",
-      "default": "0.5"
-    }
-  },
-
-
-  "/Script/ShooterGame.ShooterGameUserSettings": {
-    "ignore": true
-  },
-
-
-  "ScalabilityGroups": {
-    "sg.ResolutionQuality": {
-      "type": "int",
-      "default": "100"
+      "default": "1.0"
     },
 
-    "sg.ViewDistanceQuality": {
-      "type": "int",
-      "default": "3"
+    "StructurePreventResourceRadiusMultiplier": {
+      "type": "float",
+      "default": "1.0"
     },
 
-    "sg.AntiAliasingQuality": {
-      "type": "int",
-      "default": "3"
+    "RaidDinoCharacterFoodDrainMultiplier": {
+      "type": "float",
+      "default": "1.0"
     },
 
-    "sg.ShadowQuality": {
+    "KickIdlePlayersPeriod": {
       "type": "int",
-      "default": "3"
+      "default": "3600"
     },
 
-    "sg.PostProcessQuality": {
+    "AutoSavePeriodMinutes": {
       "type": "int",
-      "default": "3"
+      "default": "15"
     },
 
-    "sg.TextureQuality": {
-      "type": "int",
-      "default": "3"
+    "ListenServerTetherDistanceMultiplier": {
+      "type": "float",
+      "default": "1.0"
     },
 
-    "sg.EffectsQuality": {
+    "MaxTamedDinos": {
       "type": "int",
-      "default": "3"
+      "default": "5000"
     },
 
-    "sg.TrueSkyQuality": {
+    "RCONServerGameLogBuffer": {
       "type": "int",
-      "default": "3"
+      "default": "600"
     },
 
-    "sg.GroundClutterQuality": {
-      "type": "int",
-      "default": "3"
-    },
-
-    "sg.IBLQuality": {
-      "type": "int",
-      "default": "1"
-    },
-
-    "sg.HeightFieldShadowQuality": {
-      "type": "int",
-      "default": "3"
-    },
-
-    "sg.GroundClutterRadius": {
-      "type": "int",
-      "default": "10000"
+    "AllowHitMarkers": {
+      "type": "bool",
+      "default": "True"
     }
   },
 
@@ -507,6 +479,14 @@
     "MaxPlayers": {
       "type": "int",
       "default": "10"
+    }
+  },
+
+
+  "/Game/PrimalEarth/CoreBlueprints/TestGameMode.TestGameMode_C": {
+    "bServerGameLogEnabled": {
+      "type": "bool",
+      "default": "True"
     }
   }
 }

@@ -61,7 +61,7 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
     } else {
         // Melde Lese/Schreib Fehler
         $resp = $alert->rd(1);
-    } 
+    }
 }
 else {
     // Melde Fehlschlag
@@ -69,40 +69,46 @@ else {
     if(isset($_POST['savecfg']) && !$user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
 }
 
-// GameUserSettings.ini Speichern (Normaler Modus)
+// GameUserSettings/Game/Engine.ini Speichern (Normaler Modus)
 $resp = null;
 if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
 
-    $value = $_POST['value'];
-    $key = $_POST['key'];
-    $skey = $_POST['skey'];
-    $type = $_POST["type"];
-    
-    if(
-        ($type == "GameUserSettings.ini" && $user->perm("$perm/konfig/gus")) ||
-        ($type == "Game.ini" && $user->perm("$perm/konfig/game")) ||
-        ($type == "Engine.ini" && $user->perm("$perm/konfig/engine"))
-    ) {
-        for ($i=0;$i<count($key);$i++) {
-            $cfg[$skey[$i]][$key[$i]] = $value[$i];
-        }
+    $INI_ARRAY      = $_POST["ini"];
+    $CUSTOM         = $_POST["custom"];
+    $TYPE           = $_POST["type"];
 
-        $cfg_done = null;
-        foreach ($cfg as $k => $v){
-            $cfg_done .= "\n[$k]\n";
-            foreach ($v as $ik => $iv){
-                $cfg_done .= "$ik=$iv\n";
+    if(
+        ($TYPE == "GameUserSettings.ini"    && $user->perm("$perm/konfig/gus"))     ||
+        ($TYPE == "Game.ini"                && $user->perm("$perm/konfig/game"))    ||
+        ($TYPE == "Engine.ini"              && $user->perm("$perm/konfig/engine"))
+    ) {
+        $INI_STRING = null;
+        foreach ($INI_ARRAY as $key => $item){
+            $INI_STRING .= "\n[$key]\n";
+            foreach ($item as $KEY => $ITEM){
+                if(is_array($ITEM)) {
+                    foreach ($ITEM as $KEY2 => $ITEM2){
+                        if(!is_array($ITEM2)) {
+                            $INI_STRING .= $KEY."[$KEY2]=$ITEM2\n";
+                        }
+                    }
+                }
+                else {
+                    $INI_STRING .= "$KEY=".(is_bool($ITEM) ? ($ITEM ? "True" : "False") : $ITEM)."\n";
+                }
             }
         }
+        $INI_STRING .= $CUSTOM;
 
-        $path = $serv->dir_konfig().$type;
-        $text = ini_save_rdy($cfg_done);
+        $path = $serv->dir_konfig().$TYPE;
+        $text = ini_save_rdy($INI_STRING);
+
         // Wenn Datei geschreiben wurde
         if (file_put_contents($path, $text)) {
             // Melde: Erfolg
             $resp = $alert->rd(102);
         } else {
-            // Melde: Lese/SchreibFeher
+            // Melde: Lese/Schreibfeher
             $resp = $alert->rd(1);
         }
     }
@@ -128,7 +134,7 @@ if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_
     } else {
         // Melde: Lese/Schreib Fehler
         $resp = $alert->rd(1);
-    } 
+    }
 }
 else {
     // Melde Fehlschlag
@@ -141,7 +147,7 @@ if (isset($_POST['save']) && (($serv->statecode() == 1 && $user->show_mode("konf
     $type = $_POST["type"];
     $text = $_POST["text"];
     $path = $serv->dir_konfig().$type;
-    
+
     if(
         ($type == "GameUserSettings.ini" && $user->perm("$perm/konfig/gus")) ||
         ($type == "Game.ini" && $user->perm("$perm/konfig/game")) ||
@@ -176,26 +182,24 @@ $page_tpl->r('cfg' ,$url[2]);
 $default = "{::lang::php::sc::page::konfig::ini_notfound}";
 $default_table = "<tr colspan='2'><td>{::lang::php::sc::page::konfig::ini_notfound}</td></tr>";
 
-$gus = ($serv->ini_load('GameUserSettings.ini', true)) ? $gus = $serv->ini_get_str() : $default;
-$game = ($serv->ini_load('Game.ini', true)) ? $serv->ini_get_str() : $default;
-$engine = ($serv->ini_load('Engine.ini', true)) ? $serv->ini_get_str() : $default;
+$gus            = ($serv->ini_load('GameUserSettings.ini', true)) ? $gus = $serv->ini_get_str() : $default;
+$game           = ($serv->ini_load('Game.ini', true)) ? $serv->ini_get_str() : $default;
+$engine         = ($serv->ini_load('Engine.ini', true)) ? $serv->ini_get_str() : $default;
 
-$gus_bool = ($serv->ini_load('GameUserSettings.ini', true));
-$game_bool = ($serv->ini_load('Game.ini', true));
-$engine_bool = ($serv->ini_load('Engine.ini', true));
+$gus_bool       = $serv->ini_load('GameUserSettings.ini', true);
+$game_bool      = $serv->ini_load('Game.ini', true);
+$engine_bool    = $serv->ini_load('Engine.ini', true);
 
 // Prüfe ob Inis exsistieren
 $show = (
-    file_exists($serv->dir_save(true)."/Config/LinuxServer/GameUserSettings.ini") && 
-    file_exists($serv->dir_save(true)."/Config/LinuxServer/Game.ini") && 
+    file_exists($serv->dir_save(true)."/Config/LinuxServer/GameUserSettings.ini") &&
+    file_exists($serv->dir_save(true)."/Config/LinuxServer/Game.ini") &&
     file_exists($serv->dir_save(true)."/Config/LinuxServer/Engine.ini")
 );
 
 $gus_nexp = ($serv->ini_load('GameUserSettings.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
 $game_nexp = ($serv->ini_load('Game.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
 $engine_nexp = ($serv->ini_load('Engine.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
-
-$inis = array("gus" => $gus_nexp, "game" => $game_nexp, "engine" => $engine_nexp);
 
 $strcfg = $serv->cfg_get_str();
 
@@ -205,7 +209,7 @@ $flags = array();
 $i = 0;
 
 
-//event 
+//event
 $events = array(
     "Easter",
     "Arkeolgy",
@@ -324,7 +328,7 @@ if ($serv->isinstalled()) {
                     $add .= '</select></div>';
                 }
 
-                $formtype = (!in_array($key, $no_del)) ? 
+                $formtype = (!in_array($key, $no_del)) ?
                 // wenn nicht im array
                 '<div class="input-group mb-0">
                     <input type="hidden" name="key[]" readonly value="'.$key.'">
@@ -332,7 +336,7 @@ if ($serv->isinstalled()) {
                     <div class="input-group-append">
                     <span onclick="remove(\''.md5($key).'\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>
                     </div>
-                </div>' : 
+                </div>' :
                 //sonst
                 '<div class="input-group mb-0"><input type="hidden" name="key[]" readonly value="'.$key.'">
                 <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'">'.$add.'</div>';
@@ -346,62 +350,6 @@ if ($serv->isinstalled()) {
                     </tr>';
             }
         };
-    }
-}
-
-
-// Verarbeite Inis um Konfigurationen zu erstellen
-foreach($inis as $mk => $mv) {
-    $re[$mk] = null;
-    if(is_array($mv)) {
-        // sections
-        if(is_array($mv)) foreach($mv as $sk => $sv) {
-
-            $it = null;
-            $tpl_sec = new Template("section.htm", __ADIR__."/app/template/lists/serv/konfig/");
-            $tpl_sec->load();
-            
-            // items
-            if(is_array($sv)) foreach($sv as $ik => $iv) {
-
-                if(is_array($iv)) {
-                    $name = $ik;
-                    foreach($iv as $pk => $pv) {
-                        $tpl_item = new Template("item.htm", __ADIR__."/app/template/lists/serv/konfig/");
-                        $tpl_item->load();
-        
-                        $tpl_item->r("sk", $sk);
-                        $tpl_item->r("rnd", md5(rndbit(50)));
-                        $tpl_item->r("k", $name."[$pk]");
-                        $tpl_item->r("v", $pv);
-        
-                        $it .= $tpl_item->load_var();
-                    }
-                }
-                else {
-                    $tpl_item = new Template("item.htm", __ADIR__."/app/template/lists/serv/konfig/");
-                    $tpl_item->load();
-    
-                    $tpl_item->r("sk", $sk);
-                    $tpl_item->r("rnd", md5(rndbit(50)));
-                    $tpl_item->r("k", strval($ik));
-                    $tpl_item->r("v", $iv);
-    
-                    $it .= $tpl_item->load_var();
-                }
-
-            }
-            $max = 50;
-
-            $tpl_sec->r("rnd", md5(rndbit(50)));
-            $tpl_sec->r("sk", $sk);
-            $tpl_sec->r("name", $sk);
-            $tpl_sec->r("name_withMax", (strlen($sk) > $max) ? substr($sk,0,$max)."..." : $sk);
-            $tpl_sec->r("items", $it);
-
-            $re[$mk] .= $tpl_sec->load_var();
-
-        }
     }
 }
 
@@ -426,13 +374,33 @@ foreach($flags_json as $k => $v) {
     }
 }
 
+// neuer Editor
+$CFGs = array(
+    "GameUserSettings",
+    "Game",
+    "Engine"
+);
+
+foreach ($CFGs as $CFG) {
+    $CURR            = $CFG == "Game" ? $game_nexp : ($CFG == "GameUserSettings" ? $gus_nexp : $engine_nexp);
+    $RAW_DEFAULT     = $helper->file_to_json(__ADIR__."/app/json/panel/default_$CFG.json");
+    $CONV_DEFAULT    = convert_ini($RAW_DEFAULT);
+    $FINAL_INI       = array_replace_recursive($CONV_DEFAULT, $CURR);
+    $Former_arr      = create_ini_form($FINAL_INI, $CFG, $RAW_DEFAULT);
+    $re[$CFG]        = $Former_arr["form"];
+    $re["$CFG-rest"] = $Former_arr["rest"];
+}
+
 if ($ifckonfig) $resp_cluster .= $alert->rd(301, 3);
 $page_tpl->r('ark_opt', $ark_opt);
 $page_tpl->r('ark_flag', $ark_flag);
 $page_tpl->r('form', $form);
-$page_tpl->r('form_GUS', $re["gus"]);
-$page_tpl->r('form_GAME', $re["game"]);
-$page_tpl->r('form_ENGINE', $re["engine"]);
+$page_tpl->r('form_GUS', $re["GameUserSettings"]);
+$page_tpl->r('form_GAME', $re["Game"]);
+$page_tpl->r('form_ENGINE', $re["Engine"]);
+$page_tpl->r('form_GUS_rest', $re["GameUserSettings-rest"]);
+$page_tpl->r('form_GAME_rest', $re["Game-rest"]);
+$page_tpl->r('form_ENGINE_rest', $re["Engine-rest"]);
 $page_tpl->r('strcfg', $strcfg);
 $page_tpl->r('gus', $gus);
 $page_tpl->r('game', $game);
