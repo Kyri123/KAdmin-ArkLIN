@@ -1,0 +1,513 @@
+{
+  // ServerSettings
+  "ServerSettings": {
+    "MaxTributeDinos": {
+      "type": "int",
+      "default": "20"
+    },
+
+    "MaxTributeItems": {
+      "type": "int",
+      "default": "50"
+    },
+
+    "alwaysNotifyPlayerJoined": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "alwaysNotifyPlayerLeft": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "allowThirdPersonPlayer": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "globalVoiceChat": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "ShowMapPlayerLocation": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "noTributeDownloads": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "proximityChat": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "serverPVE": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "serverHardcore": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "serverForceNoHud": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "DisableStructureDecayPvE": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "DisableDinoDecayPvE": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "AllowFlyerCarryPvE": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "TheMaxStructuresInRange": {
+      "type": "int",
+      "default": "10500"
+    },
+
+    "bAllowPlatformSaddleMultiFloors": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "MaxPlayers": {
+      "type": "int",
+      "default": "70"
+    },
+
+    "DifficultyOffset": {
+      "type": "float",
+      "default": "0.2"
+    },
+
+    "ServerPassword": {
+      "type": "string",
+      "default": ""
+    },
+
+    "ServerAdminPassword": {
+      "type": "string",
+      "default": ""
+    },
+
+    "SpectatorPassword": {
+      "type": "string",
+      "default": ""
+    },
+
+    "DayCycleSpeedScale": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "DayTimeSpeedScale": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "DinoDamageMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PlayerDamageMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "StructureDamageMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PlayerResistanceMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "DinoResistanceMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "StructureResistanceMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "XPMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PvEStructureDecayPeriodMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PvEStructureDecayDestructionPeriod": {
+      "type": "int",
+      "default": "1.0"
+    },
+
+    "PvEDinoDecayPeriodMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "TamingSpeedMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "HarvestAmountMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "HarvestHealthMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "MaxPlatformSaddleStructureLimit": {
+      "type": "int",
+      "default": "100"
+    },
+
+    "PerPlatformMaxStructuresMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "MaxGateFrameOnSaddles": {
+      "type": "int",
+      "default": "0"
+    },
+
+    "ResourcesRespawnPeriodMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PlayerCharacterWaterDrainMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PlayerCharacterFoodDrainMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PlayerCharacterStaminaDrainMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PlayerCharacterHealthRecoveryMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "DinoCharacterFoodDrainMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "DinoCharacterStaminaDrainMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "DinoCharacterHealthRecoveryMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "DinoCountMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "DinoCountMultiplier": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "BanListURL": {
+      "type": "string",
+      "default": "http://arkdedicated.com/banlist.txt"
+    },
+
+    "PvPStructureDecay": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "TributeItemExpirationSeconds": {
+      "type": "int",
+      "default": "86400"
+    },
+
+    "TributeDinoExpirationSeconds": {
+      "type": "int",
+      "default": "86400"
+    },
+
+    "TributeCharacterExpirationSeconds": {
+      "type": "int",
+      "default": "86400"
+    },
+
+    "TributeCharacterExpirationSeconds": {
+      "type": "float",
+      "default": "15.0"
+    },
+
+    "CrossARKAllowForeignDinoDownloads": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "DisablePvEGamma": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "EnablePvPGamma": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "TribeNameChangeCooldown": {
+      "type": "int",
+      "default": "15"
+    },
+
+    "AllowHideDamageSourceFromLogs": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "RandomSupplyCratePoints": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "DisableWeatherFog": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "ActiveMods": {
+      "type": "string",
+      "default": ""
+    },
+
+    "AdminLogging": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "ClampResourceHarvestDamage": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "ItemStackSizeMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PlatformSaddleBuildAreaBoundsMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "bForceCanRideFliers": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "AllowTekSuitPowersInGenesis": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "EnableCryoSicknessPVE": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "EnableCryopodNerf": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "CryopodNerfDuration": {
+      "type": "int",
+      "default": "10"
+    },
+
+    "CryopodNerfDamageMult": {
+      "type": "float",
+      "default": "0.01"
+    },
+
+    "CryopodNerfIncomingDamageMultPercent": {
+      "type": "float",
+      "default": "0.25"
+    },
+
+    "AllowSharedConnections": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "AllowMultipleTamedUnicorns": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "UnicornSpawnInterval": {
+      "type": "int",
+      "default": "24"
+    },
+
+    "VolcanoIntensity": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "VolcanoInterval": {
+      "type": "int",
+      "default": "0"
+    },
+
+    "EnableVolcano": {
+      "type": "bool",
+      "default": "True"
+    },
+
+    "AlwaysAllowStructurePickup": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "StructurePickupTimeAfterPlacement": {
+      "type": "float",
+      "default": "30.0"
+    },
+
+    "AllowIntegratedSPlusStructures": {
+      "type": "bool",
+      "default": "True"
+    },
+
+    "StructurePickupHoldDuration": {
+      "type": "float",
+      "default": "0.5"
+    }
+  },
+
+
+  "/Script/ShooterGame.ShooterGameUserSettings": {
+    "ignore": true
+  },
+
+
+  "ScalabilityGroups": {
+    "sg.ResolutionQuality": {
+      "type": "int",
+      "default": "100"
+    },
+
+    "sg.ViewDistanceQuality": {
+      "type": "int",
+      "default": "3"
+    },
+
+    "sg.AntiAliasingQuality": {
+      "type": "int",
+      "default": "3"
+    },
+
+    "sg.ShadowQuality": {
+      "type": "int",
+      "default": "3"
+    },
+
+    "sg.PostProcessQuality": {
+      "type": "int",
+      "default": "3"
+    },
+
+    "sg.TextureQuality": {
+      "type": "int",
+      "default": "3"
+    },
+
+    "sg.EffectsQuality": {
+      "type": "int",
+      "default": "3"
+    },
+
+    "sg.TrueSkyQuality": {
+      "type": "int",
+      "default": "3"
+    },
+
+    "sg.GroundClutterQuality": {
+      "type": "int",
+      "default": "3"
+    },
+
+    "sg.IBLQuality": {
+      "type": "int",
+      "default": "1"
+    },
+
+    "sg.HeightFieldShadowQuality": {
+      "type": "int",
+      "default": "3"
+    },
+
+    "sg.GroundClutterRadius": {
+      "type": "int",
+      "default": "10000"
+    }
+  },
+
+
+  "SessionSettings": {
+    "SessionName": {
+      "type": "string",
+      "default": "[ArkAdmin]"
+    }
+  },
+
+
+  "/Script/Engine.GameSession": {
+    "MaxPlayers": {
+      "type": "int",
+      "default": "10"
+    }
+  }
+}

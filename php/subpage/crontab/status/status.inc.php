@@ -56,7 +56,7 @@ for ($i=0;$i<count($dir);$i++) {
             if (!file_exists($statefile)) file_put_contents($statefile, 'TRUE');
             $serv_state = trim(file_get_contents($statefile));
             $log = __ADIR__.'/app/data/shell_resp/log/'.$serv->name().'/last.log';
-            if ($serv_state == 'TRUE' || !timediff($log, ($webserver['config']['ShellIntervall'] / 1000 + 3))) {
+            if ($serv_state == 'TRUE' || timediff($log, ($webserver['config']['ShellIntervall'] / 1000 + 3))) {
                 $server['next'] = 'FALSE';
             }
             else {
