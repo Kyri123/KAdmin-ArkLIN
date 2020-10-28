@@ -1,0 +1,110 @@
+<div class="col-12 mb-4">
+    <div class="card shadow" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+        <div class="tab-content" id="pills-tabContent">
+            <table class="table table-striped mb-0" style="border: 0!important;">
+                <thead>
+                    <tr class="bg-dark">
+                        <th colspan="4" class="p-0" style="border: 0!important;">
+                            <div class="list-group-item bg-dark">
+                                <h4 class="m-0">{::lang::servercenter::banner::pagename}</h4>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <table class="table table-striped mb-0" style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td colspan="2" class="p-0" style="border: 0!important;">
+                        </td>
+                    </tr>
+
+                    <tr class="bg-dark">
+                        <th colspan="2" style="border: 0!important;">
+                            <iframe scrolling="no" src="{url}banner.php?width=300&server={cfg}&key={apikey}&bg=000&a=ccc&txt=fff&border=fff&ip={ip}" style="width: 300px;height: 106px!important;" id="preview" class="border"></iframe>
+                            <input id="previewurl" type="text" name="value[]" class="form-control form-control-sm" value='<iframe scrolling="no" src="{url}banner.php?width=300&server={cfg}&key={apikey}&bg=000&a=ccc&txt=fff&border=fff&ip={ip}" style="width: 300px;height: 106px!important;" id="preview" class="border"></iframe>'>
+                        </th>
+                    </tr>
+
+                    <!-- WIDTH -->
+                    <tr>
+                        <td style="border: 0!important;" class="p-1 pt-2 pl-2">
+                            {::lang::servercenter::banner::opt::width}
+                        </td>
+                        <td style="border: 0!important;" class="p-1">
+                            <input id="opt-width" type="text" name="value[]" class="form-control form-control-sm" value="300" onfocusout="generate_banner()">
+                        </td>
+                    </tr>
+
+                    <!-- bg -->
+                    <tr>
+                        <td style="border: 0!important;" class="p-1 pt-2 pl-2">
+                            {::lang::servercenter::banner::opt::bg}
+                        </td>
+                        <td style="border: 0!important;" class="p-1">
+                            <input id="opt-bg" type="text" name="value[]" class="form-control form-control-sm" value="000" onfocusout="generate_banner()">
+                        </td>
+                    </tr>
+
+                    <!-- a -->
+                    <tr>
+                        <td style="border: 0!important;" class="p-1 pt-2 pl-2">
+                            {::lang::servercenter::banner::opt::a}
+                        </td>
+                        <td style="border: 0!important;" class="p-1">
+                            <input id="opt-a" type="text" name="value[]" class="form-control form-control-sm" value="ccc" onfocusout="generate_banner()">
+                        </td>
+                    </tr>
+
+                    <!-- txt -->
+                    <tr>
+                        <td style="border: 0!important;" class="p-1 pt-2 pl-2">
+                            {::lang::servercenter::banner::opt::txt}
+                        </td>
+                        <td style="border: 0!important;" class="p-1">
+                            <input id="opt-txt" type="text" name="value[]" class="form-control form-control-sm" value="fff" onfocusout="generate_banner()">
+                        </td>
+                    </tr>
+
+                    <!-- border -->
+                    <tr>
+                        <td style="border: 0!important;" class="p-1 pt-2 pl-2">
+                            {::lang::servercenter::banner::opt::border}
+                        </td>
+                        <td style="border: 0!important;" class="p-1">
+                            <input id="opt-border" type="text" name="value[]" class="form-control form-control-sm" value="fff" onfocusout="generate_banner()">
+                        </td>
+                    </tr>
+
+                    <!-- ip -->
+                    <tr>
+                        <td style="border: 0!important;" class="p-1 pt-2 pl-2">
+                            {::lang::servercenter::banner::opt::ip}
+                        </td>
+                        <td style="border: 0!important;" class="p-1">
+                            <input id="opt-ip" type="text" name="value[]" class="form-control form-control-sm" value="{ip}" onfocusout="generate_banner()">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Vars die zur JS übergeben werden
+
+    // Allgemeine Vars
+    var vars        = {};
+    vars.cfg        = '{cfg}';
+    vars.url        = '{url}';
+    vars.apikey     = '{apikey}';
+
+    // Sprache
+    var lang = {};
+
+    // Sprache / Aktionen
+    var actions = {};
+</script>
+<script src="/app/dist/js/arkadmin2/sub_pages/servercenter/banner.js?t={TIMESTAMP}" type="application/javascript"></script>

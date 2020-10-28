@@ -23,14 +23,14 @@
 
     <hr />
 
-    <div class="card border-0 bg-transparent shadow-none" style="border-radius: 0 0 0 0 !important;border-top: 0!important;">
+    <div class="card border-0 bg-transparent shadow-none"  style="border: 0!important;">
         <div class="tab-content" id="pills-tabContent">
 
             <div class="tab-pane fade show active" id="pills-modactive" role="tabpanel" aria-labelledby="pills-modactive-tab">
                 <table class="table table-striped mb-0">
                     <tbody>
                         <tr class="bg-dark">
-                            <th colspan="2" class="p-0">
+                            <th colspan="2" class="p-0" style="border: 0!important;">
                                 <div class="list-group-item bg-dark">
                                     <h4 class="m-0">{::lang::servercenter::mods::nav::active}</h4>
                                     <div class="right">
@@ -60,7 +60,7 @@
                 <table class="table table-striped mb-0">
                     <tbody>
                         <tr class="bg-dark">
-                            <th colspan="2" class="p-0">
+                            <th colspan="2" class="p-0" style="border: 0!important;">
                                 <div class="list-group-item bg-dark">
                                     <h4 class="m-0">{::lang::servercenter::mods::nav::installed}</h4>
                                     <div class="right">
@@ -90,7 +90,7 @@
 </div>
 
 {!ifcmods}{permissions??server??{cfg}??mods??add}
-    <form class="modal fade" id="addmod" tabindex="-1" method="post" action="#" style="display: none;" aria-hidden="true">
+    <form class="modal fade" id="addmod" tabindex="-1" method="post" action="#" style="display: none;">
         <div class="modal-dialog modal-xl" role="document" style="max-width: 700px">
             <div class="modal-content">
                 <div class="modal-header bg-dark">

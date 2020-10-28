@@ -278,11 +278,13 @@ $tpl->rif ('ifslave', $ifslave);
 $tpl->rif ('modsupport', $serv->mod_support());
 $tpl->r("typestr", ($serv->cluster_in()) ? $clustertype[$serv->cluster_type()] : null);
 
+
 //teste state
 $onlinestate = false;
 if ($serv->statecode() == 2) $onlinestate = true;
 $tpl->rif ("ifonline", $onlinestate);
 $tpl->rif ('expert', $user->expert());
+$tpl->rif ('API_ACTIVE', $API_ACTIVE);
 $tpl->r('joinurl', $connect);
 // lade in TPL
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";

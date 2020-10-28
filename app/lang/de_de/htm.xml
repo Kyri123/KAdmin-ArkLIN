@@ -448,6 +448,7 @@
                 <saves>Savegames</saves>
                 <files>Simple Filebrowser</files>
                 <statistiken>Statistiken</statistiken>
+                <banner>Serverbanner</banner>
             </nav>
 
             <modal>
@@ -470,6 +471,19 @@
                 </player_list>
             </modal>
         </main>
+
+        <banner>
+            <pagename>Serverbanner</pagename>
+
+            <opt>
+                <width>Breite (in px)</width>
+                <bg>Hintergrundfarbe (hex)</bg>
+                <a>Linkfarbe (hex)</a>
+                <txt>Textfarbe (hex)</txt>
+                <border>Randfarbe (hex)</border>
+                <ip>IP-Adresse die verwendet werden soll</ip>
+            </opt>
+        </banner>
 
         <list>
             <home>

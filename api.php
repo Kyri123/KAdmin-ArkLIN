@@ -8,6 +8,8 @@
  * *******************************************************************************************
 */
 
+define("__ADIR__", __DIR__);
+
 // hide errors
 $stime = microtime(true);
 include(__ADIR__.'/php/inc/config.inc.php');

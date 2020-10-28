@@ -55,6 +55,12 @@ $PAGE_EXP       = $REQUEST_URI != "" ? explode("/", $REQUEST_URI) : array();
 
 $page           = isset($PAGE_EXP[0]) ? $PAGE_EXP[0] : "home";
 
+// API
+$API_path           = __ADIR__."/php/inc/api.json";
+$API_array          = $helper->file_to_json($API_path);
+$API_ACTIVE         = boolval($API_array["active"]);
+$API_KEY            = $API_array["key"];
+
 // read URL
 $surl           = $_SERVER["REQUEST_URI"];
 $url            = $PAGE_EXP;
@@ -230,6 +236,7 @@ $path_webhelper = __ADIR__."/app/check/webhelper";
 $tpl_b->r('pagename', $pagename);
 $tpl_b->r('pageicon', $pageicon);
 $tpl_h->r('pagename', $pagename);
+$tpl_h->rif('darkmode', isset($_COOKIE["style"]) ? $_COOKIE["style"] == "dark" : false);
 $tpl_b->r('aa_version', $version);
 $tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path_webhelper)) ? intval(file_get_contents($path_webhelper)) : time()), true));
 $tpl_b->r('user', $user->read("username"));
