@@ -63,7 +63,7 @@ $player_json = $helper->file_to_json(__ADIR__.'/app/json/saves/player_' . $serv-
 $arr_player = array();
 if (is_array($player_json)) {
     for ($i = 0; $i < count($player_json); $i++) {
-        $arr_player[] = $player_json[$i]->SteamId;
+        if(isset($player_json[$i]->SteamId)) $arr_player[] = $player_json[$i]->SteamId;
     }
 }
 

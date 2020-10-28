@@ -13,6 +13,7 @@ if (!$user->perm("$perm/konfig/show")) {
     header("Location: /401");
     exit;
 }
+$resp = null;
 
 $pagename = '{::lang::php::sc::page::konfig::pagename}';
 $page_tpl = new Template('konfig.htm', __ADIR__.'/app/template/sub/serv/');
@@ -56,11 +57,11 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
     // Prüfe ob Datei beschrieben wurde
     if (file_put_contents($path, $cfg)) {
         // Melde: Erfolg
-        $resp = $alert->rd(102);
+        $resp .= $alert->rd(102);
         //header("Refresh:0"); exit;
     } else {
         // Melde Lese/Schreib Fehler
-        $resp = $alert->rd(1);
+        $resp .= $alert->rd(1);
     }
 }
 else {
@@ -70,7 +71,6 @@ else {
 }
 
 // GameUserSettings/Game/Engine.ini Speichern (Normaler Modus)
-$resp = null;
 if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
 
     $INI_ARRAY      = $_POST["ini"];

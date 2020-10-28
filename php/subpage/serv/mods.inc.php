@@ -76,9 +76,6 @@ if (isset($_POST['addmod']) && $user->perm("$perm/mods/add")) {
                             // Speicher Mods
                             $serv->cfg_write('ark_GameModIds', $save_data);
                             $serv->cfg_save();
-                            // Leite dich wieder zur Startseite
-                            header('Location: '.$urls);
-                            exit;
                         }
                         else {
                             // Melde: Mod Exsistiert
