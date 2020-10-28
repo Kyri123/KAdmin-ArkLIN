@@ -173,13 +173,13 @@ foreach ($dir_array as $key => $value) {
         $rndb = "modal".$y.$i;
         $list2tpl->r("rndb", $rndb);
 
-        $durl = $serv->dir_backup()."/".$key."/".$dir_array[$key][$i];
+        $durl = str_replace(__ADIR__, null, $serv->dir_backup())."/".$key."/".$dir_array[$key][$i];
 
         $list2tpl->r("i", $i);
         $list2tpl->r("key", $key);
         $list2tpl->r("durl", $durl);
         $list2tpl->r("title", $dir_array[$key][$i]);
-        $list2tpl->r("filesize", bitrechner(filesize($durl)));
+        $list2tpl->r("filesize", bitrechner(filesize($serv->dir_backup()."/".$key."/".$dir_array[$key][$i])));
 
         $list2 .= $list2tpl->load_var();
     }
