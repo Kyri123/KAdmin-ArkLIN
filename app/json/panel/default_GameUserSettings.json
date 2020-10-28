@@ -1,5 +1,4 @@
 {
-  // ServerSettings
   "ServerSettings": {
     "MaxTributeDinos": {
       "type": "int",
