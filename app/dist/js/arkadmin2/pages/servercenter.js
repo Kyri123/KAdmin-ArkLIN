@@ -105,7 +105,7 @@ $("#action_form").submit(() => {
                     $('#action').modal('hide');
 
                     // resette alles auf Standart
-                    $.getJSON(`${varser.ROOT}/app/json/panel/parameter.json?t=${DATE.now()}`, function(data) {
+                    $.getJSON(`${varser.ROOT}/app/json/panel/parameter.json?t=${Date.now()}`, function(data) {
                         $.each(data, (i, item) => {
                             if (item.type == 0) $(item.id_js).prop('checked', false);
                             if (item.type == 1) $(item.id_js).val('');
@@ -127,7 +127,7 @@ $("#action_form").submit(() => {
 
 $('#action_sel').change(() => {
     var action = $("#action_sel").val();
-    $.getJSON(`${varser.ROOT}/app/json/panel/parameter.json?t=${DATE.now()}`, function(data) {
+    $.getJSON(`${varser.ROOT}/app/json/panel/parameter.json?t=${Date.now()}`, function(data) {
         $.each(data, (i, item) => {
             if (item.type == 0) $(item.id_js).prop('checked', false);
             if (item.type == 1) $(item.id_js).val('');
