@@ -330,6 +330,7 @@ function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
         "ServerSettings",
         "SessionSettings",
         "/Script/Engine.GameSession",
+        "MessageOfTheDay",
         "/Game/PrimalEarth/CoreBlueprints/TestGameMode.TestGameMode_C",
         "/script/shootergame.shootergamemode",
         "/script/onlinesubsystemutils.ipnetdriver",

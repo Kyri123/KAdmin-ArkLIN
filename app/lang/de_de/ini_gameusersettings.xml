@@ -68,10 +68,9 @@
         <DinoCountMultiplier>Multiplikator für die Anzahl der Kraturen auf der Karte die gleichzeitig erscheinen können (dies hat bei hohem Multiplikator deutliche auswirkung auf die Performance)</DinoCountMultiplier>
         <BanListURL>URL zu einer Banliste (Standart ist die Offizelle Bannliste [b]http://arkdedicated.com/banlist.txt[/b])</BanListURL>
         <PvPStructureDecay>Wenn [b]Aktiv[/b] deaktiviert den Strukturverfall auf PvP-Servern.</PvPStructureDecay>
-        <lol></lol>
-        <lol></lol>
-        <lol></lol>
-        <lol></lol>
+        <Message>Text für MotD die beim Betreten des Server oben angezeigt wird</Message>
+        <SessionName>Name des Servers der in der Serverliste angezeigt wird</SessionName>
+        <bServerGameLogEnabled>Aktiviert den Gamelog (Dies sollte Aktiv bleiben)</bServerGameLogEnabled>
         <lol></lol>
         <lol></lol>
         <lol></lol>

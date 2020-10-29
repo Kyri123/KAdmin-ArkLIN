@@ -468,6 +468,16 @@
     "AllowHitMarkers": {
       "type": "bool",
       "default": "True"
+    },
+
+    "ServerCrosshair": {
+      "type": "bool",
+      "default": "True"
+    },
+
+    "StructurePickupHoldDuration": {
+      "type": "float",
+      "default": "0.500000"
     }
   },
 
@@ -476,6 +486,14 @@
     "SessionName": {
       "type": "string",
       "default": "[ArkAdmin]"
+    }
+  },
+
+
+  "MessageOfTheDay": {
+    "Message": {
+      "type": "string",
+      "default": "Dieser Server wird mit ArkAdmin2 gesteuert (https://github.com/Kyri123/Arkadmin)"
     }
   },
 
