@@ -478,6 +478,11 @@
     "StructurePickupHoldDuration": {
       "type": "float",
       "default": "0.500000"
+    },
+
+    "ShowFloatingDamageText": {
+      "type": "bool",
+      "default": "False"
     }
   },
 

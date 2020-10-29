@@ -84,7 +84,7 @@ if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode
     ) {
         $INI_STRING = null;
         $FIRST = false;
-        foreach ($this->ini_get() as $key => $item){
+        foreach ($INI_ARRAY as $key => $item){
             $INI_STRING .= !$FIRST ? "[$key]\n" : "\n[$key]\n" ;
             $FIRST = true;
             foreach ($item as $KEY => $ITEM){
