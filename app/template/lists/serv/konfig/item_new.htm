@@ -1,21 +1,21 @@
 <tr {hidden}style="display: none"{/hidden}>
-    <td class="p-2">{opt}</td>
+    <td class="p-2"><div class="mt-1">{opt}</div></td>
     <td class="p-2">
         {string}
         <div class="input-group mb-0">
-            <input type="text" name="{name}" class="form-control form-control-sm" value='{value}'>
+            <input type="text" name="{name}" class="form-control form-control-sm" value='{value}' {ro}readonly{/ro}>
         </div>
         {/string}
 
         {int}
             <div class="input-group mb-0">
-                <input type="number" name="{name}" class="form-control form-control-sm" value='{value}'>
+                <input type="number" name="{name}" class="form-control form-control-sm" value='{value}' {ro}readonly{/ro}>
             </div>
         {/int}
 
         {bool}
             <div class="input-group mb-0">
-                <select class="custom-select custom-select-sm my-1 mr-sm-2" id="inlineFormCustomSelectPref" name="{name}">
+                <select class="custom-select custom-select-sm" id="inlineFormCustomSelectPref" name="{name}">
                     <option value="True" {True}>{::lang::config::opt::true}</option>
                     <option value="False" {False}>{::lang::config::opt::false}</option>
                 </select>
@@ -24,8 +24,8 @@
 
         {float}
             <div class="input-group mb-0">
-                <input type="range" class="custom-range mb-1" value='{value}' oninput="$('#{opt}').val(this.value)" id="ranger{opt}" step="0.0001" min="0" max="{max}">
-                <input type="number" name="{name}" class="form-control form-control-sm" value='{value}' id="{opt}" oninput="$('#ranger{opt}').val(this.value)">
+                {!ro}<input type="range" class="custom-range mb-1" value='{value}' oninput="$('#{opt}').val(this.value)" id="ranger{opt}" step="0.000001" min="0" max="{max}">{/!ro}
+                <input type="number" name="{name}" class="form-control form-control-sm" value='{value}' id="{opt}" oninput="$('#ranger{opt}').val(this.value)" step="0.000001" {ro}readonly{/ro}>
             </div>
         {/float}
     </td>

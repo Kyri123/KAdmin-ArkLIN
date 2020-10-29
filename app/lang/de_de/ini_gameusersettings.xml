@@ -1,0 +1,16 @@
+<lang>
+    <!--
+    ++++++++++++++++++++++++++++++++++++++++++++
+    @author:  Oliver Kaufmann (Kyri123)
+    @copyright Copyright (c) 2019-2020, Oliver Kaufmann
+    @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
+    Github: https://github.com/Kyri123/Arkadmin
+    ++++++++++++++++++++++++++++++++++++++++++++
+    c_X Types:
+    0-99 = Danger
+    100-199 = Success
+    200-299 = Warning
+    >300 = Info
+    ++++++++++++++++++++++++++++++++++++++++++++
+    -->
+</lang>

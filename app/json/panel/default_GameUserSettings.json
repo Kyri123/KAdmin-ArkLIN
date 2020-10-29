@@ -257,7 +257,7 @@
 
     "BanListURL": {
       "type": "string",
-      "default": "http://arkdedicated.com/banlist.txt"
+      "default": "http:\/\/arkdedicated.com\/banlist.txt"
     },
 
     "PvPStructureDecay": {

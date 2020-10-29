@@ -299,12 +299,12 @@ if ($serv->isinstalled()) {
                 // map Select
                 if($key == "serverMap") {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="setmap()" id="mapsel">
-                        <option value="">{::lang::allg::default::select}</option>';
+                        <option value="" '.(!$user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
 
                     $mapjson = $helper->file_to_json(__ADIR__."/app/json/panel/maps.json");
                     foreach ($mapjson as $map => $infos) {
                         if(($infos["mod"] == 1 && $serv->mod_support()) || $infos["mod"] == 0)
-                            $add .= '<option id="'.$map.'" value="'.$map.'" data-mod="'.$infos["mod"].'" data-modid="'.$infos["modid"].'" '.($map == $val ? "selected" : null).'>
+                            $add .= '<option id="'.$map.'" value="'.$map.'" data-mod="'.$infos["mod"].'" data-modid="'.$infos["modid"].'" '.($map == $val ? "selected" : null).' '.($map == $val ? "" : (!$user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
                                 '.($infos["mod"] == 1 ? "[MOD] " : null).$infos["name"].'
                             </option>';
                     }
@@ -315,12 +315,12 @@ if ($serv->isinstalled()) {
                 // Totalmod Select
                 if($key == "ark_TotalConversionMod") {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="settmod()" id="tmodsel">
-                        <option value="">{::lang::allg::default::select}</option>';
+                        <option value="" '.(!$user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
 
                     $tmodjson = $helper->file_to_json(__ADIR__."/app/json/panel/tmods.json");
                     foreach ($tmodjson as $tmod => $infos) {
                         if(($infos["offi"] == 0 && $serv->mod_support()) || $infos["offi"] == 1)
-                            $add .= '<option value="'.$infos["modid"].'" '.($infos["modid"] == $val ? "selected" : null).'>
+                            $add .= '<option value="'.$infos["modid"].'" '.($infos["modid"] == $val ? "selected" : null).' '.($infos["modid"] == $val ? "" : (!$user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
                                 '.($infos["offi"] == 0 ? "[MOD] " : null).$tmod.'
                             </option>';
                     }
@@ -332,14 +332,14 @@ if ($serv->isinstalled()) {
                 // wenn nicht im array
                 '<div class="input-group mb-0">
                     <input type="hidden" name="key[]" readonly value="'.$key.'">
-                    <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'">
+                    <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'" '.(!$user->perm("$perm/konfig/arkmanager") ? "readonly" : null).'>
                     <div class="input-group-append">
-                    <span onclick="remove(\''.md5($key).'\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    <span '.(!$user->perm("$perm/konfig/arkmanager") ? null : "'onclick=\"remove(\''.md5($key).'\')\"").' style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1 '.(!$user->perm("$perm/konfig/arkmanager") ? "disabled" : null).'" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>
                     </div>
                 </div>' :
                 //sonst
                 '<div class="input-group mb-0"><input type="hidden" name="key[]" readonly value="'.$key.'">
-                <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'">'.$add.'</div>';
+                <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'" '.(!$user->perm("$perm/konfig/arkmanager") ? "readonly" : null).'>'.$add.'</div>';
 
                 $form .= '
                     <tr class="'.(($serv->cluster_in() && in_array($key, $hide_cluster)) ? "d-none" : null).'" id="'.md5($key).'">
@@ -360,7 +360,7 @@ foreach($flags_json as $k => $v) {
     $sel = (in_array("arkflag_$v", $flags)) ? 'checked="true"' : null;
     if($i == 0) $ark_flag .= '<div class="row">';
     $ark_flag .= '  <div class="icheck-primary mb-3 col-lg-6 col-12">
-                        <input type="checkbox" name="flag[]" value="' . $v . '" id="' . md5($v) . '" ' . $sel . '>
+                        <input type="checkbox" name="flag[]" value="' . $v . '" id="' . md5($v) . '" ' . $sel . ' '.(!$user->perm("$perm/konfig/arkmanager") ? "disabled" : null).'>
                         <label for="' . md5($v) . '">
                             ' . $v . '
                         </label>
@@ -386,7 +386,7 @@ foreach ($CFGs as $CFG) {
     $RAW_DEFAULT     = $helper->file_to_json(__ADIR__."/app/json/panel/default_$CFG.json");
     $CONV_DEFAULT    = convert_ini($RAW_DEFAULT);
     $FINAL_INI       = array_replace_recursive($CONV_DEFAULT, $CURR);
-    $Former_arr      = create_ini_form($FINAL_INI, $CFG, $RAW_DEFAULT);
+    $Former_arr      = create_ini_form($FINAL_INI, $CFG, $RAW_DEFAULT, $serv->name());
     $re[$CFG]        = $Former_arr["form"];
     $re["$CFG-rest"] = $Former_arr["rest"];
 }

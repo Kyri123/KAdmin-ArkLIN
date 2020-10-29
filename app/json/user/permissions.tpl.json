@@ -1,47 +1,47 @@
 {
     "all": {
-        "is_admin": 0,
-        "manage_aas": 0,
-        "show_traffic": 1,
-        "api": 0
+        "is_admin"          : 0,
+        "manage_aas"        : 0,
+        "show_traffic"      : 1,
+        "api"               : 0
     },
     "servercontrollcenter": {
-        "show": 1,
-        "create": 0,
-        "delete": 0
+        "show"              : 1,
+        "create"            : 0,
+        "delete"            : 0
     },
     "userpanel": {
-        "show": 1,
-        "show_codes": 0,
-        "create_code": 0,
-        "delete_code": 0,
-        "delete_user": 0,
-        "ban_user": 0
+        "show"              : 1,
+        "show_codes"        : 0,
+        "create_code"       : 0,
+        "delete_code"       : 0,
+        "delete_user"       : 0,
+        "ban_user"          : 0
     },
     "cluster": {
-        "show": 1,
-        "create": 0,
-        "toogle_master": 0,
-        "remove_server": 0,
-        "add_server": 0,
-        "edit": 0,
-        "delete": 0
+        "show"              : 1,
+        "create"            : 0,
+        "toogle_master"     : 0,
+        "remove_server"     : 0,
+        "add_server"        : 0,
+        "edit"              : 0,
+        "delete"            : 0
     },
     "config": {
-        "show": 1,
-        "panel_save": 0,
-        "aa_show": 0,
-        "aa_save": 0,
-        "am_show": 1,
-        "am_save": 0,
-        "scmd_show": 1,
-        "scmd_save": 0,
-        "scmd_clear": 0,
-        "show_default": 0,
-        "edit_default": 0
+        "show"              : 1,
+        "panel_save"        : 0,
+        "aa_show"           : 0,
+        "aa_save"           : 0,
+        "am_show"           : 1,
+        "am_save"           : 0,
+        "scmd_show"         : 1,
+        "scmd_save"         : 0,
+        "scmd_clear"        : 0,
+        "show_default"      : 0,
+        "edit_default"      : 0
     },
     "usersettings": {
-        "expert": 1
+        "expert"            : 1
     },
-    "server": {}
+    "server":               {}
 }

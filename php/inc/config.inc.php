@@ -53,7 +53,10 @@ $clustertype = array(
 
 $ignore_perm = array(
     "force_update",
-    "force_restart"
+    "force_restart",
+    "gus",
+    "game",
+    "engine"
 );
 
 $head_img = array(
