@@ -83,8 +83,10 @@ if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode
         ($TYPE == "Engine.ini"              && $user->perm("$perm/konfig/engine"))
     ) {
         $INI_STRING = null;
-        foreach ($INI_ARRAY as $key => $item){
-            $INI_STRING .= "\n[$key]\n";
+        $FIRST = false;
+        foreach ($this->ini_get() as $key => $item){
+            $INI_STRING .= !$FIRST ? "[$key]\n" : "\n[$key]\n" ;
+            $FIRST = true;
             foreach ($item as $KEY => $ITEM){
                 if(is_array($ITEM)) {
                     foreach ($ITEM as $KEY2 => $ITEM2){
@@ -382,7 +384,8 @@ $CFGs = array(
 );
 
 foreach ($CFGs as $CFG) {
-    $CURR            = $CFG == "Game" ? $game_nexp : ($CFG == "GameUserSettings" ? $gus_nexp : $engine_nexp);
+    $CURR            = $serv->ini_load("$CFG.ini", true);
+    $CURR            = $serv->ini_get();
     $RAW_DEFAULT     = $helper->file_to_json(__ADIR__."/app/json/panel/default_$CFG.json");
     $CONV_DEFAULT    = convert_ini($RAW_DEFAULT);
     $FINAL_INI       = array_replace_recursive($CONV_DEFAULT, $CURR);

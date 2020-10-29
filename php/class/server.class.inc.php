@@ -363,8 +363,16 @@ class server extends Rcon {
 
         $path = $this->dir_main();
         $dir = $path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini;
+        $ini_str = file_exists($dir) ? file_get_contents($dir) : "";
+
+        if(!preg_match('//u', $ini_str) && $ini == "Game.ini") $ini_str = mb_convert_encoding($ini_str,'UTF-8', 'UCS-2LE');
+
+        $ini_str = str_replace(" ", null, $ini_str);
+        file_put_contents($path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini, $ini_str);
+        $ini_str = file_exists($dir) ? file_get_contents($dir) : "";
+
         if (file_exists($dir) && fileperms($dir)) {
-            $this->ini = parse_ini_file($dir, $group, INI_SCANNER_RAW);
+            $this->ini = parse_ini_string($ini_str, $group, INI_SCANNER_RAW);
             $this->inipath = $dir;
             return TRUE;
         } else {
@@ -378,7 +386,25 @@ class server extends Rcon {
      * @return false|string
      */
     public function ini_get_str() {
-        return file_get_contents($this->inipath);
+        $INI_STRING = null;
+        $FIRST = false;
+        foreach ($this->ini_get() as $key => $item){
+            $INI_STRING .= !$FIRST ? "[$key]\n" : "\n[$key]\n" ;
+            $FIRST = true;
+            foreach ($item as $KEY => $ITEM){
+                if(is_array($ITEM)) {
+                    foreach ($ITEM as $KEY2 => $ITEM2){
+                        if(!is_array($ITEM2)) {
+                            $INI_STRING .= $KEY."[$KEY2]=$ITEM2\n";
+                        }
+                    }
+                }
+                else {
+                    $INI_STRING .= "$KEY=".(is_bool($ITEM) ? ($ITEM ? "True" : "False") : $ITEM)."\n";
+                }
+            }
+        }
+        return $INI_STRING;
     }
 
     /**

@@ -52,8 +52,8 @@
                 </li>{/permissions}
             </ul>
             <div class="ribbon-wrapper">
-                <div class="ribbon bg-success">
-                    Beta
+                <div class="ribbon bg-info">
+                    Alpha
                 </div>
             </div>
         </div>
@@ -82,9 +82,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="3">
-                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>
-                                                        {form_GUS_rest}
-                                                    </textarea>
+                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>{form_GUS_rest}</textarea>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -109,9 +107,7 @@
                                         </th>
                                     </tr>
                                 </table>
-                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_gus" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>
-                                    {gus}
-                                </textarea>
+                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_gus" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>{gus}</textarea>
                                 <input type="hidden" name="type" id="type_gus" value="GameUserSettings.ini">
                                 <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
                                 {permissions??server??{cfg}??konfig??gameusersettings}<button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>{/permissions}
@@ -136,9 +132,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="3">
-                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>
-                                                        {form_GAME_rest}
-                                                    </textarea>
+                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>{form_GAME_rest}</textarea>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -163,9 +157,7 @@
                                         </th>
                                     </tr>
                                 </table>
-                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 5700px;" id="text_game" {!permissions??server??{cfg}??konfig??game}readonly{/!permissions}>
-                                    {game}
-                                </textarea>
+                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 5700px;" id="text_game" {!permissions??server??{cfg}??konfig??game}readonly{/!permissions}>{game}</textarea>
                                 <input type="hidden" name="type" id="type_game" value="Game.ini">
                                 <input type="hidden" name="cfg" id="cfg_game" value="{cfg}">
                                 {permissions??server??{cfg}??konfig??game}<button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>{/permissions}
@@ -190,9 +182,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="3">
-                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??engine}readonly{/!permissions}>
-                                                        {form_ENGINE_rest}
-                                                    </textarea>
+                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??engine}readonly{/!permissions}>{form_ENGINE_rest}</textarea>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -218,9 +208,7 @@
                                         </th>
                                     </tr>
                                 </table>
-                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_engine" {!permissions??server??{cfg}??konfig??engine}readonly{/!permissions}>
-                                    {engine}
-                                </textarea>
+                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_engine" {!permissions??server??{cfg}??konfig??engine}readonly{/!permissions}>{engine}</textarea>
                                 <input type="hidden" name="type" id="type_engine" value="Engine.ini">
                                 <input type="hidden" name="cfg" id="cfg_engine" value="{cfg}">
                                 {permissions??server??{cfg}??konfig??engine}<button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>{/permissions}
@@ -285,9 +273,7 @@
                         </tr>
                     </table>
                     <form action="#save" method="post">
-                        <textarea name="txtarea" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" {!permissions??server??{cfg}??konfig??arkmanager}readonly{/!permissions}>
-                            {amcfg}
-                        </textarea>
+                        <textarea name="txtarea" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" {!permissions??server??{cfg}??konfig??arkmanager}readonly{/!permissions}>{amcfg}</textarea>
                         {permissions??server??{cfg}??konfig??arkmanager}<button type="submit" class="btn btn-primary" name="savecfg_expert" style="width: 100%">{::lang::servercenter::config::btn_save}</button>{/permissions}
                     </form>
                 </div>
