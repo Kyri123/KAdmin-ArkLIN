@@ -18,7 +18,8 @@
 
         {int}
             <div class="input-group mb-0">
-                <input type="number" name="{name}" class="form-control form-control-sm" value='{value}' {ro}readonly{/ro}>
+                {!ro}<input type="range" class="custom-range mb-1" value='{value}' oninput="$('#{opt}').val(this.value)" id="ranger{opt}" step="1" min="0" max="{max}">{/!ro}
+                <input type="number" name="{name}" class="form-control form-control-sm" value='{value}' id="{opt}" oninput="$('#ranger{opt}').val(this.value)" step="1" {ro}readonly{/ro}>
             </div>
         {/int}
 
