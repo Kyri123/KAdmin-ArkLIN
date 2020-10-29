@@ -13,4 +13,10 @@
     >300 = Info
     ++++++++++++++++++++++++++++++++++++++++++++
     -->
+    <GameUserSettings>
+        <RCONEnabled>Ist RCON Aktiv [b](dies wird durch die Arkmanager.cfg gesteuert)[/b]</RCONEnabled>
+        <RCONPort>Port der für den RCON benutzt werden soll [b](dies wird durch die Arkmanager.cfg gesteuert)[/b]</RCONPort>
+        <MaxTributeDinos>Anzahl der [b]Dinos[/b] die in den/das Obelisken/Termial geladen werden können</MaxTributeDinos>
+        <MaxTributeItems>Anzahl der [b]Items[/b] die in den/das Obelisken/Termial geladen werden können</MaxTributeItems>
+    </GameUserSettings>
 </lang>

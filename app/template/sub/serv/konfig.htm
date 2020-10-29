@@ -51,6 +51,11 @@
                     </div>
                 </li>{/permissions}
             </ul>
+            <div class="ribbon-wrapper">
+                <div class="ribbon bg-success">
+                    Beta
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -69,14 +74,14 @@
                                         <tbody>
                                             {form_GUS}
                                             <tr class="bg-dark">
-                                                <th colspan="2" class="p-0">
+                                                <th colspan="3" class="p-0">
                                                     <div class="list-group-item bg-dark">
                                                         <h4 class="m-0">{::lang::servercenter::config::custom}</h4>
                                                     </div>
                                                 </th>
                                             </tr>
                                             <tr>
-                                                <td colspan="2">
+                                                <td colspan="3">
                                                     <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>
                                                         {form_GUS_rest}
                                                     </textarea>
@@ -123,14 +128,14 @@
                                         <tbody>
                                             {form_GAME}
                                             <tr class="bg-dark">
-                                                <th colspan="2" class="p-0">
+                                                <th colspan="3" class="p-0">
                                                     <div class="list-group-item bg-dark">
                                                         <h4 class="m-0">{::lang::servercenter::config::custom}</h4>
                                                     </div>
                                                 </th>
                                             </tr>
                                             <tr>
-                                                <td colspan="2">
+                                                <td colspan="3">
                                                     <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>
                                                         {form_GAME_rest}
                                                     </textarea>
@@ -177,14 +182,14 @@
                                         <tbody>
                                             {form_ENGINE}
                                             <tr class="bg-dark">
-                                                <th colspan="2" class="p-0">
+                                                <th colspan="3" class="p-0">
                                                     <div class="list-group-item bg-dark">
                                                         <h4 class="m-0">{::lang::servercenter::config::custom}</h4>
                                                     </div>
                                                 </th>
                                             </tr>
                                             <tr>
-                                                <td colspan="2">
+                                                <td colspan="3">
                                                     <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??engine}readonly{/!permissions}>
                                                         {form_ENGINE_rest}
                                                     </textarea>
@@ -287,6 +292,36 @@
                     </form>
                 </div>
             {/permissions}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="einsenden" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{::lang::servercenter::config::sendin_title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="ini_opt" class="col-form-label">{::lang::servercenter::config::opt}:</label>
+                        <input type="text" class="form-control" id="ini_opt" readonly>
+                        <input type="hidden" class="form-control" id="ini_send" value="{ini}">
+                    </div>
+                    <div class="form-group">
+                        <label for="ini_txt" class="col-form-label">{::lang::servercenter::config::txt}:</label>
+                        <textarea name="" class="form-control" id="ini_txt"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::config::close}</button>
+                <button type="button" class="btn btn-primary" onclick="sendtoserver()">{::lang::servercenter::config::sendin}</button>
+            </div>
         </div>
     </div>
 </div>

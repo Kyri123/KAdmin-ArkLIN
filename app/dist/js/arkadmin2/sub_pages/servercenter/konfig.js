@@ -72,3 +72,46 @@ function additem(id, section) {
         $("#" + id).after(re);
     });
 }
+
+$('#einsenden').on('show.bs.modal', function (event) {
+    let button = $(event.relatedTarget);
+    let ini_opt = button.data('ini_opt');
+    let ini_txt = button.data('ini_txt');
+    ini_txt = ini_txt.replace("<b>", "[b]");
+    ini_txt = ini_txt.replace("</b>", "[/b]");
+    $('#ini_opt').val(ini_opt);
+    $('#ini_txt').val(ini_txt);
+});
+
+function sendtoserver() {
+    let opt = {
+        "ini_opt": $('#ini_opt').val(),
+        "ini_txt": $('#ini_txt').val(),
+        "ini_send": $('#ini_send').val()
+    };
+    $.ajax({
+        url: 'https://data.chiraya.de/sendin.php',
+        data: opt,
+        type: 'POST',
+        crossDomain: true,
+        dataType: 'jsonp',
+        success: function() {
+            let alert_data = {
+                code: 112,
+            };
+            $.get(`${vars.ROOT}/php/async/get/all.alert.async.php`, alert_data, (alert) => {
+                $("#all_resp").html(alert);
+            });
+            $('#einsenden').modal('hide');
+        },
+        error: function() {
+            let alert_data = {
+                code: 38,
+            };
+            $.get(`${vars.ROOT}/php/async/get/all.alert.async.php`, alert_data, (alert) => {
+                $("#all_resp").html(alert);
+            });
+            $('#einsenden').modal('hide');
+        },
+    });
+}

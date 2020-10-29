@@ -240,6 +240,12 @@
             <text>Es kann kein Weiterer Server erstellt werden die maximal Anzahl ist [b]{max_server}[/b]</text>
         </c_37>
 
+        <!-- DANGER | Maximale Server Anzahl -->
+        <c_38>
+            <title>Server nicht Erreichbar</title>
+            <text>Deine eingegeben Daten wurden nicht an den Entwickler gesendet</text>
+        </c_38>
+
         <!-- DANGER | Fehlende Rechte -->
         <c_99>
             <title>Fehlende Rechte</title>
@@ -326,6 +332,12 @@
             <title>Erfolgreich Gesendet!</title>
             <text>Kommando wurde an den Server gesendet (Die Ausführung kann jenach eingestellen Inverall kurz dauern)</text>
         </c_111>
+
+        <!-- DANGER | Maximale Server Anzahl -->
+        <c_112>
+            <title>Eingesendet</title>
+            <text>Deine eingegeben Daten wurden an den Entwickler gesendet</text>
+        </c_112>
 
 
         <!-- Warning -->

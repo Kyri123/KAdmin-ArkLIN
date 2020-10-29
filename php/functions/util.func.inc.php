@@ -345,7 +345,7 @@ function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
         $ITEMS = null;
 
         if(in_array($key, $former_use)) {
-            $tpl_sec = new Template("section_new.htm", __ADIR__."/app/template/lists/serv/konfig/");
+            $tpl_sec = new Template("section.htm", __ADIR__."/app/template/lists/serv/konfig/");
             $tpl_sec->load();
         }
         else {
@@ -355,7 +355,7 @@ function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
         foreach ($item as $KEY => $ITEM) {
             if(!is_array($ITEM)) {
                 if(in_array($key, $former_use) && ($INI != "Game" || isset($DEFAULT[$key][$KEY]))) {
-                    $tpl_i1 = new Template("item_new.htm", __ADIR__."/app/template/lists/serv/konfig/");
+                    $tpl_i1 = new Template("item.htm", __ADIR__."/app/template/lists/serv/konfig/");
                     $tpl_i1->load();
 
                     $TYPE = isset($DEFAULT[$key][$KEY]) ? $DEFAULT[$key][$KEY]["type"] : "string";
@@ -384,7 +384,7 @@ function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
             } elseif(in_array($KEY, $INARR)) {
                 foreach ($ITEM as $KEY2 => $ITEM2) {
                     if(in_array($key, $former_use)) {
-                        $tpl_i1 = new Template("item_new.htm", __ADIR__."/app/template/lists/serv/konfig/");
+                        $tpl_i1 = new Template("item.htm", __ADIR__."/app/template/lists/serv/konfig/");
                         $tpl_i1->load();
 
                         $TYPE = isset($DEFAULT[$key][$KEY][$KEY2]) ? $DEFAULT[$key][$KEY][$KEY2]["type"] : "string";

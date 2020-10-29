@@ -105,6 +105,11 @@
       "default": "0.2"
     },
 
+    "OverrideOfficialDifficulty": {
+      "type": "float",
+      "default": "1.0"
+    },
+
     "ServerPassword": {
       "type": "string",
       "default": ""

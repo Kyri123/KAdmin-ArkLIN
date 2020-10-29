@@ -690,6 +690,12 @@
         </jobs>
 
         <config>
+            <sendinbtn>Beschreibung einsenden</sendinbtn>
+            <opt>Option</opt>
+            <txt>Beschreibung</txt>
+            <sendin_title>Beschreibung einsenden</sendin_title>
+            <close>Schließen</close>
+            <sendin>Einsenden</sendin>
             <btn_save>Speichern</btn_save>
             <th_config>Option</th_config>
             <th_input>Input</th_input>
