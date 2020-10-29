@@ -18,5 +18,7 @@
         <RCONPort>Port der für den RCON benutzt werden soll [b](dies wird durch die Arkmanager.cfg gesteuert)[/b]</RCONPort>
         <MaxTributeDinos>Anzahl der [b]Dinos[/b] die in den/das Obelisken/Termial geladen werden können</MaxTributeDinos>
         <MaxTributeItems>Anzahl der [b]Items[/b] die in den/das Obelisken/Termial geladen werden können</MaxTributeItems>
+        <alwaysNotifyPlayerJoined>Aktiviert die Meldung wenn ein Spieler Online kommt</alwaysNotifyPlayerJoined>
+        <alwaysNotifyPlayerLeft>Aktiviert die Meldung wenn ein Spieler Offline geht</alwaysNotifyPlayerLeft>
     </GameUserSettings>
 </lang>

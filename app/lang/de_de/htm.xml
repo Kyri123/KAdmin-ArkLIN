@@ -695,6 +695,8 @@
             <txt>Beschreibung</txt>
             <sendin_title>Beschreibung einsenden</sendin_title>
             <close>Schließen</close>
+            <nocom>Noch keine Beschreibung vorhanden
+                (Es kann eine Beschreibung über "Beschreibung einsenden" an den Entwickler gesendet werden)</nocom>
             <sendin>Einsenden</sendin>
             <btn_save>Speichern</btn_save>
             <th_config>Option</th_config>
