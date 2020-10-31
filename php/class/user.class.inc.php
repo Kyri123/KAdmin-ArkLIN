@@ -59,7 +59,7 @@ class userclass extends helper
                 }
             }
 
-            parent::savejson_create($this->permissions, __ADIR__."/app/json/arkadmin_server/$id.permissions.json");
+            parent::savejson_create($this->permissions, __ADIR__."/app/json/arkadmin_server/".md5($id).".permissions.json");
 
             return true;
         }
