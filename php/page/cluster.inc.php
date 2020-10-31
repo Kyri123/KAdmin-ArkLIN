@@ -356,7 +356,12 @@ foreach ($json as $mk => $mv) {
     if ($list_sync == null)     $list_sync  = "<tr><td colspan='5'>Synchronisation wurde nicht gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#options".$json[$mk]["clusterid"]."\">Einstellungen</a> </td></tr>";
     if ($list_opt == null)      $list_opt   = "<tr><td colspan='5'>Keine Optionen wurde gesetzt | <a href=\"javascript:void()\" data-toggle=\"modal\" data-target=\"#options".$json[$mk]["clusterid"]."\">Einstellungen</a> </td></tr>";
 
-    $ki     = rand(0, (count($imgarr)-1));
+    $ki     = (count($imgarr)-1) != 0 ? ((count($imgarr)-1) == 1 ? 1 : rand(1, (count($imgarr)-1))) : 0;
+
+    /*while (true) {
+        if(isset($imgarr[$ki]["map"])) break;
+        if(!isset($imgarr[$ki]["map"])) $ki     = rand(0, (count($imgarr)-1));
+    }*/
 
     $listtpl->r("alert",        $alert_r);
     $listtpl->r("key",          $mk);

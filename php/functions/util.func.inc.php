@@ -370,15 +370,15 @@ function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
 
                     if($TYPE == "int") $ITEM = round($ITEM,0);
 
-                    $tpl_i1->rif("ro", !$session_user->perm("server/$CFG/konfig/$INI"));
+                    $tpl_i1->rif("ro", !$user->perm("server/$CFG/konfig/$INI"));
                     $tpl_i1->rif("showbtn", in_array("{::lang::$INI::$KEY}", $langfrom));
                     $tpl_i1->r("ini", $INI);
                     $tpl_i1->r("name", "ini[$key][$KEY]");
                     $tpl_i1->r("opt", $KEY);
                     $tpl_i1->r("opt2", $KEY);
                     $tpl_i1->r("value", $ITEM);
-                    $tpl_i1->r("True", ($TYPE == "bool" && $ITEM == "True") ? "selected" : "".(!$session_user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
-                    $tpl_i1->r("False", ($TYPE == "bool" && $ITEM == "False") ? "selected" : "".(!$session_user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
+                    $tpl_i1->r("True", ($TYPE == "bool" && $ITEM == "True") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
+                    $tpl_i1->r("False", ($TYPE == "bool" && $ITEM == "False") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
                     $tpl_i1->r("max", $TYPE == "float" ? round((($DEFAULT[$key][$KEY]["default"] < 1 ? 1 : $DEFAULT[$key][$KEY]["default"]) * 10), 0) : ($TYPE == "int" ? round((($DEFAULT[$key][$KEY]["default"] < 5 ? 5 : $DEFAULT[$key][$KEY]["default"]) * 10), 0) :"1"));
 
                     $ITEMS .= $tpl_i1->load_var();
@@ -402,14 +402,14 @@ function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
                         if($TYPE == "int") $ITEM2 = round($ITEM2,0);
 
                         $tpl_i1->rif("showbtn", in_array("{::lang::$INI::$KEY"."$KEY2}", $langfrom));
-                        $tpl_i1->rif("ro", !$session_user->perm("server/$CFG/konfig/$INI"));
+                        $tpl_i1->rif("ro", !$user->perm("server/$CFG/konfig/$INI"));
                         $tpl_i1->r("ini", $INI);
                         $tpl_i1->r("name", "ini[$key][$KEY][$KEY2]");
                         $tpl_i1->r("opt", $KEY."[$KEY2]");
                         $tpl_i1->r("opt2", $KEY.$KEY2);
                         $tpl_i1->r("value", $ITEM2);
-                        $tpl_i1->r("True", ($TYPE == "bool" && $ITEM == "True") ? "selected" : "".(!$session_user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
-                        $tpl_i1->r("False", ($TYPE == "bool" && $ITEM == "False") ? "selected" : "".(!$session_user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
+                        $tpl_i1->r("True", ($TYPE == "bool" && $ITEM == "True") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
+                        $tpl_i1->r("False", ($TYPE == "bool" && $ITEM == "False") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
                         $tpl_i1->r("max", $TYPE == "float" ? round((($DEFAULT[$key][$KEY][$KEY2]["default"] < 1 ? 1 : $DEFAULT[$key][$KEY][$KEY2]["default"]) * 10), 0) : ($TYPE == "int" ? round((($DEFAULT[$key][$KEY][$KEY2]["default"] < 5 ? 5 : $DEFAULT[$key][$KEY][$KEY2]["default"]) * 10), 0) :"1"));
 
                         $ITEMS .= $tpl_i1->load_var();
