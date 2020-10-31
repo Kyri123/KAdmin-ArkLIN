@@ -1,0 +1,2 @@
+create table `ArkAdmin_users` (`id` int unsigned zerofill auto_increment primary key, `username` text null, `email` text null, `password` text null, `lastlogin` double null, `registerdate` double null, `rang` int null, `ban` int default 0 null);
+INSERT INTO `ArkAdmin_reg_code` VALUES ('0000000001', '7c90c6595f7cb4d2aa0e', '0', '1');

@@ -1,0 +1,1 @@
+create table `ArkAdmin_shell` (`id` int unsigned zerofill auto_increment primary key, `server`  text null, `command` text null);

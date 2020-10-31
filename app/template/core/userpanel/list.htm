@@ -34,27 +34,25 @@
             </i> {::lang::userpanel::list::ban}
         </a>
         {/!ifban}{/permissions}{/!self}
-        {permissions??all??is_admin}
+        {!self}{permissions??all??is_admin}
         <a class="btn btn-info btn-sm" href="#" onclick="$('#permissions_{username}').toggle()">
-            </i> {::lang::userpanel::list::show_permissions}
+            </i> {::lang::userpanel::list::show_groups}
         </a>
-        {/permissions}
+        {/permissions}{/!self}
     </td>
 </tr>
-{permissions??all??is_admin}
+{permissions??all??is_admin}{!self}
     <tr style="display: none" id="permissions_{username}">
-        <td class="m-0 p-0" colspan="6">
+        <td class="m-0 p-2" colspan="6">
             <form action="#" method="post">
-                <table class="m-0 p-0 table table-striped">
-                    {user_permissions}
-                </table>
+                {addlist}
                 <input name="userid" type="hidden" value="{uid}">
-                <input name="editperm" type="submit" value="{::lang::allg::save}" class="btn btn-sm btn-success" style="width: 100%">
+                <input name="editgroups" type="submit" value="{::lang::allg::save}" class="btn btn-sm btn-success" style="width: 100%">
             </form>
         </td>
     </tr>
 <tr style="display: none"></tr>
-{/permissions}
+{/!self}{/permissions}
 {/!ifmodal}{ifmodal}{permissions??userpanel??delete_user}
 <!-- Modal -->
 <form class="modal fade" id="remove{username}" tabindex="-1" method="post" action="{ROOT}/userpanel">

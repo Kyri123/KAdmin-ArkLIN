@@ -123,14 +123,37 @@
                                 </p>
                             </a>
                         </li>{/permissions}
-                        {permissions??userpanel??show}<li class="nav-item">
-                            <a href="{ROOT}/userpanel" class="nav-link {_userpanel}">
-                                <i class="nav-icon fa fa-users"></i>
-                                <p>
-                                    {::lang::allg::nav::userpanel}
-                                </p>
-                            </a>
-                        </li>{/permissions}
+
+                        {permissions??userpanel??show}
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link {_userpanel}{_usergroup}">
+                                    <i class="nav-icon fas fa-tools"></i>
+                                    <p>
+                                        {::lang::allg::nav::admin_user}
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <!-- Benutzer -->
+                                    <li class="nav-item">
+                                        <a href="{ROOT}/userpanel" class="nav-link {_userpanel}">
+                                            <i class="nav-icon fas fa-user"></i>
+                                            <p>{::lang::allg::nav::userpanel}</p>
+                                        </a>
+                                    </li>
+
+                                    {permissions??all??is_admin}
+                                    <!-- Benutzergruppen -->
+                                    <li class="nav-item">
+                                        <a href="{ROOT}/usergroup" class="nav-link {_usergroup}">
+                                            <i class="nav-icon fas fa-users"></i>
+                                            <p>{::lang::allg::nav::usergroup}</p>
+                                        </a>
+                                    </li>
+                                    {/permissions}
+                                </ul>
+                            </li>
+                        {/permissions}
                         {permissions??config??show}<li class="nav-item">
                             <a href="{ROOT}/config" class="nav-link {_config}">
                                 <i class="nav-icon fa fa-edit"></i>

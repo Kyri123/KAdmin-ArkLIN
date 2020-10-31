@@ -16,6 +16,7 @@ $sitename = "ArkAdmin2";
 $version = '2.0.0';
 $ip = $_SERVER['SERVER_ADDR'];
 $maxpanel_server = 12;
+$buildid = 200.000;
 
 // Webserver
 $webserver['url'] = 'https://data.chiraya.de/';

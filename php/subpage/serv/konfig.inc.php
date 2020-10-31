@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if (!$user->perm("$perm/konfig/show")) {
+if (!$session_user->perm("$perm/konfig/show")) {
     header("Location: /401");
     exit;
 }
@@ -23,7 +23,7 @@ $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}<
 
 // arkmanager.cfg Speichern (Normaler Modus)
 $resp = $ark_flag = $eventlist = null;
-if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $user->perm("$perm/konfig/arkmanager")) {
+if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $session_user->perm("$perm/konfig/arkmanager")) {
     $value = $_POST['value'];
     $key = $_POST['key'];
     $flag = $_POST['flag'];
@@ -67,7 +67,7 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
 else {
     // Melde Fehlschlag
     if(isset($_POST['savecfg'])) $resp = $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
 }
 
 // GameUserSettings/Game/Engine.ini Speichern (Normaler Modus)
@@ -78,9 +78,9 @@ if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode
     $TYPE           = $_POST["type"];
 
     if(
-        ($TYPE == "GameUserSettings.ini"    && $user->perm("$perm/konfig/gus"))     ||
-        ($TYPE == "Game.ini"                && $user->perm("$perm/konfig/game"))    ||
-        ($TYPE == "Engine.ini"              && $user->perm("$perm/konfig/engine"))
+        ($TYPE == "GameUserSettings.ini"    && $session_user->perm("$perm/konfig/gus"))     ||
+        ($TYPE == "Game.ini"                && $session_user->perm("$perm/konfig/game"))    ||
+        ($TYPE == "Engine.ini"              && $session_user->perm("$perm/konfig/engine"))
     ) {
         $INI_STRING = null;
         $FIRST = false;
@@ -121,11 +121,11 @@ if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode
 else {
     // Melde Fehlschlag
     if(isset($_POST['savenormal'])) $resp = $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
 }
 
 // arkmanager.cfg (Expert) Speichern
-if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $user->perm("$perm/konfig/arkmanager")) {
+if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $session_user->perm("$perm/konfig/arkmanager")) {
     $txtarea = $_POST['txtarea'];
     $cfg = ini_save_rdy($txtarea);
     $path = __ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg';
@@ -141,7 +141,7 @@ if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_
 else {
     // Melde Fehlschlag
     if(isset($_POST['savecfg_expert'])) $resp = $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
 }
 
 // Game,GUS,Engine.ini Speichern (Expertenmodus)
@@ -151,9 +151,9 @@ if (isset($_POST['save']) && (($serv->statecode() == 1 && $user->show_mode("konf
     $path = $serv->dir_konfig().$type;
 
     if(
-        ($type == "GameUserSettings.ini" && $user->perm("$perm/konfig/gus")) ||
-        ($type == "Game.ini" && $user->perm("$perm/konfig/game")) ||
-        ($type == "Engine.ini" && $user->perm("$perm/konfig/engine"))
+        ($type == "GameUserSettings.ini" && $session_user->perm("$perm/konfig/gus")) ||
+        ($type == "Game.ini" && $session_user->perm("$perm/konfig/game")) ||
+        ($type == "Engine.ini" && $session_user->perm("$perm/konfig/engine"))
     ) {
         // Prüfe ob Datei Exsistiert
         if (file_exists($path)) {
@@ -301,12 +301,12 @@ if ($serv->isinstalled()) {
                 // map Select
                 if($key == "serverMap") {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="setmap()" id="mapsel">
-                        <option value="" '.(!$user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
+                        <option value="" '.(!$session_user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
 
                     $mapjson = $helper->file_to_json(__ADIR__."/app/json/panel/maps.json");
                     foreach ($mapjson as $map => $infos) {
                         if(($infos["mod"] == 1 && $serv->mod_support()) || $infos["mod"] == 0)
-                            $add .= '<option id="'.$map.'" value="'.$map.'" data-mod="'.$infos["mod"].'" data-modid="'.$infos["modid"].'" '.($map == $val ? "selected" : null).' '.($map == $val ? "" : (!$user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
+                            $add .= '<option id="'.$map.'" value="'.$map.'" data-mod="'.$infos["mod"].'" data-modid="'.$infos["modid"].'" '.($map == $val ? "selected" : null).' '.($map == $val ? "" : (!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
                                 '.($infos["mod"] == 1 ? "[MOD] " : null).$infos["name"].'
                             </option>';
                     }
@@ -317,12 +317,12 @@ if ($serv->isinstalled()) {
                 // Totalmod Select
                 if($key == "ark_TotalConversionMod") {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="settmod()" id="tmodsel">
-                        <option value="" '.(!$user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
+                        <option value="" '.(!$session_user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
 
                     $tmodjson = $helper->file_to_json(__ADIR__."/app/json/panel/tmods.json");
                     foreach ($tmodjson as $tmod => $infos) {
                         if(($infos["offi"] == 0 && $serv->mod_support()) || $infos["offi"] == 1)
-                            $add .= '<option value="'.$infos["modid"].'" '.($infos["modid"] == $val ? "selected" : null).' '.($infos["modid"] == $val ? "" : (!$user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
+                            $add .= '<option value="'.$infos["modid"].'" '.($infos["modid"] == $val ? "selected" : null).' '.($infos["modid"] == $val ? "" : (!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
                                 '.($infos["offi"] == 0 ? "[MOD] " : null).$tmod.'
                             </option>';
                     }
@@ -334,14 +334,14 @@ if ($serv->isinstalled()) {
                 // wenn nicht im array
                 '<div class="input-group mb-0">
                     <input type="hidden" name="key[]" readonly value="'.$key.'">
-                    <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'" '.(!$user->perm("$perm/konfig/arkmanager") ? "readonly" : null).'>
+                    <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'" '.(!$session_user->perm("$perm/konfig/arkmanager") ? "readonly" : null).'>
                     <div class="input-group-append">
-                    <span '.(!$user->perm("$perm/konfig/arkmanager") ? null : "'onclick=\"remove(\''.md5($key).'\')\"").' style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1 '.(!$user->perm("$perm/konfig/arkmanager") ? "disabled" : null).'" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    <span '.(!$session_user->perm("$perm/konfig/arkmanager") ? null : "'onclick=\"remove(\''.md5($key).'\')\"").' style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1 '.(!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : null).'" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>
                     </div>
                 </div>' :
                 //sonst
                 '<div class="input-group mb-0"><input type="hidden" name="key[]" readonly value="'.$key.'">
-                <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'" '.(!$user->perm("$perm/konfig/arkmanager") ? "readonly" : null).'>'.$add.'</div>';
+                <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'" '.(!$session_user->perm("$perm/konfig/arkmanager") ? "readonly" : null).'>'.$add.'</div>';
 
                 $form .= '
                     <tr class="'.(($serv->cluster_in() && in_array($key, $hide_cluster)) ? "d-none" : null).'" id="'.md5($key).'">
@@ -362,7 +362,7 @@ foreach($flags_json as $k => $v) {
     $sel = (in_array("arkflag_$v", $flags)) ? 'checked="true"' : null;
     if($i == 0) $ark_flag .= '<div class="row">';
     $ark_flag .= '  <div class="icheck-primary mb-3 col-lg-6 col-12">
-                        <input type="checkbox" name="flag[]" value="' . $v . '" id="' . md5($v) . '" ' . $sel . ' '.(!$user->perm("$perm/konfig/arkmanager") ? "disabled" : null).'>
+                        <input type="checkbox" name="flag[]" value="' . $v . '" id="' . md5($v) . '" ' . $sel . ' '.(!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : null).'>
                         <label for="' . md5($v) . '">
                             ' . $v . '
                         </label>

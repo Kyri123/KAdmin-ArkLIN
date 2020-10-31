@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if (!$user->perm("$perm/jobs/show")) {
+if (!$session_user->perm("$perm/jobs/show")) {
     header("Location: /401");
     exit;
 }
@@ -25,7 +25,7 @@ $page_tpl->r('cfg' ,$url[2]);
 $page_tpl->r('SESSION_USERNAME' ,$user->read("username"));
 
 // Cronjob erstellen
-if (isset($_POST['addjob']) && $user->perm("$perm/jobs/add")) {
+if (isset($_POST['addjob']) && $session_user->perm("$perm/jobs/add")) {
     $name = $_POST['name'];
     $action = $_POST['action'];
     $parameter = $_POST['parameter'];
@@ -85,7 +85,7 @@ elseif(isset($_POST['addjob'])) {
 }
 
 // Cronjob Bearbeiten
-if (isset($_POST['edit']) && $user->perm("$perm/jobs/edit")) {
+if (isset($_POST['edit']) && $session_user->perm("$perm/jobs/edit")) {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $action = $_POST['action'];
@@ -135,7 +135,7 @@ elseif(isset($_POST['edit'])) {
 }
 
 // Entferne Jobs
-if (isset($_POST['delete']) && $user->perm("$perm/jobs/remove")) {
+if (isset($_POST['delete']) && $session_user->perm("$perm/jobs/remove")) {
     $i = $_POST['i'];
     $i = intval($i);
     $query = 'SELECT * FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';
@@ -158,7 +158,7 @@ elseif(isset($_POST['delete'])) {
 }
 
 //Erstelle Job (Update & Backup btn)
-if (isset($url[5]) && $url[4] == "create" && $user->perm("$perm/jobs/add")) {
+if (isset($url[5]) && $url[4] == "create" && $session_user->perm("$perm/jobs/add")) {
     echo 1;
     $type = $url[5];
     $i = intval($i);
@@ -214,7 +214,7 @@ elseif(isset($url[5]) && $url[4] == "create") {
 }
 
 // (De-)Aktivieren von Jobs
-if (isset($url[5]) && $url[4] == "toggle" && $user->perm("$perm/jobs/toggle")) {
+if (isset($url[5]) && $url[4] == "toggle" && $session_user->perm("$perm/jobs/toggle")) {
     $i = $url[5];
     $i = intval($i);
     $query = 'SELECT * FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';

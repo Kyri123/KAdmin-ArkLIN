@@ -16,7 +16,8 @@
         "create_code"       : 0,
         "delete_code"       : 0,
         "delete_user"       : 0,
-        "ban_user"          : 0
+        "ban_user"          : 0,
+        "add_group"         : 0
     },
     "cluster": {
         "show"              : 1,

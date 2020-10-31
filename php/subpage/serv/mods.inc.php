@@ -10,7 +10,7 @@
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
 // Wenn Modsupport deaktiviert ist leitet direkt zu ServerCenter Startseite des Servers
-if (!$user->perm("$perm/mods/show") || !$serv->mod_support()) {
+if (!$session_user->perm("$perm/mods/show") || !$serv->mod_support()) {
     header(!$serv->mod_support() ? "Location: /404" : "Location: /401");
     exit;
 }
@@ -23,7 +23,7 @@ $urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::saves::urltop}</li>';
 
 // Mods Hinzufügen
-if (isset($_POST['addmod']) && $user->perm("$perm/mods/add")) {
+if (isset($_POST['addmod']) && $session_user->perm("$perm/mods/add")) {
     $urler = $_POST['url'];
     foreach($urler as $k => $urle) {
         // Prüfe ob wert eine ID oder eine URL ist

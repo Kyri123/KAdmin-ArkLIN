@@ -25,6 +25,23 @@ $helper = new helper();
 $ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
 $site_name = $content = null;
 
+$all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
+
+// erzeuge Default Permissions FILE
+$D_PERM_ARRAY = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
+$server = $all["cfgs_only_name"];
+foreach ($server as $item) {
+    $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
+    $perm_file = str_replace("{cfg}", $item, $perm_file);
+    $default = $helper->str_to_json($perm_file);
+    $D_PERM_ARRAY["server"] += $default;
+}
+
+if (isset($_SESSION["id"])) {
+    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`=\''.$_SESSION["id"].'\'';
+    $mycon->query($query);
+}
+
 // Deaktiviere Error anzeige
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
@@ -85,11 +102,17 @@ include(__ADIR__.'/php/functions/util.func.inc.php');
 
 // include classes
 include(__ADIR__.'/php/class/xml_helper.class.php');
+include(__ADIR__.'/php/class/user.class.inc.php');
+
+$session_user = new userclass();
+if (isset($_SESSION["id"])) {
+    $session_user->setid($_SESSION["id"]);
+}
+
 include(__ADIR__.'/php/class/Template.class.inc.php');
 include(__ADIR__.'/php/class/alert.class.inc.php');
 include(__ADIR__.'/php/class/rcon.class.inc.php');
 include(__ADIR__.'/php/class/savefile_reader.class.inc.php');
-include(__ADIR__.'/php/class/user.class.inc.php');
 include(__ADIR__.'/php/class/steamAPI.class.inc.php');
 include(__ADIR__.'/php/class/server.class.inc.php');
 include(__ADIR__.'/php/class/jobs.class.inc.php');
@@ -141,37 +164,6 @@ $API_Key = $ckonfig['apikey'];
 $servlocdir = $ckonfig['servlocdir'];
 $expert = $user->expert();
 $jobs = new jobs();
-$all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
-
-// lade Permissions
-$permissions_default = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
-if(
-    !file_exists(__ADIR__."/app/json/user/".(isset($_SESSION["id"]) ? md5($_SESSION["id"]) : null).".permissions.json") &&
-    isset($_SESSION["id"])
-) $helper->savejson_create($permissions_default, __ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json");
-$permissions = (isset($_SESSION["id"]) && file_exists(__ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json")) ? $helper->file_to_json(__ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json") : $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
-$permissions = array_replace_recursive($permissions_default, $permissions);
-
-// gehe Rechte der Server durch
-$servers_perm = array();
-$file = __ADIR__.'/app/json/serverinfo/all.json';
-$server = $all["cfgs_only_name"];
-foreach ($server as $item) {
-    $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
-    $perm_file = str_replace("{cfg}", $item, $perm_file);
-    $default = $helper->str_to_json($perm_file);
-    if(isset($permissions["server"][$item])) {
-        $permissions["server"][$item] = array_replace_recursive($default[$item], $permissions["server"][$item]);
-    }
-    else {
-        $permissions["server"] += $default;
-    }
-}
-
-if (isset($_SESSION["id"])) {
-    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`=\''.$_SESSION["id"].'\'';
-    $mycon->query($query);
-}
 
 // Define default page
 $page = $url[1];
@@ -207,7 +199,7 @@ if ($page == "login" || $page == "registration") {
     if ($page == "login") $pagename = '{::lang::php::index::pagename_login}';
 }
 
-if($user->perm("all/manage_aas")) $btns .= '
+if($session_user->perm("all/manage_aas")) $btns .= '
     <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'?md5='.md5($_SESSION["id"]).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
         <span class="icon text-white-50">
             <i class="fa fa-cloud-download"></i>
@@ -248,7 +240,7 @@ $tpl_b->r('g_alert', $g_alert);
 $tpl_b->rif ('if_g_alert', $g_alert_bool);
 $tpl_b->r("langlist", get_lang_list());
 $tpl_b->r("maxserver", $maxpanel_server);
-$tpl_b->r("rank", "<span class='text-".((!$user->perm("allg/is_admin")) ? "success" : "danger")."'>{::lang::php::userpanel::".((!$user->perm("allg/is_admin")) ? "user" : "admin")."}</span>");
+$tpl_b->r("rank", "<span class='text-".((!$session_user->perm("allg/is_admin")) ? "success" : "danger")."'>{::lang::php::userpanel::".((!$session_user->perm("allg/is_admin")) ? "user" : "admin")."}</span>");
 
 // Server Traffics
 $tpl_b->r('count_server', count($all["cfgs"]));

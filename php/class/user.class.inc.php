@@ -19,6 +19,7 @@ class userclass extends helper
     private $myconisset;
     public $frech;
     public $permissions;
+    public $group_array;
 
     /**
      * userclass constructor.
@@ -47,27 +48,16 @@ class userclass extends helper
             $this->frech = $this->mycon->query($query)->fetchArray();
 
             // Lade Rechte
-            $permissions_default = parent::file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
-            $permissions = (file_exists(__ADIR__."/app/json/user/".md5($id).".permissions.json")) ? parent::file_to_json(__ADIR__."/app/json/user/".md5($id).".permissions.json") : parent::file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
-            $permissions = array_replace_recursive($permissions_default, $permissions);
+            global $D_PERM_ARRAY;
+            $this->group_array      = parent::str_to_json($this->frech["rang"], true);
+            $this->permissions      = $D_PERM_ARRAY;
 
-            // gehe Rechte der Server durch
-            $file = __ADIR__.'/app/json/serverinfo/all.json';
-            $server = parent::file_to_json($file, true)["cfgs_only_name"];
-            foreach ($server as $item) {
-                $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
-                $perm_file = str_replace("{cfg}", $item, $perm_file);
-                $default = parent::str_to_json($perm_file);
-                if(isset($permissions["server"][$item])) {
-                    $permissions["server"][$item] = array_replace_recursive($default[$item], $permissions["server"][$item]);
-                }
-                else {
-                    $permissions["server"] += $default;
+            foreach ($this->group_array as $ITEM) {
+                $QUERY     = $this->mycon->query("SELECT * FROM `ArkAdmin_user_group` WHERE `id`='$ITEM'");
+                if($QUERY->numRows() > 0) {
+                    $this->permissions = array_replace_recursive($this->permissions, parent::str_to_json($QUERY->fetchArray()["permissions"]));
                 }
             }
-
-
-            $this->permissions = $permissions;
 
             return true;
         }

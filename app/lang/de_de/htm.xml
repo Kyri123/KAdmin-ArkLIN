@@ -60,7 +60,9 @@
             <home>Dashboard</home>
             <scc>ServerControllCenter</scc>
             <cluster>Cluster System</cluster>
-            <userpanel>Benutzer und Rechte</userpanel>
+            <admin_user>Benutzer und Gruppen</admin_user>
+            <userpanel>Benutzer</userpanel>
+            <usergroup>Benutzergruppen</usergroup>
             <config>Konfiguration</config>
             <changelog>Changelogs</changelog>
             <btn_createserver>Server Erstellen</btn_createserver>
@@ -330,7 +332,7 @@
             <ban>Bannen</ban>
             <unban>Freigeben</unban>
             <remove>Löschen</remove>
-            <show_permissions>Rechte verwalten</show_permissions>
+            <show_groups>Gruppen verwalten</show_groups>
             <modal>
                 <remove>
                     <remove>Löschen: {username}</remove>
@@ -748,4 +750,44 @@
             </remove_all>
         </saves>
     </servercenter>
+    <admin_usergroup>
+        <pagename>Benutzergruppen</pagename>
+        <edit>Rechte verwalten</edit>
+        <remove>Löschen</remove>
+        <canadd>Kann vergeben</canadd>
+
+        <table>
+            <name>Gruppenname</name>
+            <lastedit>Letzte Änderung</lastedit>
+            <lastedit_from>von</lastedit_from>
+            <count>Anzahl der Benutzer</count>
+            <actions>Aktionen</actions>
+        </table>
+
+        <modal>
+            <close>Schließen</close>
+
+            <addgroup>
+                <group_name>Name der Benutzergruppe</group_name>
+                <title>Benutzergruppe erstellen</title>
+                <add>Gruppe erstellen</add>
+            </addgroup>
+
+            <edit>
+                <title>Benutzergruppe [b]{name}[/b]</title>
+                <edit>Änderung übernehemen</edit>
+            </edit>
+
+            <remove>
+                <title>Benutzergruppe [b]{name}[/b]</title>
+                <txt>Möchten Sie wirklich diese Benutzergruppe entfernen?</txt>
+                <remove>Löschen</remove>
+            </remove>
+
+            <canadd>
+                <title>Benutzergruppe [b]{name}[/b]</title>
+                <set>Setzten</set>
+            </canadd>
+        </modal>
+    </admin_usergroup>
 </lang>

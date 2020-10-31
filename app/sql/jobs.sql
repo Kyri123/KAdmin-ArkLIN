@@ -1,1 +1,0 @@
-CREATE TABLE `ArkAdmin_jobs` (`id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,`job` text,`parm` text,`time` int(11) DEFAULT NULL,`intervall` int(11) DEFAULT NULL,`active` int(11) DEFAULT NULL,`server` text,`name` text,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;

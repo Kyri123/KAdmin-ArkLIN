@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if (!$user->perm("$perm/statistiken/show")) {
+if (!$session_user->perm("$perm/statistiken/show")) {
     header("Location: /401");
     exit;
 }

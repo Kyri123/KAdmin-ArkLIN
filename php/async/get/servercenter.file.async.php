@@ -103,7 +103,7 @@ switch ($case) {
 
 
     case "del":
-        if($user->perm("server/$cfg/filebrowser/remove")) {
+        if($session_user->perm("server/$cfg/filebrowser/remove")) {
             $file = $_GET["file"];
             $size = strlen($file)-1;
             $file=substr($file,1,$size); 

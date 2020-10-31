@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if (!$user->perm("$perm/saves/show")) {
+if (!$session_user->perm("$perm/saves/show")) {
     header("Location: /401");
     exit;
 }
@@ -24,7 +24,7 @@ $resp = null;
 $c_pl = $c_t = $w_t = 0;
 
 // erstelle Zip download
-if (isset($_POST["zip"]) && $user->perm("$perm/saves/download")) {
+if (isset($_POST["zip"]) && $session_user->perm("$perm/saves/download")) {
     if(!file_exists(__ADIR__."/app/downloads")) mkdir(__ADIR__."/app/downloads");
     $zipfile = __ADIR__."/app/downloads/savegames.tar";
     
@@ -80,7 +80,7 @@ elseif(isset($_POST["zip"])) {
 }
 
 // Entferne Savegame
-if (isset($_POST["remove"]) && $user->perm("$perm/saves/remove")) {
+if (isset($_POST["remove"]) && $session_user->perm("$perm/saves/remove")) {
 
     // Setzte Vars
     $file_name = $_POST["file"];
@@ -176,7 +176,7 @@ elseif(isset($_POST["remove"])) {
 }
 
 // Entferne Savegame
-if (isset($_POST["removeall"]) && $user->perm("$perm/saves/remove")) {
+if (isset($_POST["removeall"]) && $session_user->perm("$perm/saves/remove")) {
     $savedir = $serv->dir_save();
     if(del_dir($savedir)) {
         mkdir($savedir);

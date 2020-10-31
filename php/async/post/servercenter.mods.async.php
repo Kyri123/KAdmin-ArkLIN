@@ -20,7 +20,7 @@ switch ($case) {
     case "push":
         $bool = false;
         $resp = "";
-        if($user->perm("$perm/mods/changeplace")) {
+        if($session_user->perm("$perm/mods/changeplace")) {
             $cancel = false;
             $action = $_POST["action"];
             $modid = $_POST["modid"];
@@ -78,7 +78,7 @@ switch ($case) {
     case "pushto":
         $bool = false;
         $resp = "";
-        if($user->perm("$perm/mods/changeplace")) {
+        if($session_user->perm("$perm/mods/changeplace")) {
             $cancel = false;
             $to = intval($_POST["to"]);
             $modid = $_POST["modid"];
@@ -116,7 +116,7 @@ switch ($case) {
     case "remove":
         $bool = false;
         $resp = "";
-        if($user->perm("$perm/mods/remove")) {
+        if($session_user->perm("$perm/mods/remove")) {
             $cancel = false;
             $modid = $_POST["modid"];
             // change order
@@ -164,7 +164,7 @@ switch ($case) {
     case "remove_installed":
         $bool = false;
         $resp = "";
-        if($user->perm("$perm/mods/remove")) {
+        if($session_user->perm("$perm/mods/remove")) {
             $path = $serv->dir_main()."/ShooterGame/Content/Mods/".$_POST["modid"];
             $resp = $alert->rd(1);
             $bool = true;

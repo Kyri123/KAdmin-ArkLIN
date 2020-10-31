@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if(!$user->perm("cluster/show")) {
+if(!$session_user->perm("cluster/show")) {
     header("Location: /401"); exit;
 }
 
@@ -30,7 +30,7 @@ if (!file_exists($clusterjson_path)) if (!file_put_contents($clusterjson_path, "
 $json = $helper->file_to_json($clusterjson_path);
 
 //Entferne Cluster
-if (isset($_POST["removecluster"]) && $user->perm("cluster/delete")) {
+if (isset($_POST["removecluster"]) && $session_user->perm("cluster/delete")) {
     $key = $_POST["key"];
     if (isset($json[$key])) unset($json[$key]);
     $helper->savejson_exsists($json, $clusterjson_path);
@@ -41,7 +41,7 @@ elseif(isset($_POST["removecluster"])) {
 }
 
 // Entferne Server vom Cluster
-if (isset($_POST["remove"]) && $user->perm("cluster/remove_server")) {
+if (isset($_POST["remove"]) && $session_user->perm("cluster/remove_server")) {
     $key = $_POST["key"];
     $cfg = $_POST["cfg"];
     $array = array_column($json[$key]["servers"], 'server');
@@ -59,7 +59,7 @@ elseif(isset($_POST["remove"])) {
 }
 
 // Toggle Type vom Server (Master/Slave)
-if (isset($_POST["settype"]) && $user->perm("cluster/toogle_master")) {
+if (isset($_POST["settype"]) && $session_user->perm("cluster/toogle_master")) {
     $key = $_POST["key"];
     $cfgkey = $_POST["cfg"];
     $to = $_POST["set"];
@@ -90,7 +90,7 @@ elseif(isset($_POST["settype"])) {
 }
 
 //Füge server zum Cluster hinzu
-if (isset($_POST["addserver"]) && $user->perm("cluster/add_server")) {
+if (isset($_POST["addserver"]) && $session_user->perm("cluster/add_server")) {
     $key = $_POST["key"];
     $cfg = $_POST["server"];
     if ($cfg != "") {
@@ -134,7 +134,7 @@ elseif(isset($_POST["addserver"])) {
 
 
 // Editiere einen Cluster
-if (isset($_POST["editcluster"]) && $user->perm("cluster/edit_options")) {
+if (isset($_POST["editcluster"]) && $session_user->perm("cluster/edit_options")) {
     //set vars
     $i = $_POST["key"];
     $cluster = $_POST["name"];
@@ -183,7 +183,7 @@ elseif(isset($_POST["editcluster"])) {
 }
 
 // erstelle ein Cluster
-if (isset($_POST["add"]) && $user->perm("cluster/create")) {
+if (isset($_POST["add"]) && $session_user->perm("cluster/create")) {
     //set vars
     $cluster = $_POST["name"];
     $clustermd5 = md5($_POST["name"]);
@@ -389,7 +389,7 @@ $tpl->r("resp", $resp);
 $tpl->r("sel_serv", $sel_serv);
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fas fa-random\"></i>";
-if($user->perm("cluster/create")) $btns = '<a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addcluster">
+if($session_user->perm("cluster/create")) $btns = '<a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addcluster">
             <span class="icon">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>

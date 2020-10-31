@@ -1,0 +1,32 @@
+
+<tr>
+    <td>
+        <b>{name}</b>
+    </td>
+    <td>
+        {lastedit}
+    </td>
+    <td>
+        {lastedit_from}
+    </td>
+    <!--<td>
+        {count}
+    </td>-->
+    <td>
+        {!id1}
+            <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#r{id}">
+                {::lang::admin_usergroup::remove}
+            </a>
+
+            <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#e{id}">
+                {::lang::admin_usergroup::edit}
+            </a>
+
+            {addgroups}
+                <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#a{id}">
+                    {::lang::admin_usergroup::canadd}
+                </a>
+            {/addgroups}
+        {/!id1}
+    </td>
+</tr>

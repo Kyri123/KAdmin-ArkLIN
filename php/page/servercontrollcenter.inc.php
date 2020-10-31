@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if(!$user->perm("servercontrollcenter/show")) {
+if(!$session_user->perm("servercontrollcenter/show")) {
     header("Location: /401"); exit;
 }
 
@@ -27,7 +27,7 @@ $serv = new server("tiamat");
 $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 
-if (isset($_POST["add"]) && $user->perm("servercontrollcenter/create")) {
+if (isset($_POST["add"]) && $session_user->perm("servercontrollcenter/create")) {
     //prüfe ob das Maximum erreicht wurde
     if($maxpanel_server > (count(scandir(__ADIR__."/remote/arkmanager/instances"))-2)) {
         while (true) {
@@ -83,7 +83,7 @@ if (isset($_POST["add"]) && $user->perm("servercontrollcenter/create")) {
                         $default = $helper->str_to_json($perm_file);
                         $default[$name]["is_server_admin"] = 1;
 
-                        $user_permissions = $user->permissions;
+                        $user_permissions = $session_user->permissions;
                         if(isset($user_permissions["server"][$name])) {
                             $user_permissions["server"][$name] = array_replace_recursive($default[$name], $user_permissions["server"][$name]);
                         }
@@ -115,7 +115,7 @@ elseif (isset($_POST["add"])) {
 }
 
 // Entfernen von Server
-if (isset($_POST["del"]) && $user->perm("servercontrollcenter/delete")) {
+if (isset($_POST["del"]) && $session_user->perm("servercontrollcenter/delete")) {
     $serv = new server($_POST["cfg"]);
     $opt = array();
     if (isset($_POST["opt"])) $opt = $_POST["opt"];
@@ -239,7 +239,7 @@ $tpl->r("resp", $resp);
 $tpl->rif("not_max", $maxpanel_server > (count(scandir(__ADIR__."/remote/arkmanager/instances"))-2));
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
-if($user->perm("servercontrollcenter/create") && $maxpanel_server > (count(scandir(__ADIR__."/remote/arkmanager/instances"))-2)) $btns = '<span  data-toggle="popover_action" data-content="{::lang::scc::tooltip::create::text}" data-original-title="{::lang::scc::tooltip::create::title}">
+if($session_user->perm("servercontrollcenter/create") && $maxpanel_server > (count(scandir(__ADIR__."/remote/arkmanager/instances"))-2)) $btns = '<span  data-toggle="popover_action" data-content="{::lang::scc::tooltip::create::text}" data-original-title="{::lang::scc::tooltip::create::title}">
                                                                 <a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver" title="">
                                                                     <span class="icon">
                                                                         <i class="fas fa-plus" aria-hidden="true"></i>

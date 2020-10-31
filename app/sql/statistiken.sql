@@ -1,1 +1,0 @@
-create table ArkAdmin_statistiken (id int auto_increment, time bigint null, serverinfo_json longtext null, server text null, constraint statistiken_pk primary key (id));
