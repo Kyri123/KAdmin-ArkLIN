@@ -190,7 +190,7 @@ for ($i=1;$i<count($userarray);$i++) {
     // prüfe ob der User gebant ist, deaktivere Modal & prüfe ob die ID man selbst ist
     $list->rif ("ifban", boolval($ban));
     $list->rif ("ifmodal", false);
-    $list->rif ("self", ($id == $_SESSION["id"]));
+    $list->rif ("self", ($id == $_SESSION["id"] || $kuser->perm("all/is_admin")));
 
     // Schreibe Template in var
     $userlist .= $list->load_var();

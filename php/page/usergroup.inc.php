@@ -2,9 +2,9 @@
 /*
  * *******************************************************************************************
  * @author:  Oliver Kaufmann (Kyri123)
- * @copyright Copyright (c) 2020, Oliver Kaufmann
- * @owner license vahana-life vahana-life.de
- * Github @author: https://github.com/Kyri123
+ * @copyright Copyright (c) 2019-2020, Oliver Kaufmann
+ * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
+ * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
 
@@ -14,8 +14,9 @@ if(!$session_user->perm("all/is_admin")) {
 }
 
 $resp       = null;
-$PAGEICON   = "<i class=\"fas fa-users\" aria-hidden=\"true\"></i>";
-$URLTOP     = "<li class=\"breadcrumb-item\">{::lang::$page::pagename}</li>";
+$pageicon   = "<i class=\"fas fa-users\" aria-hidden=\"true\"></i>";
+$pagename   = "{::lang::allg::nav::usergroup}";
+$urltop     = "<li class=\"breadcrumb-item\">$pagename</li>";
 $TPL_PAGE   = new Template("index.htm", __ADIR__."/app/template/core/$page/");
 $TPL_PAGE->load();
 
