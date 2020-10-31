@@ -24,17 +24,21 @@ if (isset($_POST["send"])) {
 //check SQL
         $tables = [];
         $SQLs = scandir(__ADIR__."/app/sql");
-        foreach ($SQLs as $table) {
-            if(strpos($table, "ArkAdmin_")) {
-                if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
-                    $query_file = file(__ADIR__."/app/sql/$table.sql");
-                    foreach ($query_file as $query) {
-                        $mycon->query($query);
-                    }
-                }
+        foreach ($SQLs as $FILE) {
+            if($FILE != "." && $FILE != ".." && strpos($FILE, "ArkAdmin_")) {
+                $FILE_NAME = pathinfo(__ADIR__."/app/sql/$FILE", PATHINFO_FILENAME);
+                $tables[] = $FILE_NAME;
             }
         }
 
+        foreach ($tables as $table) {
+            if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
+                $query_file = file(__ADIR__."/app/sql/$table.sql");
+                foreach ($query_file as $query) {
+                    $mycon->query($query);
+                }
+            }
+        }
         $mycon->close();
         $str = "<?php
                     \$dbhost = '$dbhost';
