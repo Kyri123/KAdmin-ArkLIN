@@ -72,6 +72,20 @@ $PAGE_EXP       = $REQUEST_URI != "" ? explode("/", $REQUEST_URI) : array();
 
 $page           = isset($PAGE_EXP[0]) ? $PAGE_EXP[0] : "home";
 
+
+if($page == "logout") {
+    if (isset($_COOKIE["id"]) && isset($_COOKIE["validate"])) {
+        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`validate`='".$_COOKIE["validate"]."')";
+        $mycon->query($query);
+        setcookie("id", "", time() - 3600);
+        setcookie("validate", "", time() - 3600);
+    }
+
+    session_destroy();
+    header("Location: $ROOT/login");
+    exit;
+}
+
 // API
 $API_path           = __ADIR__."/php/inc/api.json";
 $API_array          = $helper->file_to_json($API_path);

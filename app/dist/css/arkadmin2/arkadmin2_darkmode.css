@@ -117,6 +117,10 @@ a.bg-light > * {
     background-color: #343a40;
 }
 
+.modal-header {
+    background-color: #343a40!important;
+}
+
 [class*='modal'], border, .form-control, .form-control-sm {
     border-color: #272b30 !important;
 }
@@ -163,4 +167,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .dropdown > * {
     border-color: #343a40!important;
+}
+
+.register-box > .register-logo {
+    background-color: #343a40!important;
+}
+
+.card-body, .register-box > .register-logo > .text-black-50 {
+    color: #fff!important;
 }

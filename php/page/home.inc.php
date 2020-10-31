@@ -109,7 +109,7 @@ if (isset($json['file'])) {
         $listtpl->r('date', $json[$i]['datestring']);
         $listtpl->r('version', $json[$i]['version']);
         $list .= $listtpl->load_var();
-        if ($c == 12) break;
+        if ($c == 15) break;
         $c++;
     }
 }
