@@ -25,15 +25,17 @@ global.tpl_ipmd5 = md5(ip.address());
  * @param get
  */
 function allowed(get, ip) {
-    if(get.md5 !== undefined) {
-        let user_path = `${config.WebPath}/app/json/user/${get.md5}.json`;
-        if(fs.existsSync(user_path)) {
-            let user_json = JSON.parse(fs.readFileSync(user_path));
-            if(ip.includes(user_json.ip)) {
-                let perm_path = `${config.WebPath}/app/json/user/${get.md5}.permissions.json`;
-                if(fs.existsSync(perm_path)) {
-                    let perm_json = JSON.parse(fs.readFileSync(perm_path));
-                    return (perm_json.all.is_admin == 1 || (perm_json.all.manage_aas !== undefined ? perm_json.all.manage_aas == 1 : false));
+    if(iscon) {
+        if(get.md5 !== undefined) {
+            let user_path = `${config.WebPath}/app/json/user/${get.md5}.json`;
+            if(fs.existsSync(user_path)) {
+                let user_json = JSON.parse(fs.readFileSync(user_path));
+                if(user_json.id !== undefined) {
+                    let perm_path = `${config.WebPath}/app/json/arkadmin_server/${get.md5}.permissions.json`;
+                    if(fs.existsSync(perm_path)) {
+                        let perm_json = JSON.parse(fs.readFileSync(perm_path));
+                        return (perm_json.all.is_admin == 1 || (perm_json.all.manage_aas !== undefined ? perm_json.all.manage_aas == 1 : false));
+                    }
                 }
             }
         }

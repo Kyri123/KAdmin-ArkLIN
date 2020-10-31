@@ -148,6 +148,7 @@ if(isset($_SESSION["id"])) {
     if(file_exists($path)) {
         $json = $helper->file_to_json($path, true);
         $json["ip"] = getRealIpAddr();
+        $json["id"] = $session_user->read("id");
         $helper->savejson_create($json, $path);
     }
 }

@@ -59,6 +59,8 @@ class userclass extends helper
                 }
             }
 
+            parent::savejson_create($this->permissions, __ADIR__."/app/json/arkadmin_server/$id.permissions.json");
+
             return true;
         }
         $this->myconisset = false;

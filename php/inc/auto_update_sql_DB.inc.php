@@ -11,18 +11,12 @@
 //check SQL
 $tables = [];
 $SQLs = scandir(__ADIR__."/app/sql");
-foreach ($SQLs as $FILE) {
-    if($FILE != "." && $FILE != "..") {
-        $FILE_NAME = pathinfo(__ADIR__."/app/sql/$FILE", PATHINFO_FILENAME);
-        $tables[] = $FILE_NAME;
-    }
-}
-
-foreach ($tables as $table) {
+foreach ($SQLs as $table) {
     if(strpos($table, "ArkAdmin_")) {
         if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
             $query_file = file(__ADIR__."/app/sql/$table.sql");
             foreach ($query_file as $query) {
+                echo "$query <br />";
                 $mycon->query($query);
             }
         }
@@ -31,7 +25,7 @@ foreach ($tables as $table) {
 
 //überschreibe alle user auf Admin
 if($version == "2.0.0" && $buildid == 200.000) {
-    $mycon->query("alter table ArkAdmin_users modify rang text null");
+    $mycon->query("alter table `ArkAdmin_users` modify `rang` text null");
     $USERS = "SELECT * FROM `ArkAdmin_users`";
     foreach ($mycon->query($USERS)->fetchAll() as $USER) {
         $ID = $USER["id"];
