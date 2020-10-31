@@ -393,5 +393,4 @@ if($session_user->perm("cluster/create")) $btns = '<a href="#" class="btn btn-ou
             <span class="icon">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>
-            <span class="text">{::lang::php::cluster::btn_addcluster}</span>
         </a>';
