@@ -21,11 +21,11 @@ if (isset($_POST["send"])) {
     error_reporting(0);
     $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
     if ($mycon->is) {
-//check SQL
+        //check SQL
         $tables = [];
         $SQLs = scandir(__ADIR__."/app/sql");
         foreach ($SQLs as $FILE) {
-            if($FILE != "." && $FILE != ".." && strpos($FILE, "ArkAdmin_")) {
+            if($FILE != "." && $FILE != ".." && strpos($FILE, "ArkAdmin_") !== false) {
                 $FILE_NAME = pathinfo(__ADIR__."/app/sql/$FILE", PATHINFO_FILENAME);
                 $tables[] = $FILE_NAME;
             }

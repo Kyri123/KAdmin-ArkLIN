@@ -12,7 +12,7 @@
 $tables = [];
 $SQLs = scandir(__ADIR__."/app/sql");
 foreach ($SQLs as $FILE) {
-    if($FILE != "." && $FILE != ".." && strpos($FILE, "ArkAdmin_")) {
+    if($FILE != "." && $FILE != ".." && strpos($FILE, "ArkAdmin_") !== false) {
         $FILE_NAME = pathinfo(__ADIR__."/app/sql/$FILE", PATHINFO_FILENAME);
         $tables[] = $FILE_NAME;
     }
