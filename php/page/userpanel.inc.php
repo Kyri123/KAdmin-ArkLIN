@@ -29,8 +29,8 @@ $tpl->load();
 //Benutzergruppen setzten
 if(isset($_POST["editgroups"]) && $session_user->perm("all/is_admin")) {
     $groups = isset($_POST["ids"]) ? json_encode($_POST["ids"]) : "[]";
-    $user = new userclass($_POST["userid"]);
-    if($user->write("rang", $groups)) {
+    $users = new userclass($_POST["userid"]);
+    if($users->write("rang", $groups)) {
         $resp = $alert->rd(102);
     }
     else {
@@ -166,7 +166,7 @@ for ($i=1;$i<count($userarray);$i++) {
         $GROUP_ARR = $QUERY->fetchAll();
         foreach ($GROUP_ARR as $KEY => $ITEM) {
             $ID         = $i.md5($ITEM["id"]);
-            $SEL        = count($user->group_array) > 0 ? (in_array($ITEM["id"], $user->group_array) ? "checked" : "") : "";
+            $SEL        = count($kuser->group_array) > 0 ? (in_array($ITEM["id"], $kuser->group_array) ? "checked" : "") : "";
             $ADDLIST    .= "
                 <div class=\"icheck-primary\">
                     <input type=\"checkbox\" id=\"$ID\" name=\"ids[]\" value=\"$ITEM[id]\" $SEL>
