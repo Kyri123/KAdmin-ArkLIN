@@ -6,7 +6,7 @@
 
         <div class="collapse navbar-collapse navbar-secondary" id="navbarColor03">
             <ul class="nav navbar-nav mr-auto aa-nav" id="pills-tab">
-                {show}{!ifckonfig} {permissions??server??{cfg}??konfig??gus}
+                {show}{!ifckonfig} {permissions??server??{cfg}??konfig??show_gameusersettings}
                 <!-- GUS -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle btn-dark p-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -16,7 +16,7 @@
                         <a class="dropdown-item" data-toggle="pill" href="#pills-GameUserStetting" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-GameUserStetting-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
-                </li>{/permissions} {permissions??server??{cfg}??konfig??game}
+                </li>{/permissions} {permissions??server??{cfg}??konfig??show_game}
 
                 <!-- Game -->
                 <li class="nav-item dropdown">
@@ -27,7 +27,7 @@
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Game" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Game-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
-                </li>{/permissions} {permissions??server??{cfg}??konfig??engine}
+                </li>{/permissions} {permissions??server??{cfg}??konfig??show_engine}
 
                 <!-- Engine -->
                 <li class="nav-item dropdown">
@@ -38,7 +38,7 @@
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Engine" role="tab" aria-controls="pills-home">{::lang::servercenter::config::edit}</a> {expert}
                         <a class="dropdown-item" data-toggle="pill" href="#pills-Engine-exp" role="tab" aria-controls="pills-home">{::lang::servercenter::config::exp}</a>{/expert}
                     </div>
-                </li>{/permissions}{/!ifckonfig}{/show} {permissions??server??{cfg}??konfig??arkmanager}
+                </li>{/permissions}{/!ifckonfig}{/show} {permissions??server??{cfg}??konfig??show_arkmanager}
 
                 <!-- Arkmanager -->
                 <li class="nav-item dropdown">
@@ -51,6 +51,11 @@
                     </div>
                 </li>{/permissions}
             </ul>
+            <div class="ribbon-wrapper">
+                <div class="ribbon bg-info">
+                    Alpha
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -60,37 +65,31 @@
         <div class="tab-content" id="pills-tabContent">
             {show}
                 {!ifckonfig}
-                    {permissions??server??{cfg}??konfig??gus}
+                    {permissions??server??{cfg}??konfig??show_gameusersettings}
                         <!-- GUS - Normal -->
                         <form action="#save" method="post" class="tab-pane fade show active" id="pills-GameUserStetting" role="tabpanel">
                             <div id="form">
                                 <div class="table-responsive">
                                     <table class="table table-striped mb-0" style="width: 100%;">
                                         <tbody>
+                                            {form_GUS}
                                             <tr class="bg-dark">
-                                                <th colspan="2" class="p-0" style="border: 0!important;">
+                                                <th colspan="3" class="p-0">
                                                     <div class="list-group-item bg-dark">
-                                                        <h4 class="m-0">GameUserSettings.ini</h4>
+                                                        <h4 class="m-0">{::lang::servercenter::config::custom}</h4>
                                                     </div>
                                                 </th>
                                             </tr>
-                                            <tr id="tbody_GUS">
-                                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
-                                                <td class="p-2">
-                                                    <div class="input-group mb-0">
-                                                        <input type="text" class="form-control form-control-sm" id="tbody_GUS_section">
-                                                        <div class="input-group-append">
-                                                            <span onclick="addsection('#tbody_GUS')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                        </div>
-                                                    </div>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>{form_GUS_rest}</textarea>
                                                 </td>
                                             </tr>
-                                            {form_GUS}
                                         </tbody>
                                     </table>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+                                {permissions??server??{cfg}??konfig??gameusersettings}<button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>{/permissions}
                                 <input type="hidden" name="type" id="type_gus" value="GameUserSettings.ini">
                                 <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
                             </div>
@@ -108,45 +107,39 @@
                                         </th>
                                     </tr>
                                 </table>
-                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_gus">{gus}</textarea>
+                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_gus" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>{gus}</textarea>
                                 <input type="hidden" name="type" id="type_gus" value="GameUserSettings.ini">
                                 <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
-                                <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                                {permissions??server??{cfg}??konfig??gameusersettings}<button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>{/permissions}
                             </div>
                         </form>
                     {/permissions}
 
-                    {permissions??server??{cfg}??konfig??game}
+                    {permissions??server??{cfg}??konfig??show_game}
                         <!-- GAME - Normal -->
                         <form action="#save" method="post" class="tab-pane fade" id="pills-Game" role="tabpanel">
                             <div id="form">
                                 <div class="table-responsive">
                                     <table class="table table-striped mb-0">
                                         <tbody>
+                                            {form_GAME}
                                             <tr class="bg-dark">
-                                                <th colspan="2" class="p-0" style="border: 0!important;">
+                                                <th colspan="3" class="p-0">
                                                     <div class="list-group-item bg-dark">
-                                                        <h4 class="m-0">Game.ini</h4>
+                                                        <h4 class="m-0">{::lang::servercenter::config::custom}</h4>
                                                     </div>
                                                 </th>
                                             </tr>
-                                            <tr id="tbody_Game">
-                                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
-                                                <td class="p-2">
-                                                    <div class="input-group mb-0">
-                                                        <input type="text" class="form-control form-control-sm" id="tbody_Game_section">
-                                                        <div class="input-group-append">
-                                                            <span onclick="addsection('#tbody_Game')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                        </div>
-                                                    </div>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??gameusersettings}readonly{/!permissions}>{form_GAME_rest}</textarea>
                                                 </td>
                                             </tr>
-                                            {form_GAME}
                                         </tbody>
                                     </table>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+                                {permissions??server??{cfg}??konfig??game}<button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>{/permissions}
                                 <input type="hidden" name="type" id="type_gus" value="Game.ini">
                                 <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
                             </div>
@@ -164,45 +157,39 @@
                                         </th>
                                     </tr>
                                 </table>
-                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 5700px;" id="text_game">{game}</textarea>
+                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 5700px;" id="text_game" {!permissions??server??{cfg}??konfig??game}readonly{/!permissions}>{game}</textarea>
                                 <input type="hidden" name="type" id="type_game" value="Game.ini">
                                 <input type="hidden" name="cfg" id="cfg_game" value="{cfg}">
-                                <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                                {permissions??server??{cfg}??konfig??game}<button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>{/permissions}
                                 </div>
                         </form>
                     {/permissions}
 
-                    {permissions??server??{cfg}??konfig??engine}
+                    {permissions??server??{cfg}??konfig??show_engine}
                         <!-- Engine - Normal -->
                         <form action="#save" method="post" class="tab-pane fade" id="pills-Engine" role="tabpanel">
                             <div id="form">
                                 <div class="table-responsive">
                                     <table class="table table-striped mb-0">
                                         <tbody>
+                                            {form_ENGINE}
                                             <tr class="bg-dark">
-                                                <th colspan="2" class="p-0" style="border: 0!important;">
+                                                <th colspan="3" class="p-0">
                                                     <div class="list-group-item bg-dark">
-                                                        <h4 class="m-0">Engine.ini</h4>
+                                                        <h4 class="m-0">{::lang::servercenter::config::custom}</h4>
                                                     </div>
                                                 </th>
                                             </tr>
-                                            <tr id="tbody_Game">
-                                                <td class="p-2">{::lang::servercenter::config::sec_create}</td>
-                                                <td class="p-2">
-                                                    <div class="input-group mb-0">
-                                                        <input type="text" class="form-control form-control-sm" id="tbody_Game_section">
-                                                        <div class="input-group-append">
-                                                            <span onclick="addsection('#tbody_Game')" style="cursor:pointer" class="input-group-btn btn-success pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                        </div>
-                                                    </div>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <textarea class="form-control form-control-sm" style="min-height: 500px; max-height: 500px" name="custom" {!permissions??server??{cfg}??konfig??engine}readonly{/!permissions}>{form_ENGINE_rest}</textarea>
                                                 </td>
                                             </tr>
-                                            {form_ENGINE}
                                         </tbody>
                                     </table>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>
+                                {permissions??server??{cfg}??konfig??engine}<button type="submit" class="btn btn-primary" style="width: 100%;" name="savenormal">{::lang::servercenter::config::btn_save}</button>{/permissions}
                                 <input type="hidden" name="type" id="type_gus" value="Engine.ini">
                                 <input type="hidden" name="cfg" id="cfg_gus" value="{cfg}">
                             </div>
@@ -221,17 +208,17 @@
                                         </th>
                                     </tr>
                                 </table>
-                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_engine">{engine}</textarea>
+                                <textarea name="text" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" id="text_engine" {!permissions??server??{cfg}??konfig??engine}readonly{/!permissions}>{engine}</textarea>
                                 <input type="hidden" name="type" id="type_engine" value="Engine.ini">
                                 <input type="hidden" name="cfg" id="cfg_engine" value="{cfg}">
-                                <button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                                {permissions??server??{cfg}??konfig??engine}<button type="submit" class="btn btn-primary" name="save" style="width: 100%">{::lang::servercenter::config::btn_save}</button>{/permissions}
                             </div>
                         </form>
                     {/permissions}
                 {/!ifckonfig}
             {/show}
 
-            {permissions??server??{cfg}??konfig??arkmanager}
+            {permissions??server??{cfg}??konfig??show_arkmanager}
                 <!-- AA - NORMAL -->
                 <div class="tab-pane fade {ifckonfig}show active{/ifckonfig} {!show}show active{/!show}" id="pills-AM" role="tabpanel">
                     <form action="#save" method="post">
@@ -271,7 +258,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;" name="savecfg">{::lang::servercenter::config::btn_save}</button>
+                        {permissions??server??{cfg}??konfig??arkmanager}<button type="submit" class="btn btn-primary" style="width: 100%;" name="savecfg">{::lang::servercenter::config::btn_save}</button>{/permissions}
                     </form>
                 </div>
                 <!-- AA - EXP -->
@@ -286,11 +273,41 @@
                         </tr>
                     </table>
                     <form action="#save" method="post">
-                        <textarea name="txtarea" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;">{amcfg}</textarea>
-                        <button type="submit" class="btn btn-primary" name="savecfg_expert" style="width: 100%">{::lang::servercenter::config::btn_save}</button>
+                        <textarea name="txtarea" class="form-control form-control-sm" rows="3" style="min-height: 700px;max-height: 700px;" {!permissions??server??{cfg}??konfig??arkmanager}readonly{/!permissions}>{amcfg}</textarea>
+                        {permissions??server??{cfg}??konfig??arkmanager}<button type="submit" class="btn btn-primary" name="savecfg_expert" style="width: 100%">{::lang::servercenter::config::btn_save}</button>{/permissions}
                     </form>
                 </div>
             {/permissions}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="einsenden" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{::lang::servercenter::config::sendin_title}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="ini_opt" class="col-form-label">{::lang::servercenter::config::opt}:</label>
+                        <input type="text" class="form-control" id="ini_opt" readonly>
+                        <input type="hidden" class="form-control" id="ini_send" value="{ini}">
+                    </div>
+                    <div class="form-group">
+                        <label for="ini_txt" class="col-form-label">{::lang::servercenter::config::txt}:</label>
+                        <textarea name="" class="form-control" id="ini_txt"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{::lang::servercenter::config::close}</button>
+                <button type="button" class="btn btn-primary" onclick="sendtoserver()">{::lang::servercenter::config::sendin}</button>
+            </div>
         </div>
     </div>
 </div>
@@ -302,6 +319,7 @@
     // Allgemeine Vars
     var vars = {};
     vars.ROOT = '{ROOT}';
+    vars.Web_url = '{WEBURL}';
 
     // Sprache
     var lang = {};

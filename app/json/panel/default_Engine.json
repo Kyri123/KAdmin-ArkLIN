@@ -1,0 +1,46 @@
+{
+  "/script/onlinesubsystemutils.ipnetdriver": {
+    "NetServerMaxTickRate": {
+      "type": "int",
+      "default": "130"
+    },
+
+    "LanServerMaxTickRate": {
+      "type": "int",
+      "default": "130"
+    },
+
+    "MaxClientRate": {
+      "type": "int",
+      "default": "1048576"
+    },
+
+    "MaxInternetClientRate": {
+      "type": "int",
+      "default": "1048576"
+    },
+
+    "MinClientRate": {
+      "type": "int",
+      "default": "1048576"
+    },
+
+    "MinInternetClientRate": {
+      "type": "int",
+      "default": "1048576"
+    }
+  },
+
+
+  "/script/engine.player": {
+    "ConfiguredInternetSpeed": {
+      "type": "int",
+      "default": "1048576"
+    },
+
+    "ConfiguredLanSpeed": {
+      "type": "int",
+      "default": "1048576"
+    }
+  }
+}

@@ -1,0 +1,2 @@
+create table `ArkAdmin_reg_code` (`id` int unsigned zerofill auto_increment primary key, `code` text null, `used` int null, `time` int null) charset = utf8mb4;
+INSERT INTO `ArkAdmin_reg_code` VALUES ('0000000001', '7c90c6595f7cb4d2aa0e', '0', '1');

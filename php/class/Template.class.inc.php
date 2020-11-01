@@ -112,7 +112,8 @@ class Template {
      * @param $key
      */
     private function session($array, $key, $isserver = false) {
-        global $permissions;
+        global $session_user;
+        $permissions = $session_user->permissions;
 
         foreach ($array as $k => $v) {
             $mkey = $key."\?\?$k";
@@ -181,14 +182,13 @@ class Template {
      * Finale verarbeitung des Templates (Sprachdateien usw)
      */
     private function final() {
-        global $permissions;
-        global $_SESSION;
+        global $_SESSION, $session_user;
 
         // verarbeite Sprache, Permissions & Eingaben
         $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
         $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
         $this->rlang(); $this->rintern(); // 3x um {xxx{xxx}} aus der XML zu verwenden
-        if(isset($_SESSION["id"]) && is_array($permissions)) $this->session($permissions, "permissions");
+        if(isset($_SESSION["id"]) && is_array($session_user->permissions)) $this->session($session_user->permissions, "permissions");
 
         // Wende BB-Codes an
         $this->bb_codes();

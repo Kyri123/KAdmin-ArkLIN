@@ -108,6 +108,8 @@
                 <statistiken>Statistiken</statistiken>
 
                 <!-- Optionen -->
+                <add_group>Darf Gruppen zuweisen</add_group>
+                <api>Rechte die API zu verwalten</api>
                 <show>Darf Sehen / Aufrufen</show>
                 <create>Darf Erstellen</create>
                 <delete>Darf Löschen</delete>
@@ -142,11 +144,15 @@
                 <admin_send>Darf Administratoren hinzufügen</admin_send>
                 <whitelist_show>Darf die Whitelist sehen</whitelist_show>
                 <whitelist_send>Darf Spieler zur Whitelist hinzufügen</whitelist_send>
-                <changeplace>Dark Position der Mods ändern</changeplace>
-                <gus>Darf GameUserSettings bearbeiten</gus>
-                <game>Darf Game bearbeiten</game>
-                <engine>Darf Engine bearbeiten</engine>
+                <changeplace>Darf Position der Mods ändern</changeplace>
+                <GameUserSettings>Darf GameUserSettings bearbeiten</GameUserSettings>
+                <Game>Darf Game bearbeiten</Game>
+                <Engine>Darf Engine bearbeiten</Engine>
                 <arkmanager>Darf Arkmanager bearbeiten</arkmanager>
+                <show_GameUserSettings>Darf GameUserSettings sehen</show_GameUserSettings>
+                <show_Game>Darf Game sehen</show_Game>
+                <show_Engine>Darf Engine sehen</show_Engine>
+                <show_arkmanager>Darf Arkmanager sehen</show_arkmanager>
                 <remove>Darf Entfernen</remove>
                 <playin>Darf Aufspielen</playin>
                 <download>Darf Runterladen</download>

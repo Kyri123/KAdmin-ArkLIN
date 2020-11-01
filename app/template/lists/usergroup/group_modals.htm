@@ -1,0 +1,73 @@
+{!id1}
+    <!-- Edit -->
+    <form action="#" method="post" class="modal fade" id="e{id}" aria-modal="true" style="display: none;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content border-0">
+                <div class="modal-header bg-info border-0">
+                    <h4 class="modal-title">{::lang::admin_usergroup::modal::edit::title}</h4>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">{::lang::admin_usergroup::modal::addgroup::group_name}</span>
+                                </div>
+                                <input name="group_name" type="text" class="form-control" value="{name}">
+                            </div>
+                        </div>
+                    </div>
+                    {form_editgroup}
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <input name="id" type="hidden" value="{qid}">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{::lang::admin_usergroup::modal::close}</button>
+                    <button type="submit" name="editgroup" class="btn btn-info">{::lang::admin_usergroup::modal::edit::edit}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- remove -->
+    <form action="#" method="post" class="modal fade" id="r{id}" aria-modal="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content border-0">
+                <div class="modal-header bg-danger border-0">
+                    <h4 class="modal-title">{::lang::admin_usergroup::modal::remove::title}</h4>
+                </div>
+                <div class="modal-body">
+                    {::lang::admin_usergroup::modal::remove::txt}
+                    <input name="id" type="hidden" value="{qid}">
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{::lang::admin_usergroup::modal::close}</button>
+                    <button type="submit" name="removegroup" class="btn btn-danger">{::lang::admin_usergroup::modal::remove::remove}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {addgroups}
+        <!-- canadd -->
+        <form action="#" method="post" class="modal fade" id="a{id}" aria-modal="true" style="display: none;">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content border-0">
+                    <div class="modal-header bg-info border-0">
+                        <h4 class="modal-title">{::lang::admin_usergroup::modal::canadd::title}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row m-0 pl-3 pr-3">
+                            {addlist}
+                        </div>
+                        <input name="ids[]" type="hidden" value="1">
+                        <input name="id" type="hidden" value="{qid}">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{::lang::admin_usergroup::modal::close}</button>
+                        <button type="submit" name="canadd" class="btn btn-info">{::lang::admin_usergroup::modal::canadd::set}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {/addgroups}
+{/!id1}

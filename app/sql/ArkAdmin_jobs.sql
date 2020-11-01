@@ -1,0 +1,1 @@
+create table `ArkAdmin_jobs` (`id`  int unsigned zerofill auto_increment primary key, `job` text null, `parm` text null, `time` int  null, `intervall` int null, `active` int  null, `server` text null, `name` text null);

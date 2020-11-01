@@ -1,0 +1,665 @@
+{
+  "/script/shootergame.shootergamemode": {
+    "bAllowUnlimitedRespecs": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bOnlyAllowSpecifiedEngrams": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "GlobalSpoilingTimeMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "GlobalItemDecompositionTimeMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "GlobalCorpseDecompositionTimeMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "ResourceNoReplenishRadiusPlayers": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "ResourceNoReplenishRadiusStructures": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "bIncreasePvPRespawnInterval": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "IncreasePvPRespawnIntervalCheckPeriod": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "IncreasePvPRespawnIntervalMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "IncreasePvPRespawnIntervalBaseAmount": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "bAutoPvETimer": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bAutoPvEUseSystemTime": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "AutoPvEStartTimeSeconds": {
+      "type": "float",
+      "default": "300.0"
+    },
+
+    "AutoPvEStopTimeSeconds": {
+      "type": "float",
+      "default": "300.0"
+    },
+
+    "bPvEDisableFriendlyFire": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bDisableFriendlyFire": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bFlyerPlatformAllowUnalignedDinoBasing": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bUseCorpseLocator": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "MatingIntervalMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "MatingSpeedMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "EggHatchSpeedMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "BabyMatureSpeedMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "BabyFoodConsumptionSpeedMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "CropGrowthSpeedMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "LayEggIntervalMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "CropDecaySpeedMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "HairGrowthSpeedMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "StructureDamageRepairCooldown": {
+      "type": "int",
+      "default": "180"
+    },
+
+    "bPassiveDefensesDamageRiderlessDinos": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bPvEAllowTribeWar": {
+      "type": "bool",
+      "default": "True"
+    },
+
+    "bPvEAllowTribeWarCancel": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "CustomRecipeEffectivenessMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "DinoHarvestingDamageMultiplier": {
+      "type": "float",
+      "default": "3.2"
+    },
+
+    "PlayerHarvestingDamageMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "DinoTurretDamageMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "bDisableLootCrates": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "SupplyCrateLootQualityMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "FishingLootQualityMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "KickIdlePlayersPeriod": {
+      "type": "int",
+      "default": "3600"
+    },
+
+    "TribeSlotReuseCooldown": {
+      "type": "float",
+      "default": "0.0"
+    },
+
+    "MaxNumberOfPlayersInTribe": {
+      "type": "float",
+      "default": "0.0"
+    },
+
+    "BabyImprintingStatScaleMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "BabyImprintAmountMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "BabyCuddleGracePeriodMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "BabyCuddleLoseImprintQualitySpeedMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "MaxTribeLogs": {
+      "type": "int",
+      "default": "100"
+    },
+
+    "PvPZoneStructureDamageMultiplier": {
+      "type": "float",
+      "default": "6.0"
+    },
+
+    "bDisableDinoRiding": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bDisableDinoTaming": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bDisableStructurePlacementCollision": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bAutoUnlockAllEngrams": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bHardLimitTurretsInRange": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bShowCreativeMode": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "PreventOfflinePvPConnectionInvincibleInterval": {
+      "type": "float",
+      "default": "5.0"
+    },
+
+    "TamedDinoCharacterFoodDrainMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "WildDinoCharacterFoodDrainMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "WildDinoTorporDrainMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PassiveTameIntervalMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "TamedDinoTorporDrainMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "KillXPMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "HarvestXPMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "CraftXPMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "GenericXPMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "SpecialXPMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "FastDecayInterval": {
+      "type": "int",
+      "default": "43200"
+    },
+
+    "MaxAlliancesPerTribe": {
+      "type": "int",
+      "default": "3"
+    },
+
+    "MaxTribesPerAlliance": {
+      "type": "int",
+      "default": "10"
+    },
+
+    "bUseTameLimitForStructuresOnly": {
+      "type": "bool",
+      "default": "True"
+    },
+
+    "UseCorpseLifeSpanMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "GlobalPoweredBatteryDurabilityDecreasePerSecond": {
+      "type": "float",
+      "default": "4.0"
+    },
+
+    "DestroyTamesOverLevelClamp\uFEFF": {
+      "type": "int",
+      "default": "0"
+    },
+
+    "LimitNonPlayerDroppedItemsRange": {
+      "type": "int",
+      "default": "0"
+    },
+
+    "LimitNonPlayerDroppedItemsCount": {
+      "type": "int",
+      "default": "0"
+    },
+
+    "MaxFallSpeedMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "bIgnoreStructuresPreventionVolumes": {
+      "type": "bool",
+      "default": "True"
+    },
+
+    "bGenesisUseStructuresPreventionVolumes": {
+      "type": "bool",
+      "default": "True"
+    },
+
+    "bDisableGenesisMissions": {
+      "type": "bool",
+      "default": "False"
+    },
+
+    "bLimitTurretsInRange": {
+      "type": "bool",
+      "default": "True"
+    },
+
+    "LimitTurretsRange": {
+      "type": "int",
+      "default": "50"
+    },
+
+    "LimitTurretsNum": {
+      "type": "int",
+      "default": "50"
+    },
+
+    "bUseSingleplayerSettings": {
+      "type": "bool",
+      "default": "False"
+    },
+
+
+
+    "PlayerBaseStatMultipliers": [
+      {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "0.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "0.0"
+      }, {
+        "type": "float",
+        "default": "0.0"
+      }, {
+        "type": "float",
+        "default": "0.0"
+      }, {
+        "type": "float",
+        "default": "0.0"
+      }
+    ],
+
+
+
+    "PerLevelStatsMultiplier_Player": [
+      {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }
+    ],
+
+
+
+    "PerLevelStatsMultiplier_DinoWild": [
+      {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+      "type": "float",
+      "default": "1.0"
+      }
+    ],
+
+
+
+    "PerLevelStatsMultiplier_DinoTamed": [
+      {
+        "type": "float",
+        "default": "0.2"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "0.17"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }
+    ],
+
+
+
+    "PerLevelStatsMultiplier_DinoTamed_Add": [
+      {
+        "type": "float",
+        "default": "0.14"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "0.14"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }
+    ],
+
+
+
+    "PerLevelStatsMultiplier_DinoTamed_Affinity": [
+      {
+        "type": "float",
+        "default": "0.44"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      },  {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "0.44"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }, {
+        "type": "float",
+        "default": "1.0"
+      }
+    ]
+  }
+}

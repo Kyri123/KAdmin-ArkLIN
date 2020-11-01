@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if(!$user->perm("config/show")) {
+if(!$session_user->perm("config/show")) {
     header("Location: /401"); exit;
 }
 
@@ -59,7 +59,7 @@ $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 
 // Arkmanager.cfg
-if (isset($_POST["savearkmanager"]) && $user->perm("config/am_save")) {
+if (isset($_POST["savearkmanager"]) && $session_user->perm("config/am_save")) {
     $content = ini_save_rdy($_POST["text"]);
     if (file_put_contents($apath, $content)) {
         $resp .= $alert->rd(102);
@@ -72,7 +72,7 @@ elseif(isset($_POST["savearkmanager"])) {
 }
 
 // Template.cfg
-if (isset($_POST["savetemplate"]) && $user->perm("config/edit_default")) {
+if (isset($_POST["savetemplate"]) && $session_user->perm("config/edit_default")) {
     $content = ini_save_rdy($_POST["text"]);
     if (file_put_contents($tpath, $content)) {
         $resp .= $alert->rd(102);
@@ -85,7 +85,7 @@ elseif(isset($_POST["savetemplate"])) {
 }
 
 //remove cache
-if (isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamcmd' && $user->perm("config/scmd_clear")) {
+if (isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamcmd' && $session_user->perm("config/scmd_clear")) {
     if(file_exists($workshop)) {
         file_put_contents($workshop, "\"AppWorkshop\" {}");
         header("Location: /config"); exit;
@@ -99,7 +99,7 @@ elseif(isset($url[3]) && $url[2] == 'clear' && $url[3] == 'steamcmd') {
 }
 
 // save Webhelper
-if (isset($_POST["savewebhelper"]) && $user->perm("config/aa_save")) {
+if (isset($_POST["savewebhelper"]) && $session_user->perm("config/aa_save")) {
     $a_key = $_POST["key"];
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");
@@ -144,7 +144,7 @@ elseif(isset($_POST["savewebhelper"])) {
 }
 
 //Panel CFG
-if (isset($_POST["savepanel"]) && $user->perm("config/panel_save")) {
+if (isset($_POST["savepanel"]) && $session_user->perm("config/panel_save")) {
     $a_key = $_POST["key"];
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");

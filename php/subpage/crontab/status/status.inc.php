@@ -23,6 +23,11 @@ for ($i=0;$i<count($dir);$i++) {
 
     if ($ifile_info['extension'] == "cfg" && strpos($ifile_info['filename'], "example") !== true) {
         $servdata = $serv = new server($ifile_info['filename']);
+
+        $serv->ini_load("Game.ini", true);
+        $serv->ini_load("GameUserSettings.ini", true);
+        $serv->ini_load("Engine.ini", true);
+
         // erstelle STATUS
         $raw = __ADIR__.'/app/json/serverinfo/raw_'.$serv->name().'.json';
         if (file_exists($raw)) {
@@ -56,7 +61,7 @@ for ($i=0;$i<count($dir);$i++) {
             if (!file_exists($statefile)) file_put_contents($statefile, 'TRUE');
             $serv_state = trim(file_get_contents($statefile));
             $log = __ADIR__.'/app/data/shell_resp/log/'.$serv->name().'/last.log';
-            if ($serv_state == 'TRUE' || !timediff($log, ($webserver['config']['ShellIntervall'] / 1000 + 3))) {
+            if ($serv_state == 'TRUE' || timediff($log, ($webserver['config']['ShellIntervall'] / 1000 + 3))) {
                 $server['next'] = 'FALSE';
             }
             else {

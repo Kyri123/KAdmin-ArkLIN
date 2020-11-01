@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if (!$user->perm("$perm/logs/show")) {
+if (!$session_user->perm("$perm/logs/show")) {
     header("Location: /401");
     exit;
 }
@@ -33,7 +33,7 @@ for ($i=0;$i<count($exp);$i++) {
 }
 
 // Lösche alle Loginhalte
-if(isset($_POST["clearlogs"]) && $user->perm("$perm/logs/clear")) {
+if(isset($_POST["clearlogs"]) && $session_user->perm("$perm/logs/clear")) {
     if(file_put_contents("$logpath/arkserver.log", " ") && file_put_contents("$logpath/arkmanager.log", " ")) {
         $resp = $alert->rd(101);
     }

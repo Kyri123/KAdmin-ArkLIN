@@ -1,0 +1,97 @@
+<lang>
+    <!--
+    ++++++++++++++++++++++++++++++++++++++++++++
+    @author:  Oliver Kaufmann (Kyri123)
+    @copyright Copyright (c) 2019-2020, Oliver Kaufmann
+    @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
+    Github: https://github.com/Kyri123/Arkadmin
+    ++++++++++++++++++++++++++++++++++++++++++++
+    c_X Types:
+    0-99 = Danger
+    100-199 = Success
+    200-299 = Warning
+    >300 = Info
+    ++++++++++++++++++++++++++++++++++++++++++++
+    -->
+    <GameUserSettings>
+        <RCONEnabled>Ist RCON [b]Aktiv[/b] [b](dies wird durch die Arkmanager.cfg gesteuert)[/b]</RCONEnabled>
+        <RCONPort>Port der für den RCON benutzt werden soll [b](dies wird durch die Arkmanager.cfg gesteuert)[/b]</RCONPort>
+        <MaxTributeDinos>Anzahl der [b]Dinos[/b] die in den/das Obelisken/Termial geladen werden können</MaxTributeDinos>
+        <MaxTributeItems>Anzahl der [b]Items[/b] die in den/das Obelisken/Termial geladen werden können</MaxTributeItems>
+        <alwaysNotifyPlayerJoined>Aktiviert die Meldung wenn ein Spieler Online kommt</alwaysNotifyPlayerJoined>
+        <alwaysNotifyPlayerLeft>Aktiviert die Meldung wenn ein Spieler Offline geht</alwaysNotifyPlayerLeft>
+        <allowThirdPersonPlayer>Erlaubt es auch in Third Person zu spielen</allowThirdPersonPlayer>
+        <AllowFlyerCarryPvE>Wenn [b]Aktiv[/b] erlaubt es nicht gezähmte Kreaturen zu tragen</AllowFlyerCarryPvE>
+        <serverForceNoHud>Wenn [b]Aktiv[/b] ist [b]Kein[/b] HUD vorhanden</serverForceNoHud>
+        <serverHardcore>Stellt den Server auf Hardcore-Modus um (Permanenter Tod des Charakters)</serverHardcore>
+        <ShowMapPlayerLocation>Wenn aktiviert wird die Spieler Position auf der Karte angezeigt</ShowMapPlayerLocation>
+        <serverPVE>Wenn aktiviert wird der Server auf PVE only umgestellt</serverPVE>
+        <TheMaxStructuresInRange>Definiert die Anzahl der Maximalen Strukturen in einem bestimmten Radius</TheMaxStructuresInRange>
+        <MaxPlayers>Definiert die Maximale Anzahl an Spielern die gleichzeitig auf dem Server spielen können</MaxPlayers>
+        <ServerPassword>Setzt ein Passwort für den Server um sich einloggen zu können</ServerPassword>
+        <ServerAdminPassword>Setzt das Passwort um als Admin agieren zu können</ServerAdminPassword>
+        <XPMultiplier>Definiert den XP-Multiplikator der erhaltenen Erfahrung</XPMultiplier>
+        <HarvestAmountMultiplier>Definiert den Multiplikator mit dem man Materialien sammeln kann</HarvestAmountMultiplier>
+        <TamingSpeedMultiplier>Definiert die Geschwindigkeit mit der man Kreaturen zähmen kann</TamingSpeedMultiplier>
+        <HarvestHealthMultiplier>Definiert das Leben von Bäumen, Steinen etc. bis diese Ressource verbraucht ist</HarvestHealthMultiplier>
+        <PvEDinoDecayPeriodMultiplier>Multipliziert die Zeit bis in PVE eine Spielerkreatur verfällt</PvEDinoDecayPeriodMultiplier>
+        <PvEStructureDecayPeriodMultiplier>Multipliziert die Zeit bis in PVE eine Spielerstrukturen verfällt</PvEStructureDecayPeriodMultiplier>
+        <PvEStructureDecayDestructionPeriod>Gibt die Zeit an, die Spielerstrukturen benötigen, um im PvE-Modus zu verfallen</PvEStructureDecayDestructionPeriod>
+        <StructureResistanceMultiplier>Multipliziert die Resistenz von Spielerstrukturen</StructureResistanceMultiplier>
+        <DinoResistanceMultiplier>Multipliziert die Resistenz von Spielerkreatur</DinoResistanceMultiplier>
+        <PlayerResistanceMultiplier>Multipliziert die Resistenz von dem Spieler</PlayerResistanceMultiplier>
+        <StructureDamageMultiplier>Multipliziert den verursachten Schaden von Spielerstrukturen (Sowas wie Barrikaden)</StructureDamageMultiplier>
+        <SpectatorPassword>Passwort für den Zuschauermodus [b]requestspectator [password][/b]</SpectatorPassword>
+        <DayTimeSpeedScale>Wie lang ist der Tag</DayTimeSpeedScale>
+        <DayCycleSpeedScale>Wie schnell geht der Tag rum</DayCycleSpeedScale>
+        <globalVoiceChat>Wenn [b]Aktiv[/b] ist der Voice-Chat Global auf dem Server zu hören</globalVoiceChat>
+        <noTributeDownloads>Verbietet Items auf dem Server Runterzuladen</noTributeDownloads>
+        <proximityChat>Wenn [b]Aktiv[/b] Nur Spieler in einer bestimmten Reichweite sehen den Chat</proximityChat>
+        <DisableStructureDecayPvE>Wenn [b]Aktiv[/b] deaktiviert dies den Spielerstrukturen in [b]PVE[/b]</DisableStructureDecayPvE>
+        <DisableDinoDecayPvE>Wenn [b]Aktiv[/b] deaktiviert dies den Spielerkreatur in [b]PVE[/b]</DisableDinoDecayPvE>
+        <bAllowPlatformSaddleMultiFloors>Wenn [b]Aktiv[/b] können auf Sattelplattformen mehrere Ebenen gebaut werden</bAllowPlatformSaddleMultiFloors>
+        <DifficultyOffset>Multiplikator für das Dinolevel</DifficultyOffset>
+        <OverrideOfficialDifficulty>Über schreib die Offiziell eingestellte Schwierigkeit (Dino Level)</OverrideOfficialDifficulty>
+        <PlayerDamageMultiplier>Multipliziert den Schaden von dem Spieler</PlayerDamageMultiplier>
+        <DinoDamageMultiplier>Multipliziert den verursachten Schaden von Spielerkreaturen</DinoDamageMultiplier>
+        <MaxPlatformSaddleStructureLimit>Ändert das Maximum von Platform Kreaturen und Flöße in einem Ark</MaxPlatformSaddleStructureLimit>
+        <PerPlatformMaxStructuresMultiplier>Multipliziert wieviele Strukturen sich auf einer Plattform befinden dürfen</PerPlatformMaxStructuresMultiplier>
+        <MaxGateFrameOnSaddles>Gibt an wie viele Tore sich auf einer Plattform finden dürfen</MaxGateFrameOnSaddles>
+        <ResourcesRespawnPeriodMultiplier>Gibt den Skalierungsfaktor für die Respawn-Rate für Ressourcenknoten (Bäume, Felsen, Büsche usw.) an. Niedrigere Werte führen dazu, dass diese häufiger neu erscheinen.</ResourcesRespawnPeriodMultiplier>
+        <PlayerCharacterWaterDrainMultiplier>Gibt den Skalierungsfaktor für den Wasserverbrauch der Spielercharaktere an. Höhere Werte erhöhen den verbrauch.</PlayerCharacterWaterDrainMultiplier>
+        <PlayerCharacterFoodDrainMultiplier>Gibt den Skalierungsfaktor für den Essensverbrauch der Spielercharaktere an. Höhere Werte erhöhen den verbrauch.</PlayerCharacterFoodDrainMultiplier>
+        <PlayerCharacterStaminaDrainMultiplier>Gibt den Skalierungsfaktor für den Ausdauerverbrauch der Spielercharaktere an. Höhere Werte erhöhen den verbrauch.</PlayerCharacterStaminaDrainMultiplier>
+        <PlayerCharacterHealthRecoveryMultiplier>Gibt den Skalierungsfaktor für die Wiederherstellung der Gesundheit von Spielercharakteren an. Höhere Werte erhöhen die Wiederherstellungsrate (Spielercharaktere heilen schneller).</PlayerCharacterHealthRecoveryMultiplier>
+        <DinoCharacterFoodDrainMultiplier>Gibt den Skalierungsfaktor für den Futterverbrauch von Dinosauriern an. Höhere Werte erhöhen den Nahrungsverbrauch (Dinosaurier bekommen schneller Hunger). Dies wirkt sich auch auf die Zähmungszeiten aus.</DinoCharacterFoodDrainMultiplier>
+        <DinoCharacterStaminaDrainMultiplier>Gibt den Skalierungsfaktor für den Ausdauerverbrauch von Dinosauriern an. Höhere Werte erhöhen den Ausdauerverbrauch (Dinosaurier werden schneller müde).</DinoCharacterStaminaDrainMultiplier>
+        <DinoCharacterHealthRecoveryMultiplier>Gibt den Skalierungsfaktor für die Wiederherstellung der Gesundheit von Dinosauriern an. Höhere Werte erhöhen die Wiederherstellungsrate (Dinosaurier heilen schneller).</DinoCharacterHealthRecoveryMultiplier>
+        <DinoCountMultiplier>Multiplikator für die Anzahl der Kraturen auf der Karte die gleichzeitig erscheinen können (dies hat bei hohem Multiplikator deutliche auswirkung auf die Performance)</DinoCountMultiplier>
+        <BanListURL>URL zu einer Banliste (Standart ist die Offizelle Bannliste [b]http://arkdedicated.com/banlist.txt[/b])</BanListURL>
+        <PvPStructureDecay>Wenn [b]Aktiv[/b] deaktiviert den Strukturverfall auf PvP-Servern.</PvPStructureDecay>
+        <Message>Text für MotD die beim Betreten des Server oben angezeigt wird</Message>
+        <SessionName>Name des Servers der in der Serverliste angezeigt wird</SessionName>
+        <bServerGameLogEnabled>Aktiviert den Gamelog (Dies sollte Aktiv bleiben)</bServerGameLogEnabled>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+        <lol></lol>
+    </GameUserSettings>
+</lang>

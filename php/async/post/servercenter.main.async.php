@@ -27,7 +27,7 @@ switch ($case) {
         if ($para == null) $para[0] = null;
         $paraend = null;
 
-        if($user->perm("server/$cfg/actions")) {
+        if($session_user->perm("server/$cfg/actions")) {
             // Aktion
             if (empty($_POST["action"]) && $_POST["custom"] == "") {
                 $errorMSG = $alert->rd(2);

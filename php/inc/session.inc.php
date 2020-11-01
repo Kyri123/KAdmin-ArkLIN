@@ -105,20 +105,10 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
                 if ($mycon->query($q_code)->numRows() > 0) {
                     $codeid = $mycon->fetchArray()["id"];
                     $row_code = $mycon->query($q_code)->fetchArray();
-                    $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `rang`, `registerdate`) VALUES (\''.username.'\', \''.email.'\', \''.md5(pw1).'\', \'1\', \''.time().'\')';
+                    $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `rang`, `registerdate`,`rang`) VALUES (\''.username.'\', \''.email.'\', \''.md5(pw1).'\', \'1\', \''.time().'\', \''.($row_code["time"] == "1" ? "[1]":"[]").'\')';
                     // Wenn der Benutzer erstellt wurde
                     if($mycon->query($query)) {
                         $mycon->query("UPDATE `ArkAdmin_reg_code` SET `used` = '1' WHERE `id` = '$codeid'");
-
-                        // schau ob code = admin ist (datensatz ist mit time benannt ja...)
-                        if($row_code["time"] == "1") {
-                            $userdata = $mycon->query('SELECT * FROM `ArkAdmin_users` WHERE `username` = \''.username.'\'')->fetchArray();
-                            $permissions_default = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
-                            $permissions = (isset($userdata["id"]) && file_exists(__ADIR__."/app/json/user/".md5($userdata["id"]).".permissions.json")) ? $helper->file_to_json(__ADIR__."/app/json/user/".md5($userdata["id"]).".permissions.json") : $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
-                            $permissions["all"]["is_admin"] = 1;
-                            if(!file_exists(__ADIR__."/app/json/user/".md5($userdata["id"]).".permissions.json")) $helper->savejson_create($permissions, __ADIR__."/app/json/user/".md5($userdata["id"]).".permissions.json");
-                        }
-
                         $resp = $alert->rd(109, 3);
                     }
                     else {

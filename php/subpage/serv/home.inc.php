@@ -21,7 +21,7 @@ $page_tpl->r('SESSION_USERNAME' ,$user->read("username"));
 // Erstelle Dateien wenn die nicht exsistieren
 $cheatfile = $serv->dir_save(true)."/AllowedCheaterSteamIDs.txt";
 $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
-if(!file_exists($cheatfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($cheatfile, " ");
+if(!file_exists($cheatfile) && file_exists($serv->dir_save(true))) file_put_contents($cheatfile, " ");
 if(!file_exists($whitelistfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($whitelistfile, " ");
 
 $playerjson = $helper->file_to_json(__ADIR__.'/app/json/steamapi/profile_allg.json', true);
@@ -29,7 +29,7 @@ $playerjs = isset($playerjson["response"]["players"]) ? $playerjson["response"][
 $count = (is_countable($playerjs)) ? count($playerjs): false;
 
 // Administrator hinzufügen
-if (isset($_POST["addadmin"]) && $user->perm("$perm/home/admin_send")) {
+if (isset($_POST["addadmin"]) && $session_user->perm("$perm/home/admin_send")) {
     $id = $_POST["id"];
     $cheatcontent = file_get_contents($cheatfile);
 
@@ -63,7 +63,7 @@ elseif(isset($_POST["addadmin"])) {
 }
 
 // Entfernte von Adminliste
-if (isset($_POST["rm"]) && $user->perm("$perm/home/admin_send")) {
+if (isset($_POST["rm"]) && $session_user->perm("$perm/home/admin_send")) {
     $id = $_POST["stid"];
     $content = file_get_contents($cheatfile);
     // Prüfe ob die ID exsistent ist
@@ -91,7 +91,7 @@ if (!is_array($player_json)) $player_json = array();
 if (!is_array($tribe_json)) $tribe_json = array();
 
 // Liste Admins auf
-if ($serv->isinstalled() && $user->perm("$perm/home/admin_show")) {
+if ($serv->isinstalled() && $session_user->perm("$perm/home/admin_show")) {
 
     if (!file_exists($cheatfile) && file_exists($serv->dir_save(true))) file_put_contents($cheatfile, "");
     if (file_exists($cheatfile)) {

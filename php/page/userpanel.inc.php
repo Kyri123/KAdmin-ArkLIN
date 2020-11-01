@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if(!$user->perm("userpanel/show")) {
+if(!$session_user->perm("userpanel/show")) {
     header("Location: /401"); exit;
 }
 
@@ -26,12 +26,27 @@ $kuser          = new userclass();
 $tpl = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 
+//Benutzergruppen setzten
+if(isset($_POST["editgroups"]) && $session_user->perm("all/is_admin")) {
+    $groups = isset($_POST["ids"]) ? json_encode($_POST["ids"]) : "[]";
+    $users = new userclass($_POST["userid"]);
+    if($users->write("rang", $groups)) {
+        $resp = $alert->rd(102);
+    }
+    else {
+        $resp = $alert->rd(3);
+    }
+}
+elseif(isset($_POST["editgroups"]))  {
+    $resp = $alert->rd(99);
+}
+
 // Code hinzufügen
-if (isset($_POST["add"]) && $user->perm("userpanel/create_code")) {
+if (isset($_POST["add"]) && $session_user->perm("userpanel/create_code")) {
     $code = rndbit(10);
     $rank = $_POST["rank"];
 
-    if(($rank == 1 && $user->perm("all/is_admin")) || $rank == 0) {
+    if(($rank == 1 && $session_user->perm("all/is_admin")) || $rank == 0) {
         if(is_numeric($rank)) {
             $query = "INSERT INTO `ArkAdmin_reg_code` (`code`, `used`, `time`) VALUES ('$code', '0', '$rank')";
             if ($mycon->query($query)) {
@@ -54,23 +69,8 @@ elseif(isset($_POST["add"]))  {
     $resp = $alert->rd(99);
 }
 
-// Permission bearbeiten
-if (isset($_POST["editperm"]) && $user->perm("all/is_admin")) {
-    $perm = $_POST["permissions"];
-    $userid = $_POST["userid"];
-    if($helper->savejson_create($perm, __ADIR__."/app/json/user/".md5($userid).".permissions.json")) {
-        $resp = $alert->rd(102);
-    }
-    else {
-        $resp = $alert->rd(1);
-    }
-}
-elseif (isset($_POST["editperm"])) {
-    $resp = $alert->rd(99);
-}
-
 // Code löschen
-if (isset($url[3]) && $url[2] == "rmcode" && $user->perm("userpanel/delete_code")) {
+if (isset($url[3]) && $url[2] == "rmcode" && $session_user->perm("userpanel/delete_code")) {
     $id = $url[3];
     $query = "DELETE FROM `ArkAdmin_reg_code` WHERE (`id`='".$id."')";
     if ($mycon->query($query)) {
@@ -87,7 +87,7 @@ elseif (isset($url[3]) && $url[2] == "rmcode") {
 }
 
 // Benutzer löschen
-if (isset($_POST["del"]) && $user->perm("userpanel/delete_user")) {
+if (isset($_POST["del"]) && $session_user->perm("userpanel/delete_user")) {
     $id = $_POST["userid"];
     $kuser->setid($id);
     $tpl->r("del_username", $kuser->read("username"));
@@ -109,7 +109,7 @@ elseif (isset($_POST["del"])) {
 }
 
 // Benutzer (ent-)bannen
-if (isset($url[4]) && $url[2] == "tban" && $user->perm("userpanel/ban_user")) {
+if (isset($url[4]) && $url[2] == "tban" && $session_user->perm("userpanel/ban_user")) {
     $uid = $url[3];
     $set = $url[4];
     if (!$set == 0) {
@@ -158,24 +158,39 @@ for ($i=1;$i<count($userarray);$i++) {
     $list = new Template("list.htm", $tpl_dir);
     $list->load();
 
-    // Lese rechte zum Bearbeiten
-    if($user->perm("all/is_admin")) {
-        $user_permissions = perm_to_htm($kuser->permissions);
+
+    $GROUP_SQUERY   = "SELECT * FROM `ArkAdmin_user_group` ORDER BY `id`";
+    $QUERY          = $mycon->query($GROUP_SQUERY);
+    $ADDLIST        = null;
+    if($QUERY->numRows() > 0) {
+        $GROUP_ARR = $QUERY->fetchAll();
+        foreach ($GROUP_ARR as $KEY => $ITEM) {
+            $ID         = $i.md5($ITEM["id"]);
+            $SEL        = count($kuser->group_array) > 0 ? (in_array($ITEM["id"], $kuser->group_array) ? "checked" : "") : "";
+            $ADDLIST    .= "
+                <div class=\"icheck-primary\">
+                    <input type=\"checkbox\" id=\"$ID\" name=\"ids[]\" value=\"$ITEM[id]\" $SEL>
+                    <label for=\"$ID\">
+                        $ITEM[name]
+                    </label>
+                </div>
+            ";
+        }
     }
 
     // Schreibe infos in das Template
+    $list->r("addlist", $ADDLIST);
     $list->r("regdate", converttime($registerdate));
     $list->r("lastlogin", converttime($lastlogin));
     $list->r("email", $email);
     $list->r("uid", $id);
     $list->r("rank", "<span class='text-".((!$kuser->perm("allg/is_admin")) ? "success" : "danger")."'>{::lang::php::userpanel::".((!$kuser->perm("allg/is_admin")) ? "user" : "admin")."}</span>");
     $list->r("username", $username);
-    $list->r("user_permissions", $user_permissions);
 
     // prüfe ob der User gebant ist, deaktivere Modal & prüfe ob die ID man selbst ist
     $list->rif ("ifban", boolval($ban));
     $list->rif ("ifmodal", false);
-    $list->rif ("self", ($id == $_SESSION["id"]));
+    $list->rif ("self", ($id == $_SESSION["id"] || $kuser->perm("all/is_admin")));
 
     // Schreibe Template in var
     $userlist .= $list->load_var();
@@ -193,7 +208,7 @@ for ($i=1;$i<count($userarray);$i++) {
 
 // Liste Codes auf
 $list_codes = null;
-if($user->perm("userpanel/show_codes")) {
+if($session_user->perm("userpanel/show_codes")) {
     $query = 'SELECT * FROM `ArkAdmin_reg_code` WHERE `used` = \'0\'';
     $mycon->query($query);
     $codearray = $mycon->fetchAll();
@@ -225,9 +240,8 @@ $tpl->r("list_codes", $list_codes);
 $tpl->r("resp", $resp);
 $pageicon = "<i class=\"fa fa-users\" aria-hidden=\"true\"></i>";
 $content = $tpl->load_var();
-if($user->perm("userpanel/create_code")) $btns = '<a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
+if($session_user->perm("userpanel/create_code")) $btns = '<a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addserver">
             <span class="icon">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>
-            <span class="text">{::lang::php::userpanel::btn-regcode}</span>
         </a>';

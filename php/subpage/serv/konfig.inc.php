@@ -9,10 +9,11 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if (!$user->perm("$perm/konfig/show")) {
+if (!$session_user->perm("$perm/konfig/show")) {
     header("Location: /401");
     exit;
 }
+$resp = null;
 
 $pagename = '{::lang::php::sc::page::konfig::pagename}';
 $page_tpl = new Template('konfig.htm', __ADIR__.'/app/template/sub/serv/');
@@ -22,7 +23,7 @@ $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}<
 
 // arkmanager.cfg Speichern (Normaler Modus)
 $resp = $ark_flag = $eventlist = null;
-if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $user->perm("$perm/konfig/arkmanager")) {
+if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $session_user->perm("$perm/konfig/arkmanager")) {
     $value = $_POST['value'];
     $key = $_POST['key'];
     $flag = $_POST['flag'];
@@ -56,53 +57,60 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
     // Prüfe ob Datei beschrieben wurde
     if (file_put_contents($path, $cfg)) {
         // Melde: Erfolg
-        $resp = $alert->rd(102);
+        $resp .= $alert->rd(102);
         //header("Refresh:0"); exit;
     } else {
         // Melde Lese/Schreib Fehler
-        $resp = $alert->rd(1);
-    } 
+        $resp .= $alert->rd(1);
+    }
 }
 else {
     // Melde Fehlschlag
     if(isset($_POST['savecfg'])) $resp = $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
 }
 
-// GameUserSettings.ini Speichern (Normaler Modus)
-$resp = null;
+// GameUserSettings/Game/Engine.ini Speichern (Normaler Modus)
 if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
 
-    $value = $_POST['value'];
-    $key = $_POST['key'];
-    $skey = $_POST['skey'];
-    $type = $_POST["type"];
-    
-    if(
-        ($type == "GameUserSettings.ini" && $user->perm("$perm/konfig/gus")) ||
-        ($type == "Game.ini" && $user->perm("$perm/konfig/game")) ||
-        ($type == "Engine.ini" && $user->perm("$perm/konfig/engine"))
-    ) {
-        for ($i=0;$i<count($key);$i++) {
-            $cfg[$skey[$i]][$key[$i]] = $value[$i];
-        }
+    $INI_ARRAY      = $_POST["ini"];
+    $CUSTOM         = $_POST["custom"];
+    $TYPE           = $_POST["type"];
 
-        $cfg_done = null;
-        foreach ($cfg as $k => $v){
-            $cfg_done .= "\n[$k]\n";
-            foreach ($v as $ik => $iv){
-                $cfg_done .= "$ik=$iv\n";
+    if(
+        ($TYPE == "GameUserSettings.ini"    && $session_user->perm("$perm/konfig/gus"))     ||
+        ($TYPE == "Game.ini"                && $session_user->perm("$perm/konfig/game"))    ||
+        ($TYPE == "Engine.ini"              && $session_user->perm("$perm/konfig/engine"))
+    ) {
+        $INI_STRING = null;
+        $FIRST = false;
+        foreach ($INI_ARRAY as $key => $item){
+            $INI_STRING .= !$FIRST ? "[$key]\n" : "\n[$key]\n" ;
+            $FIRST = true;
+            foreach ($item as $KEY => $ITEM){
+                if(is_array($ITEM)) {
+                    foreach ($ITEM as $KEY2 => $ITEM2){
+                        if(!is_array($ITEM2)) {
+                            $INI_STRING .= $KEY."[$KEY2]=$ITEM2\n";
+                        }
+                    }
+                }
+                else {
+                    $INI_STRING .= "$KEY=".(is_bool($ITEM) ? ($ITEM ? "True" : "False") : $ITEM)."\n";
+                }
             }
         }
+        $INI_STRING .= $CUSTOM;
 
-        $path = $serv->dir_konfig().$type;
-        $text = ini_save_rdy($cfg_done);
+        $path = $serv->dir_konfig().$TYPE;
+        $text = ini_save_rdy($INI_STRING);
+
         // Wenn Datei geschreiben wurde
         if (file_put_contents($path, $text)) {
             // Melde: Erfolg
             $resp = $alert->rd(102);
         } else {
-            // Melde: Lese/SchreibFeher
+            // Melde: Lese/Schreibfeher
             $resp = $alert->rd(1);
         }
     }
@@ -113,11 +121,11 @@ if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode
 else {
     // Melde Fehlschlag
     if(isset($_POST['savenormal'])) $resp = $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
 }
 
 // arkmanager.cfg (Expert) Speichern
-if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $user->perm("$perm/konfig/arkmanager")) {
+if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $session_user->perm("$perm/konfig/arkmanager")) {
     $txtarea = $_POST['txtarea'];
     $cfg = ini_save_rdy($txtarea);
     $path = __ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg';
@@ -128,12 +136,12 @@ if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_
     } else {
         // Melde: Lese/Schreib Fehler
         $resp = $alert->rd(1);
-    } 
+    }
 }
 else {
     // Melde Fehlschlag
     if(isset($_POST['savecfg_expert'])) $resp = $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
 }
 
 // Game,GUS,Engine.ini Speichern (Expertenmodus)
@@ -141,11 +149,11 @@ if (isset($_POST['save']) && (($serv->statecode() == 1 && $user->show_mode("konf
     $type = $_POST["type"];
     $text = $_POST["text"];
     $path = $serv->dir_konfig().$type;
-    
+
     if(
-        ($type == "GameUserSettings.ini" && $user->perm("$perm/konfig/gus")) ||
-        ($type == "Game.ini" && $user->perm("$perm/konfig/game")) ||
-        ($type == "Engine.ini" && $user->perm("$perm/konfig/engine"))
+        ($type == "GameUserSettings.ini" && $session_user->perm("$perm/konfig/gus")) ||
+        ($type == "Game.ini" && $session_user->perm("$perm/konfig/game")) ||
+        ($type == "Engine.ini" && $session_user->perm("$perm/konfig/engine"))
     ) {
         // Prüfe ob Datei Exsistiert
         if (file_exists($path)) {
@@ -176,26 +184,24 @@ $page_tpl->r('cfg' ,$url[2]);
 $default = "{::lang::php::sc::page::konfig::ini_notfound}";
 $default_table = "<tr colspan='2'><td>{::lang::php::sc::page::konfig::ini_notfound}</td></tr>";
 
-$gus = ($serv->ini_load('GameUserSettings.ini', true)) ? $gus = $serv->ini_get_str() : $default;
-$game = ($serv->ini_load('Game.ini', true)) ? $serv->ini_get_str() : $default;
-$engine = ($serv->ini_load('Engine.ini', true)) ? $serv->ini_get_str() : $default;
+$gus            = ($serv->ini_load('GameUserSettings.ini', true)) ? $gus = $serv->ini_get_str() : $default;
+$game           = ($serv->ini_load('Game.ini', true)) ? $serv->ini_get_str() : $default;
+$engine         = ($serv->ini_load('Engine.ini', true)) ? $serv->ini_get_str() : $default;
 
-$gus_bool = ($serv->ini_load('GameUserSettings.ini', true));
-$game_bool = ($serv->ini_load('Game.ini', true));
-$engine_bool = ($serv->ini_load('Engine.ini', true));
+$gus_bool       = $serv->ini_load('GameUserSettings.ini', true);
+$game_bool      = $serv->ini_load('Game.ini', true);
+$engine_bool    = $serv->ini_load('Engine.ini', true);
 
 // Prüfe ob Inis exsistieren
 $show = (
-    file_exists($serv->dir_save(true)."/Config/LinuxServer/GameUserSettings.ini") && 
-    file_exists($serv->dir_save(true)."/Config/LinuxServer/Game.ini") && 
+    file_exists($serv->dir_save(true)."/Config/LinuxServer/GameUserSettings.ini") &&
+    file_exists($serv->dir_save(true)."/Config/LinuxServer/Game.ini") &&
     file_exists($serv->dir_save(true)."/Config/LinuxServer/Engine.ini")
 );
 
 $gus_nexp = ($serv->ini_load('GameUserSettings.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
 $game_nexp = ($serv->ini_load('Game.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
 $engine_nexp = ($serv->ini_load('Engine.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
-
-$inis = array("gus" => $gus_nexp, "game" => $game_nexp, "engine" => $engine_nexp);
 
 $strcfg = $serv->cfg_get_str();
 
@@ -205,7 +211,7 @@ $flags = array();
 $i = 0;
 
 
-//event 
+//event
 $events = array(
     "Easter",
     "Arkeolgy",
@@ -295,12 +301,12 @@ if ($serv->isinstalled()) {
                 // map Select
                 if($key == "serverMap") {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="setmap()" id="mapsel">
-                        <option value="">{::lang::allg::default::select}</option>';
+                        <option value="" '.(!$session_user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
 
                     $mapjson = $helper->file_to_json(__ADIR__."/app/json/panel/maps.json");
                     foreach ($mapjson as $map => $infos) {
                         if(($infos["mod"] == 1 && $serv->mod_support()) || $infos["mod"] == 0)
-                            $add .= '<option id="'.$map.'" value="'.$map.'" data-mod="'.$infos["mod"].'" data-modid="'.$infos["modid"].'" '.($map == $val ? "selected" : null).'>
+                            $add .= '<option id="'.$map.'" value="'.$map.'" data-mod="'.$infos["mod"].'" data-modid="'.$infos["modid"].'" '.($map == $val ? "selected" : null).' '.($map == $val ? "" : (!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
                                 '.($infos["mod"] == 1 ? "[MOD] " : null).$infos["name"].'
                             </option>';
                     }
@@ -311,12 +317,12 @@ if ($serv->isinstalled()) {
                 // Totalmod Select
                 if($key == "ark_TotalConversionMod") {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="settmod()" id="tmodsel">
-                        <option value="">{::lang::allg::default::select}</option>';
+                        <option value="" '.(!$session_user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
 
                     $tmodjson = $helper->file_to_json(__ADIR__."/app/json/panel/tmods.json");
                     foreach ($tmodjson as $tmod => $infos) {
                         if(($infos["offi"] == 0 && $serv->mod_support()) || $infos["offi"] == 1)
-                            $add .= '<option value="'.$infos["modid"].'" '.($infos["modid"] == $val ? "selected" : null).'>
+                            $add .= '<option value="'.$infos["modid"].'" '.($infos["modid"] == $val ? "selected" : null).' '.($infos["modid"] == $val ? "" : (!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
                                 '.($infos["offi"] == 0 ? "[MOD] " : null).$tmod.'
                             </option>';
                     }
@@ -324,18 +330,18 @@ if ($serv->isinstalled()) {
                     $add .= '</select></div>';
                 }
 
-                $formtype = (!in_array($key, $no_del)) ? 
+                $formtype = (!in_array($key, $no_del)) ?
                 // wenn nicht im array
                 '<div class="input-group mb-0">
                     <input type="hidden" name="key[]" readonly value="'.$key.'">
-                    <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'">
+                    <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'" '.(!$session_user->perm("$perm/konfig/arkmanager") ? "readonly" : null).'>
                     <div class="input-group-append">
-                    <span onclick="remove(\''.md5($key).'\')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    <span '.(!$session_user->perm("$perm/konfig/arkmanager") ? null : "'onclick=\"remove(\''.md5($key).'\')\"").' style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1 '.(!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : null).'" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>
                     </div>
-                </div>' : 
+                </div>' :
                 //sonst
                 '<div class="input-group mb-0"><input type="hidden" name="key[]" readonly value="'.$key.'">
-                <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'">'.$add.'</div>';
+                <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'" '.(!$session_user->perm("$perm/konfig/arkmanager") ? "readonly" : null).'>'.$add.'</div>';
 
                 $form .= '
                     <tr class="'.(($serv->cluster_in() && in_array($key, $hide_cluster)) ? "d-none" : null).'" id="'.md5($key).'">
@@ -349,62 +355,6 @@ if ($serv->isinstalled()) {
     }
 }
 
-
-// Verarbeite Inis um Konfigurationen zu erstellen
-foreach($inis as $mk => $mv) {
-    $re[$mk] = null;
-    if(is_array($mv)) {
-        // sections
-        if(is_array($mv)) foreach($mv as $sk => $sv) {
-
-            $it = null;
-            $tpl_sec = new Template("section.htm", __ADIR__."/app/template/lists/serv/konfig/");
-            $tpl_sec->load();
-            
-            // items
-            if(is_array($sv)) foreach($sv as $ik => $iv) {
-
-                if(is_array($iv)) {
-                    $name = $ik;
-                    foreach($iv as $pk => $pv) {
-                        $tpl_item = new Template("item.htm", __ADIR__."/app/template/lists/serv/konfig/");
-                        $tpl_item->load();
-        
-                        $tpl_item->r("sk", $sk);
-                        $tpl_item->r("rnd", md5(rndbit(50)));
-                        $tpl_item->r("k", $name."[$pk]");
-                        $tpl_item->r("v", $pv);
-        
-                        $it .= $tpl_item->load_var();
-                    }
-                }
-                else {
-                    $tpl_item = new Template("item.htm", __ADIR__."/app/template/lists/serv/konfig/");
-                    $tpl_item->load();
-    
-                    $tpl_item->r("sk", $sk);
-                    $tpl_item->r("rnd", md5(rndbit(50)));
-                    $tpl_item->r("k", strval($ik));
-                    $tpl_item->r("v", $iv);
-    
-                    $it .= $tpl_item->load_var();
-                }
-
-            }
-            $max = 50;
-
-            $tpl_sec->r("rnd", md5(rndbit(50)));
-            $tpl_sec->r("sk", $sk);
-            $tpl_sec->r("name", $sk);
-            $tpl_sec->r("name_withMax", (strlen($sk) > $max) ? substr($sk,0,$max)."..." : $sk);
-            $tpl_sec->r("items", $it);
-
-            $re[$mk] .= $tpl_sec->load_var();
-
-        }
-    }
-}
-
 // Erstelle Flaggen liste und verarbeite gesetzte Flaggen
 $flags_json = $helper->file_to_json(__ADIR__."/app/json/panel/flags.json", true);
 $i = 0;
@@ -412,7 +362,7 @@ foreach($flags_json as $k => $v) {
     $sel = (in_array("arkflag_$v", $flags)) ? 'checked="true"' : null;
     if($i == 0) $ark_flag .= '<div class="row">';
     $ark_flag .= '  <div class="icheck-primary mb-3 col-lg-6 col-12">
-                        <input type="checkbox" name="flag[]" value="' . $v . '" id="' . md5($v) . '" ' . $sel . '>
+                        <input type="checkbox" name="flag[]" value="' . $v . '" id="' . md5($v) . '" ' . $sel . ' '.(!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : null).'>
                         <label for="' . md5($v) . '">
                             ' . $v . '
                         </label>
@@ -426,19 +376,41 @@ foreach($flags_json as $k => $v) {
     }
 }
 
+// neuer Editor
+$CFGs = array(
+    "GameUserSettings",
+    "Game",
+    "Engine"
+);
+
+foreach ($CFGs as $CFG) {
+    $CURR            = $serv->ini_load("$CFG.ini", true);
+    $CURR            = $serv->ini_get();
+    $RAW_DEFAULT     = $helper->file_to_json(__ADIR__."/app/json/panel/default_$CFG.json");
+    $CONV_DEFAULT    = convert_ini($RAW_DEFAULT);
+    $FINAL_INI       = array_replace_recursive($CONV_DEFAULT, $CURR);
+    $Former_arr      = create_ini_form($FINAL_INI, $CFG, $RAW_DEFAULT, $serv->name());
+    $re[$CFG]        = $Former_arr["form"];
+    $re["$CFG-rest"] = $Former_arr["rest"];
+}
+
 if ($ifckonfig) $resp_cluster .= $alert->rd(301, 3);
 $page_tpl->r('ark_opt', $ark_opt);
 $page_tpl->r('ark_flag', $ark_flag);
 $page_tpl->r('form', $form);
-$page_tpl->r('form_GUS', $re["gus"]);
-$page_tpl->r('form_GAME', $re["game"]);
-$page_tpl->r('form_ENGINE', $re["engine"]);
+$page_tpl->r('form_GUS', $re["GameUserSettings"]);
+$page_tpl->r('form_GAME', $re["Game"]);
+$page_tpl->r('form_ENGINE', $re["Engine"]);
+$page_tpl->r('form_GUS_rest', $re["GameUserSettings-rest"]);
+$page_tpl->r('form_GAME_rest', $re["Game-rest"]);
+$page_tpl->r('form_ENGINE_rest', $re["Engine-rest"]);
 $page_tpl->r('strcfg', $strcfg);
 $page_tpl->r('gus', $gus);
 $page_tpl->r('game', $game);
 $page_tpl->r('engine', $engine);
 $page_tpl->r('eventlist', $eventlist);
 $page_tpl->r('amcfg', file_get_contents(__ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg'));
+$page_tpl->r('WEBURL', $webserver["sendin"]);
 $page_tpl->rif('expert', $user->expert());
 $page_tpl->rif('show', $show);
 $panel = $page_tpl->load_var();

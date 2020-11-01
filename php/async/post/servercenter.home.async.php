@@ -23,7 +23,7 @@ switch ($case) {
         $json = file_get_contents(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json');
         $server = json_decode($json);
 
-        if($user->perm("server/$cfg/home/rcon_send")) {
+        if($session_user->perm("server/$cfg/home/rcon_send")) {
             if ($server->online == 'Yes' && $serv->cfg_read('ark_RCONEnabled') == 'True' && $serv->cfg_read('ark_ServerAdminPassword') != '') {
                 $code = '0';
                 $alert->code = 12;
@@ -83,7 +83,7 @@ switch ($case) {
         $json = file_get_contents(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json');
         $server = json_decode($json);
 
-        if($user->perm("server/$cfg/home/livechat_send")) {
+        if($session_user->perm("server/$cfg/home/livechat_send")) {
             if ($server->online == 'Yes' && $serv->cfg_read('ark_RCONEnabled') == 'True' && $serv->cfg_read('ark_ServerAdminPassword') != '') {
                 $code = '0';
                 $alert->code = 12;
@@ -131,7 +131,7 @@ switch ($case) {
 
         // case toggle whitelist
         case "togglewhitelist":
-            if($user->perm("server/$cfg/home/whitelist_send")) {
+            if($session_user->perm("server/$cfg/home/whitelist_send")) {
                 $rcon = false;
                 $id = $_POST["sid"];
                 $serv = new server($cfg);

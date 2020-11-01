@@ -19,6 +19,17 @@ include(__ADIR__.'/php/class/helper.class.inc.php');
 $helper = new helper();
 $ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
 
+
+$all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
+$D_PERM_ARRAY = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
+$server = $all["cfgs_only_name"];
+foreach ($server as $item) {
+    $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
+    $perm_file = str_replace("{cfg}", $item, $perm_file);
+    $default = $helper->str_to_json($perm_file);
+    $D_PERM_ARRAY["server"] += $default;
+}
+
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 if(isset($ckonfig["show_err"])) error_reporting(E_ALL);
@@ -38,6 +49,12 @@ include(__ADIR__.'/php/functions/util.func.inc.php');
 
 // Importiere Klassen
 include(__ADIR__.'/php/class/user.class.inc.php');
+
+$session_user = new userclass();
+if (isset($_SESSION["id"])) {
+    $session_user->setid($_SESSION["id"]);
+}
+
 include(__ADIR__.'/php/class/steamAPI.class.inc.php');
 include(__ADIR__.'/php/class/savefile_reader.class.inc.php');
 include(__ADIR__.'/php/class/Template.class.inc.php');
@@ -57,7 +74,7 @@ $user->setid($_SESSION["id"]);
 $jhelper = new player_json_helper();
 $alert = new alert();
 $jobs = new jobs();
-$permissions = $user->permissions;
+$permissions = $session_user->permissions;
 
 // Allgemein SteamAPI Arrays
 $steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/mods.json", true) : array();

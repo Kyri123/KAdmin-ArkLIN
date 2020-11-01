@@ -152,21 +152,21 @@ $('#action_sel').change(() => {
 
 // von: https://gist.github.com/anazard/d42354f45e172519c0be3cead34fe869
 // {
-    var $body = document.getElementsByTagName('body')[0];
-    var $btnCopy = document.getElementById('btnCopy');
-    var secretInfo = document.getElementById('secretInfo').innerHTML;
+var $body = document.getElementsByTagName('body')[0];
+var $btnCopy = document.getElementById('btnCopy');
+var secretInfo = document.getElementById('secretInfo').innerHTML;
 
-    var copyToClipboard = (secretInfo) => {
-        var $tempInput = document.createElement('INPUT');
-        $body.appendChild($tempInput);
-        $tempInput.setAttribute('value', secretInfo);
-        $tempInput.select();
-        document.execCommand('copy');
-        $body.removeChild($tempInput);
-    };
+var copyToClipboard = (secretInfo) => {
+    var $tempInput = document.createElement('INPUT');
+    $body.appendChild($tempInput);
+    $tempInput.setAttribute('value', secretInfo);
+    $tempInput.select();
+    document.execCommand('copy');
+    $body.removeChild($tempInput);
+};
 
-    $btnCopy.addEventListener('click', (ev) => {
-        copyToClipboard(secretInfo);
-        alert("Kopiert: " + secretInfo);
-    });
+$btnCopy.addEventListener('click', (ev) => {
+    copyToClipboard(secretInfo);
+    alert("Kopiert: " + secretInfo);
+});
 // }

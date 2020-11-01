@@ -13,13 +13,15 @@ if(file_exists(__ADIR__.'/php/inc/pconfig.inc.php')) include(__ADIR__.'/php/inc/
 
 // allgmeine
 $sitename = "ArkAdmin2";
-$version = '1.3.2';
+$version = '2.0.0';
 $ip = $_SERVER['SERVER_ADDR'];
 $maxpanel_server = 12;
+$buildid = 200.000;
 
 // Webserver
 $webserver['url'] = 'https://data.chiraya.de/';
 $webserver['changelog'] = $webserver['url'].'changelog.json';
+$webserver['sendin'] = $webserver['url'].'sendin.php';
 $webserver['config'] = json_decode(file_get_contents(__ADIR__."/arkadmin_server/config/server.json") ,true);
 $webserver['config']["port"] = (isset($webserver['config']["port"])) ? $webserver['config']["port"] : 30000;
 
@@ -53,7 +55,10 @@ $clustertype = array(
 
 $ignore_perm = array(
     "force_update",
-    "force_restart"
+    "force_restart",
+    "gus",
+    "game",
+    "engine"
 );
 
 $head_img = array(

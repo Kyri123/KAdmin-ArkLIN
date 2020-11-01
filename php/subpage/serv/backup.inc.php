@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if (!$user->perm("$perm/backup/show")) {
+if (!$session_user->perm("$perm/backup/show")) {
     header("Location: /401");
     exit;
 }
@@ -28,7 +28,7 @@ $dir_array = dirToArray($serv->dir_backup());
 $y = 0; $list = null;
 
 // entferne ein Backup verzeichnis
-if (isset($_POST["removemain"]) && $user->perm("$perm/backup/remove")) {
+if (isset($_POST["removemain"]) && $session_user->perm("$perm/backup/remove")) {
     $key = $_POST["file"];
     $path = $serv->dir_backup()."/".$key;
     if (file_exists($path)) {
@@ -49,7 +49,7 @@ elseif(isset($_POST["removemain"])) {
 }
 
 // entferne ein Backup
-if (isset($_POST["remove"]) && $user->perm("$perm/backup/remove")) {
+if (isset($_POST["remove"]) && $session_user->perm("$perm/backup/remove")) {
     $key = $_POST["file"];
     $i = $_POST["i"];
     $path = $serv->dir_backup()."/".$key."/".$dir_array[$key][$i];
@@ -72,7 +72,7 @@ elseif(isset($_POST["remove"])) {
 }
 
 // Spiele Backup ein
-if (isset($_POST["playthisin"]) && $user->perm("$perm/backup/playin")) {
+if (isset($_POST["playthisin"]) && $session_user->perm("$perm/backup/playin")) {
     $key = $_POST["key"];
     $i = $_POST["i"];
     $opt = array();
@@ -173,13 +173,13 @@ foreach ($dir_array as $key => $value) {
         $rndb = "modal".$y.$i;
         $list2tpl->r("rndb", $rndb);
 
-        $durl = $serv->dir_backup()."/".$key."/".$dir_array[$key][$i];
+        $durl = str_replace(__ADIR__, null, $serv->dir_backup())."/".$key."/".$dir_array[$key][$i];
 
         $list2tpl->r("i", $i);
         $list2tpl->r("key", $key);
         $list2tpl->r("durl", $durl);
         $list2tpl->r("title", $dir_array[$key][$i]);
-        $list2tpl->r("filesize", bitrechner(filesize($durl)));
+        $list2tpl->r("filesize", bitrechner(filesize($serv->dir_backup()."/".$key."/".$dir_array[$key][$i])));
 
         $list2 .= $list2tpl->load_var();
     }

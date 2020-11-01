@@ -24,12 +24,12 @@ $serv->cluster_load();
 $txt_alert = $site_name = $player = null;
 
 $perm = "server/".$serv->name();
-if(!$user->perm("$perm/show")) {
+if(!$session_user->perm("$perm/show")) {
     header("Location: /401"); exit;
 }
 
 // server Killen
-if(isset($url[5]) && $url[4] == "kill" && $user->perm("$perm/kill")) {
+if(isset($url[5]) && $url[4] == "kill" && $session_user->perm("$perm/kill")) {
     $jobs->set($serv->name());
     if($jobs->shell("kill ".$serv->status()->pid)) {
         $resp = $alert->rd(111);
@@ -63,7 +63,7 @@ $player_json = $helper->file_to_json(__ADIR__.'/app/json/saves/player_' . $serv-
 $arr_player = array();
 if (is_array($player_json)) {
     for ($i = 0; $i < count($player_json); $i++) {
-        $arr_player[] = $player_json[$i]->SteamId;
+        if(isset($player_json[$i]->SteamId)) $arr_player[] = $player_json[$i]->SteamId;
     }
 }
 
@@ -111,7 +111,7 @@ if ($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>{::lang::php::s
 $player_online = $serv->status()->aplayersarr;
 
 // Spieler
-if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0 && $user->perm("$perm/show_players")) {
+if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0 && $session_user->perm("$perm/show_players")) {
     for ($i = 0; $i < count($player_online); $i++) {
         $list_tpl = new Template('user.htm', __ADIR__.'/app/template/lists/serv/main/');
         $list_tpl->load();
@@ -291,7 +291,7 @@ $pageicon = "<i class=\"fa fa-server\" aria-hidden=\"true\"></i>";
 $content = $tpl->load_var();
 $running = false;
 foreach ($checkpid as $item) if(strpos($item, $serv->name())) $running = true;
-if($running && $user->perm("$perm/kill")) $btns .= '
+if($running && $session_user->perm("$perm/kill")) $btns .= '
         <a href="{ROOT}/servercenter/'.$serv->name().'/'.$url[3].'/kill/'.$serv->status()->pid.'" class="btn btn-outline-danger btn-icon-split rounded-0" 
         data-toggle="popover_action" title="" data-content="{::lang::servercenter::kill_text}" data-original-title="{::lang::servercenter::kill_titel}">
             <span class="icon">

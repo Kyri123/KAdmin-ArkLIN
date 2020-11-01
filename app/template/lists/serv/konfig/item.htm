@@ -1,13 +1,43 @@
-<tr id="{rnd}" data-section="{sk}">
-    <td class="p-2">{k}</td>
-    <td class="p-2">
-        <div class="input-group mb-0">
-            <input type="hidden" name="skey[]" readonly="" value="{sk}">
-            <input type="hidden" name="key[]" readonly="" value="{k}">
-            <input type="text" name="value[]" class="form-control form-control-sm" value='{v}'>
-            <div class="input-group-append">
-                <span onclick="remove('{rnd}')" style="cursor:pointer" class="input-group-btn btn-danger pr-2 pl-2 pt-1" id="basic-addon2"><i class="fa fa-times" aria-hidden="true"></i></span>
-            </div>
+<tr {hidden}style="display: none"{/hidden}>
+    <td class="p-2 pl-3">
+        <div>
+            <b class="mt-1">{opt}</b>
+            {!showbtn}<button type="button" class="btn btn-sm btn-outline-dark d-flex justify-content-end" data-toggle="modal" data-target="#einsenden" data-ini_opt="{opt2}" data-ini_txt="" data-ini_send="{ini}">{::lang::servercenter::config::sendinbtn}</button>{/!showbtn}
         </div>
     </td>
+    <td class="p-2 text-sm">
+        {showbtn}{::lang::{ini}::{opt2}}{/showbtn}
+        {!showbtn}{::lang::servercenter::config::nocom}{/!showbtn}
+    </td>
+    <td class="p-2">
+        {string}
+            <div class="input-group mb-0">
+                <input type="text" name="{name}" class="form-control form-control-sm" value='{value}' {ro}readonly{/ro}>
+             </div>
+        {/string}
+
+        {int}
+            <div class="input-group mb-0">
+                {!ro}<input type="range" class="custom-range mb-1" value='{value}' oninput="$('#{opt}').val(this.value)" id="ranger{opt}" step="1" min="0" max="{max}">{/!ro}
+                <input type="number" name="{name}" class="form-control form-control-sm" value='{value}' id="{opt}" oninput="$('#ranger{opt}').val(this.value)" step="1" {ro}readonly{/ro}>
+            </div>
+        {/int}
+
+        {bool}
+            <div class="input-group mb-0">
+                <select class="custom-select custom-select-sm" id="inlineFormCustomSelectPref" name="{name}">
+                    <option value="True" {True}>{::lang::config::opt::true}</option>
+                    <option value="False" {False}>{::lang::config::opt::false}</option>
+                </select>
+            </div>
+        {/bool}
+
+        {float}
+            <div class="input-group mb-0">
+                {!ro}<input type="range" class="custom-range mb-1" value='{value}' oninput="$('#{opt}').val(this.value)" id="ranger{opt}" step="0.000001" min="0" max="{max}">{/!ro}
+                <input type="number" name="{name}" class="form-control form-control-sm" value='{value}' id="{opt}" oninput="$('#ranger{opt}').val(this.value)" step="0.000001" {ro}readonly{/ro}>
+            </div>
+        {/float}
+    </td>
 </tr>
+

@@ -9,7 +9,7 @@
 */
 
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
-if (!$user->perm("$perm/saves/show")) {
+if (!$session_user->perm("$perm/saves/show")) {
     header("Location: /401");
     exit;
 }
@@ -24,7 +24,7 @@ $resp = null;
 $c_pl = $c_t = $w_t = 0;
 
 // erstelle Zip download
-if (isset($_POST["zip"]) && $user->perm("$perm/saves/download")) {
+if (isset($_POST["zip"]) && $session_user->perm("$perm/saves/download")) {
     if(!file_exists(__ADIR__."/app/downloads")) mkdir(__ADIR__."/app/downloads");
     $zipfile = __ADIR__."/app/downloads/savegames.tar";
     
@@ -57,7 +57,7 @@ if (isset($_POST["zip"]) && $user->perm("$perm/saves/download")) {
                 $alert->code = 110;
                 $alert->r("url", "/$zipfile");
                 $resp = $alert->re(); //download startet
-                header("Location: /".$zipfile.".gz");
+                header("Location: ".str_replace(__ADIR__, null, $zipfile).".gz");
                 if(file_exists($zipfile)) unlink($zipfile);
             }
             else {
@@ -80,7 +80,7 @@ elseif(isset($_POST["zip"])) {
 }
 
 // Entferne Savegame
-if (isset($_POST["remove"]) && $user->perm("$perm/saves/remove")) {
+if (isset($_POST["remove"]) && $session_user->perm("$perm/saves/remove")) {
 
     // Setzte Vars
     $file_name = $_POST["file"];
@@ -176,7 +176,7 @@ elseif(isset($_POST["remove"])) {
 }
 
 // Entferne Savegame
-if (isset($_POST["removeall"]) && $user->perm("$perm/saves/remove")) {
+if (isset($_POST["removeall"]) && $session_user->perm("$perm/saves/remove")) {
     $savedir = $serv->dir_save();
     if(del_dir($savedir)) {
         mkdir($savedir);
@@ -275,7 +275,7 @@ if($count !== false) {
         $list_tpl->rif ('empty', false);
 
         $file = $savedir.'/'.$SteamId.'.arkprofile';
-        $list_tpl->r('durl', "/".$file);
+        $list_tpl->r('durl', str_replace(__ADIR__, null, $file));
     
         if(file_exists($savedir.'/'.$SteamId.'.arkprofile')) {
             $player .= $list_tpl->load_var();
@@ -337,7 +337,7 @@ if(is_countable($tribe_save)) {
             $list_tpl->r('count', $ct);
             $list_tpl->r('id', $rows["Id"]);
             $file = $savedir.'/'.$rows["Id"].'.arktribe';
-            $list_tpl->r('durl', "/".$file);
+            $list_tpl->r('durl', str_replace(__ADIR__, null, $file));
             $list_tpl->r('file', $rows["Id"].'.arktribe');
             $list_tpl->r('cfg', $serv->name());
 
@@ -366,7 +366,7 @@ if(is_countable($dirarr)) {
 
                 $list_tpl->r('name', $name);
                 $list_tpl->r('update', converttime($time));
-                $list_tpl->r('durl', "/".$file);
+                $list_tpl->r('durl', str_replace(__ADIR__, null, $file));
                 $list_tpl->r('rnd', rndbit(10));
                 $list_tpl->r('file', $dirarr[$i]);
                 $list_tpl->r('cfg', $serv->name());

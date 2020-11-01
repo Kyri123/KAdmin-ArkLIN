@@ -282,3 +282,219 @@ function getRealIpAddr()
     }
     return $ip;
 }
+
+/**
+ * Konvertiere Default zu Ini compati
+ *
+ * @param array $ARR
+ * @return array
+ */
+function convert_ini(array $ARR) {
+    $RETURN = array();
+    foreach ($ARR as $key => $item) {
+        foreach ($item as $KEY => $ITEM) {
+            if(isset($ITEM["default"])) {
+                $RETURN[$key][$KEY] = $ITEM["default"];
+            } else {
+                foreach ($ITEM as $KEY2 => $ITEM2) {
+                    $RETURN[$key][$KEY][] = $ITEM2["default"];
+                }
+            }
+        }
+    }
+    return $RETURN;
+}
+
+/**
+ * Konvertiere Ini zur Form
+ *
+ * @param string $INI
+ * @param array $ARR
+ * @param array $DEFAULT
+ * @return array
+ */
+function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
+
+    $RETURN = $REST = null;
+
+    $INARR = $INI == "Game" ? [
+        "PlayerBaseStatMultipliers",
+        "PerLevelStatsMultiplier_Player",
+        "PerLevelStatsMultiplier_DinoWild",
+        "PerLevelStatsMultiplier_DinoTamed",
+        "PerLevelStatsMultiplier_DinoTamed_Add",
+        "PerLevelStatsMultiplier_DinoTamed_Affinity"
+    ] : [];
+
+    $former_use = [
+        "ServerSettings",
+        "SessionSettings",
+        "/Script/Engine.GameSession",
+        "MessageOfTheDay",
+        "/Game/PrimalEarth/CoreBlueprints/TestGameMode.TestGameMode_C",
+        "/script/shootergame.shootergamemode",
+        "/script/onlinesubsystemutils.ipnetdriver",
+        "/script/engine.player"
+    ];
+
+    foreach ($ARR as $key => $item) {
+        global $langfrom;
+
+        if(isset($_SESSION["id"])) {
+            $user = new userclass($_SESSION["id"]);
+        } else {
+            return ["form" => "", "rest" => ""];
+        }
+        $ITEMS = null;
+
+        if(in_array($key, $former_use)) {
+            $tpl_sec = new Template("section.htm", __ADIR__."/app/template/lists/serv/konfig/");
+            $tpl_sec->load();
+        }
+        else {
+            $REST .= "\n[$key]\n";
+        }
+
+        foreach ($item as $KEY => $ITEM) {
+            if(!is_array($ITEM)) {
+                if(in_array($key, $former_use) && ($INI != "Game" || isset($DEFAULT[$key][$KEY]))) {
+                    $tpl_i1 = new Template("item.htm", __ADIR__."/app/template/lists/serv/konfig/");
+                    $tpl_i1->load();
+
+                    $TYPE = isset($DEFAULT[$key][$KEY]) ? $DEFAULT[$key][$KEY]["type"] : "string";
+
+                    $tpl_i1->rif("float", $TYPE == "float");
+                    $tpl_i1->rif("string", $TYPE == "string");
+                    $tpl_i1->rif("bool", $TYPE == "bool");
+                    $tpl_i1->rif("int", $TYPE == "int");
+
+                    if($TYPE == "int") $ITEM = round($ITEM,0);
+
+                    $tpl_i1->rif("ro", !$user->perm("server/$CFG/konfig/$INI"));
+                    $tpl_i1->rif("showbtn", in_array("{::lang::$INI::$KEY}", $langfrom));
+                    $tpl_i1->r("ini", $INI);
+                    $tpl_i1->r("name", "ini[$key][$KEY]");
+                    $tpl_i1->r("opt", $KEY);
+                    $tpl_i1->r("opt2", $KEY);
+                    $tpl_i1->r("value", $ITEM);
+                    $tpl_i1->r("True", ($TYPE == "bool" && $ITEM == "True") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
+                    $tpl_i1->r("False", ($TYPE == "bool" && $ITEM == "False") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
+                    $tpl_i1->r("max", $TYPE == "float" ? round((($DEFAULT[$key][$KEY]["default"] < 1 ? 1 : $DEFAULT[$key][$KEY]["default"]) * 10), 0) : ($TYPE == "int" ? round((($DEFAULT[$key][$KEY]["default"] < 5 ? 5 : $DEFAULT[$key][$KEY]["default"]) * 10), 0) :"1"));
+
+                    $ITEMS .= $tpl_i1->load_var();
+                }
+                else {
+                    $REST .= "$KEY=$ITEM\n";
+                }
+            } elseif(in_array($KEY, $INARR)) {
+                foreach ($ITEM as $KEY2 => $ITEM2) {
+                    if(in_array($key, $former_use)) {
+                        $tpl_i1 = new Template("item.htm", __ADIR__."/app/template/lists/serv/konfig/");
+                        $tpl_i1->load();
+
+                        $TYPE = isset($DEFAULT[$key][$KEY][$KEY2]) ? $DEFAULT[$key][$KEY][$KEY2]["type"] : "string";
+
+                        $tpl_i1->rif("float", $TYPE == "float");
+                        $tpl_i1->rif("string", $TYPE == "string");
+                        $tpl_i1->rif("bool", $TYPE == "bool");
+                        $tpl_i1->rif("int", $TYPE == "int");
+
+                        if($TYPE == "int") $ITEM2 = round($ITEM2,0);
+
+                        $tpl_i1->rif("showbtn", in_array("{::lang::$INI::$KEY"."$KEY2}", $langfrom));
+                        $tpl_i1->rif("ro", !$user->perm("server/$CFG/konfig/$INI"));
+                        $tpl_i1->r("ini", $INI);
+                        $tpl_i1->r("name", "ini[$key][$KEY][$KEY2]");
+                        $tpl_i1->r("opt", $KEY."[$KEY2]");
+                        $tpl_i1->r("opt2", $KEY.$KEY2);
+                        $tpl_i1->r("value", $ITEM2);
+                        $tpl_i1->r("True", ($TYPE == "bool" && $ITEM == "True") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
+                        $tpl_i1->r("False", ($TYPE == "bool" && $ITEM == "False") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
+                        $tpl_i1->r("max", $TYPE == "float" ? round((($DEFAULT[$key][$KEY][$KEY2]["default"] < 1 ? 1 : $DEFAULT[$key][$KEY][$KEY2]["default"]) * 10), 0) : ($TYPE == "int" ? round((($DEFAULT[$key][$KEY][$KEY2]["default"] < 5 ? 5 : $DEFAULT[$key][$KEY][$KEY2]["default"]) * 10), 0) :"1"));
+
+                        $ITEMS .= $tpl_i1->load_var();
+                    }
+                    else {
+                        $REST .= "$KEY=$ITEM\n";
+                    }
+                }
+            }
+        }
+
+        if(in_array($key, $former_use)) {
+            $tpl_sec->rif("hidden", /*$key == "/Script/ShooterGame.ShooterGameUserSettings"*/false);
+            $tpl_sec->r("name", $key);
+            $tpl_sec->r("items", $ITEMS);
+
+            $RETURN .= $tpl_sec->load_var();
+        }
+    }
+
+    return ["form" => $RETURN, "rest" => $REST];
+}
+
+
+// create form
+/**
+ * Erstelle Rekutsive die Form für Rechte
+ *
+ * @param array $arr        Array der Permissions
+ * @param array $D_ARRAY    Array der Permissions
+ * @param string $k         Wird nur intern benutzt
+ * @param string $keys      Wird nur intern benutzt
+ * @return string
+ */
+function creatform(array $arr, array $D_ARRAY = null, string $k = null, array $keys = []) {
+    global $all;
+
+    // Import ROOT_TPL & page
+    global $ROOT_TPL, $page;
+
+    $string     = null;
+
+    foreach ($arr as $KEY => $ITEM) {
+        $übergabe = $keys;
+        $übergabe[] = $KEY;
+
+        // Erstelle Header und gehe Tiefer ins Array
+        if(is_array($ITEM)) {
+            $TPL_FORM   = new Template("form_head.htm", __ADIR__."/app/template/lists/$page/");
+            $TPL_FORM->load();
+
+            $TPL_FORM->r("key", "{::lang::php::userpanel::permissions::$KEY}");
+            $TPL_FORM->r("color", count($übergabe) > 1 ? (count($übergabe) > 2 ? "secondary" : "dark") : "dark");
+
+            $string     .= $TPL_FORM->load_var();
+            $rnd = rndbit(30);
+
+            if(count($übergabe) == 2) $string .= '<a class="btn btn-info btn-sm" href="#" onclick="$(\'#'.$rnd.'\').toggle()" style="width: 100%">Rechte verwalten</a><div id="'.$rnd.'" style="display:none">';
+            $string .= creatform($ITEM, $D_ARRAY, $KEY, $übergabe);
+            if(count($übergabe) == 2) $string .= '</div>';
+        }
+        // Erstelle Forminput
+        else {
+            $TPL_FORM   = new Template("form_item.htm", __ADIR__."/app/template/lists/$page/");
+            $TPL_FORM->load();
+
+            $formname = null;
+            foreach ($übergabe as $NAME) {
+                $formname .= "[$NAME]";
+            }
+
+            $TPL_FORM->r("form_name", $formname);
+            $TPL_FORM->r("key", "{::lang::php::userpanel::permissions::$KEY}");
+            $TPL_FORM->r("id", "input_".rndbit(5)."_".($k == null ? "": $k."_")."$KEY");
+            $TPL_FORM->rif("active", boolval($ITEM));
+
+            $string     .= $TPL_FORM->load_var();
+        }
+    }
+    if(isset($all["cfgs_only_name"]) && is_array($all["cfgs_only_name"])) {
+        foreach ($all["cfgs_only_name"] as $SERVER) {
+            $server = new server($SERVER);
+            $string = str_replace("{::lang::php::userpanel::permissions::$SERVER}", $server->cfg_read("ark_SessionName"), $string);
+        }
+    }
+
+    return $string;
+}

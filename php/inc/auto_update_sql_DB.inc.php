@@ -8,86 +8,56 @@
  * *******************************************************************************************
 */
 
-//check SQL for Cookie_user
-$table = "ArkAdmin_user_cookies";
-$query_file = __ADIR__."/app/sql/cookie_login.sql";
-if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
-    $query_file = file($query_file);
-    foreach ($query_file as $query) {
-        $mycon->query($query);
+//check SQL
+$tables = [];
+$SQLs = scandir(__ADIR__."/app/sql");
+foreach ($SQLs as $FILE) {
+    if($FILE != "." && $FILE != ".." && strpos($FILE, "ArkAdmin_") !== false) {
+        $FILE_NAME = pathinfo(__ADIR__."/app/sql/$FILE", PATHINFO_FILENAME);
+        $tables[] = $FILE_NAME;
     }
 }
 
-//check SQL for jobs
-$table = "ArkAdmin_jobs";
-$query_file = __ADIR__."/app/sql/jobs.sql";
-if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
-    $query_file = file($query_file);
-    foreach ($query_file as $query) {
-        $mycon->query($query);
-    }
-}
-
-//check SQL for statistiken
-$table = "ArkAdmin_statistiken";
-$query_file = __ADIR__."/app/sql/statistiken.sql";
-if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
-    $query_file = file($query_file);
-    foreach ($query_file as $query) {
-        $mycon->query($query);
-    }
-}
-
-//check SQL for jobs
-$table = "ArkAdmin_shell";
-$query_file = __ADIR__."/app/sql/shell.sql";
-if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
-    $query_file = file($query_file);
-    foreach ($query_file as $query) {
-        $mycon->query($query);
-    }
-}
-
-//check SQL for players
-$table = "ArkAdmin_players";
-$query_file = __ADIR__."/app/sql/players.sql";
-if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
-    $query_file = file($query_file);
-    foreach ($query_file as $query) {
-        $mycon->query($query);
-    }
-}
-
-//check SQL for tribes
-$table = "ArkAdmin_tribe";
-$query_file = __ADIR__."/app/sql/tribe.sql";
-if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
-    $query_file = file($query_file);
-    foreach ($query_file as $query) {
-        $mycon->query($query);
+foreach ($tables as $table) {
+    if ($mycon->query("SHOW TABLES LIKE '$table'")->numRows() == 0) {
+        $query_file = file(__ADIR__."/app/sql/$table.sql");
+        foreach ($query_file as $query) {
+            $mycon->query($query);
+        }
     }
 }
 
 //überschreibe alle user auf Admin
-$path = __ADIR__."/app/json/user";
-$dir_arr = scandir($path);
-$query = "SELECT * FROM `ArkAdmin_users`";
+if($version == "2.0.0" && $buildid == 200.000) {
+    $mycon->query("alter table `ArkAdmin_users` modify `rang` text null");
+    $USERS = "SELECT * FROM `ArkAdmin_users`";
+    foreach ($mycon->query($USERS)->fetchAll() as $USER) {
+        $ID = $USER["id"];
+        $FILE = __ADIR__."/app/json/user/".md5($ID).".permissions.json";
 
-if($query = $mycon->query($query)) {
-    $arr = $query->fetchAll();
-    foreach ($arr as $item) {
-        $permissions_default = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
-        $permissions_default["all"]["is_admin"] = 1;
-        if(!file_exists(__ADIR__."/app/json/user/".md5($item["id"]).".permissions.json")) $helper->savejson_create($permissions_default, __ADIR__."/app/json/user/".md5($item["id"]).".permissions.json");
+        if(file_exists($FILE)) {
+            $json = json_decode(file_get_contents($FILE), true);
+            if(isset($json["all"]["is_admin"]) && $json["all"]["is_admin"] == "1") {
+                $query = 'UPDATE `ArkAdmin_users` SET `rang`=\'[1]\'  WHERE `id` = \''.$ID.'\'';
+                $mycon->query($query);
+            }
+            else {
+                $QUERY = "INSERT INTO `ArkAdmin_user_group` (`name`, `editform`, `time`, `permissions`, `canadd`) VALUES ('".$USER["username"]."', 1, 0, '".file_get_contents($FILE)."', '[]')";
+                if($mycon->query($QUERY)) {
+                    $QUERY = "SELECT * FROM `ArkAdmin_user_group` WHERE `name`='".$USER["username"]."'";
+                    $groupid = $mycon->query($QUERY)->fetchArray()["id"];
+                    $query = 'UPDATE `ArkAdmin_users` SET `rang`=\'['.$groupid.']\'  WHERE `id` = \''.$ID.'\'';
+                    $mycon->query($query);
+                }
+            }
+            //unlink($FILE);
+        }
+        else {
+            $query = 'UPDATE `ArkAdmin_users` SET `rang`=\'[]\'  WHERE `id` = \''.$ID.'\'';
+            $mycon->query($query);
+        }
     }
 }
-
-// Sende Daten an Server
-$array["dbhost"] = $dbhost;
-$array["dbuser"] = $dbuser;
-$array["dbpass"] = $dbpass;
-$array["dbname"] = $dbname;
-$helper->savejson_create($array, __ADIR__."/arkadmin_server/config/mysql.json");
 
 $check_json["checked"] = true;
 $helper->savejson_create($check_json, __ADIR__."/app/data/sql_check.json");
