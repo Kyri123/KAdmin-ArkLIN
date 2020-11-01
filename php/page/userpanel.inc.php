@@ -244,5 +244,4 @@ if($session_user->perm("userpanel/create_code")) $btns = '<a href="#" class="btn
             <span class="icon">
                 <i class="fas fa-plus" aria-hidden="true"></i>
             </span>
-            <span class="text">{::lang::php::userpanel::btn-regcode}</span>
         </a>';

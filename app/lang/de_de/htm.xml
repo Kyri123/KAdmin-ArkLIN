@@ -17,9 +17,6 @@
             <nopermissions>Dazu fehlt dir die Berechtigung</nopermissions>
         </default>
 
-        <force_update>Panel Update</force_update>
-        <force_update_text>Führt sofort ein Panel Update aus. Dies wird auch getan wenn Auto-Updates deaktiert ist</force_update_text>
-
         <minutes>Minuten</minutes>
         <s>Sekunden</s>
         <m>Minuten</m>
@@ -27,12 +24,6 @@
         <d>Tage</d>
         <w>Wochen</w>
         <h24>Letzten 24h</h24>
-
-        <force_restart>Starte den ArkAdmin-Server neu</force_restart>
-        <force_restart_text>Startet den ArkAdmin-Server neu um z.B. Änderungen am Intervall zu übernehmen.</force_restart_text>
-
-        <show_as_logs>Zeige ArkAdmin-Server Logs</show_as_logs>
-        <show_as_logs_text>Öffnet den ArkAdmin-Server (Logs)</show_as_logs_text>
 
         <pageload>Die Seite wurde in {ltime} Sekunden geladen</pageload>
         <navigation>Navigation</navigation>
@@ -66,6 +57,9 @@
             <config>Konfiguration</config>
             <changelog>Changelogs</changelog>
             <btn_createserver>Server Erstellen</btn_createserver>
+            <btn_update>Panel Updaten</btn_update>
+            <btn_restart>ArkAdmin-Server Neustarten</btn_restart>
+            <btn_log>ArkAdmin-Server Logs</btn_log>
 
             <tooltip>
                 <usersettings>Benutzer Einstellung</usersettings>

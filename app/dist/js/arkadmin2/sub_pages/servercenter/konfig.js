@@ -78,20 +78,23 @@ $('#einsenden').on('show.bs.modal', function (event) {
     let ini_opt = button.data('ini_opt');
     let ini_txt = button.data('ini_txt');
     let ini_send = button.data('ini_send');
-    ini_txt = ini_txt.replace("<b>", "[b]");
-    ini_txt = ini_txt.replace("</b>", "[/b]");
+    ini_txt = ini_txt.replace(">", "]");
+    ini_txt = ini_txt.replace("<", "[");
     $('#ini_opt').val(ini_opt);
     $('#ini_txt').val(ini_txt);
     $('#ini_send').val(ini_send);
 });
 
 function sendtoserver() {
+    let ini_txt = $('#ini_txt').val();
+    ini_txt = ini_txt.replace("<", "[");
+    ini_txt = ini_txt.replace(">", "]");
     let opt = {
         "ini_opt": $('#ini_opt').val(),
-        "ini_txt": $('#ini_txt').val(),
+        "ini_txt": ini_txt,
         "ini_send": $('#ini_send').val()
     };
-    $.post("https://data.chiraya.de/sendin.php", opt, (data, err) => {
+    $.post(vars.Web_url, opt, (data, err) => {
         if(err === "success") {
             let alert_data = {
                 code: 112,
@@ -113,31 +116,4 @@ function sendtoserver() {
         console.log(data);
         console.log(err);
     });
-
-    /*$.ajax({
-        url: 'https://data.chiraya.de/sendin.php',
-        data: opt,
-        type: 'POST',
-        crossDomain: true,
-        dataType: 'jsonp',
-        headers: {  'Access-Control-Allow-Origin': '*' },
-        success: function() {
-            let alert_data = {
-                code: 112,
-            };
-            $.get(`${vars.ROOT}/php/async/get/all.alert.async.php`, alert_data, (alert) => {
-                $("#all_resp").html(alert);
-            });
-            $('#einsenden').modal('hide');
-        },
-        error: function(err) {
-            let alert_data = {
-                code: 38,
-            };
-            $.get(`${vars.ROOT}/php/async/get/all.alert.async.php`, alert_data, (alert) => {
-                $("#all_resp").html(alert);
-            });
-            $('#einsenden').modal('hide');
-        },
-    });*/
 }

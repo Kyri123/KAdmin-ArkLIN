@@ -410,6 +410,7 @@ $page_tpl->r('game', $game);
 $page_tpl->r('engine', $engine);
 $page_tpl->r('eventlist', $eventlist);
 $page_tpl->r('amcfg', file_get_contents(__ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg'));
+$page_tpl->r('WEBURL', $webserver["sendin"]);
 $page_tpl->rif('expert', $user->expert());
 $page_tpl->rif('show', $show);
 $panel = $page_tpl->load_var();

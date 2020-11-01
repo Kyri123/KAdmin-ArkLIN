@@ -21,6 +21,7 @@ $buildid = 200.001;
 // Webserver
 $webserver['url'] = 'https://data.chiraya.de/';
 $webserver['changelog'] = $webserver['url'].'changelog.json';
+$webserver['sendin'] = $webserver['url'].'sendin.php';
 $webserver['config'] = json_decode(file_get_contents(__ADIR__."/arkadmin_server/config/server.json") ,true);
 $webserver['config']["port"] = (isset($webserver['config']["port"])) ? $webserver['config']["port"] : 30000;
 

@@ -215,21 +215,31 @@ if ($page == "login" || $page == "registration") {
 }
 
 if($session_user->perm("all/manage_aas")) $btns .= '
-    <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'?md5='.md5($_SESSION["id"]).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_update_text}" data-original-title="{::lang::allg::force_update}">
-        <span class="icon text-white-50">
-            <i class="fa fa-cloud-download"></i>
-        </span>
-    </a>
-    <a href="http://'.$ip.':'.$webserver['config']['port'].'/restart/'.md5($ip).'?md5='.md5($_SESSION["id"]).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::force_restart_text}" data-original-title="{::lang::allg::force_restart}">
-        <span class="icon text-white-50">
-            <i class="fas fa-undo"></i>
-        </span>
-    </a>
-    <a href="http://'.$ip.':'.$webserver['config']['port'].'/log?md5='.md5($_SESSION["id"]).'" target="_blank" class="btn btn-outline-secondary rounded-0" id="force_update" data-toggle="popover_action" title="" data-content="{::lang::allg::show_as_logs_text}" data-original-title="{::lang::allg::show_as_logs}">
-        <span class="icon text-white-50">
-            <i class="fas fa-list"></i>
-        </span>
-    </a>
+    <div class="dropdown d-inline">
+        <a class="btn btn-outline-secondary rounded-0 dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-server"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
+            <a href="http://'.$ip.':'.$webserver['config']['port'].'/update/'.md5($ip).'?md5='.md5($_SESSION["id"]).'" target="_blank" class="dropdown-item text-dark">
+                <span class="icon">
+                    <i class="fa fa-cloud-download"></i>
+                </span>
+                <span class="pl-2">{::lang::allg::nav::btn_update}</span>
+            </a>
+            <a href="http://'.$ip.':'.$webserver['config']['port'].'/restart/'.md5($ip).'?md5='.md5($_SESSION["id"]).'" target="_blank" class="dropdown-item text-dark">
+                <span class="icon">
+                    <i class="fas fa-undo"></i>
+                </span>
+                <span class="pl-2">{::lang::allg::nav::btn_restart}</span>
+            </a>
+            <a href="http://'.$ip.':'.$webserver['config']['port'].'/log?md5='.md5($_SESSION["id"]).'" target="_blank" class="dropdown-item text-dark">
+                <span class="icon">
+                    <i class="fas fa-list"></i>
+                </span>
+                <span class="pl-2">{::lang::allg::nav::btn_log}</span>
+            </a>
+        </div>
+    </div>
 ';
 
 // replace
