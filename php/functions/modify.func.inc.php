@@ -233,9 +233,22 @@ function alog($str) {
         $modid = str_replace("updated", null, $modid);
         if(isset($steamapi_mods[$modid]["title"])) $str = $time.' <b class="text-success">Update done: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
     }
+    if (strpos($str, 'Copying files') !== false) {
+        $str_EXP = explode("/", trim($str));
+        $str = json_encode($str_EXP);
+        $modid = 0;
+        foreach ($str_EXP as $ITEM) {
+            if(is_numeric($ITEM)) $modid = $ITEM;
+        }
+        if(isset($steamapi_mods[$modid]["title"])) $str = '<b class="text-gray-800">Copy/Install Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
+    }
     if (strpos($str, 'Updating mod') !== false) {
         $str_EXP = explode(" ", $str);
-        $modid = trim($str_EXP[5]);
+        $str = json_encode($str_EXP);
+        $modid = 0;
+        foreach ($str_EXP as $ITEM) {
+            if(is_numeric($ITEM)) $modid = $ITEM;
+        }
         if(isset($steamapi_mods[$modid]["title"])) $str = '<b class="text-gray-800">Updating Mod: </b><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='.$modid.'" target="_blank">' . $steamapi_mods[$modid]["title"].'</a></b>';
     }
     if (strpos($str, 'not fully downloaded') !== false) {

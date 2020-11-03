@@ -262,7 +262,7 @@
 
     "BanListURL": {
       "type": "string",
-      "default": "http:\/\/arkdedicated.com\/banlist.txt"
+      "default": ""
     },
 
     "PvPStructureDecay": {
@@ -498,7 +498,11 @@
   "MessageOfTheDay": {
     "Message": {
       "type": "string",
-      "default": "Dieser Server wird mit ArkAdmin2 gesteuert (https://github.com/Kyri123/Arkadmin)"
+      "default": "Dieser Server wird mit ArkAdmin2 gesteuert"
+    },
+    "Duration": {
+      "type": "int",
+      "default": "20"
     }
   },
 

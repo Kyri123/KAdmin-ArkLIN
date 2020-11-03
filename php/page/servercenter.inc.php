@@ -111,7 +111,7 @@ if ($serv->cfg_read('ark_TotalConversionMod') == '') $tmod = '<b>{::lang::php::s
 $player_online = $serv->status()->aplayersarr;
 
 // Spieler
-if (is_array($player_online) && is_countable($player_online) && count($player_online) > 0 && $session_user->perm("$perm/show_players")) {
+if (is_array($player_online) && is_countable($player_online) && $serv->status()->aplayers > 0 && $session_user->perm("$perm/show_players")) {
     for ($i = 0; $i < count($player_online); $i++) {
         $list_tpl = new Template('user.htm', __ADIR__.'/app/template/lists/serv/main/');
         $list_tpl->load();
@@ -161,14 +161,15 @@ if (is_array($player_online) && is_countable($player_online) && count($player_on
             $SteamId                = $fsteamid;
             $img                    = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/";
             $surl                   = "#unknown";
-            $steamname              = $player_online[$i]["name"];
+            $steamname              = isset($player_online[$i]["name"]) ? $player_online[$i]["name"] : "Unkown";
             $FileUpdated            = time();
             $TribeId                = 7;
             $TribeName              = null;
-            $IG_name                = $player_online[$i]["name"];
+            $IG_name                = isset($player_online[$i]["name"]) ? $player_online[$i]["name"] : "Unkown";
             $IG_level               = 0;
         }
 
+        if(!isset($player_online[$i]["time"])) $player_online[$i]["time"] = 0;
         $time = TimeCalc($player_online[$i]["time"], ($player_online[$i]["time"] > 3600 ? "h" : "m"), "disabled");
 
         $list_tpl->r('tribe', (($TribeName != null) ? $TribeName : '{::lang::php::sc::notribe}'));

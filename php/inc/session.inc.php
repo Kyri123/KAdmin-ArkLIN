@@ -12,7 +12,7 @@ $resp = null; $a1 = null; $a2 = null; $a3 = null; $a4 = null;
 
 // Einloggen
 if (isset($_POST["login"]) && !isset($_SESSION["id"])) {
-    $loggedin = filter_var($_POST["loggedin"], FILTER_VALIDATE_BOOLEAN);
+    $loggedin = isset($_POST["loggedin"]) ? filter_var($_POST["loggedin"], FILTER_VALIDATE_BOOLEAN) : false;
     define('pw', $_POST["pw"]);
     
     // Count Username
@@ -105,7 +105,7 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
                 if ($mycon->query($q_code)->numRows() > 0) {
                     $codeid = $mycon->fetchArray()["id"];
                     $row_code = $mycon->query($q_code)->fetchArray();
-                    $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `rang`, `registerdate`,`rang`) VALUES (\''.username.'\', \''.email.'\', \''.md5(pw1).'\', \'1\', \''.time().'\', \''.($row_code["time"] == "1" ? "[1]":"[]").'\')';
+                    $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `ban`, `registerdate`,`rang`) VALUES (\''.username.'\', \''.email.'\', \''.md5(pw1).'\', \'0\', \''.time().'\', \''.($row_code["time"] == "1" ? "[1]":"[]").'\')';
                     // Wenn der Benutzer erstellt wurde
                     if($mycon->query($query)) {
                         $mycon->query("UPDATE `ArkAdmin_reg_code` SET `used` = '1' WHERE `id` = '$codeid'");

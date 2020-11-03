@@ -85,7 +85,7 @@ if($_GET["key"] == $API_key && $API_active) {
     $tpl->r("statecolor"    , $serv->statecode() == 2 ? "green" : "red");
 
     $tpl->r("statetxt"      , $_GET["border"]);
-    $tpl->r("curr"          , count($state_info->aplayersarr));
+    $tpl->r("curr"          , $serv->statecode() == 2 ? count($state_info->aplayersarr) : 0);
     $tpl->r("ip"            , $_GET["ip"].":".$serv->cfg_read(ark_QueryPort));
     $tpl->r("max"           , $serv->cfg_read("ark_MaxPlayers"));
     $tpl->r("mapstr"        , isset($mapjson[$serv->cfg_read("serverMap")]) ? $mapjson[$serv->cfg_read("serverMap")]["name"] : $serv->cfg_read("serverMap"));

@@ -69,22 +69,8 @@ $REQUEST_URI    = str_replace($ROOT, null, $_SERVER["REQUEST_URI"]);
 $ROOT_TPL       = __DIR__."/app/template";
 
 $PAGE_EXP       = $REQUEST_URI != "" ? explode("/", $REQUEST_URI) : array();
+$page           = isset($url[1]) ? $url[1] : "home";
 
-$page           = isset($PAGE_EXP[0]) ? $PAGE_EXP[0] : "home";
-
-
-if($page == "logout") {
-    if (isset($_COOKIE["id"]) && isset($_COOKIE["validate"])) {
-        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`validate`='".$_COOKIE["validate"]."')";
-        $mycon->query($query);
-        setcookie("id", "", time() - 3600);
-        setcookie("validate", "", time() - 3600);
-    }
-
-    session_destroy();
-    header("Location: $ROOT/login");
-    exit;
-}
 
 // API
 $API_path           = __ADIR__."/php/inc/api.json";
@@ -103,6 +89,19 @@ if ($url[1] == "" || $url[1] == "favicon.ico") {
 // Connent to MYSQL
 include(__ADIR__.'/php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
+
+if($url[1] == "logout") {
+    if (isset($_COOKIE["id"]) && isset($_COOKIE["validate"])) {
+        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`validate`='".$_COOKIE["validate"]."')";
+        $mycon->query($query);
+        setcookie("id", "", time() - 3600);
+        setcookie("validate", "", time() - 3600);
+    }
+
+    session_destroy();
+    header("Location: $ROOT/login");
+    exit;
+}
 
 $check_json = $helper->file_to_json(__ADIR__."/app/data/sql_check.json");
 if($mycon->is && !$check_json["checked"]) include(__ADIR__.'/php/inc/auto_update_sql_DB.inc.php');
