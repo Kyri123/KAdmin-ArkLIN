@@ -19,6 +19,7 @@ class server extends Rcon {
 
     public $loadedcluster = false;
     public $serv;
+    public $iniext;
     public $inipath;
     public $inistr;
     public $cluster_data;
@@ -369,11 +370,11 @@ class server extends Rcon {
         if(!preg_match('//u', $ini_str) && $ini == "Game.ini") $ini_str = mb_convert_encoding($ini_str,'UTF-8', 'UCS-2LE');
 
         $ini_str = str_replace(" ", null, $ini_str);
-        //file_put_contents($path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini, $ini_str);
-        //$ini_str = file_exists($dir) ? file_get_contents($dir) : "";
+        file_put_contents("$path/ShooterGame/Saved/Config/LinuxServer/conv_$ini", $ini_str);
 
         if (file_exists($dir) && fileperms($dir)) {
             $this->ini = parse_ini_string($ini_str, $group, INI_SCANNER_RAW);
+            $this->iniext = extend_parse_ini("$path/ShooterGame/Saved/Config/LinuxServer/conv_$ini");
             $this->inipath = $dir;
             $this->inistr = $ini_str;
             return TRUE;

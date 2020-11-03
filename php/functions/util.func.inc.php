@@ -384,7 +384,14 @@ function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
                     $ITEMS .= $tpl_i1->load_var();
                 }
                 else {
-                    $REST .= "$KEY=$ITEM\n";
+                    if(is_array($ITEM)) {
+                        foreach ($ITEM as $IL) {
+                            $REST .= "$KEY=$IL\n";
+                        }
+                    }
+                    else {
+                        $REST .= "$KEY=$ITEM\n";
+                    }
                 }
             } elseif(in_array($KEY, $INARR)) {
                 foreach ($ITEM as $KEY2 => $ITEM2) {
@@ -407,7 +414,8 @@ function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
                         $tpl_i1->r("name", "ini[$key][$KEY][$KEY2]");
                         $tpl_i1->r("opt", $KEY."[$KEY2]");
                         $tpl_i1->r("opt2", $KEY.$KEY2);
-                        $tpl_i1->r("value", $ITEM2);
+                        if(is_array($ITEM2)) $tpl_i1->r("value", $ITEM2["$KEY2"]);
+                        if(!is_array($ITEM2)) $tpl_i1->r("value", $ITEM2);
                         $tpl_i1->r("True", ($TYPE == "bool" && $ITEM == "True") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
                         $tpl_i1->r("False", ($TYPE == "bool" && $ITEM == "False") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
                         $tpl_i1->r("max", $TYPE == "float" ? round((($DEFAULT[$key][$KEY][$KEY2]["default"] < 1 ? 1 : $DEFAULT[$key][$KEY][$KEY2]["default"]) * 10), 0) : ($TYPE == "int" ? round((($DEFAULT[$key][$KEY][$KEY2]["default"] < 5 ? 5 : $DEFAULT[$key][$KEY][$KEY2]["default"]) * 10), 0) :"1"));
@@ -415,8 +423,25 @@ function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
                         $ITEMS .= $tpl_i1->load_var();
                     }
                     else {
-                        $REST .= "$KEY=$ITEM\n";
+                        if(is_array($ITEM)) {
+                            foreach ($ITEM as $IL) {
+                                $REST .= "$KEY=$IL\n";
+                            }
+                        }
+                        else {
+                            $REST .= "$KEY=$ITEM\n";
+                        }
                     }
+                }
+            }
+            else {
+                if(is_array($ITEM)) {
+                    foreach ($ITEM as $IL) {
+                        $REST .= "$KEY=$IL\n";
+                    }
+                }
+                else {
+                    $REST .= "$KEY=$ITEM\n";
                 }
             }
         }
@@ -497,4 +522,51 @@ function creatform(array $arr, array $D_ARRAY = null, string $k = null, array $k
     }
 
     return $string;
+}
+
+/**
+ * @param $file
+ * @return array
+ */
+function extend_parse_ini($file){
+    $arr = array();
+    $handle = fopen($file, "r");
+    $superkey = "unload";
+    if ($handle) {
+        while (($line = fgets($handle)) !== false) {
+            $line = str_replace(["\r", "\n"], null, $line);
+            $line = preg_replace(
+                '/
+                            ^
+                            [\pZ\p{Cc}\x{feff}]+
+                            |
+                            [\pZ\p{Cc}\x{feff}]+$
+                           /ux','', $line);
+            if(
+                strpos($line,"[") !== false &&
+                strpos($line,"]") !== false &&
+                strpos($line,"=") === false &&
+                !is_numeric(preg_replace("#(.*?)\[(.*?)\]#si", "$2", $line))
+            ) {
+                $superkey = preg_replace("#(.*?)\[(.*?)\]#si", "$2", $line);
+            }
+            else {
+                $parsed = parse_ini_string($line,null, INI_SCANNER_RAW);
+                if(empty($parsed)) continue;
+                $key = key($parsed);
+                if(isset($arr[$superkey][$key])) {
+                    if(!is_array($arr[$superkey][$key])) {
+                        $tmp = $arr[$superkey][$key];
+                        $arr[$superkey][$key] = array($tmp);
+                    }
+                    $arr[$superkey][$key][] = $parsed[$key];
+                } else {
+                    $arr[$superkey][$key] = $parsed[$key];
+                }
+            }
+        }
+        fclose($handle);
+        return $arr;
+    }
+    return false;
 }
