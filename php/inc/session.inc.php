@@ -48,13 +48,13 @@ if (isset($_POST["login"]) && !isset($_SESSION["id"])) {
                 header('Location: /home');
                 exit;
             } else {
-                $resp = $alert->rd(21, 3);
+                $resp .= $alert->rd(21, 3);
             }
         } else {
-            $resp = $alert->rd(22, 3);
+            $resp .= $alert->rd(22, 3);
         }
     } else {
-        $resp = $alert->rd(23, 3);
+        $resp .= $alert->rd(23, 3);
     }
 }
 
@@ -109,23 +109,23 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
                     // Wenn der Benutzer erstellt wurde
                     if($mycon->query($query)) {
                         $mycon->query("UPDATE `ArkAdmin_reg_code` SET `used` = '1' WHERE `id` = '$codeid'");
-                        $resp = $alert->rd(109, 3);
+                        $resp .= $alert->rd(109, 3);
                     }
                     else {
-                        $resp = $alert->rd(3, 3);
+                        $resp .= $alert->rd(3, 3);
                     }
                 }
                 else {
-                    $resp = $alert->rd(24, 3);
+                    $resp .= $alert->rd(24, 3);
                 }
             } else {
-                $resp = $alert->rd(26, 3);
+                $resp .= $alert->rd(26, 3);
             }
         } else {
-            $resp = $alert->rd(27, 3);
+            $resp .= $alert->rd(27, 3);
         }
     } else {
-        $resp = $alert->rd(28, 3);
+        $resp .= $alert->rd(28, 3);
     }
     
     

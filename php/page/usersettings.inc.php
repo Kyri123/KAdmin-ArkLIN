@@ -24,7 +24,7 @@ if(isset($_POST["saveuser"])) {
         }
         else {
             $alert->code = 3;
-            $resp = $alert->re();
+            $resp .= $alert->re();
         }
     }
 
@@ -35,7 +35,7 @@ if(isset($_POST["saveuser"])) {
         }
         else {
             $alert->code = 3;
-            $resp = $alert->re();
+            $resp .= $alert->re();
         }
     }
 
@@ -49,12 +49,12 @@ if(isset($_POST["saveuser"])) {
             }
             else {
                 $alert->code = 3;
-                $resp = $alert->re();
+                $resp .= $alert->re();
             }
         }
         else {
             $alert->code = 27;
-            $resp = $alert->re();
+            $resp .= $alert->re();
         }
     }
 
@@ -72,10 +72,10 @@ if(isset($_POST["savepanel"])) {
     $json["konfig"] = (isset($_POST["json"]["konfig"])) ? 1 : 0;
     if ($helper->savejson_create($json, $path)) {
         $alert->code = 102;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     } else {
         $alert->code = 1;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 

@@ -32,13 +32,13 @@ if(!$session_user->perm("$perm/show")) {
 if(isset($url[5]) && $url[4] == "kill" && $session_user->perm("$perm/kill")) {
     $jobs->set($serv->name());
     if($jobs->shell("kill ".$serv->status()->pid)) {
-        $resp = $alert->rd(111);
+        $resp .= $alert->rd(111);
     } else {
-        $resp = $alert->rd(3);
+        $resp .= $alert->rd(3);
     }
 }
 elseif(isset($url[5]) && $url[4] == "kill") {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 //erstelle SteamAPI von OnlineSpieler

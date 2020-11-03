@@ -79,7 +79,7 @@ if (isset($_POST['addmod']) && $session_user->perm("$perm/mods/add")) {
                         }
                         else {
                             // Melde: Mod Exsistiert
-                            $resp = $alert->rd(5);
+                            $resp .= $alert->rd(5);
                         }
                     }
                     else {
@@ -89,20 +89,20 @@ if (isset($_POST['addmod']) && $session_user->perm("$perm/mods/add")) {
                     }
                 } else {
                     // Melde kein Gültiger Inhalt
-                    $resp = $alert->rd(20);
+                    $resp .= $alert->rd(20);
                 }
             } else {
                 // Melde: Keine Gültige URL bzw ID
-                $resp = $alert->rd(19);
+                $resp .= $alert->rd(19);
             }
         } else {
             // Melde: Workshop URL falsch
-            $resp = $alert->rd(18);
+            $resp .= $alert->rd(18);
         }
     }
 }
 elseif(isset($_POST['addmod'])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 if ($ifcadmin) {
