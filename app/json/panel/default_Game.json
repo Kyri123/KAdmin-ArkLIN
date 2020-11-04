@@ -410,6 +410,21 @@
       "default": "False"
     },
 
+    "CustomRecipeSkillMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "BabyCuddleIntervalMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
+    "PoopIntervalMultiplier": {
+      "type": "float",
+      "default": "1.0"
+    },
+
 
 
     "PlayerBaseStatMultipliers": [
