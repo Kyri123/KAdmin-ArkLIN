@@ -384,14 +384,20 @@ $CFGs = array(
 );
 
 foreach ($CFGs as $CFG) {
-    $CURR            = $serv->ini_load("$CFG.ini", true);
-    $CURR            = $serv->iniext;
-    $RAW_DEFAULT     = $helper->file_to_json(__ADIR__."/app/json/panel/default_$CFG.json");
-    $CONV_DEFAULT    = convert_ini($RAW_DEFAULT);
-    $FINAL_INI       = array_replace_recursive($CONV_DEFAULT, $CURR);
-    $Former_arr      = create_ini_form($FINAL_INI, $CFG, $RAW_DEFAULT, $serv->name());
-    $re[$CFG]        = $Former_arr["form"];
-    $re["$CFG-rest"] = $Former_arr["rest"];
+    if(file_exists($serv->dir_save(true)."/Config/LinuxServer/$CFG.ini")) {
+        $CURR            = $serv->ini_load("$CFG.ini", true);
+        $CURR            = $serv->iniext;
+        $RAW_DEFAULT     = $helper->file_to_json(__ADIR__."/app/json/panel/default_$CFG.json");
+        $CONV_DEFAULT    = convert_ini($RAW_DEFAULT);
+        $FINAL_INI       = array_replace_recursive($CONV_DEFAULT, $CURR);
+        $Former_arr      = create_ini_form($FINAL_INI, $CFG, $RAW_DEFAULT, $serv->name());
+        $re[$CFG]        = $Former_arr["form"];
+        $re["$CFG-rest"] = $Former_arr["rest"];
+    }
+    else {
+        $re[$CFG]        = "";
+        $re["$CFG-rest"] = "";
+    }
 }
 
 if ($ifckonfig) $resp_cluster .= $alert->rd(301, 3);
