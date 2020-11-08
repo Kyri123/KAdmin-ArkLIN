@@ -56,14 +56,14 @@ if (isset($_POST["send"])) {
                 exit;
             }
             else {
-                $resp = $alert->rd(1);
+                $resp .= $alert->rd(1);
             }
         }
         else {
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
     } else {
-        $resp = $alert->rd(29);
+        $resp .= $alert->rd(29);
     }
 }
 

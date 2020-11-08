@@ -43,23 +43,23 @@ if (isset($_POST["addadmin"]) && $session_user->perm("$perm/home/admin_send")) {
                 $alert->code = 100;
                 $alert->r("name", isset($playerjs[$i]["personaname"]) ? strval($playerjs[$i]["personaname"]) : $id);
                 $alert->overwrite_text = "{::lang::php::sc::page::home::add_admin}";
-                $resp = $alert->re();
+                $resp .= $alert->re();
             } else {
                 // Melde: Schreib/Lese Fehler
-                $resp = $alert->rd(1);
+                $resp .= $alert->rd(1);
             }
         }
         else {
             // Melde: Mutiple
-            $resp = $alert->rd(5);
+            $resp .= $alert->rd(5);
         }
     } else {
         // Melde: Input Fehler
-        $resp = $alert->rd(2);
+        $resp .= $alert->rd(2);
     }
 }
 elseif(isset($_POST["addadmin"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Entfernte von Adminliste
@@ -71,15 +71,15 @@ if (isset($_POST["rm"]) && $session_user->perm("$perm/home/admin_send")) {
         $content = str_replace($id, null, $content);
         if (file_put_contents($cheatfile, $content)) {
             // Melde: Erfolgreich
-            $resp = $alert->rd(101);
+            $resp .= $alert->rd(101);
         } else {
             // Melde: Lese/Schreib Fehler
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
     }
 }
 elseif(isset($_POST["rm"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 
@@ -186,8 +186,8 @@ $page_tpl->rif ('ifwhitelist', $ifwhitelist);
 $page_tpl->rif ('rcon', $serv->check_rcon());
 $page_tpl->rif ('lchatactive', $lchatactive);
 $page_tpl->rif ('whiteactive', $serv->cfg_check("arkflag_exclusivejoin"));
-$page_tpl->r('lchatlog', $serv->dir_save(true, true).'/Logs/ServerPanel.log');
-$page_tpl->r('rconlog', "$ROOT/app/json/saves/rconlog_".$serv->name().'.txt');
+$page_tpl->r('lchatlog', __ADIR__.$serv->dir_save(true, true).'/Logs/ServerPanel.log');
+$page_tpl->r('rconlog', __ADIR__."/app/json/saves/rconlog_".$serv->name().'.txt');
 $page_tpl->r('whiteactive_meld', $white_alert);
 $page_tpl->r("userlist_admin", $userlist_admin);
 $page_tpl->r("adminlist_admin", $adminlist_admin);

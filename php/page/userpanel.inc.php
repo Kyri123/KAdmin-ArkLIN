@@ -31,14 +31,14 @@ if(isset($_POST["editgroups"]) && $session_user->perm("all/is_admin")) {
     $groups = isset($_POST["ids"]) ? json_encode($_POST["ids"]) : "[]";
     $users = new userclass($_POST["userid"]);
     if($users->write("rang", $groups)) {
-        $resp = $alert->rd(102);
+        $resp .= $alert->rd(102);
     }
     else {
-        $resp = $alert->rd(3);
+        $resp .= $alert->rd(3);
     }
 }
 elseif(isset($_POST["editgroups"]))  {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Code hinzufügen
@@ -52,38 +52,38 @@ if (isset($_POST["add"]) && $session_user->perm("userpanel/create_code")) {
             if ($mycon->query($query)) {
                 $alert->code = 100;
                 $alert->overwrite_text = '<div class="input-group m"><input type="text" class="form-control rounded-0" readonly="true" value="'.$code.'" id="'.$code.'"><span class="input-group-append"><button onclick="copythis(\''.$code.'\')" class="btn btn-primary btn-flat"><i class="fas fa-copy" aria-hidden="true"></i></button></span></div>';
-                $resp = $alert->re();
+                $resp .= $alert->re();
             } else {
-                $resp = $alert->rd(3);
+                $resp .= $alert->rd(3);
             }
         }
         else {
-            $resp = $alert->rd(2);
+            $resp .= $alert->rd(2);
         }
     }
     else  {
-        $resp = $alert->rd(99);
+        $resp .= $alert->rd(99);
     }
 }
 elseif(isset($_POST["add"]))  {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Code löschen
 if (isset($url[3]) && $url[2] == "rmcode" && $session_user->perm("userpanel/delete_code")) {
     $id = $url[3];
-    $query = "DELETE FROM `ArkAdmin_reg_code` WHERE (`id`='".$id."')";
-    if ($mycon->query($query)) {
+    $query = "DELETE FROM `ArkAdmin_reg_code` WHERE (`id`=?)";
+    if ($mycon->query($query, $id)) {
         $alert->code = 101;
         $alert->overwrite_text = '{::lang::php::userpanel::removed_code}';
-        $resp = $alert->re();
+        $resp .= $alert->re();
     } else {
         $alert->code = 3;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 elseif (isset($url[3]) && $url[2] == "rmcode") {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Benutzer löschen
@@ -91,21 +91,21 @@ if (isset($_POST["del"]) && $session_user->perm("userpanel/delete_user")) {
     $id = $_POST["userid"];
     $kuser->setid($id);
     $tpl->r("del_username", $kuser->read("username"));
-    $query = "DELETE FROM `ArkAdmin_users` WHERE (`id`='".$id."')";
-    if ($mycon->query($query)) {
+    $query = "DELETE FROM `ArkAdmin_users` WHERE (`id`=?)";
+    if ($mycon->query($query, $id)) {
         if(file_exists(__ADIR__."/app/json/user/".md5($id).".permissions.json")) unlink(__ADIR__."/app/json/user/".md5($id).".permissions.json");
         if(file_exists(__ADIR__."/app/json/user/".md5($id).".json")) unlink(__ADIR__."/app/json/user/".md5($id).".json");
         $mycon->query("DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$id."')");
         $alert->code = 101;
         $alert->overwrite_text = '{::lang::php::userpanel::removed_user}';
-        $resp = $alert->re();
+        $resp .= $alert->re();
     } else {
         $alert->code = 3;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 elseif (isset($_POST["del"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Benutzer (ent-)bannen
@@ -121,18 +121,18 @@ if (isset($url[4]) && $url[2] == "tban" && $session_user->perm("userpanel/ban_us
     $tpl->r("ban_username", $kuser->read("username"));
     $tpl->r("ban_uid", $uid);
     $tpl->r("ban_to", $to);
-    $query = "UPDATE `ArkAdmin_users` SET `ban`='".$set."' WHERE (`id`='".$uid."')";
-    if ($mycon->query($query)) {
+    $query = "UPDATE `ArkAdmin_users` SET `ban`=? WHERE (`id`=?)";
+    if ($mycon->query($query, $set, $uid)) {
         $alert->code = 102;
         $alert->overwrite_text = '{::lang::php::userpanel::changed_ban}';
-        $resp = $alert->re();
+        $resp .= $alert->re();
      } else {
         $alert->code = 3;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 elseif (isset($url[4]) && $url[2] == "tban") {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Benutzer Liste

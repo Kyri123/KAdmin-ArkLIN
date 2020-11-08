@@ -201,8 +201,8 @@ else {
                     if($MAX < 1) $MAX = 1;
                     $ORDER = isset($_GET["order"]) ? ($_GET["max"] == "ASC" ? "ASC" : "DESC") : "DESC";
 
-                    $query = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = '$SERVER_NAME' ORDER BY `time` $ORDER LIMIT $MAX";
-                    $mycon->query($query);
+                    $query = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = ? ORDER BY `time` $ORDER LIMIT $MAX";
+                    $mycon->query($query, $SERVER_NAME);
                     if($mycon->numRows() > 0) {
                         $RESPONSE["response"]["statistiken"] = $mycon->fetchAll();
                         echo json_encode($RESPONSE);

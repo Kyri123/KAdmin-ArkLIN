@@ -72,7 +72,7 @@ if (isset($_POST["add"]) && $session_user->perm("servercontrollcenter/create")) 
         ) {
             if (!file_exists($path) && $ark_QueryPort > 1000) {
                 if (file_put_contents($path, $cfg)) {
-                    $resp = $alert->rd(100);
+                    $resp .= $alert->rd(100);
                     $serv = new server($name);
                     $serv->cfg_save();
 
@@ -94,24 +94,24 @@ if (isset($_POST["add"]) && $session_user->perm("servercontrollcenter/create")) 
                         $helper->savejson_create($user_permissions, __ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json");
                     }
                 } else {
-                    $resp = $alert->rd(1);
+                    $resp .= $alert->rd(1);
                 }
             } else {
-                $resp = $alert->rd(5);
+                $resp .= $alert->rd(5);
             }
         }
         else {
-            $resp = $alert->rd(2);
+            $resp .= $alert->rd(2);
         }
     }
     else {
         $alert->code = 37;
         $alert->r("max_server", $maxpanel_server);
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 elseif (isset($_POST["add"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Entfernen von Server
@@ -157,19 +157,19 @@ if (isset($_POST["del"]) && $session_user->perm("servercontrollcenter/delete")) 
 
             $alert->code = 101;
             $alert->overwrite_text = "{::lang::php::scc::serverremoved}";
-            $resp = $alert->re();
+            $resp .= $alert->re();
         } else {
             $alert->code = 1;
-            $resp = $alert->re();
+            $resp .= $alert->re();
         }
     } else {
         if ($serverstate == 0 || $serverstate == 3) $alert->code = 7;
         if (!file_exists($path_cfg)) $alert->code = 8;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 elseif (isset($_POST["del"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 $dir = dirToArray(__ADIR__.'/remote/arkmanager/instances/');

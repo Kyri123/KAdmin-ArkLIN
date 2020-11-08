@@ -31,8 +31,8 @@ if(isset($_POST["addgroup"])) {
         if($GROUPNAME != "") {
             $QUERY      = "INSERT INTO `ArkAdmin_user_group` 
                                 (id, name, editform, time, permissions, canadd) VALUES 
-                                (null, '$GROUPNAME', ".$user->read('id').", ".time().", '$PERMISSIONS', '[]')";
-            if($mycon->query($QUERY)) {
+                                (null, ?, ".$user->read('id').", ".time().", '$PERMISSIONS', '[]')";
+            if($mycon->query($QUERY, $GROUPNAME)) {
                 $resp .= $alert->rd(100);
             }
             else {
@@ -59,9 +59,9 @@ if(isset($_POST["editgroup"])) {
     if($mycon->query($TEST_QUERY)->numRows() > 0 && $ID != 1) {
         if($GROUPNAME != "") {
             $QUERY      = "UPDATE `ArkAdmin_user_group` 
-                                SET name='$GROUPNAME', editform='".$user->read("id")."', time='".time()."', permissions='$PERMISSIONS'
+                                SET name= ?, editform='".$user->read("id")."', time='".time()."', permissions='$PERMISSIONS'
                                 WHERE `id`='$ID'";
-            if($mycon->query($QUERY)) {
+            if($mycon->query($QUERY, $GROUPNAME)) {
                 $resp .= $alert->rd(102);
             }
             else {

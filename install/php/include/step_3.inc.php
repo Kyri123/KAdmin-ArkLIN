@@ -13,7 +13,7 @@ $sitetpl->load();
 $complete = false;
 $ppath = __ADIR__."/php/inc/custom_konfig.json";
 if(!file_put_contents(__ADIR__."/app/check/subdone", "true")) {
-    $resp = $alert->rd(1);
+    $resp .= $alert->rd(1);
 }
 
 
@@ -60,23 +60,23 @@ if (isset($_POST["savepanel"])) {
             $link1 = true;
         }
         else {
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
         if (file_put_contents(__ADIR__."/remote/serv/check", "done")) {
             unlink(__ADIR__."/remote/arkmanager/check");
             $link2 = true;
         }
         else {
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
         if ($link1 && $link2) {
             header("Location: $ROOT/install.php/4");
             exit;
         } else {
-            $resp = $alert->rd(30);
+            $resp .= $alert->rd(30);
         }
     } else {
-        $resp = $alert->rd(1);
+        $resp .= $alert->rd(1);
     }
 }
 

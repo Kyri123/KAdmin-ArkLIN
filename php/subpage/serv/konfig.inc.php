@@ -22,7 +22,7 @@ $urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/
 $urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}</li>';
 
 // arkmanager.cfg Speichern (Normaler Modus)
-$resp = $ark_flag = $eventlist = null;
+$resp .= $ark_flag = $eventlist = null;
 if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $session_user->perm("$perm/konfig/arkmanager")) {
     $value = $_POST['value'];
     $key = $_POST['key'];
@@ -66,8 +66,8 @@ if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("k
 }
 else {
     // Melde Fehlschlag
-    if(isset($_POST['savecfg'])) $resp = $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg'])) $resp .= $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp .= $alert->rd(7);
 }
 
 // GameUserSettings/Game/Engine.ini Speichern (Normaler Modus)
@@ -108,20 +108,20 @@ if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode
         // Wenn Datei geschreiben wurde
         if (file_put_contents($path, $text)) {
             // Melde: Erfolg
-            $resp = $alert->rd(102);
+            $resp .= $alert->rd(102);
         } else {
             // Melde: Lese/Schreibfeher
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
     }
     else {
-        $resp = $alert->rd(99);
+        $resp .= $alert->rd(99);
     }
 }
 else {
     // Melde Fehlschlag
-    if(isset($_POST['savenormal'])) $resp = $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
+    if(isset($_POST['savenormal'])) $resp .= $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp .= $alert->rd(7);
 }
 
 // arkmanager.cfg (Expert) Speichern
@@ -132,16 +132,16 @@ if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_
     // Wenn Datei geschreiben wurde
     if (file_put_contents($path, $cfg)) {
         // Melde: Erofolg
-        $resp = $alert->rd(102);
+        $resp .= $alert->rd(102);
     } else {
         // Melde: Lese/Schreib Fehler
-        $resp = $alert->rd(1);
+        $resp .= $alert->rd(1);
     }
 }
 else {
     // Melde Fehlschlag
-    if(isset($_POST['savecfg_expert'])) $resp = $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp = $alert->rd(7);
+    if(isset($_POST['savecfg_expert'])) $resp .= $alert->rd(7);
+    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp .= $alert->rd(7);
 }
 
 // Game,GUS,Engine.ini Speichern (Expertenmodus)
@@ -160,23 +160,23 @@ if (isset($_POST['save']) && (($serv->statecode() == 1 && $user->show_mode("konf
             $text = ini_save_rdy($text);
             if (file_put_contents($path, $text)) {
                 // Mel.de Erfolg
-                $resp = $alert->rd(102);
+                $resp .= $alert->rd(102);
             } else {
                 // Melde: Lese/Schreib Fehler
-                $resp = $alert->rd(1);
+                $resp .= $alert->rd(1);
             }
         } else {
             // Melde: Lese/Schreib Fehler
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
     }
     else {
-        $resp = $alert->rd(99);
+        $resp .= $alert->rd(99);
     }
 }
 else {
     // Melde Fehlschlag
-    if(isset($_POST['save'])) $resp = $alert->rd(7);
+    if(isset($_POST['save'])) $resp .= $alert->rd(7);
 }
 
 $page_tpl->r('cfg' ,$url[2]);
@@ -384,14 +384,20 @@ $CFGs = array(
 );
 
 foreach ($CFGs as $CFG) {
-    $CURR            = $serv->ini_load("$CFG.ini", true);
-    $CURR            = $serv->iniext;
-    $RAW_DEFAULT     = $helper->file_to_json(__ADIR__."/app/json/panel/default_$CFG.json");
-    $CONV_DEFAULT    = convert_ini($RAW_DEFAULT);
-    $FINAL_INI       = array_replace_recursive($CONV_DEFAULT, $CURR);
-    $Former_arr      = create_ini_form($FINAL_INI, $CFG, $RAW_DEFAULT, $serv->name());
-    $re[$CFG]        = $Former_arr["form"];
-    $re["$CFG-rest"] = $Former_arr["rest"];
+    if(file_exists($serv->dir_save(true)."/Config/LinuxServer/$CFG.ini")) {
+        $CURR            = $serv->ini_load("$CFG.ini", true);
+        $CURR            = $serv->iniext;
+        $RAW_DEFAULT     = $helper->file_to_json(__ADIR__."/app/json/panel/default_$CFG.json");
+        $CONV_DEFAULT    = convert_ini($RAW_DEFAULT);
+        $FINAL_INI       = array_replace_recursive($CONV_DEFAULT, $CURR);
+        $Former_arr      = create_ini_form($FINAL_INI, $CFG, $RAW_DEFAULT, $serv->name());
+        $re[$CFG]        = $Former_arr["form"];
+        $re["$CFG-rest"] = $Former_arr["rest"];
+    }
+    else {
+        $re[$CFG]        = "";
+        $re["$CFG-rest"] = "";
+    }
 }
 
 if ($ifckonfig) $resp_cluster .= $alert->rd(301, 3);

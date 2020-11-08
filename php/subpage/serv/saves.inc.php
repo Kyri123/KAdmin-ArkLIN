@@ -56,27 +56,27 @@ if (isset($_POST["zip"]) && $session_user->perm("$perm/saves/download")) {
                 // Melde Download bereit
                 $alert->code = 110;
                 $alert->r("url", "/$zipfile");
-                $resp = $alert->re(); //download startet
+                $resp .= $alert->re(); //download startet
                 header("Location: ".str_replace(__ADIR__, null, $zipfile).".gz");
                 if(file_exists($zipfile)) unlink($zipfile);
             }
             else {
                 // Melde Schreibe/Lese Fehler
-                $resp = $alert->rd(1); 
+                $resp .= $alert->rd(1);
             }
         }
         else {
             // Melde Schreib/Lese Fehler
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
     }
     else {
         // Melde Input Fehller (Fehlende Werte)
-        $resp = $alert->rd(2);
+        $resp .= $alert->rd(2);
     }
 }
 elseif(isset($_POST["zip"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Entferne Savegame
@@ -172,7 +172,7 @@ if (isset($_POST["remove"]) && $session_user->perm("$perm/saves/remove")) {
     }
 }
 elseif(isset($_POST["remove"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Entferne Savegame
@@ -180,14 +180,14 @@ if (isset($_POST["removeall"]) && $session_user->perm("$perm/saves/remove")) {
     $savedir = $serv->dir_save();
     if(del_dir($savedir)) {
         mkdir($savedir);
-        $resp = $alert->rd(101);
+        $resp .= $alert->rd(101);
     }
     else {
-        $resp = $alert->rd(1);
+        $resp .= $alert->rd(1);
     }
 }
 elseif(isset($_POST["removeall"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 $urls = '/servercenter/'.$url[2].'/mods/';

@@ -7,6 +7,7 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+define("__ADIR__", __DIR__);
 
 // für Installer
 if(isset($_GET["mod_rewrite"])) {
@@ -14,7 +15,6 @@ if(isset($_GET["mod_rewrite"])) {
     exit;
 }
 
-define("__ADIR__", __DIR__);
 if(file_exists(__ADIR__."/app/check/done") && file_exists(__ADIR__."/install.php")) unlink(__ADIR__."/install.php");
 
 // hide errors
@@ -38,8 +38,8 @@ foreach ($server as $item) {
 }
 
 if (isset($_SESSION["id"])) {
-    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`=\''.$_SESSION["id"].'\'';
-    $mycon->query($query);
+    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`= ? ';
+    $mycon->query($query, $_SESSION["id"]);
 }
 
 // Deaktiviere Error anzeige
@@ -92,8 +92,8 @@ $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 
 if($url[1] == "logout") {
     if (isset($_COOKIE["id"]) && isset($_COOKIE["validate"])) {
-        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`validate`='".$_COOKIE["validate"]."')";
-        $mycon->query($query);
+        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`validate`= ? )";
+        $mycon->query($query, $_COOKIE["validate"]);
         setcookie("id", "", time() - 3600);
         setcookie("validate", "", time() - 3600);
     }
@@ -142,14 +142,14 @@ if(isset($_SESSION["id"])) {
 
     //Prüfe ob der Benutzer gebant ist
     if ($user->read("ban") > 0) {
-        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$_SESSION["id"]."')";
-        $mycon->query($query);
+        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`= ? )";
+        $mycon->query($query, $_SESSION["id"]);
         session_destroy();
     }
 
     // Prüfe ob der Nutzer noch exsistiert
-    $query = "SELECT * FROM `ArkAdmin_users` WHERE (`id`='".$_SESSION["id"]."')";
-    if (!($mycon->query($query)->numRows() > 0)) {
+    $query = "SELECT * FROM `ArkAdmin_users` WHERE (`id`= ? )";
+    if (!($mycon->query($query, $_SESSION["id"])->numRows() > 0)) {
         session_destroy();
         header("Location: /login");
         exit;
@@ -176,7 +176,7 @@ include(__ADIR__.'/php/inc/session.inc.php');
 //create globals vars
 $API_Key = $ckonfig['apikey'];
 $servlocdir = $ckonfig['servlocdir'];
-$expert = $user->expert();
+$expert = isset($_SESSION["id"]) ? $user->expert() : false;
 $jobs = new jobs();
 
 // Define default page
@@ -255,7 +255,7 @@ $tpl_h->r('pagename', $pagename);
 $tpl_h->rif('darkmode', isset($_COOKIE["style"]) ? $_COOKIE["style"] == "dark" : false);
 $tpl_b->r('aa_version', $version);
 $tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path_webhelper)) ? intval(file_get_contents($path_webhelper)) : time()), true));
-$tpl_b->r('user', $user->read("username"));
+$tpl_b->r('user', isset($_SESSION["id"]) ? $user->read("username") : "Not logged in");
 $tpl_b->r('content', $content);
 $tpl_b->r('site_name', $site_name);
 $tpl_b->r('btns', "<div class=\"d-sm-inline-block\">$btns</div>");

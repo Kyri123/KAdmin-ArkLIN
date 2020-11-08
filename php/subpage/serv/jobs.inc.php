@@ -46,38 +46,38 @@ if (isset($_POST['addjob']) && $session_user->perm("$perm/jobs/add")) {
                         `server`, 
                         `name`
                     ) VALUES (
-                        '$action', 
-                        '$parameter', 
-                        '$datetime', 
-                        '$intervall', 
+                        ?, 
+                        ?, 
+                        ?, 
+                        ?, 
                         '1',  
                         '".$serv->name()."',
-                        '$name'
+                        ?
                     )";
-                    if ($mycon->query($query)) {
+                    if ($mycon->query($query, $action, $parameter, $datetime, $intervall, $name)) {
                         // Melde Erfolg
-                        $resp = $alert->rd(100);
+                        $resp .= $alert->rd(100);
                     }
                     else {
                         // Melde Datenebank Fehler
-                        $resp = $alert->rd(3);
+                        $resp .= $alert->rd(3);
                     }
                 }
                 else {
                     // Melde Zeitformat Fehler
-                    $resp = $alert->rd(15);
+                    $resp .= $alert->rd(15);
                 }
             } else {
                 // Melde Format Fehler
-                $resp = $alert->rd(14);
+                $resp .= $alert->rd(14);
             }
         } else {
             // Melde Input Error
-            $resp = $alert->rd(2);
+            $resp .= $alert->rd(2);
         }
     } else {
         // Melde Input Error
-        $resp = $alert->rd(2);
+        $resp .= $alert->rd(2);
     }
 }
 elseif(isset($_POST['addjob'])) {
@@ -98,36 +98,36 @@ if (isset($_POST['edit']) && $session_user->perm("$perm/jobs/edit")) {
             if ($intervall != null && is_numeric($intervall) && $intervall > 0) {
                 if ($datetime != null) {
                     $query = "UPDATE `ArkAdmin_jobs` SET 
-                        `job` = '$action', 
-                        `parm` = '$parameter', 
-                        `time` = '$datetime', 
-                        `intervall` = '$intervall', 
-                        `name` = '$name'
-                    WHERE `id` = '$id';";
-                    if ($mycon->query($query)) {
+                        `job` = ?, 
+                        `parm` = ?, 
+                        `time` = ?, 
+                        `intervall` = ?, 
+                        `name` = ?
+                    WHERE `id` = ?;";
+                    if ($mycon->query($query, $action, $parameter, $datetime, $intervall, $name, $id)) {
                         // Melde Erfolg
-                        $resp = $alert->rd(102);
+                        $resp .= $alert->rd(102);
                     }
                     else {
                         // Melde Datenbank Fehler
-                        $resp = $alert->rd(3);
+                        $resp .= $alert->rd(3);
                     }
                 }
                 else {
                     // Melde Zeitformat Fehler
-                    $resp = $alert->rd(15);
+                    $resp .= $alert->rd(15);
                 }
             } else {
                 // Melde Inputformat Fehler
-                $resp = $alert->rd(14);
+                $resp .= $alert->rd(14);
             }
         } else {
             // Melde Input Error
-            $resp = $alert->rd(2);
+            $resp .= $alert->rd(2);
         }
     } else {
         // Melde Input Error
-        $resp = $alert->rd(2);
+        $resp .= $alert->rd(2);
     }
 }
 elseif(isset($_POST['edit'])) {
@@ -143,14 +143,14 @@ if (isset($_POST['delete']) && $session_user->perm("$perm/jobs/remove")) {
         $query = 'DELETE FROM `ArkAdmin_jobs` WHERE `id` = \''.$i.'\'';
         if ($mycon->query($query)) {
             // Melde Erfolg
-            $resp = $alert->rd(101);
+            $resp .= $alert->rd(101);
         } else {
             // Melde Lese/Schreib Fehler
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
     } else {
         // Melde Werte Error
-        $resp = $alert->rd(16);
+        $resp .= $alert->rd(16);
     }
 }
 elseif(isset($_POST['delete'])) {
@@ -205,7 +205,7 @@ if (isset($url[5]) && $url[4] == "create" && $session_user->perm("$perm/jobs/add
         }
         else {
             // Melde Datenbank Fehler
-            $resp = $alert->rd(3);
+            $resp .= $alert->rd(3);
         }
     }
 }
@@ -228,19 +228,19 @@ if (isset($url[5]) && $url[4] == "toggle" && $session_user->perm("$perm/jobs/tog
             $txt = "{::lang::php::sc::page::jobs::job_disturb}";
         }
 
-        $query = 'UPDATE `ArkAdmin_jobs` SET `active` = \''.$set.'\' WHERE `id` = \''.$i.'\'';
-        if ($mycon->query($query)) {
+        $query = 'UPDATE `ArkAdmin_jobs` SET `active` = ? WHERE `id` = ?';
+        if ($mycon->query($query, $set, $i)) {
             // Melde Erfolg
             $alert->code = 100;
             $alert->overwrite_text = $txt;
-            $resp = $alert->re();
+            $resp .= $alert->re();
         } else {
             // Melde Lese/Schreibfehler
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
     } else {
         // Melde Werte Fehler
-        $resp = $alert->rd(16);
+        $resp .= $alert->rd(16);
     }
 }
 elseif(isset($url[5]) && $url[4] == "toggle") {

@@ -35,14 +35,14 @@ for ($i=0;$i<count($exp);$i++) {
 // Lösche alle Loginhalte
 if(isset($_POST["clearlogs"]) && $session_user->perm("$perm/logs/clear")) {
     if(file_put_contents("$logpath/arkserver.log", " ") && file_put_contents("$logpath/arkmanager.log", " ")) {
-        $resp = $alert->rd(101);
+        $resp .= $alert->rd(101);
     }
     else {
-        $resp = $alert->rd(1);
+        $resp .= $alert->rd(1);
     }
 }
 elseif(isset($_POST["clearlogs"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 $page_tpl->r('cfg' ,$serv->name());

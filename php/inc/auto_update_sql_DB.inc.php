@@ -42,10 +42,10 @@ if($version == "2.0.0" && $buildid == 200.000) {
                 $mycon->query($query);
             }
             else {
-                $QUERY = "INSERT INTO `ArkAdmin_user_group` (`name`, `editform`, `time`, `permissions`, `canadd`) VALUES ('".$USER["username"]."', 1, 0, '".file_get_contents($FILE)."', '[]')";
-                if($mycon->query($QUERY)) {
-                    $QUERY = "SELECT * FROM `ArkAdmin_user_group` WHERE `name`='".$USER["username"]."'";
-                    $groupid = $mycon->query($QUERY)->fetchArray()["id"];
+                $QUERY = "INSERT INTO `ArkAdmin_user_group` (`name`, `editform`, `time`, `permissions`, `canadd`) VALUES (? , 1, 0, '".file_get_contents($FILE)."', '[]')";
+                if($mycon->query($QUERY, $USER["username"])) {
+                    $QUERY = "SELECT * FROM `ArkAdmin_user_group` WHERE `name`= ? ";
+                    $groupid = $mycon->query($QUERY, $USER["username"])->fetchArray()["id"];
                     $query = 'UPDATE `ArkAdmin_users` SET `rang`=\'['.$groupid.']\'  WHERE `id` = \''.$ID.'\'';
                     $mycon->query($query);
                 }

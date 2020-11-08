@@ -6,15 +6,15 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
  */
-const fs = require("fs");
-const http = require('http');
-const winston = require('winston');
+const fs            = require("fs");
+const http          = require('http');
+const winston       = require('winston');
 
-global.version = fs.readFileSync("data/version.txt", 'utf8');
-global.started = Date.now();
-global.config = JSON.parse(fs.readFileSync("config/server.json", 'utf8'));
-global.dateFormat = require('dateformat');
-global.mainpath = __dirname;
+global.version      = fs.readFileSync("data/version.txt", 'utf8');
+global.started      = Date.now();
+global.config       = JSON.parse(fs.readFileSync("config/server.json", 'utf8'));
+global.dateFormat   = require('dateformat');
+global.mainpath     = __dirname;
 
 //erstelle log Ordner
 if (!fs.existsSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`)){
@@ -24,7 +24,7 @@ if (!fs.existsSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`)){
 
 // Inz Server
 require("./packages/src/server/main");
-const app = require("./packages/src/webserver/main"); // Main Server
+const app           = require("./packages/src/webserver/main"); // Main Server
 
 http.createServer(app).listen(config.port);
 

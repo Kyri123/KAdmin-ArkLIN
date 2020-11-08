@@ -12,26 +12,17 @@ $resp = null; $a1 = null; $a2 = null; $a3 = null; $a4 = null;
 
 // Einloggen
 if (isset($_POST["login"]) && !isset($_SESSION["id"])) {
-    $loggedin = isset($_POST["loggedin"]) ? filter_var($_POST["loggedin"], FILTER_VALIDATE_BOOLEAN) : false;
-    define('pw', $_POST["pw"]);
+    $loggedin   = isset($_POST["loggedin"]) ? filter_var($_POST["loggedin"], FILTER_VALIDATE_BOOLEAN) : false;
+    $pw         = md5($_POST["pw"]);
+    $user       = $_POST["logger"];
     
-    // Count Username
-    $query = 'SELECT * FROM `ArkAdmin_users` WHERE `username` = \''.$_POST["logger"].'\' AND `password` = \''.md5(pw).'\'';
-    $username_count = $mycon->query($query)->numRows();
+    // Count Username & Email
+    $query = "SELECT * FROM `ArkAdmin_users` WHERE `username` = ? OR (`email` = ? AND `password` = ?)";
+    $exsists = $mycon->query($query, $user, $user, $pw);
     
-    // Count Email
-    $query = 'SELECT * FROM `ArkAdmin_users` WHERE `email` = \''.$_POST["logger"].'\' AND `password` = \''.md5(pw).'\'';
-    $email_count = $mycon->query($query)->numRows();
-    
-    if ($username_count > 0 || $email_count > 0) {
-        if ($username_count > 0) {
-            $query = 'SELECT * FROM `ArkAdmin_users` WHERE `username` = \''.$_POST["logger"].'\' AND `password` = \''.md5(pw).'\'';
-        }
-        elseif ($email_count > 0) {
-            $query = 'SELECT * FROM `ArkAdmin_users` WHERE `email` = \''.$_POST["logger"].'\' AND `password` = \''.md5(pw).'\'';
-        }
-        $row = $mycon->query($query)->fetchArray();
-        if ($row["password"] == md5(pw)) {
+    if ($exsists->numRows() > 0) {
+        $row = $exsists->fetchArray();
+        if ($row["password"] == $pw) {
             if ($row["ban"] < 1) {
                 $userid = $row['id'];
                 $_SESSION["id"] = $row['id'];
@@ -41,20 +32,20 @@ if (isset($_POST["login"]) && !isset($_SESSION["id"])) {
                     $md5_rnd = md5(rndbit(100));
                     setcookie("id", $md5_id, time()+(525600*60*100), "/");
                     setcookie("validate", $md5_rnd, time()+(525600*60*100), "/");
-                    $query = "INSERT INTO `ArkAdmin_user_cookies` (`md5id`, `validate`, `userid`) VALUES ('".$md5_id."', '".$md5_rnd."', '".$userid."')";
-                    $mycon->query($query);
+                    $query = "INSERT INTO `ArkAdmin_user_cookies` (`md5id`, `validate`, `userid`) VALUES (?, ?, ?)";
+                    $mycon->query($query, $md5_id, $md5_rnd, $userid);
                 }
 
-                header('Location: /home');
+                header("Location: $ROOT/home");
                 exit;
             } else {
-                $resp = $alert->rd(21, 3);
+                $resp .= $alert->rd(21, 3);
             }
         } else {
-            $resp = $alert->rd(22, 3);
+            $resp .= $alert->rd(22, 3);
         }
     } else {
-        $resp = $alert->rd(23, 3);
+        $resp .= $alert->rd(23, 3);
     }
 }
 
@@ -82,7 +73,6 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
     define('email', $_POST["email"]);
     define('pw1', $_POST["pw1"]);
     define('pw2', $_POST["pw2"]);
-    define('code', $_POST["code"]);
     $cont = 1;
     if (
             username == null ||
@@ -96,44 +86,42 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
     if ($cont == 1) {
         // Prüfe ob Passwörter übereinstimmen
         if (pw1 == pw2) {
-            $query = 'SELECT * FROM `ArkAdmin_users` WHERE `username` = \''.username.'\'';
-            $mycon->query($query);
+            $query = 'SELECT * FROM `ArkAdmin_users` WHERE `username` = ?';
+            $mycon->query($query, username);
             // schaue ob es den benutzer schon gibt
             if ($mycon->numRows() == 0) {
-                $q_code = 'SELECT * FROM `ArkAdmin_reg_code` WHERE `used` = \'0\' AND `code` = \''.code.'\'';
+                $q_code = 'SELECT * FROM `ArkAdmin_reg_code` WHERE `used` = \'0\' AND `code` = ?';
                 // Prüfe ob der Code benutzt werden darf
-                if ($mycon->query($q_code)->numRows() > 0) {
+                if ($mycon->query($q_code, code)->numRows() > 0) {
                     $codeid = $mycon->fetchArray()["id"];
                     $row_code = $mycon->query($q_code)->fetchArray();
-                    $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `ban`, `registerdate`,`rang`) VALUES (\''.username.'\', \''.email.'\', \''.md5(pw1).'\', \'0\', \''.time().'\', \''.($row_code["time"] == "1" ? "[1]":"[]").'\')';
+                    $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `ban`, `registerdate`,`rang`) VALUES (?, ?, ?, \'0\', \''.time().'\', \''.($row_code["time"] == "1" ? "[1]":"[]").'\')';
                     // Wenn der Benutzer erstellt wurde
-                    if($mycon->query($query)) {
+                    if($mycon->query($query, username, email, md5(pw1))) {
                         $mycon->query("UPDATE `ArkAdmin_reg_code` SET `used` = '1' WHERE `id` = '$codeid'");
-                        $resp = $alert->rd(109, 3);
+                        $resp .= $alert->rd(109, 3);
                     }
                     else {
-                        $resp = $alert->rd(3, 3);
+                        $resp .= $alert->rd(3, 3);
                     }
                 }
                 else {
-                    $resp = $alert->rd(24, 3);
+                    $resp .= $alert->rd(24, 3);
                 }
             } else {
-                $resp = $alert->rd(26, 3);
+                $resp .= $alert->rd(26, 3);
             }
         } else {
-            $resp = $alert->rd(27, 3);
+            $resp .= $alert->rd(27, 3);
         }
     } else {
-        $resp = $alert->rd(28, 3);
+        $resp .= $alert->rd(28, 3);
     }
-    
-    
-    
-    $a1 = username;
-    $a2 = code;
-    $a3 = email;
-    $a4 = code;
+
+    $a1 = htmlspecialchars(htmlentities(username));
+    $a2 = htmlspecialchars(htmlentities(code));
+    $a3 = htmlspecialchars(htmlentities(email));
+    $a4 = htmlspecialchars(htmlentities(code));
 }
 
 $tpl_register = new Template("register.htm", __ADIR__."/app/template/core/session/");

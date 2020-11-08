@@ -37,7 +37,7 @@ if (isset($_POST["removecluster"]) && $session_user->perm("cluster/delete")) {
     header("Location: /cluster"); exit;
 }
 elseif(isset($_POST["removecluster"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Entferne Server vom Cluster
@@ -55,7 +55,7 @@ if (isset($_POST["remove"]) && $session_user->perm("cluster/remove_server")) {
     header("Location: /cluster"); exit;
 }
 elseif(isset($_POST["remove"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Toggle Type vom Server (Master/Slave)
@@ -86,7 +86,7 @@ if (isset($_POST["settype"]) && $session_user->perm("cluster/toogle_master")) {
     header("Location: /cluster"); exit;
 }
 elseif(isset($_POST["settype"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 //Füge server zum Cluster hinzu
@@ -111,25 +111,25 @@ if (isset($_POST["addserver"]) && $session_user->perm("cluster/add_server")) {
                 $alert->overwrite_text = "{::lang::php::cluster::overwrite::addedserver}";
                 $alert->r("servername", $server->cfg_read("ark_SessionName"));
                 $alert->r("cluster", $cluster);
-                $resp = $alert->re();
+                $resp .= $alert->re();
             } else {
                 // Melde: Schreib/Lese Fehler
                 $alert->code = 1;
-                $resp = $alert->re();
+                $resp .= $alert->re();
             }
         } else {
             // Melde: Cluster Fehler
             $alert->code = 10;
-            $resp = $alert->re();
+            $resp .= $alert->re();
         }
     } else {
         // Melde: Server nicht ausgewählt
         $alert->code = 9;
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 elseif(isset($_POST["addserver"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 
@@ -167,19 +167,19 @@ if (isset($_POST["editcluster"]) && $session_user->perm("cluster/edit_options"))
             $alert->overwrite_text = "{::lang::php::cluster::overwrite::changedcluster}";
             $alert->r("cluster", $cluster);
             $alert->r("clustermd5", $clustermd5);
-            $resp = $alert->re();
+            $resp .= $alert->re();
         } else {
             $alert->code = 1;
-            $resp = $alert->re();
+            $resp .= $alert->re();
         }
     } else {
         $alert->code = 11;
         $alert->r("input", $cluster);
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 elseif(isset($_POST["editcluster"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // erstelle ein Cluster
@@ -218,25 +218,25 @@ if (isset($_POST["add"]) && $session_user->perm("cluster/create")) {
                 $alert->overwrite_text = "{::lang::php::cluster::overwrite::createdcluster}";
                 $alert->r("cluster", $cluster);
                 $alert->r("clustermd5", $clustermd5);
-                $resp = $alert->re();
+                $resp .= $alert->re();
             } else {
                 $alert->code = 1;
-                $resp = $alert->re();
+                $resp .= $alert->re();
             }
         } else {
             $alert->code = 11;
             $alert->overwrite_title = "{::lang::alert::c_3::title_array}";
-            $resp = $alert->re();
+            $resp .= $alert->re();
         }
     } else {
         $alert->code = 11;
         $alert->overwrite_text = "{::lang::alert::c_11::text} {::lang::alert::c_11::ornoinput}";
         $alert->r("input", $cluster);
-        $resp = $alert->re();
+        $resp .= $alert->re();
     }
 }
 elseif(isset($_POST["add"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 $i = 0;

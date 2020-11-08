@@ -414,7 +414,7 @@ function create_ini_form(array $ARR, string $INI, array $DEFAULT, string $CFG) {
                         $tpl_i1->r("name", "ini[$key][$KEY][$KEY2]");
                         $tpl_i1->r("opt", $KEY."[$KEY2]");
                         $tpl_i1->r("opt2", $KEY.$KEY2);
-                        if(is_array($ITEM2)) $tpl_i1->r("value", $ITEM2["$KEY2"]);
+                        if(is_array($ITEM2)) $tpl_i1->r("value", isset($ITEM2[$KEY2]) ? $ITEM2[$KEY2] : $DEFAULT[$key][$KEY][$KEY2]["default"]);
                         if(!is_array($ITEM2)) $tpl_i1->r("value", $ITEM2);
                         $tpl_i1->r("True", ($TYPE == "bool" && $ITEM == "True") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));
                         $tpl_i1->r("False", ($TYPE == "bool" && $ITEM == "False") ? "selected" : "".(!$user->perm("server/$CFG/konfig/$INI") ? " disabled" : ""));

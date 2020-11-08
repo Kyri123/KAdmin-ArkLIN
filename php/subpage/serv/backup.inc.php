@@ -34,18 +34,18 @@ if (isset($_POST["removemain"]) && $session_user->perm("$perm/backup/remove")) {
     if (file_exists($path)) {
         if (del_dir($path)) {
             // Melde: Abschluss
-            $resp = $alert->rd(101);
+            $resp .= $alert->rd(101);
         } else {
             // Melde: Lese/Schreib fehler
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
     } else {
         // Melde: Lese/Schreib fehler
-        $resp = $alert->rd(1);
+        $resp .= $alert->rd(1);
     }
 }
 elseif(isset($_POST["removemain"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // entferne ein Backup
@@ -57,18 +57,18 @@ if (isset($_POST["remove"]) && $session_user->perm("$perm/backup/remove")) {
     if (file_exists($path)) {
         if (unlink($path)) {
             // Melde: Abschluss
-            $resp = $alert->rd(101);
+            $resp .= $alert->rd(101);
         } else {
             // Melde: Lese/Schreib fehler
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
         }
     } else {
         // Melde: Lese/Schreib fehler
-        $resp = $alert->rd(1);
+        $resp .= $alert->rd(1);
     }
 }
 elseif(isset($_POST["remove"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 // Spiele Backup ein
@@ -97,7 +97,7 @@ if (isset($_POST["playthisin"]) && $session_user->perm("$perm/backup/playin")) {
         $cont = true;
     } catch (Exception $e) {
         // Melde: Datei konnte nicht Entpackt werden
-        $resp = $alert->rd(17);
+        $resp .= $alert->rd(17);
         $cont = false;
     }
     if ($cont && $state == 0) {
@@ -143,14 +143,14 @@ if (isset($_POST["playthisin"]) && $session_user->perm("$perm/backup/playin")) {
         }
         del_dir($path);
         // Melde: Backup eingespielt
-        $resp = $alert->rd(106);
+        $resp .= $alert->rd(106);
     } else {
         // Melde: Server muss Offline sein
-        $resp = $alert->rd(7);
+        $resp .= $alert->rd(7);
     }
 }
 elseif(isset($_POST["playthisin"])) {
-    $resp = $alert->rd(99);
+    $resp .= $alert->rd(99);
 }
 
 

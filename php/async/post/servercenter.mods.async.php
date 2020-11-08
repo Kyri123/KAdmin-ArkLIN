@@ -61,15 +61,15 @@ switch ($case) {
 
             $serv->cfg_write('ark_GameModIds', $mod_builder);
             if(!$cancel) {
-                $resp = $alert->rd($serv->cfg_save() ? 102 : 1);
+                $resp .= $alert->rd($serv->cfg_save() ? 102 : 1);
                 $bool = true;
             }
             else {
-                $resp = $alert->rd(16);
+                $resp .= $alert->rd(16);
             }
         }
         else {
-                $resp = $alert->rd(99);
+                $resp .= $alert->rd(99);
         }
         echo json_encode(array("success" => $bool, "msg" => $resp));
         break;
@@ -100,15 +100,15 @@ switch ($case) {
 
             $serv->cfg_write('ark_GameModIds', $mod_builder);
             if(!$cancel) {
-                $resp = $alert->rd($serv->cfg_save() ? 102 : 1);
+                $resp .= $alert->rd($serv->cfg_save() ? 102 : 1);
                 $bool = true;
             }
             else {
-                $resp = $alert->rd(16);
+                $resp .= $alert->rd(16);
             }
         }
         else {
-            $resp = $alert->rd(99);
+            $resp .= $alert->rd(99);
         }
         echo json_encode(array("success" => $bool, "msg" => $resp));
         break;
@@ -147,15 +147,15 @@ switch ($case) {
 
             $serv->cfg_write('ark_GameModIds', $mod_builder);
             if(!$cancel) {
-                $resp = $alert->rd($serv->cfg_save() ? 101 : 1);
+                $resp .= $alert->rd($serv->cfg_save() ? 101 : 1);
                 $bool = true;
             }
             else {
-                $resp = $alert->rd(16);
+                $resp .= $alert->rd(16);
             }
         }
         else {
-            $resp = $alert->rd(99);
+            $resp .= $alert->rd(99);
         }
         echo json_encode(array("success" => $bool, "msg" => $resp));
         break;
@@ -166,7 +166,7 @@ switch ($case) {
         $resp = "";
         if($session_user->perm("$perm/mods/remove")) {
             $path = $serv->dir_main()."/ShooterGame/Content/Mods/".$_POST["modid"];
-            $resp = $alert->rd(1);
+            $resp .= $alert->rd(1);
             $bool = true;
 
             if (file_exists($path)) {
@@ -175,11 +175,11 @@ switch ($case) {
                 $jobs->arkmanager("uninstallmod ".$_POST["modid"]);
                 // Melde Locale Mod deinstalliert
                 $alert->overwrite_text = "{::lang::php::sc::page::mods::mod_removed_dir}";
-                $resp = $alert->rd(101);
+                $resp .= $alert->rd(101);
             }
         }
         else {
-            $resp = $alert->rd(99);
+            $resp .= $alert->rd(99);
         }
         echo json_encode(array("success" => $bool, "msg" => $resp));
         break;
