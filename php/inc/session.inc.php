@@ -94,8 +94,9 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
                 // Prüfe ob der Code benutzt werden darf
                 if ($mycon->query($q_code, code)->numRows() > 0) {
                     $codeid = $mycon->fetchArray()["id"];
-                    $row_code = $mycon->query($q_code)->fetchArray();
+                    $row_code = $mycon->query($q_code, code)->fetchArray();
                     $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `ban`, `registerdate`,`rang`) VALUES (?, ?, ?, \'0\', \''.time().'\', \''.($row_code["time"] == "1" ? "[1]":"[]").'\')';
+                    echo $query;
                     // Wenn der Benutzer erstellt wurde
                     if($mycon->query($query, username, email, md5(pw1))) {
                         $mycon->query("UPDATE `ArkAdmin_reg_code` SET `used` = '1' WHERE `id` = '$codeid'");
