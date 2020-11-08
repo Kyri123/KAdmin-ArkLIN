@@ -33,8 +33,8 @@ switch ($case) {
                 $list_tpl = new Template('whitelist.htm', __ADIR__.'/app/template/lists/serv/jquery/');
                 $list_tpl->load();
 
-                $query = "SELECT * FROM ArkAdmin_players WHERE `server`='".$serv->name()."' AND `SteamId`='".$arr[$i]."'";
-                $query = $mycon->query($query);
+                $query = "SELECT * FROM ArkAdmin_players WHERE `server`= ? AND `SteamId`= ? ";
+                $query = $mycon->query($query, $serv->name(), $arr[$i]);
 
                 if($query->numRows() > 0) {
                     $row = $query->fetchArray();

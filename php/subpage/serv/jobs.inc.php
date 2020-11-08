@@ -46,15 +46,15 @@ if (isset($_POST['addjob']) && $session_user->perm("$perm/jobs/add")) {
                         `server`, 
                         `name`
                     ) VALUES (
-                        '$action', 
-                        '$parameter', 
-                        '$datetime', 
-                        '$intervall', 
+                        ?, 
+                        ?, 
+                        ?, 
+                        ?, 
                         '1',  
                         '".$serv->name()."',
-                        '$name'
+                        ?
                     )";
-                    if ($mycon->query($query)) {
+                    if ($mycon->query($query, $action, $parameter, $datetime, $intervall, $name)) {
                         // Melde Erfolg
                         $resp .= $alert->rd(100);
                     }
@@ -98,13 +98,13 @@ if (isset($_POST['edit']) && $session_user->perm("$perm/jobs/edit")) {
             if ($intervall != null && is_numeric($intervall) && $intervall > 0) {
                 if ($datetime != null) {
                     $query = "UPDATE `ArkAdmin_jobs` SET 
-                        `job` = '$action', 
-                        `parm` = '$parameter', 
-                        `time` = '$datetime', 
-                        `intervall` = '$intervall', 
-                        `name` = '$name'
-                    WHERE `id` = '$id';";
-                    if ($mycon->query($query)) {
+                        `job` = ?, 
+                        `parm` = ?, 
+                        `time` = ?, 
+                        `intervall` = ?, 
+                        `name` = ?
+                    WHERE `id` = ?;";
+                    if ($mycon->query($query, $action, $parameter, $datetime, $intervall, $name, $id)) {
                         // Melde Erfolg
                         $resp .= $alert->rd(102);
                     }
@@ -228,8 +228,8 @@ if (isset($url[5]) && $url[4] == "toggle" && $session_user->perm("$perm/jobs/tog
             $txt = "{::lang::php::sc::page::jobs::job_disturb}";
         }
 
-        $query = 'UPDATE `ArkAdmin_jobs` SET `active` = \''.$set.'\' WHERE `id` = \''.$i.'\'';
-        if ($mycon->query($query)) {
+        $query = 'UPDATE `ArkAdmin_jobs` SET `active` = ? WHERE `id` = ?';
+        if ($mycon->query($query, $set, $i)) {
             // Melde Erfolg
             $alert->code = 100;
             $alert->overwrite_text = $txt;

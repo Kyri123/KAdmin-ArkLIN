@@ -47,8 +47,8 @@ for($i = 0; $i < $pager_c ; $i++) $pages_list .= "<option value='".$i."' ".($i =
 $list["item"] = $list["modal"] = $to = $from = null;
 $label = $data = array();
 $onl = $total = $pingon = $tping = $max = 0;
-$query = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = '$server' ORDER BY `time`$order LIMIT $limit OFFSET $offset";
-$mycon->query($query);
+$query = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = ? ORDER BY `time`$order LIMIT $limit OFFSET $offset";
+$mycon->query($query, $server);
 if($mycon->numRows() > 0) {
     $array = $mycon->fetchAll();
     $from = converttime($array[0]["time"]);

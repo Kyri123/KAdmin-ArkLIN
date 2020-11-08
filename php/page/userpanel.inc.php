@@ -72,8 +72,8 @@ elseif(isset($_POST["add"]))  {
 // Code löschen
 if (isset($url[3]) && $url[2] == "rmcode" && $session_user->perm("userpanel/delete_code")) {
     $id = $url[3];
-    $query = "DELETE FROM `ArkAdmin_reg_code` WHERE (`id`='".$id."')";
-    if ($mycon->query($query)) {
+    $query = "DELETE FROM `ArkAdmin_reg_code` WHERE (`id`=?)";
+    if ($mycon->query($query, $id)) {
         $alert->code = 101;
         $alert->overwrite_text = '{::lang::php::userpanel::removed_code}';
         $resp .= $alert->re();
@@ -91,8 +91,8 @@ if (isset($_POST["del"]) && $session_user->perm("userpanel/delete_user")) {
     $id = $_POST["userid"];
     $kuser->setid($id);
     $tpl->r("del_username", $kuser->read("username"));
-    $query = "DELETE FROM `ArkAdmin_users` WHERE (`id`='".$id."')";
-    if ($mycon->query($query)) {
+    $query = "DELETE FROM `ArkAdmin_users` WHERE (`id`=?)";
+    if ($mycon->query($query, $id)) {
         if(file_exists(__ADIR__."/app/json/user/".md5($id).".permissions.json")) unlink(__ADIR__."/app/json/user/".md5($id).".permissions.json");
         if(file_exists(__ADIR__."/app/json/user/".md5($id).".json")) unlink(__ADIR__."/app/json/user/".md5($id).".json");
         $mycon->query("DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$id."')");
@@ -121,8 +121,8 @@ if (isset($url[4]) && $url[2] == "tban" && $session_user->perm("userpanel/ban_us
     $tpl->r("ban_username", $kuser->read("username"));
     $tpl->r("ban_uid", $uid);
     $tpl->r("ban_to", $to);
-    $query = "UPDATE `ArkAdmin_users` SET `ban`='".$set."' WHERE (`id`='".$uid."')";
-    if ($mycon->query($query)) {
+    $query = "UPDATE `ArkAdmin_users` SET `ban`=? WHERE (`id`=?)";
+    if ($mycon->query($query, $set, $uid)) {
         $alert->code = 102;
         $alert->overwrite_text = '{::lang::php::userpanel::changed_ban}';
         $resp .= $alert->re();
