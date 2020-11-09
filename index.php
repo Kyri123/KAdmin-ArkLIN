@@ -9,6 +9,9 @@
 */
 define("__ADIR__", __DIR__);
 
+//start SessionS
+session_start();
+
 // für Installer
 if(isset($_GET["mod_rewrite"])) {
     echo array_key_exists('HTTP_MOD_REWRITE', $_SERVER) ? '{"HTTP_MOD_REWRITE":"on"}' : '{}';
@@ -37,11 +40,6 @@ foreach ($server as $item) {
     $D_PERM_ARRAY["server"] += $default;
 }
 
-if (isset($_SESSION["id"])) {
-    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`= ? ';
-    $mycon->query($query, $_SESSION["id"]);
-}
-
 // Deaktiviere Error anzeige
 ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
 ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
@@ -57,9 +55,6 @@ if (!file_exists(__ADIR__."/app/check/subdone")) {
 date_default_timezone_set('Europe/Amsterdam');
 $pagename = $pageimg = $titlename = $sidebar = $btns = $urltop = $g_alert = $pageicon = $tpl = null;
 $setsidebar = $g_alert_bool = false;
-
-//start SessionS
-session_start();
 
 // Löse URL auf
 $ROOT           = str_replace("index.php", null, $_SERVER["SCRIPT_NAME"]);
@@ -90,6 +85,12 @@ if ($url[1] == "" || $url[1] == "favicon.ico") {
 include(__ADIR__.'/php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 
+// Update last login
+if (isset($_SESSION["id"])) {
+    $mycon->query('UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`= ? ', $_SESSION["id"]);
+}
+
+// Logge aus wenn nötig
 if($url[1] == "logout") {
     if (isset($_COOKIE["id"]) && isset($_COOKIE["validate"])) {
         $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`validate`= ? )";
