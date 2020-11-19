@@ -97,7 +97,7 @@ if (isset($_POST["register"]) && !isset($_SESSION["id"])) {
                     $row_code = $mycon->query($q_code, code)->fetchArray();
                     $query = 'INSERT INTO `ArkAdmin_users` (`username`, `email`, `password`, `ban`, `registerdate`,`rang`) VALUES (?, ?, ?, \'0\', ?, ?)';
                     // Wenn der Benutzer erstellt wurde
-                    if($mycon->query($query, username, email, md5(pw1), time(), $row_code["time"] == "1" ? "[1]":"[]") {
+                    if($mycon->query($query, username, email, md5(pw1), time(), $row_code["time"] == "1" ? "[1]":"[]")) {
                         $mycon->query("UPDATE `ArkAdmin_reg_code` SET `used` = '1' WHERE `id` = ?", $codeid);
                         $resp .= $alert->rd(109, 3);
                     }
