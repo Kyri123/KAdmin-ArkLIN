@@ -27,7 +27,6 @@ include(__ADIR__.'/php/class/helper.class.inc.php');
 
 // Inz KUTIL
 include(__ADIR__.'/php/class/KUtil.class.inc.php');
-$KUTIL->addPath(__ADIR__);
 $KUTIL->debug = true;
 
 $helper     = new helper();

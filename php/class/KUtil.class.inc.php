@@ -9,7 +9,6 @@
 
 class KUTIL {
     // Public Vars
-    public  $allowedPath;
     public  $debug;
 
     /**
@@ -17,10 +16,9 @@ class KUTIL {
      * @param   array       $allowedPath  Erlaubte Parts
      * @param   boolean     $debug        Debug ativieren?
      */
-    public function __construct($allowedPath = [], $debug = false)
+    public function __construct($debug = false)
     {
-        $this->allowedPath      = $allowedPath;
-        $this->debug            = $debug;
+        $this->debug = $debug;
     }
 
     /**
@@ -68,33 +66,6 @@ class KUTIL {
     }
 
     /**
-     * - Pfad zu allowedPath Hinzufügen
-     * @param   string|array $Path
-     * @return  void
-     */
-    public function addPath($Path) {
-        if(is_array($Path)) {
-            $this->allowedPath = array_merge($this->allowedPath, $Path);
-        }
-        else {
-            $this->allowedPath = array_push($this->allowedPath, $Path);
-        }
-    }
-
-    /**
-     * Prüft ob der Pfad erlaubt ist
-     * @param   string $Path
-     * @return  bool
-     */
-    public function checkAllowedPath(string $Path) {
-        return is_array($this->allowedPath) ?
-            count($this->allowedPath) > 0 ?
-                strpos_arr($Path, $this->allowedPath)
-                : false
-            : false;
-    }
-
-    /**
      * KUtil: Modifizierte version von file_get_contents
      * @link    https://php.net/manual/en/function.file-get-contents.php
      * @param   string $filename
@@ -107,22 +78,20 @@ class KUTIL {
      */
     public function fileGetContents(string $filename, bool $asJson = false, $use_include_path = false, $context = null, $offset = 0, $maxlen = null) {
         $filename = $this->path($filename)["path"];
-        if($this->checkAllowedPath($filename)) {
-            try {
-                if($asJson) {
-                    $jsonString     = file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
-                    $json           = [];
-                    $json["Assoc"]  = json_decode($jsonString, true, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING | JSON_INVALID_UTF8_IGNORE | JSON_INVALID_UTF8_SUBSTITUTE);
-                    $json["Obj"]    = json_decode($jsonString, false, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING | JSON_INVALID_UTF8_IGNORE | JSON_INVALID_UTF8_SUBSTITUTE);
-                    return $json;
-                }
-                else {
-                    return file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
-                }
+        try {
+            if($asJson) {
+                $jsonString     = file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
+                $json           = [];
+                $json["Assoc"]  = json_decode($jsonString, true, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING | JSON_INVALID_UTF8_IGNORE | JSON_INVALID_UTF8_SUBSTITUTE);
+                $json["Obj"]    = json_decode($jsonString, false, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING | JSON_INVALID_UTF8_IGNORE | JSON_INVALID_UTF8_SUBSTITUTE);
+                return $json;
             }
-            catch (Exception $e) {
-                if($this->debug) echo $e->getMessage();
+            else {
+                return file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
             }
+        }
+        catch (Exception $e) {
+            if($this->debug) echo $e->getMessage();
         }
         return false;
     }
@@ -138,14 +107,12 @@ class KUTIL {
      */
     public function filePutContents(string $filename, $data, $flags = 0, $context = null) {
         $filename = $this->path($filename)["path"];
-        if($this->checkAllowedPath($filename)) {
-            try {
-                file_put_contents($filename, $data, $flags, $context);
-                return true;
-            }
-            catch (Exception $e) {
-                if($this->debug) echo $e->getMessage();
-            }
+        try {
+            file_put_contents($filename, $data, $flags, $context);
+            return true;
+        }
+        catch (Exception $e) {
+            if($this->debug) echo $e->getMessage();
         }
         return false;
     }
