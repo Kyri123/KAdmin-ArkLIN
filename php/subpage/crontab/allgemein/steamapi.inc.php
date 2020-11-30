@@ -85,5 +85,5 @@ foreach ($json as $key => $item) {
 
 $path = __ADIR__."/app/json/steamapi";
 
-$helper->savejson_create($player_array, "$path/user.json");
-$helper->savejson_create($mod_array, "$path/mods.json");
+$helper->saveFile($player_array, "$path/user.json");
+$helper->saveFile($mod_array, "$path/mods.json");

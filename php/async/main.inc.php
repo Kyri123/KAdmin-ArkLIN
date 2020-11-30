@@ -14,6 +14,7 @@ $ROOT = str_replace($_SERVER["DOCUMENT_ROOT"], null, __DIR__);
 $ROOT = str_replace("/php/async", null, $ROOT);
 
 include(__ADIR__.'/php/inc/config.inc.php');
+include(__ADIR__.'/php/class/KUtil.class.inc.php');
 include(__ADIR__.'/php/class/helper.class.inc.php');
 
 $helper = new helper();
@@ -24,7 +25,7 @@ $all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
 $D_PERM_ARRAY = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
 $server = $all["cfgs_only_name"];
 foreach ($server as $item) {
-    $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
+    $perm_file = $KUTIL->fileGetContents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
     $perm_file = str_replace("{cfg}", $item, $perm_file);
     $default = $helper->str_to_json($perm_file);
     $D_PERM_ARRAY["server"] += $default;

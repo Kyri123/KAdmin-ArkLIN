@@ -55,7 +55,7 @@ for ($i=0;$i<count($dir);$i++) {
             // lese Status für die Ausführung von Aktionen
             $statefile = __ADIR__.'/app/data/shell_resp/state/'.$serv->name().'.state';
             if (!file_exists($statefile)) file_put_contents($statefile, 'TRUE');
-            $serv_state = trim(file_get_contents($statefile));
+            $serv_state = trim($KUTIL->fileGetContents($statefile));
             $log = __ADIR__.'/app/data/shell_resp/log/'.$serv->name().'/last.log';
             if ($serv_state == 'TRUE' || timediff($log, ($webserver['config']['ShellIntervall'] / 1000 + 3))) {
                 $server['next'] = 'FALSE';
@@ -66,7 +66,7 @@ for ($i=0;$i<count($dir);$i++) {
 
             //schreibe Informationen zur verarbeitung
             if ($checkit) {
-                $helper->savejson_create($server, $jsonfile);
+                $helper->saveFile($server, $jsonfile);
             }
 
             // Online & Max Counter (Global Information)
@@ -81,4 +81,4 @@ for ($i=0;$i<count($dir);$i++) {
     }
 }
 
-$helper->savejson_create($json_all, $file);
+$helper->saveFile($json_all, $file);

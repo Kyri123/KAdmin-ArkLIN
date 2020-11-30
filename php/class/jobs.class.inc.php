@@ -20,7 +20,7 @@ class jobs extends helper
      */
     public function __construct()
     {
-        #empty
+        parent::__construct();
     }
 
     /**

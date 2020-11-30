@@ -23,6 +23,7 @@ class xml_helper extends helper {
      */
     public function __construct(String $xml_path)
     {
+        parent::__construct();
         $this->xml_path = $xml_path;
         if (file_exists($xml_path)) {
             $this->xml_string = file_get_contents($xml_path);

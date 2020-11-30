@@ -23,6 +23,7 @@ class steamapi extends helper {
      */
     public function __construct()
     {
+        parent::__construct();
         $ckonfig = parent::file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
         $this->API_Key = $ckonfig['apikey'];
     }

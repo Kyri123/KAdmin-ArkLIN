@@ -40,7 +40,7 @@ if (!isset($array["arklocdir"]))        $array["arklocdir"] = null;
 if (!isset($array["apikey"]))           $array["apikey"] = null;
 if (!isset($array["show_err"]))         $array["show_err"] = 0;
 if (!isset($array["steamcmddir"]))      $array["steamcmddir"] = "/home/steam/Steam/";
-$helper->savejson_exsists($array, $ppath);
+$helper->saveFile($array, $ppath);
 
 //Erstelle wenn nicht vorhanden API Datei mit inhalt
 if(!file_exists($API_path)) {
@@ -48,7 +48,7 @@ if(!file_exists($API_path)) {
         "active" => 0,
         "key" => md5(rndbit(20))
     );
-    $helper->savejson_create($API_array, $API_path);
+    $helper->saveFile($API_array, $API_path);
 }
 else {
     $API_array = $helper->file_to_json($API_path, true);
@@ -280,7 +280,7 @@ if(file_exists($syslpath) && is_link($syslpath)) {
     $steamcmd_workshop_exsists = file_exists($workshop);
     if($steamcmd_workshop_exsists) {
         $cachelink = '<a href="#spoiler" data-toggle="collapse" data-target="#cache" aria-expanded="false" aria-controls="cache">' . converttime(filemtime($workshop ))  . ' ({::lang::servercenter::config::steamcmd::show})</a>';
-        $cachetext = file_get_contents($workshop);
+        $cachetext = $KUTIL->fileGetContents($workshop);
     }
     else {
         $cachelink = '{::lang::servercenter::config::steamcmd::cache_not_exsists}';
@@ -294,8 +294,8 @@ $tpl->r("steamcmd_info", (($steamcmd_exsists) ? null : $alert->rd(306, 3, 0, 0, 
 $tpl->r("info_CMD", $alert->rd(307, 3, 0, 0, 0, 0));
 $tpl->r("cache_link", $cachelink);
 $tpl->r("cache_text", $cachetext);
-$tpl->r("arkmanager", (file_exists($apath)) ? file_get_contents($apath) : "");
-$tpl->r("templatecfg", (file_exists($tpath)) ? file_get_contents($tpath) : "");
+$tpl->r("arkmanager", (file_exists($apath)) ? $KUTIL->fileGetContents($apath) : "");
+$tpl->r("templatecfg", (file_exists($tpath)) ? $KUTIL->fileGetContents($tpath) : "");
 $tpl->r("option_panel", $option_panel);
 $tpl->r('webhelper', $option_server);
 $tpl->r("resp", $resp);

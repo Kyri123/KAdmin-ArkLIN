@@ -59,9 +59,9 @@ class KUTIL {
             }
         }
         return array(
-            "path"      =>  implode(DIRECTORY_SEPARATOR, $absolutes),
-            "last"      =>  $parts[array_key_last($parts)],
-            "nolast"    =>  str_replace($parts[array_key_last($parts)], null, implode(DIRECTORY_SEPARATOR, $absolutes))
+            "path"      => implode(DIRECTORY_SEPARATOR, $absolutes),
+            "last"      => array_pop($absolutes),
+            "nolast"    => implode(DIRECTORY_SEPARATOR, $absolutes)
         );
     }
 
@@ -70,24 +70,25 @@ class KUTIL {
      * @link    https://php.net/manual/en/function.file-get-contents.php
      * @param   string $filename
      * @param   string $asJson Als JSON ausgeben
-     * @param   false $use_include_path
-     * @param   null $context
-     * @param   int $offset
-     * @param   null $maxlen
      * @return  boolean|string|array|object
      */
-    public function fileGetContents(string $filename, bool $asJson = false, $use_include_path = false, $context = null, $offset = 0, $maxlen = null) {
-        $filename = $this->path($filename)["path"];
+    public function fileGetContents(string $filename, bool $asJson = false) {
+        $filename = "/".$this->path($filename)["path"];
         try {
-            if($asJson) {
-                $jsonString     = file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
-                $json           = [];
-                $json["Assoc"]  = json_decode($jsonString, true, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING | JSON_INVALID_UTF8_IGNORE | JSON_INVALID_UTF8_SUBSTITUTE);
-                $json["Obj"]    = json_decode($jsonString, false, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING | JSON_INVALID_UTF8_IGNORE | JSON_INVALID_UTF8_SUBSTITUTE);
-                return $json;
+            if(@file_exists($filename) && @fileperms($filename) !== false) {
+                if($asJson) {
+                    $jsonString     = file_get_contents($filename);
+                    $json           = [];
+                    $json["Assoc"]  = json_decode($jsonString, true, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING | JSON_INVALID_UTF8_IGNORE | JSON_INVALID_UTF8_SUBSTITUTE);
+                    $json["Obj"]    = json_decode($jsonString, false, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_BIGINT_AS_STRING | JSON_INVALID_UTF8_IGNORE | JSON_INVALID_UTF8_SUBSTITUTE);
+                    return $json;
+                }
+                else {
+                    return file_get_contents($filename);
+                }
             }
             else {
-                return file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
+                throw new \Exception("<p style='margin-bottom:0px; margin-left: 80px;'>File not found or no perms <b>$filename</b></p>");
             }
         }
         catch (Exception $e) {
@@ -105,21 +106,41 @@ class KUTIL {
      * @param   $context
      * @return  bool
      */
-    public function filePutContents(string $filename, $data, $flags = 0, $context = null) {
-        $filename = $this->path($filename)["path"];
-        try {
-            file_put_contents($filename, $data, $flags, $context);
-            return true;
+    public function filePutContents(string $filename, $data) {
+        $filename = $this->path($filename);
+        if($this->mkdir($filename["nolast"])) {
+            try {
+                if(!@file_put_contents("/".$filename["path"], $data)) throw new \Exception("<p style='margin-bottom:0px; margin-left: 80px;'>Cannot create File with Path <b>$filename</b></p>");
+                return true;
+            }
+            catch (Exception $e) {
+                if($this->debug) echo $e->getMessage();
+            }
         }
-        catch (Exception $e) {
-            if($this->debug) echo $e->getMessage();
+        return false;
+    }
+
+    /**
+     * KUtil: Erzeugt eine Datei unter dem Pfad
+     * @param   string $path
+     * @return  bool
+     */
+    public function makeFile(string $path) {
+        $filename = $this->path($path);
+        if($this->mkdir($filename["nolast"]) && !@file_exists($filename["path"])) {
+            try {
+                if(!@file_put_contents("/".$filename["path"], " ")) throw new \Exception("<p style='margin-bottom:0px; margin-left: 80px;'>Cannot create File with Path <b>$filename</b></p>");
+                return true;
+            }
+            catch (Exception $e) {
+                if($this->debug) echo $e->getMessage();
+            }
         }
         return false;
     }
 
     /**
      * KUtil: Erzeugt ein verzeichnis Rekursiv
-     * @link    https://php.net/manual/en/function.file-put-contents.php
      * @param   string $path
      * @return  bool (Gibt True wenn File exsistiert ODER erstellt wurde)
      */
@@ -133,7 +154,7 @@ class KUTIL {
                 foreach ($parts as $item) {
                     $pather .= "$item/";
                     if(is_int(@fileperms("$pather../"))) if(!file_exists($pather)) if(!mkdir($pather)) {
-                        throw new \Exception($output, System::CAN_NOT_MAKE_DIRECTORY);
+                        throw new \Exception("<p style='margin-bottom:0px; margin-left: 80px;'>Connot create Path <b>$filename</b></p>");
                     }
                     else {
                         echo 1;

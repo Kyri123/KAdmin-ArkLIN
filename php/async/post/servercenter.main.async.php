@@ -65,7 +65,7 @@ switch ($case) {
 
             // sende command
             $server = new server($cfg);
-            $json = json_decode(file_get_contents(__ADIR__.'/app/json/serverinfo/'.$cfg.'.json'));
+            $json = json_decode($KUTIL->fileGetContents(__ADIR__.'/app/json/serverinfo/'.$cfg.'.json'));
             $force = (isset($_POST["force"])) ? true : false;
             if($errorMSG == "") {
                 if (!$serv->send_action($send_shell, $force)) {

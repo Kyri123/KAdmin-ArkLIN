@@ -51,7 +51,7 @@ if (isset($_POST["send"])) {
             $array["dbuser"] = $dbuser;
             $array["dbpass"] = $dbpass;
             $array["dbname"] = $dbname;
-            if ($helper->savejson_create($array, __ADIR__."/arkadmin_server/config/mysql.json")) {
+            if ($helper->saveFile($array, __ADIR__."/arkadmin_server/config/mysql.json")) {
                 header("Location: $ROOT/install.php/3");
                 exit;
             }

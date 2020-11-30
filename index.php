@@ -23,11 +23,10 @@ if(file_exists(__ADIR__."/app/check/done") && file_exists(__ADIR__."/install.php
 // hide errors
 $stime = microtime(true);
 include(__ADIR__.'/php/inc/config.inc.php');
-include(__ADIR__.'/php/class/helper.class.inc.php');
 
 // Inz KUTIL
 include(__ADIR__.'/php/class/KUtil.class.inc.php');
-$KUTIL->debug = true;
+include(__ADIR__.'/php/class/helper.class.inc.php');
 
 $helper     = new helper();
 $ckonfig    = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
@@ -39,7 +38,7 @@ $all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
 $D_PERM_ARRAY = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
 $server = $all["cfgs_only_name"];
 foreach ($server as $item) {
-    $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
+    $perm_file = $KUTIL->fileGetContents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
     $perm_file = str_replace("{cfg}", $item, $perm_file);
     $default = $helper->str_to_json($perm_file);
     $D_PERM_ARRAY["server"] += $default;
@@ -168,7 +167,7 @@ if(isset($_SESSION["id"])) {
         $json = $helper->file_to_json($path, true);
         $json["ip"] = getRealIpAddr();
         $json["id"] = $session_user->read("id");
-        $helper->savejson_create($json, $path);
+        $helper->saveFile($json, $path);
     }
 }
 
@@ -260,7 +259,7 @@ $tpl_b->r('pageicon', $pageicon);
 $tpl_h->r('pagename', $pagename);
 $tpl_h->rif('darkmode', isset($_COOKIE["style"]) ? $_COOKIE["style"] == "dark" : false);
 $tpl_b->r('aa_version', $version);
-$tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path_webhelper)) ? intval(file_get_contents($path_webhelper)) : time()), true));
+$tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path_webhelper)) ? intval($KUTIL->fileGetContents($path_webhelper)) : time()), true));
 $tpl_b->r('user', isset($_SESSION["id"]) ? $user->read("username") : "Not logged in");
 $tpl_b->r('content', $content);
 $tpl_b->r('site_name', $site_name);

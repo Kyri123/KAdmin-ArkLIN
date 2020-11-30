@@ -31,13 +31,13 @@ $count = (is_countable($playerjs)) ? count($playerjs): false;
 // Administrator hinzufügen
 if (isset($_POST["addadmin"]) && $session_user->perm("$perm/home/admin_send")) {
     $id = $_POST["id"];
-    $cheatcontent = file_get_contents($cheatfile);
+    $cheatcontent = $KUTIL->fileGetContents($cheatfile);
 
     // SteamID bzw Input prüfen
     if(is_numeric($id) && $id > 700000000) {
         if(!strpos($cheatcontent, $id)) {
             for ($ix=0;$ix<$count;$ix++) if($id == $playerjs[$ix]["steamid"]) {$i = $ix; break;};
-            $content = file_get_contents($cheatfile)."\n$id";
+            $content = $KUTIL->fileGetContents($cheatfile)."\n$id";
             if (file_put_contents($cheatfile, $content)) {
                 // Melde: Abschluss (Hinzugefügt)
                 $alert->code = 100;
@@ -65,7 +65,7 @@ elseif(isset($_POST["addadmin"])) {
 // Entfernte von Adminliste
 if (isset($_POST["rm"]) && $session_user->perm("$perm/home/admin_send")) {
     $id = $_POST["stid"];
-    $content = file_get_contents($cheatfile);
+    $content = $KUTIL->fileGetContents($cheatfile);
     // Prüfe ob die ID exsistent ist
     if (substr_count($content, $id) > 0) {
         $content = str_replace($id, null, $content);

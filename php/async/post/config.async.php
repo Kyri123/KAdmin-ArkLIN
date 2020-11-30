@@ -22,7 +22,7 @@ switch ($case) {
         $API_array = $helper->file_to_json($API_path, true);
         $API_array["active"] = $int;
 
-        $bool = $helper->savejson_create($API_array, $API_path);
+        $bool = $helper->saveFile($API_array, $API_path);
 
         echo '{"state": '.intval($bool).'}';
         break;

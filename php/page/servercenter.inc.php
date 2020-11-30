@@ -80,7 +80,7 @@ $qport          = $serv->cfg_read('ark_QueryPort');
 $tpl = new Template('main.htm', $tpl_dir);
 $tpl->load();
 
-$globa_json = json_decode(file_get_contents(__ADIR__.'/app/json/serverinfo/'.$url[2].'.json'));
+$globa_json = json_decode($KUTIL->fileGetContents(__ADIR__.'/app/json/serverinfo/'.$url[2].'.json'));
 
 $url[3] = (isset($url[3])) ? $url[3] : "home";
 $ssite = $url[3];

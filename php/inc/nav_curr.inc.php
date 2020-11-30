@@ -64,12 +64,12 @@ if(isset($_SESSION["id"]) && isset($_COOKIE["lang"])) {
         // prüfe ob die json gleich dem Cookies entspricht
         if($json["lang"] != $_COOKIE["lang"]) {
             $json["lang"] = $_COOKIE["lang"];
-            $helper->savejson_exsists($json, $path);
+            $helper->saveFile($json, $path);
         }
     // speichern wenn die json NICHT existiert
     } else {
     // speichern wenn die json existiert
         $json["lang"] = $_COOKIE["lang"];
-        $helper->savejson_create($json, $path);
+        $helper->saveFile($json, $path);
     }
 }

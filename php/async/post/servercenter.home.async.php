@@ -20,7 +20,7 @@ switch ($case) {
     case "rconsend":
         $serv = new server($_POST['cfg']);
         $cfg = $serv->name();
-        $json = file_get_contents(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json');
+        $json = $KUTIL->fileGetContents(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json');
         $server = json_decode($json);
 
         if($session_user->perm("server/$cfg/home/rcon_send")) {
@@ -55,7 +55,7 @@ switch ($case) {
                         $msg = $alert->re();
                         $log = __ADIR__.'/app/json/saves/rconlog_'.$serv->name().'.txt';
                         if (file_exists($log)) {
-                            $file = file_get_contents($log);
+                            $file = $KUTIL->fileGetContents($log);
                             $file = $file."\n".time().'(-/-)['.$user.'] '.$command;
                             if (file_put_contents($log, $file));
                         }
@@ -80,7 +80,7 @@ switch ($case) {
     // CASE: LiveChat Send Chat
     case "igchatsend":
         $serv = new server($_POST['cfg']);
-        $json = file_get_contents(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json');
+        $json = $KUTIL->fileGetContents(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json');
         $server = json_decode($json);
 
         if($session_user->perm("server/$cfg/home/livechat_send")) {
@@ -142,7 +142,7 @@ switch ($case) {
                 }
                 $i = 0;
                 if (!$serv->check_rcon()) {
-                    $content = file_get_contents($whitelistfile);
+                    $content = $KUTIL->fileGetContents($whitelistfile);
                     if (in_array($id, $arr)) {
                         $content = str_replace($id, null, $content);
                     } else {

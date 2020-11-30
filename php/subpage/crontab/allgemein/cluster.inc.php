@@ -26,7 +26,7 @@ foreach ($json as $k => $v) {
 
     // Syncronisiere Administratoren auf Slaves
     if ($json[$k]["sync"]["admin"] && $masterisset) {
-        $mastercfg = file_get_contents($mcfg->dir_save(true)."/AllowedCheaterSteamIDs.txt");
+        $mastercfg = $KUTIL->fileGetContents($mcfg->dir_save(true)."/AllowedCheaterSteamIDs.txt");
         foreach ($json[$k]["servers"] as $sk => $sv) {
             if ($sv["type"] != 1) {
                 $serv = new server($sv["server"]);
@@ -108,7 +108,7 @@ foreach ($json as $k => $v) {
                 }
             }
             else {
-                if(file_exists($whitelistfile_master)) file_put_contents($whitelistfile_slave, file_get_contents($whitelistfile_master));
+                if(file_exists($whitelistfile_master)) file_put_contents($whitelistfile_slave, $KUTIL->fileGetContents($whitelistfile_master));
             }
         }
     }

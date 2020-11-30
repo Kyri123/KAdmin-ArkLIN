@@ -27,6 +27,7 @@ class userclass extends helper
      */
     function __construct(int $id = 0)
     {
+        parent::__construct();
         global $mycon;
         $this->mycon = $mycon;
         $this->myconisset = false;
@@ -59,7 +60,7 @@ class userclass extends helper
                 }
             }
 
-            parent::savejson_create($this->permissions, __ADIR__."/app/json/arkadmin_server/".md5($id).".permissions.json");
+            parent::saveFile($this->permissions, __ADIR__."/app/json/arkadmin_server/".md5($id).".permissions.json");
 
             return true;
         }

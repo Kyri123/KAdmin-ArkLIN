@@ -47,7 +47,7 @@ for ($i=0;$i<count($dir);$i++) {
 
             // füge sie an dem String zusammen
             foreach($files as $k => $v) {
-                $log .= file_get_contents($v["path"]);
+                $log .= $KUTIL->fileGetContents($v["path"]);
             }
             
             // Speicher Log

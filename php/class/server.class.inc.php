@@ -194,7 +194,7 @@ class server extends Rcon {
             $path = __ADIR__."/app/json/serverinfo/" . $this->name() . ".json";
             $data = $helper->file_to_json($path);
             $data["next"] = 'TRUE';
-            $helper->savejson_create($data, $path);
+            $helper->saveFile($data, $path);
 
             return true;
         }

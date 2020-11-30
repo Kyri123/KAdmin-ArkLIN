@@ -37,6 +37,7 @@ class alert extends helper {
      */
     public function __construct()
     {
+        parent::__construct();
         $this->from = array();
         $this->to = array();
     }

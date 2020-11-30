@@ -33,7 +33,7 @@ $json = $helper->file_to_json($clusterjson_path);
 if (isset($_POST["removecluster"]) && $session_user->perm("cluster/delete")) {
     $key = $_POST["key"];
     if (isset($json[$key])) unset($json[$key]);
-    $helper->savejson_exsists($json, $clusterjson_path);
+    $helper->saveFile($json, $clusterjson_path);
     header("Location: /cluster"); exit;
 }
 elseif(isset($_POST["removecluster"])) {
@@ -51,7 +51,7 @@ if (isset($_POST["remove"]) && $session_user->perm("cluster/remove_server")) {
         }
     }
     if (isset($json[$key]["servers"][$i])) unset($json[$key]["servers"][$i]);
-    $helper->savejson_exsists($json, $clusterjson_path);
+    $helper->saveFile($json, $clusterjson_path);
     header("Location: /cluster"); exit;
 }
 elseif(isset($_POST["remove"])) {
@@ -82,7 +82,7 @@ if (isset($_POST["settype"]) && $session_user->perm("cluster/toogle_master")) {
     } else {
         $json[$key]["servers"][$cfgkey]["type"] = 0;
     }
-    $helper->savejson_exsists($json, $clusterjson_path);
+    $helper->saveFile($json, $clusterjson_path);
     header("Location: /cluster"); exit;
 }
 elseif(isset($_POST["settype"])) {
@@ -105,7 +105,7 @@ if (isset($_POST["addserver"]) && $session_user->perm("cluster/add_server")) {
             $json[$key]["servers"][$i]["type"] = 0;
             $server = new server($cfg);
 
-            if ($helper->savejson_exsists($json, $clusterjson_path)) {
+            if ($helper->saveFile($json, $clusterjson_path)) {
                 // Melde: Server hinzugefpgt
                 $alert->code = 104;
                 $alert->overwrite_text = "{::lang::php::cluster::overwrite::addedserver}";
@@ -162,7 +162,7 @@ if (isset($_POST["editcluster"]) && $session_user->perm("cluster/edit_options"))
         $json[$i]["sync"] = $sync;
         $json[$i]["opt"] = $opt;
 
-        if ($helper->savejson_exsists($json, $clusterjson_path)) {
+        if ($helper->saveFile($json, $clusterjson_path)) {
             $alert->code = 104;
             $alert->overwrite_text = "{::lang::php::cluster::overwrite::changedcluster}";
             $alert->r("cluster", $cluster);
@@ -213,7 +213,7 @@ if (isset($_POST["add"]) && $session_user->perm("cluster/create")) {
         $clusterarray["servers"] = array();
 
         if (array_push($json, $clusterarray)) {
-            if ($helper->savejson_exsists($json, $clusterjson_path)) {
+            if ($helper->saveFile($json, $clusterjson_path)) {
                 $alert->code = 104;
                 $alert->overwrite_text = "{::lang::php::cluster::overwrite::createdcluster}";
                 $alert->r("cluster", $cluster);
@@ -250,7 +250,7 @@ foreach ($json as $mk => $mv) {
         $i++;
     }
 }
-$helper->savejson_exsists($json, $clusterjson_path);
+$helper->saveFile($json, $clusterjson_path);
 
 $json = $helper->file_to_json($clusterjson_path);
 $list = null;

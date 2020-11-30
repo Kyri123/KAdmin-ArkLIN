@@ -14,16 +14,14 @@
  * - Schreiben von Array in Dateien
  * - Lesen von XML
  */
-class helper {
+class helper extends KUTIL {
+
     /**
      * __construct
      *
      * @return void
      */
-    public function __construct()
-    {
-        #empty
-    }
+    public function __construct() {}
     
     /**
      * Ruft eine Json von einem anderen Webserver ab
@@ -75,11 +73,7 @@ class helper {
      * @return array|string
      */
     public function file_to_json(String $path, Bool $array = true) {
-        if (file_exists($path)) {
-            return $this->str_to_json(file_get_contents($path), $array);
-        } else {
-            return $this->str_to_json('{"file":"notexsists"}', $array);
-        }
+        return parent::fileGetContents($path, true)[($array ? "Assoc" : "Obj")];
     }
     
     /**
@@ -104,38 +98,14 @@ class helper {
     }
     
     /**
-     * Speichert eine Json (Array) in eine Datei die aber Exsistieren muss
-     *
-     * @param  mixed $array Array der gespeichert werden soll
-     * @param  mixed $path Pfad wo die Datei gespeichert werden soll
-     * @return bool
-     */
-    public function savejson_exsists($array, String $path) {
-        if (file_exists($path)) {
-            if (file_put_contents($path, json_encode($array, JSON_INVALID_UTF8_SUBSTITUTE))) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-    
-    /**
      * Speichert eine Json hier muss die Datei NICHT exsistieren
      *
      * @param  mixed $array Array der gespeichert werden soll
      * @param  mixed $path Pfad wo die Datei gespeichert werden soll
      * @return bool
      */
-    public function savejson_create($array, String $path) {
-        $content = json_encode($array, JSON_INVALID_UTF8_SUBSTITUTE);
-        if (file_put_contents($path, $content)) {
-            return true;
-        } else {
-            return false;
-        }
+    public function saveFile($array, String $path) {
+        return parent::filePutContents($path, is_array($array) ? $this->json_to_str($array) : $array)[($array ? "Assoc" : "Obj")];
     }
     
     /**

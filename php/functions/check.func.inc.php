@@ -43,7 +43,7 @@ function isie() {
  * @return bool
  */
 function check_webhelper() {
-    global $webserver;
+    global $webserver, $KUTIL;
     if(!check_server()) {
         return false;
     }
@@ -52,7 +52,7 @@ function check_webhelper() {
         $string = html_entity_decode(trim(utf8_encode($json_string)));
         $string = str_replace("\n", null, $string);
 
-        $curr = (file_exists(__ADIR__."/arkadmin_server/data/version.txt")) ? trim(file_get_contents(__ADIR__."/arkadmin_server/data/version.txt")) : "curr_not_found";
+        $curr = (file_exists(__ADIR__."/arkadmin_server/data/version.txt")) ? trim($KUTIL->fileGetContents(__ADIR__."/arkadmin_server/data/version.txt")) : "curr_not_found";
         $run = json_decode($string, true)["version"];
         return ($curr == $run) ? true : false;
     }
@@ -65,7 +65,7 @@ function check_webhelper() {
  * @return bool
  */
 function check_server_json_bool($key) {
-    global $webserver;
+    global $webserver, $KUTIL;
     if(!check_server()) {
         return false;
     }

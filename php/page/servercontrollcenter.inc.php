@@ -45,7 +45,7 @@ if (isset($_POST["add"]) && $session_user->perm("servercontrollcenter/create")) 
         $ark_Port = $_POST["port"][0];
         $ark_RCONPort = $_POST["port"][2];
 
-        $cfg = file_get_contents(__ADIR__.'/app/data/template.cfg');
+        $cfg = $KUTIL->fileGetContents(__ADIR__.'/app/data/template.cfg');
         $find = array(
             "{arkserverroot}",
             "{logdir}",
@@ -78,7 +78,7 @@ if (isset($_POST["add"]) && $session_user->perm("servercontrollcenter/create")) 
 
                     // Speicher Rechte für den Benutzer
                     if(isset($_SESSION["id"]) && file_exists(__ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json")) {
-                        $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
+                        $perm_file = $KUTIL->fileGetContents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
                         $perm_file = str_replace("{cfg}", $name, $perm_file);
                         $default = $helper->str_to_json($perm_file);
                         $default[$name]["is_server_admin"] = 1;
@@ -91,7 +91,7 @@ if (isset($_POST["add"]) && $session_user->perm("servercontrollcenter/create")) 
                             $user_permissions["server"] += $default;
                         }
 
-                        $helper->savejson_create($user_permissions, __ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json");
+                        $helper->saveFile($user_permissions, __ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json");
                     }
                 } else {
                     $resp .= $alert->rd(1);
