@@ -24,9 +24,15 @@ if(file_exists(__ADIR__."/app/check/done") && file_exists(__ADIR__."/install.php
 $stime = microtime(true);
 include(__ADIR__.'/php/inc/config.inc.php');
 include(__ADIR__.'/php/class/helper.class.inc.php');
-$helper = new helper();
-$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
-$site_name = $content = null;
+
+// Inz KUTIL
+include(__ADIR__.'/php/class/KUtil.class.inc.php');
+$KUTIL->addPath(__ADIR__);
+$KUTIL->debug = true;
+
+$helper     = new helper();
+$ckonfig    = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
+$site_name  = $content = null;
 
 $all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
 

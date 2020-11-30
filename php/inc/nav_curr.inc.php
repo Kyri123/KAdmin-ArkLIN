@@ -19,7 +19,7 @@ foreach ($dir as $k => $v) {
 }
 
 $json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 3600);
-$c = true;
+$c = true; $cc = null;
 for ($i=count($json)-1;$i>-1;$i--) {
     if ($version == $json[$i]['version']) {
         $cc = $i;

@@ -14,7 +14,7 @@
  * - Schreiben von Array in Dateien
  * - Lesen von XML
  */
-class helper {    
+class helper {
     /**
      * __construct
      *
