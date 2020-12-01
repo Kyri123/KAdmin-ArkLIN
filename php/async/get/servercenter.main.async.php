@@ -21,7 +21,7 @@ switch ($case) {
         $tpl->load();
         $i = false;
         $path = __ADIR__."/app/json/serverinfo/" . $serv->name() . ".json";
-        $data = $helper->file_to_json($path);
+        $data = $helper->fileToJson($path);
 
         // Status
         $serverstate = $serv->statecode();

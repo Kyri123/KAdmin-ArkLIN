@@ -27,7 +27,7 @@ $clusterjson_path = __ADIR__."/app/json/panel/cluster_data.json";
 
 // Hole Cluster Array / Json
 if (!file_exists($clusterjson_path)) if (!file_put_contents($clusterjson_path, "[]")) die;
-$json = $helper->file_to_json($clusterjson_path);
+$json = $helper->fileToJson($clusterjson_path);
 
 //Entferne Cluster
 if (isset($_POST["removecluster"]) && $session_user->perm("cluster/delete")) {
@@ -252,7 +252,7 @@ foreach ($json as $mk => $mv) {
 }
 $helper->saveFile($json, $clusterjson_path);
 
-$json = $helper->file_to_json($clusterjson_path);
+$json = $helper->fileToJson($clusterjson_path);
 $list = null;
 foreach ($json as $mk => $mv) {
     $listtpl = new Template("clusters.htm", $tpl_dir);
@@ -376,7 +376,7 @@ foreach ($json as $mk => $mv) {
     $list .= $listtpl->load_var();
 }
 
-$cfg_array = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
+$cfg_array = $helper->fileToJson(__ADIR__."/app/json/serverinfo/all.json");
 $sel_serv = null;
 foreach ($cfg_array["cfgs"] as $key) {
     $cfg = str_replace(".cfg", null, $key);

@@ -52,7 +52,7 @@ if (isset($_POST["savepanel"])) {
         }
     }
 
-    $json_str = $helper->json_to_str($json);
+    $json_str = $helper->jsonToString($json);
     if (file_put_contents($ppath, $json_str)) {
         $link1 = false; $link2 = false;
         if (file_put_contents(__ADIR__."/remote/arkmanager/check", "done")) {

@@ -23,15 +23,15 @@ $urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
 $syslpath = __ADIR__."/remote/steamcmd";
 $workshop = "$syslpath/steamapps/workshop/appworkshop_346110.acf";
 $resp = null;
-$limit = $helper->file_to_json(__ADIR__."/app/json/panel/aas_min.json", true);
-$maxi = $helper->file_to_json(__ADIR__."/app/json/panel/aas_max.json", true);
+$limit = $helper->fileToJson(__ADIR__."/app/json/panel/aas_min.json", true);
+$maxi = $helper->fileToJson(__ADIR__."/app/json/panel/aas_max.json", true);
 
 $API_path = __ADIR__."/php/inc/api.json";
 $ppath = __ADIR__."/php/inc/custom_konfig.json";
 $apath = __ADIR__."/remote/arkmanager/arkmanager.cfg";
 $wpath = __ADIR__.'/arkadmin_server/config/server.json';
 $tpath = __ADIR__.'/app/data/template.cfg';
-$array = $helper->file_to_json($ppath, true);
+$array = $helper->fileToJson($ppath, true);
 if (!isset($array["clusterestart"]))    $array["clusterestart"] = 0;
 if (!isset($array["uninstall_mod"]))    $array["uninstall_mod"] = 0;
 if (!isset($array["install_mod"]))      $array["install_mod"] = 0;
@@ -51,7 +51,7 @@ if(!file_exists($API_path)) {
     $helper->saveFile($API_array, $API_path);
 }
 else {
-    $API_array = $helper->file_to_json($API_path, true);
+    $API_array = $helper->fileToJson($API_path, true);
 }
 
 //tpl
@@ -127,7 +127,7 @@ if (isset($_POST["savewebhelper"]) && $session_user->perm("config/aa_save")) {
     if(substr($jsons["HTTP"], -1) != "/") $jsons["HTTP"] .= "/";
 
     // Speichern
-    $json_str = $helper->json_to_str($jsons);
+    $json_str = $helper->jsonToString($jsons);
     if($allok) {
         if (file_put_contents($wpath, $json_str)) {
             $resp .= $alert->rd(102);
@@ -149,7 +149,7 @@ if (isset($_POST["savepanel"]) && $session_user->perm("config/panel_save")) {
     $a_value = $_POST["value"];
     $filter_bool = array("install_mod","uninstall_mod");
     $filter_link = array("servlocdir","arklocdir","steamcmddir");
-    $json = $helper->file_to_json($ppath, true);
+    $json = $helper->fileToJson($ppath, true);
     $check = array(
         "servlocdir",
         "arklocdir",
@@ -185,7 +185,7 @@ if (isset($_POST["savepanel"]) && $session_user->perm("config/panel_save")) {
         }
     }
 
-    $json_str = $helper->json_to_str($json);
+    $json_str = $helper->jsonToString($json);
     if (file_put_contents($ppath, $json_str)) {
         $alert->code = 102;
         $resp .= $alert->re();
@@ -198,7 +198,7 @@ elseif(isset($_POST["savepanel"])) {
     $resp .= $alert->rd(99);
 }
 
-$panelconfig = $helper->file_to_json($ppath, true);
+$panelconfig = $helper->fileToJson($ppath, true);
 $option_panel = null;
 foreach($panelconfig as $key => $value) {
     $list = new Template("opt.htm", $tpl_dir);
@@ -238,7 +238,7 @@ foreach($panelconfig as $key => $value) {
     $option_panel .= $list->load_var();
 }
 
-$servercfg = $helper->file_to_json($wpath, true);
+$servercfg = $helper->fileToJson($wpath, true);
 if(!isset($servercfg["port"])) $servercfg["port"] = 30000;
 if(!isset($servercfg["autorestart"])) $servercfg["autorestart"] = 1;
 if(!isset($servercfg["autoupdater_active"])) $servercfg["autoupdater_active"] = 0;

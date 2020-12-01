@@ -60,7 +60,7 @@ class xml_helper extends helper {
         if ($this->find && $obj) {
             return simplexml_load_file($this->xml_path);
         } elseif ($this->find) {
-            return parent::xmlfile_to_array($this->xml_path);
+            return parent::xmlFileToArray($this->xml_path);
         } else {
             return false;
         }

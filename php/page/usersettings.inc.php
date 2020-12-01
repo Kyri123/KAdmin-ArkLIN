@@ -67,7 +67,7 @@ if(isset($_POST["saveuser"])) {
 
 // Speichern (Benutzer Einstellungen)
 if(isset($_POST["savepanel"])) {
-    $json = $helper->file_to_json($path, true);
+    $json = $helper->fileToJson($path, true);
     $json["expert"] = (isset($_POST["json"]["expert"]) && $session_user->perm("usersettings/expert")) ? 1 : 0;
     $json["konfig"] = (isset($_POST["json"]["konfig"])) ? 1 : 0;
     if ($helper->saveFile($json, $path)) {

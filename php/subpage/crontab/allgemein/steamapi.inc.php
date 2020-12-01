@@ -10,7 +10,7 @@
 
 
 $file = __ADIR__.'/app/json/serverinfo/all.json';
-$cfg_json = $helper->file_to_json($file);
+$cfg_json = $helper->fileToJson($file);
 
 $sid_array = $modid_array = array();
 $player_array = $steamapi_user;

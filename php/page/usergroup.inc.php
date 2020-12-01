@@ -23,7 +23,7 @@ $TPL_PAGE->load();
 // Erstelle eine Benutzergruppe
 if(isset($_POST["addgroup"])) {
     $GROUPNAME      = $_POST["group_name"];
-    $PERMISSIONS    = isset($_POST["permissions"]) ? $helper->json_to_str($_POST["permissions"]) : "{}";
+    $PERMISSIONS    = isset($_POST["permissions"]) ? $helper->jsonToString($_POST["permissions"]) : "{}";
     $PERMISSIONS    = str_replace("\"on\"", 1, $PERMISSIONS);
     $TEST_QUERY     = "SELECT * FROM `ArkAdmin_user_group` WHERE `name`='$GROUPNAME'";
 
@@ -52,7 +52,7 @@ if(isset($_POST["addgroup"])) {
 if(isset($_POST["editgroup"])) {
     $ID             = $_POST["id"];
     $GROUPNAME      = $_POST["group_name"];
-    $PERMISSIONS    = isset($_POST["permissions"]) ? $helper->json_to_str($_POST["permissions"]) : "{}";
+    $PERMISSIONS    = isset($_POST["permissions"]) ? $helper->jsonToString($_POST["permissions"]) : "{}";
     $PERMISSIONS    = str_replace("\"on\"", 1, $PERMISSIONS);
     $TEST_QUERY     = "SELECT * FROM `ArkAdmin_user_group` WHERE `id`='$ID'";
 
@@ -99,7 +99,7 @@ if(isset($_POST["removegroup"])) {
 // Kenn geben
 if(isset($_POST["canadd"])) {
     $ID             = $_POST["id"];
-    $CANADD        = str_replace('"', null, isset($_POST["ids"]) ? $helper->json_to_str($_POST["ids"]) : "[]");
+    $CANADD        = str_replace('"', null, isset($_POST["ids"]) ? $helper->jsonToString($_POST["ids"]) : "[]");
     $TEST_QUERY     = "SELECT * FROM `ArkAdmin_user_group` WHERE `id`='$ID'";
 
     if($mycon->query($TEST_QUERY)->numRows() > 0 && $ID != 1) {
@@ -133,7 +133,7 @@ if($QUERY->numRows() > 0) {
         $TPL_LIST           = new Template("group.htm", __ADIR__."/app/template/lists/$page/");
         $TPL_LIST_MODALS    = new Template("group_modals.htm", __ADIR__."/app/template/lists/$page/");
 
-        $GROUP_PERM = array_replace_recursive($D_PERM_ARRAY, $helper->str_to_json($ITEM["permissions"]));
+        $GROUP_PERM = array_replace_recursive($D_PERM_ARRAY, $helper->stringToJson($ITEM["permissions"]));
 
         // Listitems
         $TPL_LIST->load();
@@ -164,7 +164,7 @@ if($QUERY->numRows() > 0) {
         // MODALitems
         $TPL_LIST_MODALS->load();
 
-        $ADD_ARRAY = $helper->str_to_json($ITEM["canadd"]);
+        $ADD_ARRAY = $helper->stringToJson($ITEM["canadd"]);
         $ADDLIST = null;
 
         $GROUP_QUERY     = "SELECT * FROM `ArkAdmin_user_group` ORDER BY `id`";

@@ -80,7 +80,7 @@ if (isset($_POST["add"]) && $session_user->perm("servercontrollcenter/create")) 
                     if(isset($_SESSION["id"]) && file_exists(__ADIR__."/app/json/user/".md5($_SESSION["id"]).".permissions.json")) {
                         $perm_file = $KUTIL->fileGetContents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
                         $perm_file = str_replace("{cfg}", $name, $perm_file);
-                        $default = $helper->str_to_json($perm_file);
+                        $default = $helper->stringToJson($perm_file);
                         $default[$name]["is_server_admin"] = 1;
 
                         $user_permissions = $session_user->permissions;
@@ -123,7 +123,7 @@ if (isset($_POST["del"]) && $session_user->perm("servercontrollcenter/delete")) 
 
     // Setze Vars
     $path = __ADIR__."/app/json/serverinfo/$server.json";
-    $data = $helper->file_to_json($path);
+    $data = $helper->fileToJson($path);
     $arkservdir = $serv->cfg_read("arkserverroot");
     $arklogdir = $serv->cfg_read("logdir");
     $arkbkdir = $serv->cfg_read("arkbackupdir");
@@ -181,7 +181,7 @@ for ($i=0;$i<count($dir);$i++) {
         $list->load();
 
         $path = __ADIR__."/app/json/serverinfo/" . $serv->name() . ".json";
-        $data = $helper->file_to_json($path);
+        $data = $helper->fileToJson($path);
 
         $serverstate = $serv->statecode();
         $converted = convertstate($serverstate);

@@ -59,6 +59,7 @@ class KUTIL {
             }
         }
         return array(
+            "/path"      => "/".implode(DIRECTORY_SEPARATOR, $absolutes),
             "path"      => implode(DIRECTORY_SEPARATOR, $absolutes),
             "last"      => array_pop($absolutes),
             "nolast"    => implode(DIRECTORY_SEPARATOR, $absolutes)

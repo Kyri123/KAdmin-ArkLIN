@@ -24,7 +24,7 @@ $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoChe
 if(!file_exists($cheatfile) && file_exists($serv->dir_save(true))) file_put_contents($cheatfile, " ");
 if(!file_exists($whitelistfile) && file_exists($serv->dir_main()."/ShooterGame/Binaries/Linux/")) file_put_contents($whitelistfile, " ");
 
-$playerjson = $helper->file_to_json(__ADIR__.'/app/json/steamapi/profile_allg.json', true);
+$playerjson = $helper->fileToJson(__ADIR__.'/app/json/steamapi/profile_allg.json', true);
 $playerjs = isset($playerjson["response"]["players"]) ? $playerjson["response"]["players"] : [];
 $count = (is_countable($playerjs)) ? count($playerjs): false;
 
@@ -85,8 +85,8 @@ elseif(isset($_POST["rm"])) {
 
 $serv->cfg_read('arkserverroot');
 $savedir = $serv->dir_save();
-$player_json = $helper->file_to_json(__ADIR__.'/app/json/saves/player_'.$serv->name().'.json', false);
-$tribe_json = $helper->file_to_json(__ADIR__.'/app/json/saves/tribes_'.$serv->name().'.json', false);
+$player_json = $helper->fileToJson(__ADIR__.'/app/json/saves/player_'.$serv->name().'.json', false);
+$tribe_json = $helper->fileToJson(__ADIR__.'/app/json/saves/tribes_'.$serv->name().'.json', false);
 if (!is_array($player_json)) $player_json = array();
 if (!is_array($tribe_json)) $tribe_json = array();
 

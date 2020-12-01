@@ -103,7 +103,7 @@ if (isset($_POST["remove"]) && $session_user->perm("$perm/saves/remove")) {
         }
 
         $path = __ADIR__.'/app/json/saves/player_'.$serv->name().'.json';
-        $json = $helper->file_to_json($path);
+        $json = $helper->fileToJson($path);
 
         for ($i=0;$i<count($json);$i++) {
             $pl = $jhelper->player($json, $i);
@@ -113,7 +113,7 @@ if (isset($_POST["remove"]) && $session_user->perm("$perm/saves/remove")) {
             }
         }
         $json = array_values($json);
-        if (file_put_contents($path, $helper->json_to_str($json))) {
+        if (file_put_contents($path, $helper->jsonToString($json))) {
             header('Location: /servercenter/'.$serv->name().'/saves/');
             exit;
         }
@@ -140,7 +140,7 @@ if (isset($_POST["remove"]) && $session_user->perm("$perm/saves/remove")) {
         print_r($del);
 
         $path = __ADIR__.'/app/json/saves/tribes_'.$serv->name().'.json';
-        $json = $helper->file_to_json($path);
+        $json = $helper->fileToJson($path);
         for ($i=0;$i<count($json);$i++) {
             $pl = $jhelper->tribe($json, $i);
             if ($filetname == $pl->Id) {
@@ -148,7 +148,7 @@ if (isset($_POST["remove"]) && $session_user->perm("$perm/saves/remove")) {
             }
         }
         $json = array_values($json);
-        if (file_put_contents($path, $helper->json_to_str($json))) {
+        if (file_put_contents($path, $helper->jsonToString($json))) {
             header('Location: /servercenter/'.$serv->name().'/saves/');
             exit;
         }
@@ -197,9 +197,9 @@ $savedir = $serv->dir_save();
 
 // Listen
 $player = null;
-$tribe_json = $helper->file_to_json(__ADIR__.'/app/json/saves/tribes_'.$serv->name().'.json', false);
-$player_json = $helper->file_to_json(__ADIR__.'/app/json/saves/player_'.$serv->name().'.json', false);
-$playerjson = $helper->file_to_json(__ADIR__.'/app/json/steamapi/profile_savegames_'.$serv->name().'.json', true);
+$tribe_json = $helper->fileToJson(__ADIR__.'/app/json/saves/tribes_'.$serv->name().'.json', false);
+$player_json = $helper->fileToJson(__ADIR__.'/app/json/saves/player_'.$serv->name().'.json', false);
+$playerjson = $helper->fileToJson(__ADIR__.'/app/json/steamapi/profile_savegames_'.$serv->name().'.json', true);
 $playerjs = isset($playerjson["response"]["players"]) ? $playerjson["response"]["players"] : [];
 $jhelper = new player_json_helper();
 

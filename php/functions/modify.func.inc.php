@@ -94,7 +94,7 @@ function sh_crontab($str) {
 
 function alog($str) {
     global $helper;
-    $steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/mods.json", true) : array();
+    $steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/mods.json", true) : array();
 
     $search  = array(
         '', // 9

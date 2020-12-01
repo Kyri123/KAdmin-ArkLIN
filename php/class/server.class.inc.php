@@ -192,7 +192,7 @@ class server extends Rcon {
             file_put_contents($doc_state_file, "FALSE");
 
             $path = __ADIR__."/app/json/serverinfo/" . $this->name() . ".json";
-            $data = $helper->file_to_json($path);
+            $data = $helper->fileToJson($path);
             $data["next"] = 'TRUE';
             $helper->saveFile($data, $path);
 
@@ -302,7 +302,7 @@ class server extends Rcon {
         global $helper;
 
         $path = __ADIR__."/app/json/serverinfo/" . $this->name() . ".json";
-        $data = $helper->file_to_json($path);
+        $data = $helper->fileToJson($path);
 
         $serverstate = 0;
         if ($this->isinstalled() == "FALSE") {
@@ -332,7 +332,7 @@ class server extends Rcon {
         global $helper;
 
         $path = __ADIR__."/app/json/serverinfo/" . $this->name() . ".json";
-        $data = $helper->file_to_json($path);
+        $data = $helper->fileToJson($path);
         $class = new data_server();
 
         $class->aplayers = isset($data["aplayersarr"]) ? (is_countable($data["aplayersarr"]) ? count($data["aplayersarr"]) : 0) : 0;
@@ -494,7 +494,7 @@ class server extends Rcon {
         $clusterjson_path = __ADIR__."/app/json/panel/cluster_data.json";
         $infos["in"] = false;
         if (file_exists($clusterjson_path)) {
-            $json = $helper->file_to_json($clusterjson_path);
+            $json = $helper->fileToJson($clusterjson_path);
             $infos["mods"] = false;
             $infos["konfig"] = false;
             $infos["admin"] = false;

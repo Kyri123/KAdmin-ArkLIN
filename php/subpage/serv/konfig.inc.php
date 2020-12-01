@@ -303,7 +303,7 @@ if ($serv->isinstalled()) {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="setmap()" id="mapsel">
                         <option value="" '.(!$session_user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
 
-                    $mapjson = $helper->file_to_json(__ADIR__."/app/json/panel/maps.json");
+                    $mapjson = $helper->fileToJson(__ADIR__."/app/json/panel/maps.json");
                     foreach ($mapjson as $map => $infos) {
                         if(($infos["mod"] == 1 && $serv->mod_support()) || $infos["mod"] == 0)
                             $add .= '<option id="'.$map.'" value="'.$map.'" data-mod="'.$infos["mod"].'" data-modid="'.$infos["modid"].'" '.($map == $val ? "selected" : null).' '.($map == $val ? "" : (!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
@@ -319,7 +319,7 @@ if ($serv->isinstalled()) {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="settmod()" id="tmodsel">
                         <option value="" '.(!$session_user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
 
-                    $tmodjson = $helper->file_to_json(__ADIR__."/app/json/panel/tmods.json");
+                    $tmodjson = $helper->fileToJson(__ADIR__."/app/json/panel/tmods.json");
                     foreach ($tmodjson as $tmod => $infos) {
                         if(($infos["offi"] == 0 && $serv->mod_support()) || $infos["offi"] == 1)
                             $add .= '<option value="'.$infos["modid"].'" '.($infos["modid"] == $val ? "selected" : null).' '.($infos["modid"] == $val ? "" : (!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
@@ -356,7 +356,7 @@ if ($serv->isinstalled()) {
 }
 
 // Erstelle Flaggen liste und verarbeite gesetzte Flaggen
-$flags_json = $helper->file_to_json(__ADIR__."/app/json/panel/flags.json", true);
+$flags_json = $helper->fileToJson(__ADIR__."/app/json/panel/flags.json", true);
 $i = 0;
 foreach($flags_json as $k => $v) {
     $sel = (in_array("arkflag_$v", $flags)) ? 'checked="true"' : null;
@@ -387,7 +387,7 @@ foreach ($CFGs as $CFG) {
     if(file_exists($serv->dir_save(true)."/Config/LinuxServer/$CFG.ini")) {
         $CURR            = $serv->ini_load("$CFG.ini", true);
         $CURR            = $serv->iniext;
-        $RAW_DEFAULT     = $helper->file_to_json(__ADIR__."/app/json/panel/default_$CFG.json");
+        $RAW_DEFAULT     = $helper->fileToJson(__ADIR__."/app/json/panel/default_$CFG.json");
         $CONV_DEFAULT    = convert_ini($RAW_DEFAULT);
         $FINAL_INI       = array_replace_recursive($CONV_DEFAULT, $CURR);
         $Former_arr      = create_ini_form($FINAL_INI, $CFG, $RAW_DEFAULT, $serv->name());

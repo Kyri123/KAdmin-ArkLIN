@@ -14,8 +14,8 @@ $list_opt = null;
 $tpl_dir = __ADIR__.'/app/template/core/konfig/';
 
 $wpath = __ADIR__.'/arkadmin_server/config/server.json';
-$limit = $helper->file_to_json(__ADIR__."/app/json/panel/aas_min.json", true);
-$maxi = $helper->file_to_json(__ADIR__."/app/json/panel/aas_max.json", true);
+$limit = $helper->fileToJson(__ADIR__."/app/json/panel/aas_min.json", true);
+$maxi = $helper->fileToJson(__ADIR__."/app/json/panel/aas_max.json", true);
 $json = $check->json;
 
 // Speicher ArkAdmin-Server Einstellungen
@@ -47,7 +47,7 @@ if (isset($_POST["savewebhelper"])) {
 
     var_dump($jsons);
     // Speichern
-    $json_str = $helper->json_to_str($jsons);
+    $json_str = $helper->jsonToString($jsons);
     if($allok) {
         if (file_put_contents($wpath, $json_str)) {
             header("Location: $ROOT/install.php/1");
@@ -61,7 +61,7 @@ if (isset($_POST["savewebhelper"])) {
 }
 
 // Lese Konfig und gebe sie zum bearbeiten frei
-$servercfg = $helper->file_to_json(__ADIR__.'/arkadmin_server/config/server.json', true);
+$servercfg = $helper->fileToJson(__ADIR__.'/arkadmin_server/config/server.json', true);
 foreach($servercfg as $key => $value) {
     $list = new Template("opt.htm", __ADIR__.'/app/template/core/konfig/');
     $list->load();

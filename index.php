@@ -29,18 +29,18 @@ include(__ADIR__.'/php/class/KUtil.class.inc.php');
 include(__ADIR__.'/php/class/helper.class.inc.php');
 
 $helper     = new helper();
-$ckonfig    = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
+$ckonfig    = $helper->fileToJson(__ADIR__.'/php/inc/custom_konfig.json', true);
 $site_name  = $content = null;
 
-$all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
+$all = $helper->fileToJson(__ADIR__."/app/json/serverinfo/all.json");
 
 // erzeuge Default Permissions FILE
-$D_PERM_ARRAY = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
+$D_PERM_ARRAY = $helper->fileToJson(__ADIR__."/app/json/user/permissions.tpl.json");
 $server = $all["cfgs_only_name"];
 foreach ($server as $item) {
     $perm_file = $KUTIL->fileGetContents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
     $perm_file = str_replace("{cfg}", $item, $perm_file);
-    $default = $helper->str_to_json($perm_file);
+    $default = $helper->stringToJson($perm_file);
     $D_PERM_ARRAY["server"] += $default;
 }
 
@@ -73,7 +73,7 @@ $page           = isset($url[1]) ? $url[1] : "home";
 
 // API
 $API_path           = __ADIR__."/php/inc/api.json";
-$API_array          = $helper->file_to_json($API_path);
+$API_array          = $helper->fileToJson($API_path);
 $API_ACTIVE         = boolval($API_array["active"]);
 $API_KEY            = $API_array["key"];
 
@@ -108,7 +108,7 @@ if($url[1] == "logout") {
     exit;
 }
 
-$check_json = $helper->file_to_json(__ADIR__."/app/data/sql_check.json");
+$check_json = $helper->fileToJson(__ADIR__."/app/data/sql_check.json");
 if($mycon->is && !$check_json["checked"]) include(__ADIR__.'/php/inc/auto_update_sql_DB.inc.php');
 
 // Include functions
@@ -164,7 +164,7 @@ if(isset($_SESSION["id"])) {
     $path = __ADIR__."/app/json/user/".md5($_SESSION["id"]).".json";
     if(!file_exists($path)) file_put_contents($path, "{}") ? null : null;
     if(file_exists($path)) {
-        $json = $helper->file_to_json($path, true);
+        $json = $helper->fileToJson($path, true);
         $json["ip"] = getRealIpAddr();
         $json["id"] = $session_user->read("id");
         $helper->saveFile($json, $path);
@@ -172,8 +172,8 @@ if(isset($_SESSION["id"])) {
 }
 
 // Allgemein SteamAPI Arrays
-$steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/mods.json", true) : array();
-$steamapi_user = (file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/user.json", true) : array();
+$steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/mods.json", true) : array();
+$steamapi_user = (file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/user.json", true) : array();
 
 // include util
 include(__ADIR__.'/php/inc/session.inc.php');

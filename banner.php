@@ -15,7 +15,7 @@ $stime = microtime(true);
 include(__ADIR__.'/php/inc/config.inc.php');
 include(__ADIR__.'/php/class/helper.class.inc.php');
 $helper = new helper();
-$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
+$ckonfig = $helper->fileToJson(__ADIR__.'/php/inc/custom_konfig.json', true);
 $site_name = $content = null;
 
 // Deaktiviere Error anzeige
@@ -62,12 +62,12 @@ include(__ADIR__.'/php/inc/template_preinz.inc.php');
 
 // Prüfe auf berechtigung der API abfrage
 $API_path           = __ADIR__."/php/inc/api.json";
-$API_array          = $helper->file_to_json($API_path);
+$API_array          = $helper->fileToJson($API_path);
 $API_active         = boolval($API_array["active"]);
 $API_key            = $API_array["key"];
 
 if($_GET["key"] == $API_key && $API_active) {
-    $mapjson = $helper->file_to_json(__ADIR__."/app/json/panel/maps.json");
+    $mapjson = $helper->fileToJson(__ADIR__."/app/json/panel/maps.json");
 
     $serv = new server($_GET["server"]);
 

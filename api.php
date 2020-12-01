@@ -15,7 +15,7 @@ $stime = microtime(true);
 include(__ADIR__.'/php/inc/config.inc.php');
 include(__ADIR__.'/php/class/helper.class.inc.php');
 $helper = new helper();
-$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
+$ckonfig = $helper->fileToJson(__ADIR__.'/php/inc/custom_konfig.json', true);
 $site_name = $content = null;
 
 // Deaktiviere Error anzeige
@@ -62,7 +62,7 @@ include(__ADIR__.'/php/inc/template_preinz.inc.php');
 
 // Prüfe auf berechtigung der API abfrage
 $API_path           = __ADIR__."/php/inc/api.json";
-$API_array          = $helper->file_to_json($API_path);
+$API_array          = $helper->fileToJson($API_path);
 $API_active         = boolval($API_array["active"]);
 $API_key            = $API_array["key"];
 
@@ -100,7 +100,7 @@ else {
             if($opt == "lite") {
                 $ALL_PATH = __ADIR__."/app/json/serverinfo/all.json";
                 if(file_exists($ALL_PATH)) {
-                    $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
+                    $ALL_ARRAY = $helper->fileToJson($ALL_PATH);
 
                     foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
                         $RESPONSE["response"]["server"][] = str_replace(".cfg", null, $ITEM);
@@ -117,13 +117,13 @@ else {
             elseif($opt == "full") {
                 $ALL_PATH = __ADIR__."/app/json/serverinfo/all.json";
                 if(file_exists($ALL_PATH)) {
-                    $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
+                    $ALL_ARRAY = $helper->fileToJson($ALL_PATH);
 
                     foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
                         $servername = str_replace(".cfg", null, $ITEM);
                         $SERVER_PATH = __ADIR__."/app/json/serverinfo/$servername.json";
                         if(file_exists($SERVER_PATH)) {
-                            $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
+                            $SERVER_ARRAY = $helper->fileToJson($SERVER_PATH);
 
                             if(isset($SERVER_ARRAY["warning_count"]))   unset($SERVER_ARRAY["warning_count"]);
                             if(isset($SERVER_ARRAY["error_count"]))     unset($SERVER_ARRAY["error_count"]);
@@ -161,7 +161,7 @@ else {
             if(file_exists(__ADIR__."/remote/arkmanager/instances/$SERVER_NAME.cfg")) {
                 $SERVER_PATH = __ADIR__."/app/json/serverinfo/$SERVER_NAME.json";
                 if(file_exists($SERVER_PATH)) {
-                    $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
+                    $SERVER_ARRAY = $helper->fileToJson($SERVER_PATH);
 
                     if(isset($SERVER_ARRAY["warning_count"]))   unset($SERVER_ARRAY["warning_count"]);
                     if(isset($SERVER_ARRAY["error_count"]))     unset($SERVER_ARRAY["error_count"]);

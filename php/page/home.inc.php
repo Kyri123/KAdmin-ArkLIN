@@ -22,7 +22,7 @@ $tpl->load();
 
 
 // Server
-$all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
+$all = $helper->fileToJson(__ADIR__."/app/json/serverinfo/all.json");
 $a_cfg = $all["cfgs"];
 $count_server = count($a_cfg);
 
@@ -67,7 +67,7 @@ foreach ($a_cfg as $key => $value) {
 
 
 // Changelogs
-$json = $helper->remotefile_to_json($webserver['changelog'], 'changelog.json', 3600);
+$json = $helper->remotefileToJson($webserver['changelog'], 'changelog.json', 3600);
 
 if (isset($json['file'])) {
     echo 'error error';

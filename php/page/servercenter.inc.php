@@ -42,7 +42,7 @@ elseif(isset($url[5]) && $url[4] == "kill") {
 }
 
 //erstelle SteamAPI von OnlineSpieler
-$pl_json = $helper->file_to_json(__ADIR__.'/app/json/saves/pl_' . $serv->name() . '.players', false);
+$pl_json = $helper->fileToJson(__ADIR__.'/app/json/saves/pl_' . $serv->name() . '.players', false);
 $arr_pl = array();
 if (is_array($pl_json)) {
     for ($i = 0; $i < count($pl_json); $i++) {
@@ -51,7 +51,7 @@ if (is_array($pl_json)) {
 }
 
 //erstelle SteamAPI von OnlineSpieler
-$pl_json = $helper->file_to_json(__ADIR__.'/app/json/saves/pl_' . $serv->name() . '.players', false);
+$pl_json = $helper->fileToJson(__ADIR__.'/app/json/saves/pl_' . $serv->name() . '.players', false);
 $arr_pl = array();
 if (is_array($pl_json)) {
     for ($i = 0; $i < count($pl_json); $i++) {
@@ -59,7 +59,7 @@ if (is_array($pl_json)) {
     }
 }
 //erstelle SteamAPI von Savegames
-$player_json = $helper->file_to_json(__ADIR__.'/app/json/saves/player_' . $serv->name() . '.json', false);
+$player_json = $helper->fileToJson(__ADIR__.'/app/json/saves/player_' . $serv->name() . '.json', false);
 $arr_player = array();
 if (is_array($player_json)) {
     for ($i = 0; $i < count($player_json); $i++) {
@@ -215,7 +215,7 @@ foreach ($action_opt as $key) {
 }
 
 // JS if & array
-$json_para = $helper->file_to_json(__ADIR__."/app/json/panel/parameter.json");
+$json_para = $helper->fileToJson(__ADIR__."/app/json/panel/parameter.json");
 $para_list = null;
 $z = 0;
 for ($i=0;$i<count($json_para);$i++) {

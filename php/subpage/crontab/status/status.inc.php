@@ -30,8 +30,8 @@ for ($i=0;$i<count($dir);$i++) {
             $checkit = true; $server = null;
 
             $jsonfile = __ADIR__.'/app/json/serverinfo/'.$serv->name().'.json';
-            $raw_jsonfile = $helper->file_to_json(__ADIR__.'/app/json/serverinfo/raw_'.$serv->name().'.json');
-            $server = $helper->file_to_json($jsonfile);
+            $raw_jsonfile = $helper->fileToJson(__ADIR__.'/app/json/serverinfo/raw_'.$serv->name().'.json');
+            $server = $helper->fileToJson($jsonfile);
             
             // setzte Default daten
             $server['warning_count'] = 0;

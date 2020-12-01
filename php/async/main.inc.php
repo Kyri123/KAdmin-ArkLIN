@@ -18,16 +18,16 @@ include(__ADIR__.'/php/class/KUtil.class.inc.php');
 include(__ADIR__.'/php/class/helper.class.inc.php');
 
 $helper = new helper();
-$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
+$ckonfig = $helper->fileToJson(__ADIR__.'/php/inc/custom_konfig.json', true);
 
 
-$all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
-$D_PERM_ARRAY = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
+$all = $helper->fileToJson(__ADIR__."/app/json/serverinfo/all.json");
+$D_PERM_ARRAY = $helper->fileToJson(__ADIR__."/app/json/user/permissions.tpl.json");
 $server = $all["cfgs_only_name"];
 foreach ($server as $item) {
     $perm_file = $KUTIL->fileGetContents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
     $perm_file = str_replace("{cfg}", $item, $perm_file);
-    $default = $helper->str_to_json($perm_file);
+    $default = $helper->stringToJson($perm_file);
     $D_PERM_ARRAY["server"] += $default;
 }
 
@@ -78,6 +78,6 @@ $jobs = new jobs();
 $permissions = $session_user->permissions;
 
 // Allgemein SteamAPI Arrays
-$steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/mods.json", true) : array();
-$steamapi_user = (file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/user.json", true) : array();
+$steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/mods.json", true) : array();
+$steamapi_user = (file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/user.json", true) : array();
 

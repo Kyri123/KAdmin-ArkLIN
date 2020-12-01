@@ -50,13 +50,13 @@ class userclass extends helper
 
             // Lade Rechte
             global $D_PERM_ARRAY;
-            $this->group_array      = parent::str_to_json($this->frech["rang"], true);
+            $this->group_array      = parent::stringToJson($this->frech["rang"], true);
             $this->permissions      = $D_PERM_ARRAY;
 
             foreach ($this->group_array as $ITEM) {
                 $QUERY     = $this->mycon->query("SELECT * FROM `ArkAdmin_user_group` WHERE `id`='$ITEM'");
                 if($QUERY->numRows() > 0) {
-                    $this->permissions = array_replace_recursive($this->permissions, parent::str_to_json($QUERY->fetchArray()["permissions"]));
+                    $this->permissions = array_replace_recursive($this->permissions, parent::stringToJson($QUERY->fetchArray()["permissions"]));
                 }
             }
 
@@ -119,7 +119,7 @@ class userclass extends helper
             $id = md5($this->id);
             $path = __ADIR__."/app/json/user/$id.json";
             if (file_exists($path)) {
-                $json = parent::file_to_json($path, true);
+                $json = parent::fileToJson($path, true);
                 if(isset($json["expert"])) {
                     return $json["expert"] == 1 && $this->perm("usersettings/expert");
                 }
@@ -147,7 +147,7 @@ class userclass extends helper
             $id = md5($this->id);
             $path = __ADIR__."/app/json/user/$id.json";
             if (file_exists($path)) {
-                $json = parent::file_to_json($path, true);
+                $json = parent::fileToJson($path, true);
                 if(isset($json[$mode])) {
                     return $json[$mode] == 1;
                 }

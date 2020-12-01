@@ -19,7 +19,7 @@ switch ($case) {
         $API_path = __ADIR__."/php/inc/api.json";
         $int = $_POST["active"] == "true" ? 1 : 0;
 
-        $API_array = $helper->file_to_json($API_path, true);
+        $API_array = $helper->fileToJson($API_path, true);
         $API_array["active"] = $int;
 
         $bool = $helper->saveFile($API_array, $API_path);

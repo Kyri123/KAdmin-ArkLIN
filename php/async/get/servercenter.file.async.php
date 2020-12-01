@@ -12,7 +12,7 @@ require('../main.inc.php');
 $cfg = $_GET['serv'];
 $serv = new server($cfg);
 $case = $_GET['case'];
-$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
+$ckonfig = $helper->fileToJson(__ADIR__.'/php/inc/custom_konfig.json', true);
 $servlocdir = $ckonfig['servlocdir'];
 $dir = $servlocdir.$_GET["path"];
 $dirp = $_GET["path"];
