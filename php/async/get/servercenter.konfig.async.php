@@ -8,6 +8,8 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 require('../main.inc.php');
 
 $case = $_GET["case"];
@@ -15,8 +17,8 @@ $case = $_GET["case"];
 switch ($case) {
     // CASE: Whitelist list
     case "create":
-        $section = $_GET["section"];
-        $list = new Template("add.htm", __ADIR__."/app/template/lists/serv/konfig/");
+        $section    = $_GET["section"];
+        $list       = new Template("add.htm", __ADIR__."/app/template/lists/serv/konfig/");
         $list->load();
         $list->r("sk", $section);
         $list->rif("item", true);
@@ -25,8 +27,8 @@ switch ($case) {
     break;
 
     case "create_section":
-        $section = $_GET["section"];
-        $list = new Template("add.htm", __ADIR__."/app/template/lists/serv/konfig/");
+        $section    = $_GET["section"];
+        $list       = new Template("add.htm", __ADIR__."/app/template/lists/serv/konfig/");
         $list->load();
         $list->r("sk", $section);
         $list->rif("item", false);

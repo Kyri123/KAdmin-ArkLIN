@@ -82,15 +82,15 @@ if($_GET["key"] == $API_key && $API_active) {
     $tpl->r("txt"           , $_GET["txt"]);
     $tpl->r("border"        , $_GET["border"]);
 
-    $tpl->r("statecolor"    , $serv->statecode() == 2 ? "green" : "red");
+    $tpl->r("statecolor"    , $serv->stateCode() == 2 ? "green" : "red");
 
     $tpl->r("statetxt"      , $_GET["border"]);
-    $tpl->r("curr"          , $serv->statecode() == 2 ? count($state_info->aplayersarr) : 0);
-    $tpl->r("ip"            , $_GET["ip"].":".$serv->cfg_read(ark_QueryPort));
-    $tpl->r("max"           , $serv->cfg_read("ark_MaxPlayers"));
-    $tpl->r("mapstr"        , isset($mapjson[$serv->cfg_read("serverMap")]) ? $mapjson[$serv->cfg_read("serverMap")]["name"] : $serv->cfg_read("serverMap"));
+    $tpl->r("curr"          , $serv->stateCode() == 2 ? count($state_info->aplayersarr) : 0);
+    $tpl->r("ip"            , $_GET["ip"].":".$serv->cfgRead(ark_QueryPort));
+    $tpl->r("max"           , $serv->cfgRead("ark_MaxPlayers"));
+    $tpl->r("mapstr"        , isset($mapjson[$serv->cfgRead("serverMap")]) ? $mapjson[$serv->cfgRead("serverMap")]["name"] : $serv->cfgRead("serverMap"));
     $tpl->r("headurl"       , $state_info->ARKServers);
-    $tpl->r("servername"    , $serv->cfg_read("ark_SessionName"));
+    $tpl->r("servername"    , $serv->cfgRead("ark_SessionName"));
 
     $tpl->echo();
 }

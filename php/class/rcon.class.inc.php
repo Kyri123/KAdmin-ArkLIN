@@ -5,8 +5,8 @@
  * @copyright 2013 Chris Churchwell
  *
  * :: entnommen da ich keine Erfahung in RCON habe.
- * TODO: Eigene Klasse erstellen???
  */
+
 class Rcon {
     private $host;
     private $port;
@@ -35,13 +35,13 @@ class Rcon {
     }
 
     public function connect() {
-        $this->socket = fsockopen($this->host, $this->port, $errno, $errstr, $this->timeout);
+        $this->socket = @fsockopen($this->host, $this->port, $errno, $errstr, $this->timeout);
         if (!$this->socket)
         {
             $this->last_response = $errstr;
             return false;
         }
-        stream_set_timeout($this->socket, 3, 0);
+        @stream_set_timeout($this->socket, 3, 0);
 
         $auth = $this->authorize();
         if ($auth) {
@@ -97,20 +97,20 @@ class Rcon {
 
     private function write_packet($packet_id, $packet_type, $packet_body)
     {
-        $packet = pack("VV", $packet_id, $packet_type);
+        $packet = @pack("VV", $packet_id, $packet_type);
         $packet = $packet . $packet_body . "\x00";
         $packet = $packet . "\x00";
         $packet_size = strlen($packet);
-        $packet = pack("V", $packet_size) . $packet;
-        fwrite($this->socket, $packet, strlen($packet));
+        $packet = @pack("V", $packet_size) . $packet;
+        @fwrite($this->socket, $packet, strlen($packet));
     }
     private function read_packet()
     {
-        $size_data = fread($this->socket, 4);
-        $size_pack = unpack("V1size", $size_data);
+        $size_data = @fread($this->socket, 4);
+        $size_pack = @unpack("V1size", $size_data);
         $size = $size_pack['size'];
         $packet_data = fread($this->socket, $size);
-        $packet_pack = unpack("V1id/V1type/a*body", $packet_data);
+        $packet_pack = @unpack("V1id/V1type/a*body", $packet_data);
         return $packet_pack;
     }
 }

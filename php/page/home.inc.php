@@ -8,50 +8,49 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 // Vars
-$tpl_dir = __ADIR__.'/app/template/core/home/';
-$setsidebar = false;
-$pagename = "{::lang::php::home::pagename}";
-$urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
+$tpl_dir        = __ADIR__.'/app/template/core/home/';
+$setsidebar     = false;
+$pagename       = "{::lang::php::home::pagename}";
+$urltop         = "<li class=\"breadcrumb-item\">$pagename</li>";
 
 //tpl
-$tpl = new Template('tpl.htm', $tpl_dir);
+$tpl            = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 
 //lasten
 
 
 // Server
-$all = $helper->fileToJson(__ADIR__."/app/json/serverinfo/all.json");
-$a_cfg = $all["cfgs"];
-$count_server = count($a_cfg);
+$all            = $helper->fileToJson(__ADIR__."/app/json/serverinfo/all.json");
+$a_cfg          = $all["cfgs"];
+$count_server   = count($a_cfg);
 
-$serv_list = null;
+$serv_list      = null;
 foreach ($a_cfg as $key => $value) {
-    $value = str_replace(".cfg", null, $value);
-    $serv = new server($value);
+    $value      = str_replace(".cfg", null, $value);
+    $serv       = new server($value);
 
-    $list = new Template('server_list.htm', $tpl_dir);
+    $list       = new Template('server_list.htm', $tpl_dir);
     $list->load();
 
-    $state_code = $serv->statecode();
-    $converted = convertstate($state_code);
-    $data = $serv->status();
+    $state_code = $serv->stateCode();
+    $converted  = convertstate($state_code);
+    $data       = $serv->status();
 
-    $name = $serv->cfg_read("ark_SessionName");
-    $cfg = $serv->name();
+    $name       = $serv->cfgRead("ark_SessionName");
+    $cfg        = $serv->name();
 
-    $vs = null;
-    if ($data->version != null) $vs = " - V.".$data->version;
+    $vs         = $data->version != null ? " - V.".$data->version : null;
 
-    $map_file = __ADIR__."/app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
-    $map_path = "$ROOT/app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
-    if (!file_exists($map_file)) $map_path = "$ROOT/app/dist/img/igmap/ark.png";
+    $map_file   = __ADIR__."/app/dist/img/igmap/".$serv->cfgRead("serverMap").".jpg";
+    $map_path   = !file_exists($map_file)? "$ROOT/app/dist/img/igmap/ark.png" : "$ROOT/app/dist/img/igmap/".$serv->cfgRead("serverMap").".jpg";
 
-    $l = strlen($name); $lmax = 25;
-    if ($l > $lmax) {
-        $name = substr($name, 0 , $lmax) . " ...";
-    }
+    $l          = strlen($name);
+    $lmax       = 25;
+    if ($l > $lmax) $name   = substr($name, 0 , $lmax) . " ...";
 
     $list->r("img", $map_path);
     $list->r("name", $name);
@@ -59,7 +58,7 @@ foreach ($a_cfg as $key => $value) {
     $list->r("color", $converted["color"]);
     $list->r("state_str", $converted["str"]);
     $list->r("aplayer", $data->aplayers);
-    $list->r("mplayer", $serv->cfg_read("ark_MaxPlayers"));
+    $list->r("mplayer", $serv->cfgRead("ark_MaxPlayers"));
     $list->r("version", $vs);
     $serv_list .= $list->load_var();
 }
@@ -67,43 +66,40 @@ foreach ($a_cfg as $key => $value) {
 
 
 // Changelogs
-$json = $helper->remotefileToJson($webserver['changelog'], 'changelog.json', 3600);
+$json   = $helper->remoteFileToJson($webserver['changelog'], 'changelog.json', 3600);
 
 if (isset($json['file'])) {
     echo 'error error';
 } else {
-    $c = 0;
-    $list = null;
-    $now = false;
+    $c      = 0;
+    $list   = null;
+    $now    = false;
     for ($i=count($json)-1;$i>-1;$i--) {
         $listtpl = new Template('changelog_list.htm', $tpl_dir);
         $listtpl->load();
         if ($version == $json[$i]['version']) $now = true;
         if ($now) {
-            $color = 'success';
-            $colortxt = '{::lang::php::home::old}';
+            $color      = 'success';
+            $colortxt   = '{::lang::php::home::old}';
         }
         if (!$now) {
-            $color = 'danger';
-            $colortxt = '{::lang::php::home::new}';
+            $color      = 'danger';
+            $colortxt   = '{::lang::php::home::new}';
         }
         if ($version == $json[$i]['version']) {
-            $color = 'primary';
-            $colortxt = '{::lang::php::home::curr}';
+            $color      = 'primary';
+            $colortxt   = '{::lang::php::home::curr}';
         }
         if ($json[$i]['datestring'] == "--.--.----") {
-            $color = 'warning';
-            $colortxt = '{::lang::php::home::newWIP}';
+            $color      = 'warning';
+            $colortxt   = '{::lang::php::home::newWIP}';
         }
-        $git = false;
-        if ($json[$i]['git'] != " " && $json[$i]['git'] != null) $git = true;
-        $download = false;
-        if ($json[$i]['download'] != " " && $json[$i]['download'] != null) $download = true;
+
         $listtpl->r('lastupdate', converttime($json[$i]['updated'], false, true));
         $listtpl->r('git', $json[$i]['git']);
         $listtpl->r('download', $json[$i]['download']);
-        $listtpl->rif ('ifgit', $git);
-        $listtpl->rif ('ifdownload', $download);
+        $listtpl->rif ('ifgit', $json[$i]['git'] != " " && $json[$i]['git'] != null);
+        $listtpl->rif ('ifdownload', $json[$i]['download'] != " " && $json[$i]['download'] != null);
         $listtpl->r('state_css', $color);
         $listtpl->r('state', $colortxt);
         $listtpl->r('date', $json[$i]['datestring']);
@@ -117,29 +113,29 @@ if (isset($json['file'])) {
 $query = "SELECT * FROM ArkAdmin_statistiken WHERE server='server' ORDER BY `time` DESC";
 $mycon->query($query);
 
-$cpu_lable = $cpu_data = $ram_lable = $ram_data = $mem_lable = $mem_data = array();
-$last = 0;
-$first = null;
-$show_date = false;
+$cpu_lable  = $cpu_data = $ram_lable = $ram_data = $mem_lable = $mem_data = array();
+$last       = 0;
+$first      = null;
+$show_date  = false;
 if($mycon->numRows() > 0) {
     $arr = $mycon->fetchAll();
     foreach ($arr as $item) {
-        $string = trim(utf8_encode($item["serverinfo_json"]));
-        $string = str_replace("\n", null, $string);
+        $string         = trim(utf8_encode($item["serverinfo_json"]));
+        $string         = str_replace("\n", null, $string);
 
         // wandel Informationen in Array
-        $infos = json_decode($string, true);
+        $infos          = json_decode($string, true);
 
         if($first == null) $first = $item["time"];
         if(($first - $item["time"]) > 86400) break;
 
-        $date = date("d.m - H:i", $item["time"]);
-        $cpu_lable[] = $ram_lable[] = $mem_lable[] = "'$date'";
-        $cpu_data[] = round($infos["cpu"], 2);
-        $ram_data[] = round($infos["ram"], 2);
-        $mem_data[] = round($infos["mem"], 2);
+        $date           = date("d.m - H:i", $item["time"]);
+        $cpu_lable[]    = $ram_lable[] = $mem_lable[] = "'$date'";
+        $cpu_data[]     = round($infos["cpu"], 2);
+        $ram_data[]     = round($infos["ram"], 2);
+        $mem_data[]     = round($infos["mem"], 2);
 
-        $show_date = false;
+        $show_date      = false;
     }
 }
 

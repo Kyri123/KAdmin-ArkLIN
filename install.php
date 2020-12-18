@@ -8,10 +8,13 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 define("__ADIR__", __DIR__);
 
 $ROOT           = str_replace(["install.php"], null, $_SERVER["SCRIPT_NAME"]);
 $ROOT           = substr($ROOT, 0, -1);
+$complete       = false;
 
 // Standart Vars
 $title = $modal = $modals = $content = null;
@@ -21,14 +24,15 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 // werte URL aus
-$url = $_SERVER["REQUEST_URI"];
-$url = explode("/", $url);
+$url    = $_SERVER["REQUEST_URI"];
+$url    = explode("/", $url);
 
 // Erstelle bestimmt Ordner
 if(!file_exists(__ADIR__."/app/check")) mkdir(__ADIR__."/app/check");
 if(!file_exists(__ADIR__."/app/cache")) mkdir(__ADIR__."/app/cache");
 
 // Hole alle benötigten Klassen
+include(__ADIR__.'/php/class/KUtil.class.inc.php');
 include(__ADIR__.'/php/class/helper.class.inc.php');
 $helper = new helper();
 include(__ADIR__.'/php/inc/template_preinz.inc.php');
@@ -54,13 +58,13 @@ $check = new check(__ADIR__."/install//data/check.json");
 $alert = new alert();
 
 // Verzeichnisse
-$dirs["main"] = __ADIR__."/install/";
-$dirs["tpl"] = $dirs["main"]."template/";
-$dirs["data"] = $dirs["main"]."data/";
-$dirs["php"] = $dirs["main"]."/php/";
-$dirs["class"] = $dirs["php"]."class/";
-$dirs["function"] = $dirs["php"]."function/";
-$dirs["include"] = $dirs["php"]."include/";
+$dirs["main"]       = __ADIR__."/install/";
+$dirs["tpl"]        = $dirs["main"]."template/";
+$dirs["data"]       = $dirs["main"]."data/";
+$dirs["php"]        = $dirs["main"]."/php/";
+$dirs["class"]      = $dirs["php"]."class/";
+$dirs["function"]   = $dirs["php"]."function/";
+$dirs["include"]    = $dirs["php"]."include/";
 
 // erstelle Templates
 $tpl = new Template("main.htm", $dirs["tpl"]);
@@ -91,13 +95,12 @@ $tpl->echo();
 
 if($complete) {
     // Abschluss
-    file_put_contents(__ADIR__."/app/check/done", "true");
+    $KUTIL->createFile(__ADIR__."/app/check/done", "true");
 
-    if (!file_exists(__ADIR__."/app/json/saves")) mkdir(__ADIR__."/app/json/saves");
-    if (!file_exists(__ADIR__."/app/data/serv")) mkdir(__ADIR__."/app/data/serv");
-    if (!file_exists(__ADIR__."/app/data/config")) mkdir(__ADIR__."/app/data/config");
-    if (!file_exists(__ADIR__."/app/cache")) mkdir(__ADIR__."/app/cache");
+    $KUTIL->mkdir(__ADIR__."/app/json/saves");
+    $KUTIL->mkdir(__ADIR__."/app/data/serv");
+    $KUTIL->mkdir(__ADIR__."/app/data/config");
+    $KUTIL->mkdir(__ADIR__."/app/cache");
 
-    del_dir(__ADIR__."/install/sites");
-    del_dir(__ADIR__."/install");
+    $KUTIL->removeFile(__ADIR__."/install");
 }

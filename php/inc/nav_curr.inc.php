@@ -18,7 +18,7 @@ foreach ($dir as $k => $v) {
     }
 }
 
-$json = $helper->remotefileToJson($webserver['changelog'], 'changelog.json', 3600);
+$json = $helper->remoteFileToJson($webserver['changelog'], 'changelog.json', 3600);
 $c = true; $cc = null;
 for ($i=count($json)-1;$i>-1;$i--) {
     if ($version == $json[$i]['version']) {
@@ -59,7 +59,7 @@ if(isset($_SESSION["id"]) && isset($_COOKIE["lang"])) {
     $uid = md5($_SESSION["id"]);
     $path = __ADIR__."/app/json/user/$uid.json";
     // speichern wenn die json existiert
-    if(file_exists($path)) {
+    if(@file_exists($path)) {
         $json = $helper->fileToJson($path);
         // prüfe ob die json gleich dem Cookies entspricht
         if($json["lang"] != $_COOKIE["lang"]) {

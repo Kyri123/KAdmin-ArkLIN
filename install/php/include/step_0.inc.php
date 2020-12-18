@@ -8,22 +8,23 @@
  * *******************************************************************************************
 */
 
-$sitetpl= new Template("step0.htm", $dirs["tpl"]);
-$sitetpl->load();
-$list_opt = null;
-$tpl_dir = __ADIR__.'/app/template/core/konfig/';
+// TODO :: DONE 2.1.0 REWORKED
 
-$wpath = __ADIR__.'/arkadmin_server/config/server.json';
-$limit = $helper->fileToJson(__ADIR__."/app/json/panel/aas_min.json", true);
-$maxi = $helper->fileToJson(__ADIR__."/app/json/panel/aas_max.json", true);
-$json = $check->json;
+$sitetpl    = new Template("step0.htm", $dirs["tpl"]);
+$sitetpl->load();
+$list_opt   = null;
+$tpl_dir    = $KUTIL->path(__ADIR__.'/app/template/core/konfig/')["/path"];
+$wpath      = $KUTIL->path(__ADIR__.'/arkadmin_server/config/server.json')["/path"];
+$limit      = $helper->fileToJson(__ADIR__."/app/json/panel/aas_min.json");
+$maxi       = $helper->fileToJson(__ADIR__."/app/json/panel/aas_max.json");
+$json       = $check->json;
 
 // Speicher ArkAdmin-Server Einstellungen
 if (isset($_POST["savewebhelper"])) {
-    $a_key = $_POST["key"];
-    $a_value = $_POST["value"];
-    $filter_bool = array("install_mod","uninstall_mod");
-    $filter_link = array("servlocdir","arklocdir");
+    $a_key          = $_POST["key"];
+    $a_value        = $_POST["value"];
+    $filter_bool    = array("install_mod","uninstall_mod");
+    $filter_link    = array("servlocdir","arklocdir");
 
     // Prfüne minimalwerte
     $allok = true;
@@ -49,14 +50,14 @@ if (isset($_POST["savewebhelper"])) {
     // Speichern
     $json_str = $helper->jsonToString($jsons);
     if($allok) {
-        if (file_put_contents($wpath, $json_str)) {
+        if ($KUTIL->filePutContents($wpath, $json_str)) {
             header("Location: $ROOT/install.php/1");
         } else {
-            $resp .= $alert->rd(1);
+            $resp   .= $alert->rd(1);
         }
     }
     else {
-        $resp .= $alert->rd(2);
+        $resp       .= $alert->rd(2);
     }
 }
 
@@ -72,9 +73,9 @@ foreach($servercfg as $key => $value) {
         $ro = "readonly";
     }
 
-    $list->rif ("ifbool", false);
-    $list->rif ("ifnum", is_numeric($value));
-    $list->rif ("iftxt", !is_numeric($value));
+    $list->rif("ifbool", false);
+    $list->rif("ifnum", is_numeric($value));
+    $list->rif("iftxt", !is_numeric($value));
     $list->rif("ifmin", isset($limit[$key]));
     $list->rif("ifmax", isset($maxi[$key]));
     $list->r("readonly", $ro);
@@ -90,8 +91,8 @@ foreach($servercfg as $key => $value) {
 $sitetpl->r ("modal", $modals);
 $sitetpl->r ("list_opt", $list_opt);
 
-$title = "{::lang::install::step0::title}";
-$content = $sitetpl->load_var();
+$title      = "{::lang::install::step0::title}";
+$content    = $sitetpl->load_var();
 
 
 

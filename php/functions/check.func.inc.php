@@ -48,11 +48,13 @@ function check_webhelper() {
         return false;
     }
     else {
-        $json_string = file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/data");
+        $json_string = @file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/data");
+        if($json_string === false) return false;
+
         $string = html_entity_decode(trim(utf8_encode($json_string)));
         $string = str_replace("\n", null, $string);
 
-        $curr = (file_exists(__ADIR__."/arkadmin_server/data/version.txt")) ? trim($KUTIL->fileGetContents(__ADIR__."/arkadmin_server/data/version.txt")) : "curr_not_found";
+        $curr = (@file_exists(__ADIR__."/arkadmin_server/data/version.txt")) ? trim($KUTIL->fileGetContents(__ADIR__."/arkadmin_server/data/version.txt")) : "curr_not_found";
         $run = json_decode($string, true)["version"];
         return ($curr == $run) ? true : false;
     }
@@ -65,12 +67,14 @@ function check_webhelper() {
  * @return bool
  */
 function check_server_json_bool($key) {
-    global $webserver, $KUTIL;
+    global $webserver;
     if(!check_server()) {
         return false;
     }
     else {
-        $json_string = file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/data");
+        $json_string = @file_get_contents("http://127.0.0.1:".$webserver['config']['port']."/data");
+        if($json_string === false) return false;
+
         $string = html_entity_decode(trim(utf8_encode($json_string)));
         $string = str_replace("\n", null, $string);
 

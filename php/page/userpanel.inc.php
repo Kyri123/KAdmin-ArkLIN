@@ -8,6 +8,8 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
 if(!$session_user->perm("userpanel/show")) {
     header("Location: /401"); exit;
@@ -17,7 +19,7 @@ if(!$session_user->perm("userpanel/show")) {
 $tpl_dir        = __ADIR__.'/app/template/core/userpanel/';
 $tpl_dir_all    = __ADIR__.'/app/template/all/';
 $setsidebar     = false;
-$cfglist        = null;
+$cfglist        = $resp = null;
 $pagename       = "{::lang::php::userpanel::pagename}";
 $urltop         = "<li class=\"breadcrumb-item\">$pagename</li>";
 $kuser          = new userclass();
@@ -88,13 +90,14 @@ elseif (isset($url[3]) && $url[2] == "rmcode") {
 
 // Benutzer löschen
 if (isset($_POST["del"]) && $session_user->perm("userpanel/delete_user")) {
-    $id = $_POST["userid"];
+    $id     = $_POST["userid"];
     $kuser->setid($id);
     $tpl->r("del_username", $kuser->read("username"));
     $query = "DELETE FROM `ArkAdmin_users` WHERE (`id`=?)";
     if ($mycon->query($query, $id)) {
-        if(file_exists(__ADIR__."/app/json/user/".md5($id).".permissions.json")) unlink(__ADIR__."/app/json/user/".md5($id).".permissions.json");
-        if(file_exists(__ADIR__."/app/json/user/".md5($id).".json")) unlink(__ADIR__."/app/json/user/".md5($id).".json");
+        $KUTIL->removeFile(__ADIR__."/app/json/user/".md5($id).".permissions.json");
+        $KUTIL->removeFile(__ADIR__."/app/json/user/".md5($id).".json");
+
         $mycon->query("DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`='".$id."')");
         $alert->code = 101;
         $alert->overwrite_text = '{::lang::php::userpanel::removed_user}';
@@ -112,23 +115,20 @@ elseif (isset($_POST["del"])) {
 if (isset($url[4]) && $url[2] == "tban" && $session_user->perm("userpanel/ban_user")) {
     $uid = $url[3];
     $set = $url[4];
-    if (!$set == 0) {
-        $to = "{::lang::php::userpanel::banned}";
-    } else {
-        $to = "{::lang::php::userpanel::notbanned}";
-    }
+    $to = intval($set) == 0 ? "{::lang::php::userpanel::notbanned}" : "{::lang::php::userpanel::banned}";
+
     $kuser->setid($uid);
     $tpl->r("ban_username", $kuser->read("username"));
     $tpl->r("ban_uid", $uid);
     $tpl->r("ban_to", $to);
-    $query = "UPDATE `ArkAdmin_users` SET `ban`=? WHERE (`id`=?)";
+
+    $query = "UPDATE `ArkAdmin_users` SET `ban`=? WHERE `id`=?";
     if ($mycon->query($query, $set, $uid)) {
         $alert->code = 102;
         $alert->overwrite_text = '{::lang::php::userpanel::changed_ban}';
         $resp .= $alert->re();
      } else {
-        $alert->code = 3;
-        $resp .= $alert->re();
+        $resp .= $alert->rd(3);
     }
 }
 elseif (isset($url[4]) && $url[2] == "tban") {

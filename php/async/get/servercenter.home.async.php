@@ -8,34 +8,35 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 require('../main.inc.php');
-$cfg = $_GET['cfg'];
-$case = $_GET['case'];
+$cfg    = $_GET['cfg'];
+$case   = $_GET['case'];
 
 switch ($case) {
     // CASE: Whitelist list
     case "loadwhite":
         //erstelle SteamAPI von Savegames
 
-        $serv = new server($cfg);
-        $whitelistfile = $serv->dir_main()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
-        $file = file($whitelistfile);
-        $arr = []; $adminlist_admin = null;
+        $serv               = new server($cfg);
+        $whitelistfile      = $serv->dirMain()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
+        $file               = file($whitelistfile);
+        $arr                = [];
+        $adminlist_admin    = null;
 
-        if (is_array($file)) {
+        if (is_array($file))
             for ($i = 0; $i < count($file); $i++) {
                 $file[$i] = trim($file[$i]);
                 if($file[$i] != "0" && $file[$i] != "" && $file[$i] != null) $arr[] = $file[$i];
             }
-        }
+
         if(is_countable($arr) && is_array($arr) && count($arr) > 0) {
             for ($i=0;$i<count($arr);$i++) {
-                $list_tpl = new Template('whitelist.htm', __ADIR__.'/app/template/lists/serv/jquery/');
+                $list_tpl   = new Template('whitelist.htm', __ADIR__.'/app/template/lists/serv/jquery/');
+                $query      = $mycon->query("SELECT * FROM ArkAdmin_players WHERE `server`= ? AND `SteamId`= ? ", $serv->name(), $arr[$i]);
+
                 $list_tpl->load();
-
-                $query = "SELECT * FROM ArkAdmin_players WHERE `server`= ? AND `SteamId`= ? ";
-                $query = $mycon->query($query, $serv->name(), $arr[$i]);
-
                 if($query->numRows() > 0) {
                     $row = $query->fetchArray();
                     $list_tpl->r("name", $steamapi_user[$arr[$i]]["personaname"] . " (". $row["CharacterName"] .")");

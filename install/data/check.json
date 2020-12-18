@@ -27,7 +27,7 @@
     "php_case": "mysqli",
     "lang": "{::lang::install::info::mysqli}"
 }, {
-    "name": "PHP 7.3+ (7.0+)",
+    "name": "PHP 7.3+",
     "php_case": "php",
     "lang": "{::lang::install::info::php}"
 }]

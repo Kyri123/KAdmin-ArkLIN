@@ -8,11 +8,14 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 /**
  * Class xml_helper
  */
 class xml_helper extends helper {
 
+    private $KUTIL;
     public $xml_path;
     public $xml_string;
     public $find;
@@ -23,15 +26,14 @@ class xml_helper extends helper {
      */
     public function __construct(String $xml_path)
     {
+        global $KUTIL;
+        $this->KUTIL = $KUTIL;
+
         parent::__construct();
-        $this->xml_path = $xml_path;
-        if (file_exists($xml_path)) {
-            $this->xml_string = file_get_contents($xml_path);
-            $this->find = true;
-        } else {
-            $this->find = false;
-            return false;
-        }
+        $this->xml_path = $this->KUTIL->path($xml_path)["/path"];
+        $this->xml_string = $this->KUTIL->fileGetContents($xml_path);
+        $this->find = $this->xml_string !== false;
+        return $this->find;
     }
 
     /**

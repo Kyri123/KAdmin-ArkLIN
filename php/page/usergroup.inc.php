@@ -8,6 +8,8 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 if(!$session_user->perm("all/is_admin")) {
     header("Location: $ROOT/401");
     exit;
@@ -99,7 +101,7 @@ if(isset($_POST["removegroup"])) {
 // Kenn geben
 if(isset($_POST["canadd"])) {
     $ID             = $_POST["id"];
-    $CANADD        = str_replace('"', null, isset($_POST["ids"]) ? $helper->jsonToString($_POST["ids"]) : "[]");
+    $CANADD         = str_replace('"', null, isset($_POST["ids"]) ? $helper->jsonToString($_POST["ids"]) : "[]");
     $TEST_QUERY     = "SELECT * FROM `ArkAdmin_user_group` WHERE `id`='$ID'";
 
     if($mycon->query($TEST_QUERY)->numRows() > 0 && $ID != 1) {

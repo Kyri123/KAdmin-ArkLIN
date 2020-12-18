@@ -517,7 +517,7 @@ function creatform(array $arr, array $D_ARRAY = null, string $k = null, array $k
     if(isset($all["cfgs_only_name"]) && is_array($all["cfgs_only_name"])) {
         foreach ($all["cfgs_only_name"] as $SERVER) {
             $server = new server($SERVER);
-            $string = str_replace("{::lang::php::userpanel::permissions::$SERVER}", $server->cfg_read("ark_SessionName"), $string);
+            $string = str_replace("{::lang::php::userpanel::permissions::$SERVER}", $server->cfgRead("ark_SessionName"), $string);
         }
     }
 

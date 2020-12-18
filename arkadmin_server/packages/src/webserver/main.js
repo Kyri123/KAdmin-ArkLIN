@@ -7,16 +7,13 @@
  * *******************************************************************************************
  */
 
-const express = require('express');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const path = require('path');
-const ip = require('ip');
-
-var app = express();
-
-// setzte Router
-var router = require('./router/main');
+const express       = require('express');
+const session       = require('express-session');
+const bodyParser    = require('body-parser');
+const path          = require('path');
+const ip            = require('ip');
+const app           = express();
+const router        = require('./router/main');
 
 // view engine setup
 app.set('view engine', 'ejs');
@@ -35,8 +32,9 @@ app.use(function(req, res, next) {
 
 // set session infos
 app.set('port', process.env.PORT || 8080);
-app.set('views', __dirname + '/views');
+app.set('views', `${mainpath}/views`);
 app.set('view engine', 'ejs');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('data_root', express.static(path.join(mainpath, 'data'), {
@@ -46,6 +44,7 @@ app.use('data_root', express.static(path.join(mainpath, 'data'), {
         res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     }
 }));
+
 app.use(session({
     secret: 'keyboard cat',
     resave: true,

@@ -8,6 +8,8 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 /**
  * helper
  * - Zum lesen von JSON
@@ -32,16 +34,16 @@ class helper extends KUTIL {
      * @param  bool $array Soll es als Array ausgebene werden (true) oder als Object (false)
      * @return false|void
      */
-    public function remotefileToJson(String $path, String $filename, int $differ = 0, Bool $array = true) {
+    public function remoteFileToJson(String $path, String $filename, int $differ = 0, Bool $array = true) {
         $filename = __ADIR__.'/app/cache/'.$filename;
         $diff = 0;
         $string = null;
 
-        if (file_exists($filename)) {
+        if (@file_exists($filename)) {
             $filetime = filemtime($filename);
             $diff = time()-$filetime;
         }
-        if ($diff > $differ && file_exists($filename)) {
+        if ($diff > $differ && @file_exists($filename)) {
             if($string = file_get_contents($path)) {
                 parent::filePutContents($filename, $string);
                 return json_decode($string, $array);
@@ -68,7 +70,7 @@ class helper extends KUTIL {
     /**
      * Wandelt ein Pfad direkt in eine Json
      *
-     * @param  string $path- Pfad zur Datei
+     * @param  string $path Pfad zur Datei
      * @param  bool $array Soll es als Array ausgebene werden (true) oder als Object (false)
      * @return array|string
      */
@@ -100,12 +102,12 @@ class helper extends KUTIL {
     /**
      * Speichert eine Json hier muss die Datei NICHT exsistieren
      *
-     * @param  mixed $array Array der gespeichert werden soll
+     * @param  mixed $data Array der gespeichert werden soll
      * @param  mixed $path Pfad wo die Datei gespeichert werden soll
      * @return bool
      */
-    public function saveFile($array, String $path) {
-        return parent::filePutContents($path, is_array($array) ? $this->jsonToString($array) : $array)[($array ? "Assoc" : "Obj")];
+    public function saveFile($data, String $path) {
+        return parent::filePutContents($path, is_array($data) ? $this->jsonToString($data) : $data);
     }
     
     /**
@@ -115,10 +117,7 @@ class helper extends KUTIL {
      * @return int
      */
     public function getHelperDiff() {
-        $path = __ADIR__."/app/check/webhelper";
-        $lastcheck = (file_exists($path)) ? intval(file_get_contents($path)) : 0;
-        $diff = time() - $lastcheck;
-        return $diff;
+        return (time() - intval(parent::fileGetContents(__ADIR__."/app/check/webhelper")));
     }
     
     /**
@@ -128,9 +127,7 @@ class helper extends KUTIL {
      * @return array
      */
     public function xmlFileToArray(String $file) {
-        $xml = simplexml_load_file(parent::path($file)["/path"]);
-        $array = $this->stringToJson($this->jsonToString($xml), true);
-        return $array;
+        return $this->stringToJson($this->jsonToString(simplexml_load_file(parent::path($file)["/path"])), true);
     }
 
 }

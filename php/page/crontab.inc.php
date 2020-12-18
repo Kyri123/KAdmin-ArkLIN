@@ -8,39 +8,30 @@
  * *******************************************************************************************
 */
 
-$tpl_crontab = new Template('crontab.htm', __ADIR__.'/app/template/core/system/');
+// TODO :: DONE 2.1.0 REWORKED
+
+$tpl_crontab        = new Template('crontab.htm', __ADIR__.'/app/template/core/system/');
 $tpl_crontab->load();
-$re = null;
-$root_dir = $_SERVER['DOCUMENT_ROOT'];
-chdir($root_dir);
-$pagename = 'Crontab';
-$job = $url[2];
-$re = null;
-$time = time();
-$subpage = __ADIR__."/php/subpage/crontab";
+$re                 = null;
+$pagename           = 'Crontab';
+$job                = isset($url[2]) ? $url[2] : null;
+$re                 = null;
+$time               = time();
+$subpage            = __ADIR__."/php/subpage/crontab";
 
-$timediff['shell'] = 20;
+$timediff['shell']  = 20;
 $timediff['player'] = 8;
-
-//function
-function filter_end ($str) {
-    if (strpos($str, 'Yes') !== false) {
-        return 'Yes';
-    } else {
-        return 'No';
-    }
-} 
+$KUTIL->filePutContents(__ADIR__."/app/data/checked", "checked");
 
 // Dir_creater
 $dir = dirToArray(__ADIR__.'/remote/arkmanager/instances/');
 include("$subpage/allgemein/dir_create.inc.php");
 
-if (!file_exists(__ADIR__."/app/data/checked")) file_put_contents(__ADIR__."/app/data/checked", "checked"); // Schreibe dass der Crontab abgerufen wurde
-
 // Für Spielerliste
-elseif ($job == "player") {
+if ($job == "player") {
     include("$subpage/player/player_check.inc.php");
 }
+
 // Auswertung von Server Status & Chatlog
 elseif ($job == "status") {
     include("$subpage/status/chatlog.inc.php");

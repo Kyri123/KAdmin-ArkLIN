@@ -20,6 +20,17 @@ include(__ADIR__.'/php/class/helper.class.inc.php');
 $helper = new helper();
 $ckonfig = $helper->fileToJson(__ADIR__.'/php/inc/custom_konfig.json', true);
 
+$KUTIL->replacePathFrom = [
+    __ADIR__."/remote/serv/",
+    __ADIR__."/remote/arkmanager/",
+    __ADIR__."/remote/steamcmd/"
+];
+$KUTIL->replacePathTo   = [
+    $ckonfig["servlocdir"],
+    $ckonfig["arklocdir"],
+    $ckonfig["steamcmddir"]
+];
+
 
 $all = $helper->fileToJson(__ADIR__."/app/json/serverinfo/all.json");
 $D_PERM_ARRAY = $helper->fileToJson(__ADIR__."/app/json/user/permissions.tpl.json");
@@ -78,6 +89,6 @@ $jobs = new jobs();
 $permissions = $session_user->permissions;
 
 // Allgemein SteamAPI Arrays
-$steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/mods.json", true) : array();
-$steamapi_user = (file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/user.json", true) : array();
+$steamapi_mods = (@file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/mods.json", true) : array();
+$steamapi_user = (@file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/user.json", true) : array();
 

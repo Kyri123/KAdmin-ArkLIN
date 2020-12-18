@@ -8,14 +8,7 @@
  * *******************************************************************************************
 */
 
-//Changelog_function
-function changelog($str) {
-    $str = str_replace("[t]", '<i class="fas fa-check"></i>', $str);
-    $str = str_replace("[x]", '<i class="fas fa-times"></i>', $str);
-    $str = str_replace("[n]", 'style="list-style-type: none;"', $str);
-    return $str;
-}
-
+// TODO :: DONE 2.1.0 REWORKED
 
 // Vars
 $tpl_dir = __ADIR__.'/app/template/core/changelog/';
@@ -88,41 +81,36 @@ $withicon = array(
 );
 
 //tpl
-$tpl = new Template('tpl.htm', $tpl_dir);
+$tpl    = new Template('tpl.htm', $tpl_dir);
 $tpl->load();
 
-
-$json = $helper->remotefileToJson($webserver['changelog'], 'changelog.json', 3600);
-
+$json   = $helper->remoteFileToJson($webserver['changelog'], 'changelog.json', 3600);
 if (isset($json['file'])) {
-    echo 'error error';
+    echo 'File error';
 } else {
-    $list = null;
-    $now = false;
+    $list   = null;
+    $now    = false;
     for ($i=count($json)-1;$i>-1;$i--) {
-        $listtpl = new Template('list.htm', $tpl_dir);
+        $listtpl    = new Template('list.htm', $tpl_dir);
         $listtpl->load();
-        $vsint = intval(str_replace(".", null, $json[$i]['version']));
+        $vsint      = intval(str_replace(".", null, $json[$i]['version']));
 
 
-        if ($now) $color = 'bg-green';
-        if (!$now) $color = 'bg-danger';
-        if ($version == $json[$i]['version']) $color = 'bg-primary';
-        if ($version == $json[$i]['version']) $now = true;
-        if ($json[$i]['datestring'] == "--.--.----") $color = 'bg-warning';
+        if ($now)                                       $color  = 'bg-green';
+        if (!$now)                                      $color  = 'bg-danger';
+        if ($version == $json[$i]['version'])           $color  = 'bg-primary';
+        if ($version == $json[$i]['version'])           $now    = true;
+        if ($json[$i]['datestring'] == "--.--.----")    $color  = 'bg-warning';
         $listtpl->r('color', $color);
 
         // fix
         if ($json[$i]['fix'] == "") {
             $listtpl->rif ('iffix', false);
         } else {
-            $newstring = null;
+            $newstring  = null;
             $listtpl->rif ('iffix', true);
-            $bits = explode("\r", $json[$i]['fix']);
-            foreach($bits as $bit)
-            {
-                $newstring .= str_replace($name, $withicon, changelog($bit));
-            }
+            $bits       = explode("\r", $json[$i]['fix']);
+            foreach($bits as $bit) $newstring .= str_replace($name, $withicon, $bit);
             $listtpl->r('fix', $newstring);
         }
 
@@ -130,13 +118,10 @@ if (isset($json['file'])) {
         if ($json[$i]['new'] == "") {
             $listtpl->rif ('ifnew', false);
         } else {
-            $newstring = null;
+            $newstring  = null;
             $listtpl->rif ('ifnew', true);
-            $bits = explode("\r", $json[$i]['new']);
-            foreach($bits as $bit)
-            {
-                $newstring .= str_replace($name, $withicon, changelog($bit));
-            }
+            $bits       = explode("\r", $json[$i]['new']);
+            foreach($bits as $bit) $newstring .= str_replace($name, $withicon, $bit);
             $listtpl->r('new', $newstring);
         }
 
@@ -144,13 +129,10 @@ if (isset($json['file'])) {
         if ($json[$i]['change'] == "") {
             $listtpl->rif ('ifchange', false);
         } else {
-            $newstring = null;
+            $newstring  = null;
             $listtpl->rif ('ifchange', true);
-            $bits = explode("\r", $json[$i]['change']);
-            foreach($bits as $bit)
-            {
-                $newstring .= str_replace($name, $withicon, changelog($bit));
-            }
+            $bits       = explode("\r", $json[$i]['change']);
+            foreach($bits as $bit) $newstring .= str_replace($name, $withicon, $bit);
             $listtpl->r('change', $newstring);
         }
 
@@ -159,24 +141,18 @@ if (isset($json['file'])) {
         if ($json[$i]['java'] == "") {
             $listtpl->rif ('ifjava', false);
         } else {
-            $newstring = null;
+            $newstring  = null;
             $listtpl->rif ('ifjava', true);
-            $bits = explode("\r", $json[$i]['java']);
-            foreach($bits as $bit)
-            {
-                $newstring .= str_replace($name, $withicon, changelog($bit));
-            }
+            $bits       = explode("\r", $json[$i]['java']);
+            foreach($bits as $bit) $newstring .= str_replace($name, $withicon, $bit);
             $listtpl->r('java', $newstring);
         }
-        $git = false;
-        if ($json[$i]['git'] != " " && $json[$i]['git'] != null) $git = true;
-        $download = false;
-        if ($json[$i]['download'] != " " && $json[$i]['download'] != null) $download = true;
+
         $listtpl->r('lastupdate', converttime($json[$i]['updated'], false, true));
         $listtpl->r('git', $json[$i]['git']);
         $listtpl->r('download', $json[$i]['download']);
-        $listtpl->rif ('ifgit', $git);
-        $listtpl->rif ('ifdownload', $download);
+        $listtpl->rif ('ifgit', $json[$i]['git'] != " " && $json[$i]['git'] != null);
+        $listtpl->rif ('ifdownload', $json[$i]['download'] != " " && $json[$i]['download'] != null);
         $listtpl->r('datestring', $json[$i]['datestring']);
         $listtpl->r('version', $json[$i]['version']);
         $listtpl->rif("style2", $vsint >= 120);
@@ -189,6 +165,6 @@ if (isset($json['file'])) {
 
 // lade in TPL
 $tpl->r('list', $list);
-$content = $tpl->load_var();
-$pageicon = "<i class=\"fa fa-book\" aria-hidden=\"true\"></i>";
-$site_name = 'Changelogs';
+$content    = $tpl->load_var();
+$pageicon   = "<i class=\"fa fa-book\" aria-hidden=\"true\"></i>";
+$site_name  = 'Changelogs';

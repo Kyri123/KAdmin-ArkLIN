@@ -7,60 +7,59 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
-$ROOT = str_replace("/php/async/main.inc.php", null, $_SERVER["SCRIPT_NAME"]);
+
+// TODO :: DONE 2.1.0 REWORKED
+$ROOT   = str_replace("/php/async/main.inc.php", null, $_SERVER["SCRIPT_NAME"]);
 
 require('../main.inc.php');
-$cfg = $_GET['cfg'];
-$case = $_GET['case'];
+$cfg    = $_GET['cfg'];
+$case   = $_GET['case'];
 
 switch ($case) {
     // CASE: Info
     case "info":
-        $serv = new server($cfg);
-        $tpl = new Template("server.htm", __ADIR__."/app/template/core/serv/");
+        $serv   = new server($cfg);
+        $tpl    = new Template("server.htm", __ADIR__."/app/template/core/serv/");
         $tpl->load();
-        $i = false;
-        $path = __ADIR__."/app/json/serverinfo/" . $serv->name() . ".json";
-        $data = $helper->fileToJson($path);
+        $i      = false;
+        $path   = __ADIR__."/app/json/serverinfo/" . $serv->name() . ".json";
+        $data   = $helper->fileToJson($path);
 
         // Status
-        $serverstate = $serv->statecode();
-        $serv_state = convertstate($serverstate)["str"];
-        $serv_color = convertstate($serverstate)["color"];
+        $serverstate    = $serv->stateCode();
+        $serv_state     = convertstate($serverstate)["str"];
+        $serv_color     = convertstate($serverstate)["color"];
 
         // Spieler Card
-        $pl_pla = $data["aplayers"];
-        $pl_plmax = $serv->cfg_read("ark_MaxPlayers");
-        $pl_plpro = $pl_pla / $pl_plmax * 100;
-        if ($serverstate < 2) {
-            $pl_modal = null;
-            $pl_disabled = 'disabled';
-            $pl_btntxt = "{::lang::php::async::get::servercenter::main::server_need_online}";
-        } else {
-            $pl_modal = 'data-toggle="modal" data-target="#playerlist_modal"';
-            $pl_disabled = null;
-            $pl_btntxt = "{::lang::php::async::get::servercenter::main::showplayer}";
-        }
+        $pl_pla         = $data["aplayers"];
+        $pl_plmax       = $serv->cfgRead("ark_MaxPlayers");
+        $pl_plpro       = $pl_pla / $pl_plmax * 100;
+
+        $pl_modal       = $serverstate < 2 ? null
+            : 'data-toggle="modal" data-target="#playerlist_modal"';
+
+        $pl_disabled    = $serverstate < 2 ? 'disabled'
+            : null;
+
+        $pl_btntxt      = $serverstate < 2 ? "{::lang::php::async::get::servercenter::main::server_need_online}"
+            : "{::lang::php::async::get::servercenter::main::showplayer}";
 
         // Action Card
-        if ($data["next"] == "TRUE" && $user->expert()) {
-            $action_state = "{::lang::php::async::get::servercenter::main::action_closed}";
-            $action_btntxt = "{::lang::php::async::get::servercenter::main::action_pick} <i class=\"fas fa-arrow-circle-right\"></i>";
-            $action_modal = 'data-toggle="modal" data-target="#action"';
-            $action_color = "danger";
-        }
-        elseif ($data["next"] == "TRUE") {
-            $action_state = "{::lang::php::async::get::servercenter::main::action_closed}";
-            $action_btntxt = "{::lang::php::async::get::servercenter::main::action_closed_need_open}";
-            $action_modal = null;
-            $action_color = "danger";
-        }
-        elseif ($data["next"] == "FALSE") {
-            $action_state = "{::lang::php::async::get::servercenter::main::action_open}";
-            $action_btntxt = "{::lang::php::async::get::servercenter::main::action_pick} <i class=\"fas fa-arrow-circle-right\"></i>";
-            $action_modal = 'data-toggle="modal" data-target="#action"';
-            $action_color = "success";
-        }
+        $action_state   = $data["next"] == "TRUE" && $user->expert() ? "{::lang::php::async::get::servercenter::main::action_closed}"
+            : ($data["next"] == "TRUE" ? "{::lang::php::async::get::servercenter::main::action_closed}"
+                : "{::lang::php::async::get::servercenter::main::action_open}");
+
+        $action_btntxt  = $data["next"] == "TRUE" && $user->expert() ? "{::lang::php::async::get::servercenter::main::action_pick} <i class=\"fas fa-arrow-circle-right\"></i>"
+            : ($data["next"] == "TRUE" ? "{::lang::php::async::get::servercenter::main::action_closed_need_open}"
+                : "{::lang::php::async::get::servercenter::main::action_pick} <i class=\"fas fa-arrow-circle-right\"></i>");
+
+        $action_modal   = $data["next"] == "TRUE" && $user->expert() ? 'data-toggle="modal" data-target="#action"'
+            : ($data["next"] == "TRUE" ? null
+                : 'data-toggle="modal" data-target="#action"');
+
+        $action_color   = $data["next"] == "TRUE" && $user->expert() ? "danger"
+            : ($data["next"] == "TRUE" ? "danger"
+                : "success");
         
 
         $tpl->r("serv_state", $serv_state);
@@ -81,13 +80,14 @@ switch ($case) {
 
         $tpl->r("cfg", $serv->name());
 
-        $map_file = __ADIR__."/app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
-        $map_path = "$ROOT/app/dist/img/igmap/".$serv->cfg_read("serverMap").".jpg";
-        if (!file_exists($map_file)) $map_path = "$ROOT/app/dist/img/igmap/ark.png";
+        $map_file   = __ADIR__."/app/dist/img/igmap/".$serv->cfgRead("serverMap").".jpg";
+        $map_path   = file_exists($map_file) ? "$ROOT/app/dist/img/igmap/".$serv->cfgRead("serverMap").".jpg"
+            : "$ROOT/app/dist/img/igmap/ark.png";
 
-        if ($_GET["type"] == "cards") $string = $tpl->load_var();
-        if ($_GET["type"] == "img") $string = '<img src="'.$map_path.'" style="border-radius: 25rem !important;border-top-width: 3px!important;height: 90px;width: 90px;background-color: #001f3f" class="border-'.$serv_color.'">';
-        if ($_GET["type"] == "imgtop") $string = '<img src="'.$map_path.'" style="border-width: 3px!important;background-color: #001f3f" class="img-size-50 border border-'.$serv_color.'">';
+        $string     = $_GET["type"] == "cards" ? $tpl->load_var()
+            : $_GET["type"] == "img" ? '<img src="'.$map_path.'" style="border-radius: 25rem !important;border-top-width: 3px!important;height: 90px;width: 90px;background-color: #001f3f" class="border-'.$serv_color.'">'
+                : $_GET["type"] == "imgtop" ? '<img src="'.$map_path.'" style="border-width: 3px!important;background-color: #001f3f" class="img-size-50 border border-'.$serv_color.'">'
+                    : $tpl->load_var();
 
         echo $string;
         break;

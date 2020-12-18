@@ -32,7 +32,7 @@ exports.auto = () => {
         } else if (res.statusCode === 200) {
             // Prüfe SHA mit API
             fs.readFile("data/sha.txt", 'utf8', (err, data) => {
-                if (!err) {
+                if (err === undefined) {
                     if (data == api.commit.sha) {
                         // kein Update
                         fs.writeFileSync(`data/updater.log`, `Already up to date!`);
@@ -53,6 +53,7 @@ exports.auto = () => {
                     // sende Error wenn Datei nicht gefunden wenrden konnte
                     fs.writeFileSync(`data/updater.log`, `sha.txt not found`);
                     console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Auto-Updater: \x1b[91mLocale sha.txt nicht gefunden`);
+                    console.log(err);
                     logger.log("Autoupdate: Locale sha.txt nicht gefunden");
                 }
             });

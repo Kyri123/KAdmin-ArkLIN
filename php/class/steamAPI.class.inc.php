@@ -8,11 +8,14 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 /**
  * Class steamapi
  */
 class steamapi extends helper {
 
+    private $KUTIL;
     private $API_Key;
     private $jsonpath = __ADIR__."/app/json/steamapi/";
 
@@ -23,21 +26,12 @@ class steamapi extends helper {
      */
     public function __construct()
     {
+        global $KUTIL;
+        $this->KUTIL = $KUTIL;
+
         parent::__construct();
         $ckonfig = parent::fileToJson(__ADIR__.'/php/inc/custom_konfig.json', true);
         $this->API_Key = $ckonfig['apikey'];
-    }
-
-    /**
-     * Hole daten von einer ModID
-     *
-     * @param $modid
-     * @param int $time
-     * @param false $remove
-     * @return mixed
-     */
-    public function getmod($modid, $time = 3600, $remove = false) {
-        return $this->get_API_json($modid, 'mod', $time, null, $remove);
     }
 
     /**
@@ -53,7 +47,6 @@ class steamapi extends helper {
         return $this->get_API_json($serv, 'mod', $time, $arr, $remove);
     }
 
-    //Todo: Remove
     /**
      * Wandelt Daten von einer Mod direkt weiter in einer Klasse um diese einfacher zu benutzen
      *
@@ -66,30 +59,32 @@ class steamapi extends helper {
         $json = $this->get_API_json($modid, 'mod', $time, null, $remove);
 
         $mod = new steam_mod();
-        if(isset($json->response->publishedfiledetails[0]->publishedfileid)) $mod->publishedfileid = $json->response->publishedfiledetails[0]->publishedfileid;
-        if(isset($json->response->publishedfiledetails[0]->result)) $mod->result = $json->response->publishedfiledetails[0]->result;
-        if(isset($json->response->publishedfiledetails[0]->creator)) $mod->creator = $json->response->publishedfiledetails[0]->creator;
-        if(isset($json->response->publishedfiledetails[0]->creator_app_id)) $mod->creator_app_id = $json->response->publishedfiledetails[0]->creator_app_id;
-        if(isset($json->response->publishedfiledetails[0]->consumer_app_id)) $mod->consumer_app_id = $json->response->publishedfiledetails[0]->consumer_app_id;
-        if(isset($json->response->publishedfiledetails[0]->filename)) $mod->filename = $json->response->publishedfiledetails[0]->filename;
-        if(isset($json->response->publishedfiledetails[0]->file_size)) $mod->file_size = $json->response->publishedfiledetails[0]->file_size;
-        if(isset($json->response->publishedfiledetails[0]->file_url)) $mod->file_url = $json->response->publishedfiledetails[0]->file_url;
-        if(isset($json->response->publishedfiledetails[0]->hcontent_file)) $mod->hcontent_file = $json->response->publishedfiledetails[0]->hcontent_file;
-        if(isset($json->response->publishedfiledetails[0]->preview_url)) $mod->preview_url = $json->response->publishedfiledetails[0]->preview_url;
-        if(isset($json->response->publishedfiledetails[0]->hcontent_preview)) $mod->hcontent_preview = $json->response->publishedfiledetails[0]->hcontent_preview;
-        if(isset($json->response->publishedfiledetails[0]->title)) $mod->title = $json->response->publishedfiledetails[0]->title;
-        if(isset($json->response->publishedfiledetails[0]->description)) $mod->description = $json->response->publishedfiledetails[0]->description;
-        if(isset($json->response->publishedfiledetails[0]->time_created)) $mod->time_created = $json->response->publishedfiledetails[0]->time_created;
-        if(isset($json->response->publishedfiledetails[0]->time_updated)) $mod->time_updated = $json->response->publishedfiledetails[0]->time_updated;
-        if(isset($json->response->publishedfiledetails[0]->visibility)) $mod->visibility = $json->response->publishedfiledetails[0]->visibility;
-        if(isset($json->response->publishedfiledetails[0]->banned)) $mod->banned = $json->response->publishedfiledetails[0]->banned;
-        if(isset($json->response->publishedfiledetails[0]->ban_reason))  $mod->ban_reason = $json->response->publishedfiledetails[0]->ban_reason;
-        if(isset($json->response->publishedfiledetails[0]->subscriptions)) $mod->subscriptions = $json->response->publishedfiledetails[0]->subscriptions;
-        if(isset($json->response->publishedfiledetails[0]->favorited)) $mod->favorited = $json->response->publishedfiledetails[0]->favorited;
-        if(isset($json->response->publishedfiledetails[0]->lifetime_subscriptions)) $mod->lifetime_subscriptions = $json->response->publishedfiledetails[0]->lifetime_subscriptions;
-        if(isset($json->response->publishedfiledetails[0]->lifetime_favorited)) $mod->lifetime_favorited = $json->response->publishedfiledetails[0]->lifetime_favorited;
-        if(isset($json->response->publishedfiledetails[0]->views)) $mod->views = $json->response->publishedfiledetails[0]->views;
-        if(isset($json->response->publishedfiledetails[0]->tags)) $mod->tags = $json->response->publishedfiledetails[0]->tags;
+        $publishedfiledetails = isset($json->response->publishedfiledetails[0]) ? $json->response->publishedfiledetails[0] : [];
+
+        if(isset($publishedfiledetails->publishedfileid))        $mod->publishedfileid           = $publishedfiledetails->publishedfileid;
+        if(isset($publishedfiledetails->result))                 $mod->result                    = $publishedfiledetails->result;
+        if(isset($publishedfiledetails->creator))                $mod->creator                   = $publishedfiledetails->creator;
+        if(isset($publishedfiledetails->creator_app_id))         $mod->creator_app_id            = $publishedfiledetails->creator_app_id;
+        if(isset($publishedfiledetails->consumer_app_id))        $mod->consumer_app_id           = $publishedfiledetails->consumer_app_id;
+        if(isset($publishedfiledetails->filename))               $mod->filename                  = $publishedfiledetails->filename;
+        if(isset($publishedfiledetails->file_size))              $mod->file_size                 = $publishedfiledetails->file_size;
+        if(isset($publishedfiledetails->file_url))               $mod->file_url                  = $publishedfiledetails->file_url;
+        if(isset($publishedfiledetails->hcontent_file))          $mod->hcontent_file             = $publishedfiledetails->hcontent_file;
+        if(isset($publishedfiledetails->preview_url))            $mod->preview_url               = $publishedfiledetails->preview_url;
+        if(isset($publishedfiledetails->hcontent_preview))       $mod->hcontent_preview          = $publishedfiledetails->hcontent_preview;
+        if(isset($publishedfiledetails->title))                  $mod->title                     = $publishedfiledetails->title;
+        if(isset($publishedfiledetails->description))            $mod->description               = $publishedfiledetails->description;
+        if(isset($publishedfiledetails->time_created))           $mod->time_created              = $publishedfiledetails->time_created;
+        if(isset($publishedfiledetails->time_updated))           $mod->time_updated              = $publishedfiledetails->time_updated;
+        if(isset($publishedfiledetails->visibility))             $mod->visibility                = $publishedfiledetails->visibility;
+        if(isset($publishedfiledetails->banned))                 $mod->banned                    = $publishedfiledetails->banned;
+        if(isset($publishedfiledetails->ban_reason))             $mod->ban_reason                = $publishedfiledetails->ban_reason;
+        if(isset($publishedfiledetails->subscriptions))          $mod->subscriptions             = $publishedfiledetails->subscriptions;
+        if(isset($publishedfiledetails->favorited))              $mod->favorited                 = $publishedfiledetails->favorited;
+        if(isset($publishedfiledetails->lifetime_subscriptions)) $mod->lifetime_subscriptions    = $publishedfiledetails->lifetime_subscriptions;
+        if(isset($publishedfiledetails->lifetime_favorited))     $mod->lifetime_favorited        = $publishedfiledetails->lifetime_favorited;
+        if(isset($publishedfiledetails->views))                  $mod->views                     = $publishedfiledetails->views;
+        if(isset($publishedfiledetails->tags))                   $mod->tags                      = $publishedfiledetails->tags;
 
         $this->modid;
         return $mod;
@@ -136,7 +131,7 @@ class steamapi extends helper {
         chdir($_SERVER['DOCUMENT_ROOT']);
         $file = $this->jsonpath.$type."_".$id.'.json';
 
-        if (file_exists($file)) {
+        if (@file_exists($file)) {
             $filetime = filemtime($file);
             $time = time();
             $diff = $time - $filetime;
@@ -213,7 +208,7 @@ class steamapi extends helper {
 
         if ($is == 1) {
             if(!file_exists($this->jsonpath."mods")) mkdir($this->jsonpath."mods");
-            if (file_put_contents($this->jsonpath.$type."_".$id.'.json', $res)) {
+            if ($this->KUTIL->filePutContents($this->jsonpath.$type."_".$id.'.json', $res)) {
                 return true;
             } else {
                 return false;
@@ -222,7 +217,6 @@ class steamapi extends helper {
     }
 }
 
-//Todo: Remove
 class steam_mod {
     public $publishedfileid;
     public $result;

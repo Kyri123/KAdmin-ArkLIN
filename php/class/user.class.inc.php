@@ -8,12 +8,15 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 /**
  * Class userclass
  */
 class userclass extends helper
 {
 
+    private $KUTIL;
     private $id = 0;
     private $mycon;
     private $myconisset;
@@ -27,6 +30,9 @@ class userclass extends helper
      */
     function __construct(int $id = 0)
     {
+        global $KUTIL;
+        $this->KUTIL = $KUTIL;
+
         parent::__construct();
         global $mycon;
         $this->mycon = $mycon;
@@ -118,7 +124,7 @@ class userclass extends helper
         if ($this->myconisset && $this->id != 0) {
             $id = md5($this->id);
             $path = __ADIR__."/app/json/user/$id.json";
-            if (file_exists($path)) {
+            if (@file_exists($path)) {
                 $json = parent::fileToJson($path, true);
                 if(isset($json["expert"])) {
                     return $json["expert"] == 1 && $this->perm("usersettings/expert");
@@ -140,13 +146,13 @@ class userclass extends helper
      * @param String $mode
      * @return bool
      */
-    public function show_mode(String $mode)
+    public function show_mode(String $mode): bool
     {
         // Prüfe ob Benutzer gesetzt ist
         if ($this->myconisset && $this->id != 0) {
             $id = md5($this->id);
             $path = __ADIR__."/app/json/user/$id.json";
-            if (file_exists($path)) {
+            if (@file_exists($path)) {
                 $json = parent::fileToJson($path, true);
                 if(isset($json[$mode])) {
                     return $json[$mode] == 1;
@@ -168,7 +174,7 @@ class userclass extends helper
      * @param String $key Schlüssel zur permissions (multi array ist mit / zu trennen)
      * @return bool
      */
-    public function perm(String $key)
+    public function perm(String $key): bool
     {
         // Prüfe ob Benutzer gesetzt ist
         if ($this->myconisset && $this->id != 0) {
