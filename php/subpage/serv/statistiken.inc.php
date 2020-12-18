@@ -8,96 +8,98 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
 if (!$session_user->perm("$perm/statistiken/show")) {
     header("Location: /401");
     exit;
 }
 
-$pagename = '{::lang::php::sc::page::statistiken::pagename}';
-$page_tpl = new Template('statistiken.htm', __ADIR__.'/app/template/sub/serv/');
-$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
-$urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::statistiken::pagename}</li>';
-$server = $serv->name();
+$pagename   = '{::lang::php::sc::page::statistiken::pagename}';
+$page_tpl   = new Template('statistiken.htm', __ADIR__.'/app/template/sub/serv/');
+$urltop     = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfgRead('ark_SessionName').'</a></li>';
+$urltop     .= '<li class="breadcrumb-item">{::lang::php::sc::page::statistiken::pagename}</li>';
+$server     = $serv->name();
 
-$resp = null;
+$resp       = null;
 
 // Speicher Optionen
 if(isset($_POST["OPT"])) {
-    setcookie($server."_offset", $_POST["OFFSET"]); $_COOKIE[$server."_offset"] = $_POST["OFFSET"];
-    setcookie($server."_limit", $_POST["LIMIT"]); $_COOKIE[$server."_limit"] = $_POST["LIMIT"];
-    setcookie($server."_order", $_POST["ORDER"]); $_COOKIE[$server."_order"] = $_POST["ORDER"];
+    setcookie($server."_offset", $_POST["OFFSET"]);
+    if(!isset($_COOKIE[$server."_offset"])) $_COOKIE[$server."_offset"] = $_POST["OFFSET"];
+    setcookie($server."_limit", $_POST["LIMIT"]);
+    if(!isset($_COOKIE[$server."_limit"])) $_COOKIE[$server."_limit"]  = $_POST["LIMIT"];
+    setcookie($server."_order", $_POST["ORDER"]);
+    if(!isset($_COOKIE[$server."_order"]))  $_COOKIE[$server."_order"]  = $_POST["ORDER"];
     $resp .= $alert->rd(102);
 }
 
-$query_count = $mycon->query("SELECT * FROM ArkAdmin_statistiken WHERE `server` = '$server'")->numRows();
-$limit = isset($_COOKIE[$server."_limit"]) ? $_COOKIE[$server."_limit"] : 50;
-$pager_c = ceil($query_count / $limit);
-$offset = 0;
+$query_count        = $mycon->query("SELECT * FROM ArkAdmin_statistiken WHERE `server` = '$server'")->numRows();
+$limit              = isset($_COOKIE[$server."_limit"]) ? $_COOKIE[$server."_limit"] : 50;
+$pager_c            = ceil($query_count / $limit);
+$offset             = 0;
 if(isset($_COOKIE[$server."_offset"])) {
-    $offset_new = $_COOKIE[$server."_offset"] * $limit;
+    $offset_new     = $_COOKIE[$server."_offset"] * $limit;
     if($offset_new < $query_count) $offset = $offset_new;
 }
-$order = isset($_COOKIE[$server."_order"]) ? ($_COOKIE[$server."_order"] != "DESC" ? " ASC" : " DESC") : " DESC";
 
-$pages_list = null;
+$order              = isset($_COOKIE[$server."_order"]) ? ($_COOKIE[$server."_order"] != "DESC" ? " ASC" : " DESC") : " DESC";
+$pages_list         = null;
 for($i = 0; $i < $pager_c ; $i++) $pages_list .= "<option value='".$i."' ".($i == (isset($_COOKIE[$server."_offset"]) ? $_COOKIE[$server."_offset"] : 0) ? "Selected" : "").">".($i+1)."</option>";
 
 // Erstelle Liste
-$list["item"] = $list["modal"] = $to = $from = null;
-$label = $data = array();
-$onl = $total = $pingon = $tping = $max = 0;
-$query = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = ? ORDER BY `time`$order LIMIT $limit OFFSET $offset";
+$list["item"]   = $list["modal"] = $to = $from = null;
+$label          = $data = array();
+$onl            = $total = $pingon = $tping = $max = 0;
+$query          = "SELECT * FROM ArkAdmin_statistiken WHERE `server` = ? ORDER BY `time`$order LIMIT $limit OFFSET $offset";
 $mycon->query($query, $server);
+
 if($mycon->numRows() > 0) {
-    $array = $mycon->fetchAll();
-    $from = converttime($array[0]["time"]);
+    $array          = $mycon->fetchAll();
+    $from           = converttime($array[0]["time"]);
     foreach ($array as $k => $item) {
-        $to = converttime($item["time"]);
-        $string = trim(utf8_encode($item["serverinfo_json"]));
-        $string = str_replace("\n", null, $string);
+        $to         = converttime($item["time"]);
+        $string     = trim(utf8_encode($item["serverinfo_json"]));
+        $string     = str_replace("\n", null, $string);
 
         // wandel Informationen in Array
-        $infos = json_decode($string, true);
+        $infos      = json_decode($string, true);
 
         // Erstelle Templates
-        $list_item = new Template("items.htm", __ADIR__."/app/template/lists/serv/statistiken/");
-        $list_item->load();
+        $list_item  = new Template("items.htm", __ADIR__."/app/template/lists/serv/statistiken/");
         $list_modal = new Template("modals.htm", __ADIR__."/app/template/lists/serv/statistiken/");
-        $list_modal->load();
-
-        // TODO: Remove;
-        //if($k == 1) var_dump($infos);
 
         // Status des Servers
         $serverstate = 0;
         if ($infos["listening"] == "Yes" && $infos["online"] == "Yes" && $infos["run"]) {
-            $serverstate = 2;
+            $serverstate    = 2;
+            $label[]        = "'".date("d.m - H:i", $item["time"])."'";
+            $data[]         = count($infos["aplayersarr"]);
+            $max            = $infos["players"];
             $onl++;
-            $label[] = "'".date("d.m - H:i", $item["time"])."'";
-            $data[] = count($infos["aplayersarr"]);
-            $max = $infos["players"];
         }
         elseif ($infos["listening"] == "No" && $infos["online"] == "No" && $infos["run"]) {
-            $serverstate = 1;
+            $serverstate    = 1;
         }
         elseif ($infos["listening"] == "Yes" && $infos["online"] == "No" && $infos["run"]) {
-            $serverstate = 1;
+            $serverstate    = 1;
         }
         elseif ($infos["listening"] == "No" && $infos["online"] == "Yes" && $infos["run"]) {
-            $serverstate = 1;
+            $serverstate    = 1;
         }
 
         $players = null;
         if(isset($infos["aplayersarr"])) if(is_countable($infos["aplayersarr"])) foreach ($infos["aplayersarr"] as $pitem) {
-            if(!isset($pitem["time"])) $pitem["time"] = time();
-            if(!isset($pitem["name"])) $pitem["name"] = "Unknown";
-            $time = TimeCalc($pitem["time"], ($pitem["time"] > 3600 ? "h" : "m"), "disabled");
-            $on = round($time["int"], 2);
-            $players[] = "<b>" . $pitem["name"] . "</b> - $on ".$time["lang"];
+            if(!isset($pitem["time"])) $pitem["time"]   = time();
+            if(!isset($pitem["name"])) $pitem["name"]   = "Unknown";
+            $time       = TimeCalc($pitem["time"], ($pitem["time"] > 3600 ? "h" : "m"), "disabled");
+            $on         = round($time["int"], 2);
+            $players[]  = "<b>" . $pitem["name"] . "</b> - $on ".$time["lang"];
         }
 
         // Liste: Item
+        $list_item->load();
         $list_item->r("status_color", convertstate($serverstate)["color"]);
         $list_item->r("status_text", convertstate($serverstate)["str"]);
         $list_item->r("date", converttime($item["time"]));
@@ -107,6 +109,7 @@ if($mycon->numRows() > 0) {
         $list["item"] .= $list_item->load_var();
 
         // Liste: Modal
+        $list_modal->load();
         $list_modal->r("date", converttime($item["time"]));
         $list_modal->r("status_color", convertstate($serverstate)["color"]);
         $list_modal->r("id", $item["id"]);
@@ -117,8 +120,8 @@ if($mycon->numRows() > 0) {
 
         $list["modal"] .= $list_modal->load_var();
         if($serverstate == 2 && $infos["ping"] != "") {
-            $pingon++;
             $tping += $infos["ping"];
+            $pingon++;
         }
 
         $total++;
@@ -149,7 +152,5 @@ $page_tpl->r('data', implode(",", $data));
 $page_tpl->r('resp', $resp);
 $page_tpl->r('list', $list["item"]);
 $page_tpl->r('modal_list', $list["modal"]);
-$panel = $page_tpl->load_var();
-
-$player = null;
-
+$panel      = $page_tpl->load_var();
+$player     = null;

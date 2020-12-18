@@ -13,21 +13,21 @@ $count_serv_1 = 0;
 $count_serv_max = 0;
 
 
-$dir = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json")["cfgs"];
+$dir = $helper->fileToJson(__ADIR__."/app/json/serverinfo/all.json")["cfgs"];
 for ($i=0;$i<count($dir);$i++) {
     if ($dir[$i] = str_replace(".cfg", null, $dir[$i])) {
         $servername = $dir[$i];
         $serv = new server($servername);
-        $serv->cluster_load();
+        $serv->clusterLoad();
         $count_serv_max++;
         $tpl_serv = new Template("item_list.htm", __ADIR__."/app/template/core/serv/");
         $tpl_serv->load();
 
-        $status = convertstate($serv->statecode());
+        $status = convertstate($serv->stateCode());
 
-        $servername = $serv->cfg_read('ark_SessionName');
+        $servername = $serv->cfgRead('ark_SessionName');
         $subline = "{::lang::php::server::subline}";
-        $map = $serv->cfg_read("serverMap");
+        $map = $serv->cfgRead("serverMap");
 
         $l = strlen($servername); $lmax = 18;
         if ($l > $lmax) {
@@ -35,13 +35,13 @@ for ($i=0;$i<count($dir);$i++) {
         }
 
         $tpl_serv->r('aplayers', $serv->status()->aplayers);
-        $tpl_serv->r('ark_MaxPlayers', $serv->cfg_read('ark_MaxPlayers'));
+        $tpl_serv->r('ark_MaxPlayers', $serv->cfgRead('ark_MaxPlayers'));
         $tpl_serv->r('serv_version', $serv->status()->version);
         $tpl_serv->r('state', $status["color"]);
         $tpl_serv->r('serv_pid', null);
-        $tpl_serv->rif ('ifin', $serv->cluster_in());
-        $tpl_serv->r('clustername', (($serv->cluster_in()) ? $serv->cluster_name() : null));
-        $tpl_serv->r("typestr", (($serv->cluster_in()) ? $clustertype[$serv->cluster_type()] : null));
+        $tpl_serv->rif ('ifin', $serv->clusterIn());
+        $tpl_serv->r('clustername', $serv->clusterIn() ? $serv->clusterRead("name") : null);
+        $tpl_serv->r("typestr", $serv->clusterIn() ? $clustertype[$serv->clusterRead("type")] : null);
         $tpl_serv->r('subline', $subline);
         $tpl_serv->r('servername', $servername);
         $tpl_serv->r('cfg', $dir[$i]);

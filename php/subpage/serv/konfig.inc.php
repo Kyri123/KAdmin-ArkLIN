@@ -8,6 +8,8 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
 if (!$session_user->perm("$perm/konfig/show")) {
     header("Location: /401");
@@ -15,54 +17,47 @@ if (!$session_user->perm("$perm/konfig/show")) {
 }
 $resp = null;
 
-$pagename = '{::lang::php::sc::page::konfig::pagename}';
-$page_tpl = new Template('konfig.htm', __ADIR__.'/app/template/sub/serv/');
+$pagename   = '{::lang::php::sc::page::konfig::pagename}';
+$page_tpl   = new Template('konfig.htm', __ADIR__.'/app/template/sub/serv/');
+$urltop     = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfgRead('ark_SessionName').'</a></li>';
+$urltop     .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}</li>';
+
 $page_tpl->load();
-$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
-$urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::konfig::urltop}</li>';
 
 // arkmanager.cfg Speichern (Normaler Modus)
-$resp .= $ark_flag = $eventlist = null;
-if (isset($_POST['savecfg']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $session_user->perm("$perm/konfig/arkmanager")) {
-    $value = $_POST['value'];
-    $key = $_POST['key'];
-    $flag = $_POST['flag'];
-    $cfg = null;
+$resp = $ark_flag = $eventlist = null;
+if (isset($_POST['savecfg']) && (($serv->stateCode() == 1 && $session_user->show_mode("konfig")) || !$session_user->show_mode("konfig")) && $session_user->perm("$perm/konfig/arkmanager")) {
+    $value  = $_POST['value'];
+    $key    = $_POST['key'];
+    $flag   = $_POST['flag'];
+    $cfg    = null;
 
     // entfernte gamemod && mapmod wenn ModSupport Deaktiviert
-    $remove[] = null;
-    if(!$serv->mod_support()) {
+    $remove[]   = null;
+    if(!$serv->modSupport()) {
         $remove[] = "ark_GameModIds";
         $remove[] = "serverMapModId";
     }
 
     for ($i=0;$i<count($key);$i++) {
-        $write = ($value[$i] == "none" && !in_array($value[$i], $remove)) ? false : true;
+        $write          = !($value[$i] == "none" && !in_array($value[$i], $remove));
         if($write) $cfg .= $key[$i].'="'.$value[$i]."\"\n";
     }
 
     // Füge Flaggen hinzu die Ausgewählt sind
     if(is_array($flag)) {
         for ($i=0;$i<count($flag);$i++) {
-            $cfg .= "arkflag_".$flag[$i].'="True"'."\n";
+            $cfg    .= "arkflag_".$flag[$i].'="True"'."\n";
         }
     }
     else {
-        $cfg .= $flag;
+        $cfg        .= $flag;
     }
 
-    $cfg = ini_save_rdy($cfg);
-    $cfg = str_replace("Array", null, $cfg);
-    $path = __ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg';
-    // Prüfe ob Datei beschrieben wurde
-    if (file_put_contents($path, $cfg)) {
-        // Melde: Erfolg
-        $resp .= $alert->rd(102);
-        //header("Refresh:0"); exit;
-    } else {
-        // Melde Lese/Schreib Fehler
-        $resp .= $alert->rd(1);
-    }
+    $cfg    = ini_save_rdy($cfg);
+    $cfg    = str_replace("Array", null, $cfg);
+    $path   = __ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg';
+    $resp   .= $alert->rd($KUTIL->filePutContents($path, $cfg) ? 102 : 1);
 }
 else {
     // Melde Fehlschlag
@@ -71,7 +66,7 @@ else {
 }
 
 // GameUserSettings/Game/Engine.ini Speichern (Normaler Modus)
-if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
+if (isset($_POST['savenormal']) && (($serv->stateCode() == 1 && $session_user->show_mode("konfig")) || !$session_user->show_mode("konfig"))) {
 
     $INI_ARRAY      = $_POST["ini"];
     $CUSTOM         = $_POST["custom"];
@@ -96,23 +91,17 @@ if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode
                     }
                 }
                 else {
-                    $INI_STRING .= "$KEY=".(is_bool($ITEM) ? ($ITEM ? "True" : "False") : $ITEM)."\n";
+                    $INI_STRING         .= "$KEY=".(is_bool($ITEM) ? ($ITEM ? "True" : "False") : $ITEM)."\n";
                 }
             }
         }
         $INI_STRING .= $CUSTOM;
 
-        $path = $serv->dir_konfig().$TYPE;
-        $text = ini_save_rdy($INI_STRING);
+        $path       = $serv->dirKonfig().$TYPE;
+        $text       = ini_save_rdy($INI_STRING);
 
         // Wenn Datei geschreiben wurde
-        if (file_put_contents($path, $text)) {
-            // Melde: Erfolg
-            $resp .= $alert->rd(102);
-        } else {
-            // Melde: Lese/Schreibfeher
-            $resp .= $alert->rd(1);
-        }
+        $resp       .= $alert->rd($KUTIL->filePutContents($path, $text) ? 102 : 1);
     }
     else {
         $resp .= $alert->rd(99);
@@ -121,57 +110,38 @@ if (isset($_POST['savenormal']) && (($serv->statecode() == 1 && $user->show_mode
 else {
     // Melde Fehlschlag
     if(isset($_POST['savenormal'])) $resp .= $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp .= $alert->rd(7);
 }
 
 // arkmanager.cfg (Expert) Speichern
-if (isset($_POST['savecfg_expert']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig")) && $session_user->perm("$perm/konfig/arkmanager")) {
-    $txtarea = $_POST['txtarea'];
-    $cfg = ini_save_rdy($txtarea);
-    $path = __ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg';
-    // Wenn Datei geschreiben wurde
-    if (file_put_contents($path, $cfg)) {
-        // Melde: Erofolg
-        $resp .= $alert->rd(102);
-    } else {
-        // Melde: Lese/Schreib Fehler
-        $resp .= $alert->rd(1);
-    }
+if (isset($_POST['savecfg_expert']) && (($serv->stateCode() == 1 && $session_user->show_mode("konfig")) || !$session_user->show_mode("konfig")) && $session_user->perm("$perm/konfig/arkmanager")) {
+    $txtarea    = $_POST['txtarea'];
+    $cfg        = ini_save_rdy($txtarea);
+    $path       = __ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg';
+    $resp .= $alert->rd($KUTIL->filePutContents($path, $cfg) ? 102 : 1);
 }
 else {
     // Melde Fehlschlag
     if(isset($_POST['savecfg_expert'])) $resp .= $alert->rd(7);
-    if(isset($_POST['savecfg']) && !$session_user->perm("$perm/konfig/arkmanager")) $resp .= $alert->rd(7);
 }
 
 // Game,GUS,Engine.ini Speichern (Expertenmodus)
-if (isset($_POST['save']) && (($serv->statecode() == 1 && $user->show_mode("konfig")) || !$user->show_mode("konfig"))) {
+if (isset($_POST['save']) && (($serv->stateCode() == 1 && $session_user->show_mode("konfig")) || !$session_user->show_mode("konfig"))) {
     $type = $_POST["type"];
     $text = $_POST["text"];
-    $path = $serv->dir_konfig().$type;
+    $path = $serv->dirKonfig().$type;
 
     if(
-        ($type == "GameUserSettings.ini" && $session_user->perm("$perm/konfig/gus")) ||
-        ($type == "Game.ini" && $session_user->perm("$perm/konfig/game")) ||
-        ($type == "Engine.ini" && $session_user->perm("$perm/konfig/engine"))
+        ($type == "GameUserSettings.ini"    && $session_user->perm("$perm/konfig/gus")) ||
+        ($type == "Game.ini"                && $session_user->perm("$perm/konfig/game")) ||
+        ($type == "Engine.ini"              && $session_user->perm("$perm/konfig/engine"))
     ) {
-        // Prüfe ob Datei Exsistiert
-        if (file_exists($path)) {
-            $text = ini_save_rdy($text);
-            if (file_put_contents($path, $text)) {
-                // Mel.de Erfolg
-                $resp .= $alert->rd(102);
-            } else {
-                // Melde: Lese/Schreib Fehler
-                $resp .= $alert->rd(1);
-            }
-        } else {
-            // Melde: Lese/Schreib Fehler
-            $resp .= $alert->rd(1);
+        if (@file_exists($path)) {
+            $text   = ini_save_rdy($text);
+            $resp   .= $alert->rd($KUTIL->filePutContents($path, $text) ? 102 : 1);
         }
     }
     else {
-        $resp .= $alert->rd(99);
+        $resp       .= $alert->rd(99);
     }
 }
 else {
@@ -181,34 +151,34 @@ else {
 
 $page_tpl->r('cfg' ,$url[2]);
 
-$default = "{::lang::php::sc::page::konfig::ini_notfound}";
-$default_table = "<tr colspan='2'><td>{::lang::php::sc::page::konfig::ini_notfound}</td></tr>";
+$default        = "{::lang::php::sc::page::konfig::ini_notfound}";
+$default_table  = "<tr colspan='2'><td>{::lang::php::sc::page::konfig::ini_notfound}</td></tr>";
 
-$gus            = ($serv->ini_load('GameUserSettings.ini', true)) ? $gus = $serv->ini_get_str() : $default;
-$game           = ($serv->ini_load('Game.ini', true)) ? $serv->ini_get_str() : $default;
-$engine         = ($serv->ini_load('Engine.ini', true)) ? $serv->ini_get_str() : $default;
+$gus            = ($serv->iniLoad('GameUserSettings.ini', true))    ? $gus = $serv->iniGetString()  : $default;
+$game           = ($serv->iniLoad('Game.ini', true))                ? $serv->iniGetString()         : $default;
+$engine         = ($serv->iniLoad('Engine.ini', true))              ? $serv->iniGetString()         : $default;
 
-$gus_bool       = $serv->ini_load('GameUserSettings.ini', true);
-$game_bool      = $serv->ini_load('Game.ini', true);
-$engine_bool    = $serv->ini_load('Engine.ini', true);
+$gus_bool       = $serv->iniLoad('GameUserSettings.ini', true);
+$game_bool      = $serv->iniLoad('Game.ini', true);
+$engine_bool    = $serv->iniLoad('Engine.ini', true);
 
 // Prüfe ob Inis exsistieren
 $show = (
-    file_exists($serv->dir_save(true)."/Config/LinuxServer/GameUserSettings.ini") &&
-    file_exists($serv->dir_save(true)."/Config/LinuxServer/Game.ini") &&
-    file_exists($serv->dir_save(true)."/Config/LinuxServer/Engine.ini")
+    @file_exists($serv->dirSavegames(true)."/Config/LinuxServer/GameUserSettings.ini") &&
+    @file_exists($serv->dirSavegames(true)."/Config/LinuxServer/Game.ini") &&
+    @file_exists($serv->dirSavegames(true)."/Config/LinuxServer/Engine.ini")
 );
 
-$gus_nexp = ($serv->ini_load('GameUserSettings.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
-$game_nexp = ($serv->ini_load('Game.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
-$engine_nexp = ($serv->ini_load('Engine.ini', true)) ? json_decode(json_encode($serv->ini_get()), true) : $default_table;
+$gus_nexp       = $serv->iniLoad('GameUserSettings.ini', true)    ? json_decode(json_encode($serv->iniGetArray()), true) : $default_table;
+$game_nexp      = $serv->iniLoad('Game.ini', true)                ? json_decode(json_encode($serv->iniGetArray()), true) : $default_table;
+$engine_nexp    = $serv->iniLoad('Engine.ini', true)              ? json_decode(json_encode($serv->iniGetArray()), true) : $default_table;
 
-$strcfg = $serv->cfg_get_str();
+$strcfg         = $serv->cfgGetString();
 
-$form = null;
-$ark_opt = null;
-$flags = array();
-$i = 0;
+$form           = null;
+$ark_opt        = null;
+$flags          = array();
+$i              = 0;
 
 
 //event
@@ -223,12 +193,12 @@ $events = array(
     "TurkeyTrial",
     "birthday"
 );
-$eventlist .= "<option value=\"none\">{::lang::php::sc::page::konfig::noevent}</option>";
-$curr = $serv->cfg_read("arkopt_ActiveEvent");
+$eventlist      .= "<option value=\"none\">{::lang::php::sc::page::konfig::noevent}</option>";
+$curr           = $serv->cfgRead("arkopt_ActiveEvent");
 foreach($events as $k) {
-    $eventlist .="<option value=\"$k\" ".(($curr == $k) ? "selected=\"true\"" : null).">$k</option>";
+    $eventlist  .="<option value=\"$k\" ".(($curr == $k) ? "selected=\"true\"" : null).">$k</option>";
 }
-$form .= '
+$form           .= '
     <tr>
         <td class="p-2">arkopt_ActiveEvent</td>
         <td class="p-2">
@@ -238,7 +208,7 @@ $form .= '
     </tr>';
 
 // Wenn Installiert dann gebe Inis aus
-if ($serv->isinstalled()) {
+if ($serv->isInstalled()) {
     $hide_cluster = array(
         "ark_NoTransferFromFiltering",
         "ark_NoTributeDownloads",
@@ -274,14 +244,14 @@ if ($serv->isinstalled()) {
         "ark_QueryPort",
         "ark_AltSaveDirectoryName"
     );
-    $remove[] = "arkopt_ActiveEvent";
+    $remove[]       = "arkopt_ActiveEvent";
 
-    if(!$serv->mod_support()) {
-        $remove[] = "ark_GameModIds";
-        $remove[] = "serverMapModId";
+    if(!$serv->modSupport()) {
+        $remove[]   = "ark_GameModIds";
+        $remove[]   = "serverMapModId";
     }
 
-    $serv->cfg_get();
+    $serv->cfgGetArray();
     $ini = parse_ini_file(__ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg', false);
     if(!isset($ini["ark_GameModIds"])) $ini["ark_GameModIds"] = "";
     if(!isset($ini["serverMapModId"])) $ini["serverMapModId"] = "";
@@ -303,9 +273,9 @@ if ($serv->isinstalled()) {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="setmap()" id="mapsel">
                         <option value="" '.(!$session_user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
 
-                    $mapjson = $helper->file_to_json(__ADIR__."/app/json/panel/maps.json");
+                    $mapjson = $helper->fileToJson(__ADIR__."/app/json/panel/maps.json");
                     foreach ($mapjson as $map => $infos) {
-                        if(($infos["mod"] == 1 && $serv->mod_support()) || $infos["mod"] == 0)
+                        if(($infos["mod"] == 1 && $serv->modSupport()) || $infos["mod"] == 0)
                             $add .= '<option id="'.$map.'" value="'.$map.'" data-mod="'.$infos["mod"].'" data-modid="'.$infos["modid"].'" '.($map == $val ? "selected" : null).' '.($map == $val ? "" : (!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
                                 '.($infos["mod"] == 1 ? "[MOD] " : null).$infos["name"].'
                             </option>';
@@ -319,9 +289,9 @@ if ($serv->isinstalled()) {
                     $add .= '<div class="input-group-append"><select class="form-control form-control-sm" onchange="settmod()" id="tmodsel">
                         <option value="" '.(!$session_user->perm("$perm/konfig/arkmanager") && $val != "" ? "disabled" : null).'>{::lang::allg::default::select}</option>';
 
-                    $tmodjson = $helper->file_to_json(__ADIR__."/app/json/panel/tmods.json");
+                    $tmodjson = $helper->fileToJson(__ADIR__."/app/json/panel/tmods.json");
                     foreach ($tmodjson as $tmod => $infos) {
-                        if(($infos["offi"] == 0 && $serv->mod_support()) || $infos["offi"] == 1)
+                        if(($infos["offi"] == 0 && $serv->modSupport()) || $infos["offi"] == 1)
                             $add .= '<option value="'.$infos["modid"].'" '.($infos["modid"] == $val ? "selected" : null).' '.($infos["modid"] == $val ? "" : (!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : "")).'>
                                 '.($infos["offi"] == 0 ? "[MOD] " : null).$tmod.'
                             </option>';
@@ -344,7 +314,7 @@ if ($serv->isinstalled()) {
                 <input type="text" name="value[]" class="form-control form-control-sm" value="'.$val.'" id="input_'.$key.'" '.(!$session_user->perm("$perm/konfig/arkmanager") ? "readonly" : null).'>'.$add.'</div>';
 
                 $form .= '
-                    <tr class="'.(($serv->cluster_in() && in_array($key, $hide_cluster)) ? "d-none" : null).'" id="'.md5($key).'">
+                    <tr class="'.(($serv->clusterIn() && in_array($key, $hide_cluster)) ? "d-none" : null).'" id="'.md5($key).'">
                         <td class="p-2">'.$key.'</td>
                         <td class="p-2">
                         '.$formtype.'
@@ -356,20 +326,20 @@ if ($serv->isinstalled()) {
 }
 
 // Erstelle Flaggen liste und verarbeite gesetzte Flaggen
-$flags_json = $helper->file_to_json(__ADIR__."/app/json/panel/flags.json", true);
+$flags_json = $helper->fileToJson(__ADIR__."/app/json/panel/flags.json", true);
 $i = 0;
 foreach($flags_json as $k => $v) {
-    $sel = (in_array("arkflag_$v", $flags)) ? 'checked="true"' : null;
+    $sel        = (in_array("arkflag_$v", $flags)) ? 'checked="true"' : null;
     if($i == 0) $ark_flag .= '<div class="row">';
-    $ark_flag .= '  <div class="icheck-primary mb-3 col-lg-6 col-12">
+    $ark_flag   .= '  <div class="icheck-primary mb-3 col-lg-6 col-12">
                         <input type="checkbox" name="flag[]" value="' . $v . '" id="' . md5($v) . '" ' . $sel . ' '.(!$session_user->perm("$perm/konfig/arkmanager") ? "disabled" : null).'>
                         <label for="' . md5($v) . '">
                             ' . $v . '
                         </label>
                     </div>';
     if($i == 1) {
-        $ark_flag .= '</div>';
-        $i = 0;
+        $ark_flag   .= '</div>';
+        $i          = 0;
     }
     else {
         $i++;
@@ -384,10 +354,10 @@ $CFGs = array(
 );
 
 foreach ($CFGs as $CFG) {
-    if(file_exists($serv->dir_save(true)."/Config/LinuxServer/$CFG.ini")) {
-        $CURR            = $serv->ini_load("$CFG.ini", true);
+    if(@file_exists($serv->dirSavegames(true)."/Config/LinuxServer/$CFG.ini")) {
+        $CURR            = $serv->iniLoad("$CFG.ini", true);
         $CURR            = $serv->iniext;
-        $RAW_DEFAULT     = $helper->file_to_json(__ADIR__."/app/json/panel/default_$CFG.json");
+        $RAW_DEFAULT     = $helper->fileToJson(__ADIR__."/app/json/panel/default_$CFG.json");
         $CONV_DEFAULT    = convert_ini($RAW_DEFAULT);
         $FINAL_INI       = array_replace_recursive($CONV_DEFAULT, $CURR);
         $Former_arr      = create_ini_form($FINAL_INI, $CFG, $RAW_DEFAULT, $serv->name());
@@ -415,7 +385,7 @@ $page_tpl->r('gus', $gus);
 $page_tpl->r('game', $game);
 $page_tpl->r('engine', $engine);
 $page_tpl->r('eventlist', $eventlist);
-$page_tpl->r('amcfg', file_get_contents(__ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg'));
+$page_tpl->r('amcfg', $KUTIL->fileGetContents(__ADIR__.'/remote/arkmanager/instances/'.$url[2].'.cfg'));
 $page_tpl->r('WEBURL', $webserver["sendin"]);
 $page_tpl->rif('expert', $user->expert());
 $page_tpl->rif('show', $show);

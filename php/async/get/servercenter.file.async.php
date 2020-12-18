@@ -8,14 +8,16 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 require('../main.inc.php');
-$cfg = $_GET['serv'];
-$serv = new server($cfg);
-$case = $_GET['case'];
-$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
-$servlocdir = $ckonfig['servlocdir'];
-$dir = $servlocdir.$_GET["path"];
-$dirp = $_GET["path"];
+$cfg            = $_GET['serv'];
+$serv           = new server($cfg);
+$case           = $_GET['case'];
+$ckonfig        = $helper->fileToJson(__ADIR__.'/php/inc/custom_konfig.json', true);
+$servlocdir     = $ckonfig['servlocdir'];
+$dir            = $servlocdir.$_GET["path"];
+$dirp           = $_GET["path"];
 
 switch ($case) {
     // CASE: file list
@@ -23,10 +25,10 @@ switch ($case) {
         // scane bzw gebe default
         if($dir == $servlocdir || !file_exists($dir)) {
             $dir_scan = array();
-            if(strpos($serv->cfg_read("arkserverroot"), $servlocdir) !== false && file_exists($serv->cfg_read("arkserverroot"))) $dir_scan[] = str_replace($servlocdir, null, $serv->cfg_read("arkserverroot"));
-            if(strpos($serv->cfg_read("logdir"), $servlocdir) !== false && file_exists($serv->cfg_read("logdir"))) $dir_scan[] = str_replace($servlocdir, null, $serv->cfg_read("logdir"));
-            if(strpos($serv->cfg_read("arkbackupdir"), $servlocdir) !== false && file_exists($serv->cfg_read("arkbackupdir"))) $dir_scan[] = str_replace($servlocdir, null, $serv->cfg_read("arkbackupdir"));
-            if(file_exists(__ADIR__."/remote/serv/cluster/")) $dir_scan[] = "cluster";
+            if(strpos($serv->cfgRead("arkserverroot"), $servlocdir) !== false && @file_exists($serv->cfgRead("arkserverroot"))) $dir_scan[] = str_replace($servlocdir, null, $serv->cfgRead("arkserverroot"));
+            if(strpos($serv->cfgRead("logdir"), $servlocdir) !== false && @file_exists($serv->cfgRead("logdir"))) $dir_scan[] = str_replace($servlocdir, null, $serv->cfgRead("logdir"));
+            if(strpos($serv->cfgRead("arkbackupdir"), $servlocdir) !== false && @file_exists($serv->cfgRead("arkbackupdir"))) $dir_scan[] = str_replace($servlocdir, null, $serv->cfgRead("arkbackupdir"));
+            if(@file_exists(__ADIR__."/remote/serv/cluster/")) $dir_scan[] = "cluster";
         }
         else {
             $dir_scan = scandir($dir);
@@ -106,19 +108,9 @@ switch ($case) {
         if($session_user->perm("server/$cfg/filebrowser/remove")) {
             $file = $_GET["file"];
             $size = strlen($file)-1;
-            $file=substr($file,1,$size); 
-            if(file_exists($file)) {
-                if(!is_dir($file)) {
-                    if(unlink($file)) {
-                        $re["code"] = 200;
-                    }
-                    else {
-                        $re["code"] = 1;
-                    }
-                }
-                else {
-                    $re["code"] = 33;
-                }
+            $file=substr($file,1,$size);
+            if($KUTIL->removeFile($file)) {
+                $re["code"] = 200;
             }
             else {
                 $re["code"] = 1;

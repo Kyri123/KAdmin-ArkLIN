@@ -8,11 +8,14 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 /**
  * Class Template
  */
 class Template {
-    
+
+    private $KUTIL;
     private $filepath;
     private $file_str;
     private $file = null;
@@ -31,13 +34,16 @@ class Template {
      * @param $path
      */
     public function __construct($file, $path) {
+        global $KUTIL;
+        $this->KUTIL        = $KUTIL;
+
         if(isset($_COOKIE["lang"])) $this->lang = $_COOKIE["lang"];
-        if (file_exists($path.$file)) {
-            $this->filepath = $path.$file;
+        if (@file_exists($path.$file)) {
+            $this->filepath = $this->KUTIL->path($path.$file)["/path"];
         } else {
             $this->filepath = null;
         }
-        $this->file_str = $file;
+        $this->file_str     = $file;
     }
 
     /**
@@ -54,8 +60,8 @@ class Template {
      */
     public function load() {
         if ($this->filepath != null) {
-            $this->file = file_get_contents($this->filepath);
-            $this->load = true;
+            $this->file = $this->KUTIL->fileGetContents($this->filepath);
+            $this->load = $this->file !== false;
             if ($this->debug) {
                 echo '<p>Template Found ' . $this->file_str . ' </p>';
             }

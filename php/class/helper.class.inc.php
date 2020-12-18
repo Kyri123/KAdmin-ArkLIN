@@ -8,22 +8,22 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 /**
  * helper
  * - Zum lesen von JSON
  * - Schreiben von Array in Dateien
  * - Lesen von XML
  */
-class helper {    
+class helper extends KUTIL {
+
     /**
      * __construct
      *
      * @return void
      */
-    public function __construct()
-    {
-        #empty
-    }
+    public function __construct() {}
     
     /**
      * Ruft eine Json von einem anderen Webserver ab
@@ -34,52 +34,48 @@ class helper {
      * @param  bool $array Soll es als Array ausgebene werden (true) oder als Object (false)
      * @return false|void
      */
-    public function remotefile_to_json(String $path, String $filename, int $differ = 0, Bool $array = true) {
+    public function remoteFileToJson(String $path, String $filename, int $differ = 0, Bool $array = true) {
         $filename = __ADIR__.'/app/cache/'.$filename;
         $diff = 0;
         $string = null;
 
-        if (file_exists($filename)) {
+        if (@file_exists($filename)) {
             $filetime = filemtime($filename);
             $diff = time()-$filetime;
         }
-        if ($diff > $differ && file_exists($filename)) {
+        if ($diff > $differ && @file_exists($filename)) {
             if($string = file_get_contents($path)) {
-                file_put_contents($filename, $string);
+                parent::filePutContents($filename, $string);
                 return json_decode($string, $array);
             }
             else {
-                return (!file_exists($filename)) ? false : json_decode(file_get_contents($filename), $array);
+                return (!file_exists($filename)) ? false : $this->fileToJson($filename, $array);
             }
         }
         elseif (!file_exists($filename)) {
             if($string = file_get_contents($path)) {
                 $handle = fopen($filename, 'w');
                 fclose($handle);
-                file_put_contents($filename, $string);
+                parent::filePutContents($filename, $string);
                 return json_decode($string, $array);
             }
             else {
-                return (!file_exists($filename)) ? false : json_decode(file_get_contents($filename), $array);
+                return (!file_exists($filename)) ? false : $this->fileToJson($filename, $array);
             }
         } else {
-            return (!file_exists($filename)) ? false : json_decode(file_get_contents($filename), $array);
+            return (!file_exists($filename)) ? false : $this->fileToJson($filename, $array);
         }
     }
         
     /**
      * Wandelt ein Pfad direkt in eine Json
      *
-     * @param  string $path- Pfad zur Datei
+     * @param  string $path Pfad zur Datei
      * @param  bool $array Soll es als Array ausgebene werden (true) oder als Object (false)
      * @return array|string
      */
-    public function file_to_json(String $path, Bool $array = true) {
-        if (file_exists($path)) {
-            return $this->str_to_json(file_get_contents($path), $array);
-        } else {
-            return $this->str_to_json('{"file":"notexsists"}', $array);
-        }
+    public function fileToJson(String $path, Bool $array = true) {
+        return parent::fileGetContents($path, true)[($array ? "Assoc" : "Obj")];
     }
     
     /**
@@ -89,7 +85,7 @@ class helper {
      * @param  bool $array Soll es als Array ausgebene werden (true) oder als Object (false)
      * @return array
      */
-    public function str_to_json(String $str, Bool $array = true) {
+    public function stringToJson(String $str, Bool $array = true) {
         return json_decode($str, $array);
     }
     
@@ -99,43 +95,19 @@ class helper {
      * @param  mixed $array Array die umgewandelt werden soll
      * @return string
      */
-    public function json_to_str($array) {
+    public function jsonToString($array) {
         return json_encode($array, JSON_INVALID_UTF8_SUBSTITUTE);
-    }
-    
-    /**
-     * Speichert eine Json (Array) in eine Datei die aber Exsistieren muss
-     *
-     * @param  mixed $array Array der gespeichert werden soll
-     * @param  mixed $path Pfad wo die Datei gespeichert werden soll
-     * @return bool
-     */
-    public function savejson_exsists($array, String $path) {
-        if (file_exists($path)) {
-            if (file_put_contents($path, json_encode($array, JSON_INVALID_UTF8_SUBSTITUTE))) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
     }
     
     /**
      * Speichert eine Json hier muss die Datei NICHT exsistieren
      *
-     * @param  mixed $array Array der gespeichert werden soll
+     * @param  mixed $data Array der gespeichert werden soll
      * @param  mixed $path Pfad wo die Datei gespeichert werden soll
      * @return bool
      */
-    public function savejson_create($array, String $path) {
-        $content = json_encode($array, JSON_INVALID_UTF8_SUBSTITUTE);
-        if (file_put_contents($path, $content)) {
-            return true;
-        } else {
-            return false;
-        }
+    public function saveFile($data, String $path) {
+        return parent::filePutContents($path, is_array($data) ? $this->jsonToString($data) : $data);
     }
     
     /**
@@ -144,11 +116,8 @@ class helper {
      *
      * @return int
      */
-    public function gethelperdiff() {
-        $path = __ADIR__."/app/check/webhelper";
-        $lastcheck = (file_exists($path)) ? intval(file_get_contents($path)) : 0;
-        $diff = time() - $lastcheck;
-        return $diff;
+    public function getHelperDiff() {
+        return (time() - intval(parent::fileGetContents(__ADIR__."/app/check/webhelper")));
     }
     
     /**
@@ -157,10 +126,8 @@ class helper {
      * @param  mixed $file Pfad wo die Datei liegt
      * @return array
      */
-    public function xmlfile_to_array(String $file) {
-        $xml = simplexml_load_file($file);
-        $array = $this->str_to_json($this->json_to_str($xml), true);
-        return $array;
+    public function xmlFileToArray(String $file) {
+        return $this->stringToJson($this->jsonToString(simplexml_load_file(parent::path($file)["/path"])), true);
     }
 
 }

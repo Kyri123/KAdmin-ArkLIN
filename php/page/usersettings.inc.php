@@ -8,53 +8,51 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 // Vars
-$tpl_dir = __ADIR__.'/app/template/core/usersettings/';
-$resp = null; $logout = false;
-$pagename = "{::lang::usersettings::pagename}";
-$urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
-$path = __ADIR__."/app/json/user/".md5($_SESSION["id"]).".json";
+$tpl_dir    = __ADIR__.'/app/template/core/usersettings/';
+$resp       = null; $logout = false;
+$pagename   = "{::lang::usersettings::pagename}";
+$urltop     = "<li class=\"breadcrumb-item\">$pagename</li>";
+$path       = $KUTIL->path(__ADIR__."/app/json/user/".md5($_SESSION["id"]).".json")["/path"];
 
 // Speichern (Benutzerdaten)
 if(isset($_POST["saveuser"])) {
     //EMail
     if($_POST["email"] != $user->read("email")) {
         if($user->write("email", $_POST["email"])) {
-            $logout = true;
+            $logout     = true;
         }
         else {
-            $alert->code = 3;
-            $resp .= $alert->re();
+            $resp       .= $alert->rd(3);
         }
     }
 
     //Username
     if($_POST["username"] != $user->read("username")) {
         if($user->write("username", $_POST["username"])) {
-            $logout = true;
+            $logout     = true;
         }
         else {
-            $alert->code = 3;
-            $resp .= $alert->re();
+            $resp       .= $alert->rd(3);
         }
     }
 
     //EMail
     if($_POST["pw1"] != "" && $_POST["pw2"] != "") {
-        $pw1 = md5($_POST["pw1"]);
-        $pw2 = md5($_POST["pw2"]);
+        $pw1    = md5($_POST["pw1"]);
+        $pw2    = md5($_POST["pw2"]);
         if($pw2 == $pw1) {
             if($user->write("password", $pw1)) {
-                $logout = true;
+                $logout     = true;
             }
             else {
-                $alert->code = 3;
-                $resp .= $alert->re();
+                $resp   .= $alert->rd(3);
             }
         }
         else {
-            $alert->code = 27;
-            $resp .= $alert->re();
+            $resp       .= $alert->rd(27);
         }
     }
 
@@ -67,16 +65,10 @@ if(isset($_POST["saveuser"])) {
 
 // Speichern (Benutzer Einstellungen)
 if(isset($_POST["savepanel"])) {
-    $json = $helper->file_to_json($path, true);
-    $json["expert"] = (isset($_POST["json"]["expert"]) && $session_user->perm("usersettings/expert")) ? 1 : 0;
-    $json["konfig"] = (isset($_POST["json"]["konfig"])) ? 1 : 0;
-    if ($helper->savejson_create($json, $path)) {
-        $alert->code = 102;
-        $resp .= $alert->re();
-    } else {
-        $alert->code = 1;
-        $resp .= $alert->re();
-    }
+    $json               = $helper->fileToJson($path, true);
+    $json["expert"]     = isset($_POST["json"]["expert"]) && $session_user->perm("usersettings/expert") ? 1 : 0;
+    $json["konfig"]     = isset($_POST["json"]["konfig"]) ? 1 : 0;
+    $resp .= $alert->rd($helper->saveFile($json, $path) ? 102 : 1);
 }
 
 //tpl
@@ -88,8 +80,8 @@ $tpl->r("resp", $resp);
 $tpl->r("username", $user->read("username"));
 $tpl->r("email", $user->read("email"));
 $tpl->r("c_expert", ($user->expert()) ? "checked" : null);
-$tpl->r("c_konfig", ($user->show_mode("konfig")) ? "checked" : null);
+$tpl->r("c_konfig", ($session_user->show_mode("konfig")) ? "checked" : null);
 
 // sendet alles an Index
-$content = $tpl->load_var();
-$pageicon = "<i class=\"fas fa-tachometer-alt\" aria-hidden=\"true\"></i>";
+$content    = $tpl->load_var();
+$pageicon   = "<i class=\"fas fa-tachometer-alt\" aria-hidden=\"true\"></i>";

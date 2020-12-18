@@ -8,26 +8,28 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
 // Wenn Modsupport deaktiviert ist leitet direkt zu ServerCenter Startseite des Servers
-if (!$session_user->perm("$perm/mods/show") || !$serv->mod_support()) {
-    header(!$serv->mod_support() ? "Location: /404" : "Location: /401");
+if (!$session_user->perm("$perm/mods/show") || !$serv->modSupport()) {
+    header(!$serv->modSupport() ? "Location: /404" : "Location: /401");
     exit;
 }
 
-$pagename = '{::lang::php::sc::page::saves::pagename}';
-$resp = null;
-$urls = '/servercenter/'.$url[2].'/mods/';
-$page_tpl = new Template('mods.htm', __ADIR__.'/app/template/sub/serv/');
-$urltop = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfg_read('ark_SessionName').'</a></li>';
-$urltop .= '<li class="breadcrumb-item">{::lang::php::sc::page::saves::urltop}</li>';
+$pagename   = '{::lang::php::sc::page::saves::pagename}';
+$resp       = null;
+$urls       = '/servercenter/'.$url[2].'/mods/';
+$page_tpl   = new Template('mods.htm', __ADIR__.'/app/template/sub/serv/');
+$urltop     = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfgRead('ark_SessionName').'</a></li>';
+$urltop     .= '<li class="breadcrumb-item">{::lang::php::sc::page::saves::urltop}</li>';
 
 // Mods Hinzufügen
 if (isset($_POST['addmod']) && $session_user->perm("$perm/mods/add")) {
-    $urler = $_POST['url'];
+    $urler  = $_POST['url'];
     foreach($urler as $k => $urle) {
         // Prüfe ob wert eine ID oder eine URL ist
-        $int = is_numeric($urle);
+        $int    = is_numeric($urle);
         if ((strpos($urle, 'steamcommunity.com/sharedfiles/filedetails') || $int === true) && $urle != "") {
             if (strpos($urle, 'id=') || $int === true) {
                 $modid = $urle;
@@ -53,7 +55,7 @@ if (isset($_POST['addmod']) && $session_user->perm("$perm/mods/add")) {
     
                 // Hole Informationen von der SteamAPI & Prüfe ob es ein Gültiger Inhalt ist
                 if ($steamapi->check_mod($modid)) {
-                    $mod_cfg = $serv->cfg_read('ark_GameModIds');
+                    $mod_cfg = $serv->cfgRead('ark_GameModIds');
                     $mods = explode(',', $mod_cfg);
                     if (count($mods) > 1 || $mods[0] > 0) {
                         // Schau ob diese Mod bereits exsistiert
@@ -74,40 +76,34 @@ if (isset($_POST['addmod']) && $session_user->perm("$perm/mods/add")) {
                             $mods[$i] = $modid;
                             $save_data = implode(',', $mods);
                             // Speicher Mods
-                            $serv->cfg_write('ark_GameModIds', $save_data);
-                            $serv->cfg_save();
+                            $serv->cfgWrite('ark_GameModIds', $save_data);
+                            $serv->cfgSave();
                         }
                         else {
-                            // Melde: Mod Exsistiert
-                            $resp .= $alert->rd(5);
+                            $resp   .= $alert->rd(5);
                         }
                     }
                     else {
-                        // Speicher Mod
-                        $serv->cfg_write('ark_GameModIds', $modid);
-                        $serv->cfg_save();
+                        // Speicher Mods
+                        $serv->cfgWrite('ark_GameModIds', $modid);
+                        $serv->cfgSave();
                     }
                 } else {
-                    // Melde kein Gültiger Inhalt
-                    $resp .= $alert->rd(20);
+                    $resp           .= $alert->rd(20);
                 }
             } else {
-                // Melde: Keine Gültige URL bzw ID
-                $resp .= $alert->rd(19);
+                $resp               .= $alert->rd(19);
             }
         } else {
-            // Melde: Workshop URL falsch
-            $resp .= $alert->rd(18);
+            $resp                   .= $alert->rd(18);
         }
     }
 }
 elseif(isset($_POST['addmod'])) {
-    $resp .= $alert->rd(99);
+    $resp                           .= $alert->rd(99);
 }
 
-if ($ifcadmin) {
-    $resp_cluster .= $alert->rd(302, 3);
-}
+if ($ifcadmin) $resp_cluster .= $alert->rd(302);
 $page_tpl->load();
 $page_tpl->r('cfg' ,$url[2]);
 $page_tpl->r('urls' ,$urls);

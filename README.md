@@ -1,11 +1,31 @@
 # Arkadmin 
 
-Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://github.com/FezVrasta/ark-server-tools)
+Webbasiertes Admin Panel für Ark-Gameserver basierend auf Arkmanager (https://github.com/FezVrasta/ark-server-tools)
+
+Features:
+- Serververwaltung (ServerCenter)
+  - RCON
+  - Adminverwaltung
+  - Whitelist
+  - Live-Log
+  - Backupverwaltung
+  - Konfiguration
+  - Modifikationen
+  - Simple Banners
+  - Statistiken
+  - Logs
+  - Savegames (mit mehr Informationen)
+  - Cronjobs
+- Servereverwaltung
+- Benutzer mit Benutzergruppen
+- Clustersystem
+   - mit Syncronisierung der Einstellungen, wenn gewünscht und mehr!
+- und einiges Mehr!? 
 
 # Wichtig
 
-- [Dev-Tree] Benutzten auf eigene GEFAHR (Debugs, Tests usw.)
-- Derzeitiger Status: *Beta*
+- **[Dev-Tree]** Benutzten auf eigene GEFAHR (Debugs, Tests usw.)
+- Derzeitiger Status: ***Release*** Jetzt sind die Bugs und Optimierungen dran ;)
 - Discord: https://discord.gg/ykGnw49
 - Der Port `30000` muss Frei sein für den ArkAdmin-Server (bzw. der gesetzte Port)
 
@@ -38,52 +58,62 @@ Webbasiertes Admin Panel für Ark-Gameserver basierent auf Arkmanager (https://g
 
 # Config.json
 
-| Eigenschaften | Wert | 
-| :--- | :--- |
-| `HTTP` | Weblink zum Arkadmin `http(s)://meinurl.com/` |
-| `WebPath` | Ordnerpfad wo Arkadmin installiert ist (Webverzeichnis) |
-| `AAPath` | Ordnerpfad wo sich Arkmanager befindet - Normalerweise in: `/etc/arkmanager`  |
-| `ServerPath` | Ordnerpfad wo die Server gespeichert werden |
-| `SteamPath` | Ordnerpfad wo die SteamCMD liegt gespeichert werden `bsp.: /home/steam/Steam` |
-| `WebIntervall` | Intervall für das abrufen des Crontabs (Hauptfunktionen) (Mindestens: *5000*) |
-| `CHMODIntervall` | `in Millisekunden` Intervall für das überschreiben der Rechte (Mindestens: *60000*) |
-| `ShellIntervall` | `in Millisekunden` Intervall für das abrufen der Shell Dateien (Mindestens: *10000*) |
-| `StatusIntervall` | `in Millisekunden` Intervall für das abrufen von dem Status des Servers (Mindestens: *5000*) |
-| `autorestart` | Soll der ArkAdmin Server Automatisch neustarten? (1: an;0: aus) |
+| Eigenschaften           | Wert | 
+| :---                    | :--- |
+| `HTTP`                  | Weblink zum Arkadmin `http(s)://meinurl.com/` |
+| `WebPath`               | Ordnerpfad wo Arkadmin installiert ist (Webverzeichnis) |
+| `AAPath`                | Ordnerpfad wo sich Arkmanager befindet - Normalerweise in: `/etc/arkmanager`  |
+| `ServerPath`            | Ordnerpfad wo die Server gespeichert werden |
+| `SteamPath`             | Ordnerpfad wo die SteamCMD liegt gespeichert werden `bsp.: /home/steam/Steam` |
+| `WebIntervall`          | Intervall für das abrufen des Crontabs (Hauptfunktionen) (Mindestens: *5000*) |
+| `CHMODIntervall`        | `in Millisekunden` Intervall für das überschreiben der Rechte (Mindestens: *60000*) |
+| `ShellIntervall`        | `in Millisekunden` Intervall für das abrufen der Shell Dateien (Mindestens: *10000*) |
+| `StatusIntervall`       | `in Millisekunden` Intervall für das abrufen von dem Status des Servers (Mindestens: *5000*) |
+| `autorestart`           | Soll der ArkAdmin Server Automatisch neustarten? (1: an;0: aus) |
 | `autorestart_intervall` | Wie oft soll er neustarten (Mindestens: *1800000*) |
 | `autoupdater_intervall` | `in Millisekunden` Intervall für das abrufen des Automatischen Updates (Mindestens: *120000*) |
-| `autoupdater_branch` | Welche Github Branch soll dafür verwendet werden |
-| `autoupdater_active` | Soll der Updater aktiv sein (1: an;0: aus)  |
-| `CHMOD` | Berechtigung für die Dateien (777 z.B. ist komplett offen) [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ] |
-| `use_ssh` | Aktiviere/Deaktivere SHH (1: an;0: aus) benötigt konfiguration in ssh.js |
-| `port` | Port den der ArkAdmin-Server verwenden soll |
-| `screen` | Name der benutzt werden soll um die Screen zu erstellen (Wo der ArkAdmin-Server läuft) |
+| `autoupdater_branch`    | Welche Github Branch soll dafür verwendet werden |
+| `autoupdater_active`    | Soll der Updater aktiv sein (1: an;0: aus)  |
+| `CHMOD`                 | Berechtigung für die Dateien (777 z.B. ist komplett offen) [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ] |
+| `use_ssh`               | Aktiviere/Deaktiviere SHH (1: an;0: aus) benötigt konfiguration in ssh.js |
+| `port`                  | Port den der ArkAdmin-Server verwenden soll |
+| `screen`                | Name der benutzt werden soll um die Screen zu erstellen (Wo der ArkAdmin-Server läuft) |
 
 # ssh.js (Wird benötigt wenn use_ssh an ist)
 
 | Eigenschaften | Wert | 
-| :--- | :--- |
-| `host` | SSH2 Host (Bsp. `127.0.0.1`) |
-| `username` | SSH2 Benutzername (Bsp. `root`) |
-| `password` | SSH2 Passwort  |
-| `port` | SSH2 port (Standart: `22`) |
-| `key_path` | Pfad zum SSH-Key |
+| :---          | :--- |
+| `host`        | SSH2 Host (Bsp. `127.0.0.1`) |
+| `username`    | SSH2 Benutzername (Bsp. `root`) |
+| `password`    | SSH2 Passwort  |
+| `port`        | SSH2 port (Standart: `22`) |
+| `key_path`    | Pfad zum SSH-Key |
 
 # Sprache Installieren
 
 - Lade die XML Dateien in `app/lang/<lang>/` hoch 
-- WICHTIG: Es wird derzeit nur Deutsch mitgeliefert 
+- WICHTIG: Es wird derzeit nur **Deutsch** mitgeliefert 
 
 # Benötigt
 
-- `Node.JS` Version >= 12.0.0
-- `Node.JS` NPM
-- `PHP` Version >= 7.3
-- `PHP` mod_rewrite
-- `PHP` cURL
-- `PHP` MySQLi
-- `PHP` XML
-- `Linux` Root rechte (bzw Rechte um chmod 777, screen & arkmanager zu benutzten)
-- `Linux` Screen
-- `Linux` Arkmanager (https://github.com/arkmanager/ark-server-tools)
-- `MariaDB` Server
+- `Node.JS` 
+  - Version >= 12.0.0 | < 15.0.0 **(> 15.0.0 Ungetestet)**
+  - NPM
+- `PHP` 
+  - Min. >= 7.3 (Empfohlen PHP >= 7.4) | < 8.0 **(> 8.0 Ungetestet)**
+  - mod_rewrite
+  - cURL
+  - MySQLi
+  - XML
+  - mbstring
+- `Linux` 
+  - Root rechte (bzw Rechte um chmod 777, screen & arkmanager zu benutzten)
+  - Screen
+  - Arkmanager (https://github.com/arkmanager/ark-server-tools)
+- `MariaDB` 
+
+# Andere Projekte:
+| Projekt                     | Status          | URL | 
+| :---                        | :---            | :--- |
+| ArkAdmin2 für Windows       | Alpha           | https://github.com/Kyri123/ArkAdminWIN |
+| Kleines Minecraft Plugin    | Beta            | https://github.com/Kyri123/KPlugins-1.12.2 |

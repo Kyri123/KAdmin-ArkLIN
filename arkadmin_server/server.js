@@ -12,13 +12,21 @@ const winston       = require('winston');
 
 global.version      = fs.readFileSync("data/version.txt", 'utf8');
 global.started      = Date.now();
-global.config       = JSON.parse(fs.readFileSync("config/server.json", 'utf8'));
+
+// Versuche Konfig zu lesen
+try {
+    global.config       = JSON.parse(fs.readFileSync("config/server.json", 'utf8'));
+}
+catch (e) {
+    console.log(e);
+}
+
 global.dateFormat   = require('dateformat');
 global.mainpath     = __dirname;
 
 //erstelle log Ordner
 if (!fs.existsSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`)){
-    fs.mkdirSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`);
+    fs.mkdirSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`, {recursive: true});
 }
 
 

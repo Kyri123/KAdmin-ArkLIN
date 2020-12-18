@@ -8,14 +8,18 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 /**
  * Class server
  */
 class server extends Rcon {
 
+    private $KUTIL;
     private $serverfound;
     private $cfg;
     private $ini;
+    private $serv_cfg_path;
 
     public $loadedcluster = false;
     public $serv;
@@ -30,14 +34,18 @@ class server extends Rcon {
      * @param String $serv Konfigname des Servers
      */
     public function __construct(String $serv) {
-        $this->serv = $serv;
-        if (file_exists(__ADIR__.'/remote/arkmanager/instances/'.$serv.'.cfg')) {
-            $this->cfg = parse_ini_file(__ADIR__.'/remote/arkmanager/instances/'.$serv.'.cfg');
-            $this->serverfound = true;
-            return TRUE;
+        global $KUTIL;
+        $this->KUTIL            = $KUTIL;
+        $this->serv             = $serv;
+        $this->serv_cfg_path    = $this->KUTIL->path(__ADIR__.'/remote/arkmanager/instances/'.$serv.'.cfg')["/path"];
+
+        if (@file_exists($this->serv_cfg_path)) {
+            $this->cfg          = parse_ini_file($this->serv_cfg_path);
+            $this->serverfound  = true;
+            return true;
         } else {
-            $this->serverfound = false;
-            return FALSE;
+            $this->serverfound  = false;
+            return false;
         }
     }
 
@@ -46,7 +54,8 @@ class server extends Rcon {
      *
      * @return String
      */
-    public function name() {
+    public function name(): string
+    {
         return $this->serv;
     }
 
@@ -56,17 +65,10 @@ class server extends Rcon {
      * @param bool $bool gibt an ob als String (false) oder als Bool (true) ausgegeben werden soll
      * @return bool|string
      */
-    public function isinstalled(bool $bool = false) {
-        $dir = $this->cfg_read('arkserverroot');
-        $dir = str_replace('/data/ark_serv_dir/', __ADIR__.'/remoteserv/', $dir);
-        $dir = $dir.'/ShooterGame/Binaries/Linux/ShooterGameServer';
-        if (file_exists($dir)) {
-            if ($bool) return true;
-            return 'TRUE';
-        } else {
-            if ($bool) return false;
-            return 'FALSE';
-        }
+    public function isInstalled(bool $bool = false) {
+        return @file_exists($this->KUTIL->path($this->cfgRead('arkserverroot').'/ShooterGame/Binaries/Linux/ShooterGameServer')["/path"])
+            ? ($bool    ? true     : 'TRUE' )
+            : ($bool    ? false    : 'FALSE');
     }
 
     /**
@@ -74,13 +76,9 @@ class server extends Rcon {
      *
      * @return string
      */
-    public function dir_main() {
-        global $servlocdir;
-        
-        $dir = $this->cfg_read('arkserverroot');
-        $path = str_replace($servlocdir, __ADIR__."/remote/serv/", $dir);
-
-        return $path;
+    public function dirMain(): string
+    {
+        return $this->KUTIL->path($this->cfgRead('arkserverroot'))["/path"];
     }
 
     /**
@@ -88,9 +86,9 @@ class server extends Rcon {
      *
      * @return string
      */
-    public function dir_cluster() {
-
-        $dir = $this->cfg_read('arkserverroot');
+    public function dirCluster(): string
+    {
+        $dir = $this->cfgRead('arkserverroot');
         $exp = explode('/', $dir);
         $dirp = null;
 
@@ -109,34 +107,29 @@ class server extends Rcon {
      *
      * @return string
      */
-    public function dir_backup() {
-        global $servlocdir;
-
-        $dir = $this->cfg_read('arkbackupdir');
-        $path = str_replace($servlocdir, __ADIR__."/remote/serv/", $dir);
-
-        return $path;
+    public function dirBackup(): string
+    {
+        return $this->KUTIL->path($this->cfgRead('arkbackupdir'))["/path"];
     }
 
     /**
      * Gibt das Verzeichnis der Spielstände
      *
-     * @param bool $getmaindir Hauptverzeichnis der Speicherdateien (true) oder Unterverzeichnis der Speicherdateien (false)
      * @param bool $getmaindir Verwende $ROOT statt __ADIR__
+     * @param bool $getROOTDIR
      * @return string
      */
-    public function dir_save(bool $getmaindir = false, bool $getROOTDIR = false) {
+    public function dirSavegames(bool $getmaindir = false, bool $getROOTDIR = false): string
+    {
         global $ROOT;
 
-        $path = $this->dir_main();
-        if($getROOTDIR) $path = str_replace(__ADIR__, $ROOT, $path);
-        if ($getmaindir) {
-            $path = $path."/ShooterGame/Saved";
-        }
-        elseif ($this->cfg_read('ark_AltSaveDirectoryName') != "" && $this->cfg_read('ark_AltSaveDirectoryName') != " ") {
-            $path = $path."/ShooterGame/Saved/".$this->cfg['ark_AltSaveDirectoryName'];
+        $path                   = $this->dirMain();
+        if($getROOTDIR) $path   = str_replace(__ADIR__, $ROOT, $path);
+
+        if ($this->cfgRead('ark_AltSaveDirectoryName') != "" && $this->cfgRead('ark_AltSaveDirectoryName') != " " && !$getmaindir) {
+            $path   = $path."/ShooterGame/Saved/".$this->cfg['ark_AltSaveDirectoryName'];
         } else {
-            $path = $path."/ShooterGame/Saved";
+            $path   = $path."/ShooterGame/Saved";
         }
 
         return $path;
@@ -147,15 +140,9 @@ class server extends Rcon {
      *
      * @return string
      */
-    public function dir_konfig() {
-
-        if ($this->cfg_read('ark_AltSaveDirectoryName') != "" && $this->cfg_read('ark_AltSaveDirectoryName') != " ") {
-            $path = $this->dir_save()."/../Config/LinuxServer/";
-        } else {
-            $path = $this->dir_save()."/Config/LinuxServer/";
-        }
-
-        return $path;
+    public function dirKonfig(): string
+    {
+        return $this->KUTIL->path($this->dirSavegames(true)."/Config/LinuxServer/")["/path"];
     }
 
     /**
@@ -165,36 +152,28 @@ class server extends Rcon {
      * @param bool $force Definiert ob dieser Befehl erzwingen wird (überspringt die prüfung ob eine Aktion derzeit läuft)
      * @return bool
      */
-    public function send_action(String $shell, bool $force = false) {
-        global $mycon;
-        global $helper;
+    public function sendAction(String $shell, bool $force = false) {
+        global $mycon, $helper;
 
         if ($this->status()->next == 'TRUE' && !$force) {
             return false;
         }
 
-        $log = __ADIR__.'/app/data/shell_resp/log/'.$this->name().'/last.log';
-        $doc_state_file = __ADIR__.'/app/data/shell_resp/state/'.$this->name().'.state';
-        $command = 'arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state_file.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
-        $command = str_replace("\r", null, $command);
+        $log                = $this->KUTIL->path(__ADIR__.'/app/data/shell_resp/log/'.$this->name().'/last.log')["/path"];
+        $doc_state_file     = $this->KUTIL->path(__ADIR__.'/app/data/shell_resp/state/'.$this->name().'.state')["/path"];
+        $command            = 'arkmanager '.$shell.' @'.$this->name().' > '.$log.' ; echo "TRUE" > '.$doc_state_file.' ; echo "<b>Done...</b>" >> '.$log.' ; exit';
+        $command            = str_replace("\r", null, $command);
 
         // Füge Kommand zur DB hinzu
-        $query = "INSERT INTO `ArkAdmin_shell` 
-        (
-            `server`, 
-            `command`
-        ) VALUES ( 
-            '".$this->name()."',
-            'screen -dm bash -c \'".$command."\''
-        )";
+        $query              = "INSERT INTO `ArkAdmin_shell` (`server`, `command`) VALUES (?, 'screen -dm bash -c \'".$command."\'')";
 
-        if ($mycon->query($query)) {
-            file_put_contents($doc_state_file, "FALSE");
+        if ($mycon->query($query, $this->name())) {
+            $this->KUTIL->filePutContents($doc_state_file, "FALSE");
 
-            $path = __ADIR__."/app/json/serverinfo/" . $this->name() . ".json";
-            $data = $helper->file_to_json($path);
-            $data["next"] = 'TRUE';
-            $helper->savejson_create($data, $path);
+            $path               = $this->KUTIL->path(__ADIR__."/app/json/serverinfo/" . $this->name() . ".json")["/path"];
+            $data               = $helper->fileToJson($path);
+            $data["next"]       = 'TRUE';
+            $helper->saveFile($data, $path);
 
             return true;
         }
@@ -206,8 +185,8 @@ class server extends Rcon {
      *
      * @return false|string
      */
-    public function cfg_get_str() {
-        return file_get_contents(__ADIR__.'/remote/arkmanager/instances/'.$this->serv.'.cfg');
+    public function cfgGetString() {
+        return $this->KUTIL->fileGetContents(__ADIR__.'/remote/arkmanager/instances/'.$this->serv.'.cfg');
     }
 
     /**
@@ -215,7 +194,7 @@ class server extends Rcon {
      *
      * @return array|false
      */
-    public function cfg_get() {
+    public function cfgGetArray() {
         return $this->cfg;
     }
 
@@ -225,21 +204,20 @@ class server extends Rcon {
      * @param String $key
      * @return bool
      */
-    public function cfg_check(String $key) {
-        if (isset($this->cfg[$key])) {
-            return true;
-        }
-        return false;
+    public function cfgKeyExists(String $key): bool
+    {
+        return isset($this->cfg[$key]);
     }
 
     /**
      * Liest ein werte einer Option aus der CFG
      *
      * @param String $key
+     * @param bool $nfAsBool Nicht gefunden als Bool ausgeben
      * @return mixed|null
      */
-    public function cfg_read(String $key) {
-        return ($this->cfg_check($key)) ? $this->cfg[$key] : null;
+    public function cfgRead(String $key, bool $nfAsBool = false) {
+        return $this->cfgKeyExists($key) ? $this->cfg[$key] : ($nfAsBool ? false : null);
     }
 
     /**
@@ -247,22 +225,29 @@ class server extends Rcon {
      *
      * @param String $key
      * @param String $value
-     * @return array|false
+     * @return boolean
      */
-    public function cfg_write(String $key, String $value) {
+    public function cfgWrite(String $key, String $value): bool
+    {
         $this->cfg[$key] = $value;
-        return $this->cfg;
+        return $this->cfg[$key] === $value;
     }
 
     /**
      * Entfernt ein werte einer Option aus der CFG
      *
      * @param String $key
-     * @return array|false
+     * @return boolean
      */
-    public function cfg_remove(String $key) {
-        if (isset($this->cfg[$key])) unset($this->cfg[$key]);
-        return $this->cfg;
+    public function cfgRemove(String $key): bool
+    {
+        if(isset($this->cfg[$key])) {
+            unset($this->cfg[$key]);
+            return !isset($this->cfg[$key]);
+        }
+        else {
+            return true;
+        }
     }
 
     /**
@@ -270,10 +255,10 @@ class server extends Rcon {
      *
      * @return bool
      */
-    public function cfg_save() {
-
-        if ($this->cfg_check("arkserverroot") && $this->cfg_check("logdir") && $this->cfg_check("arkbackupdir")) {
-            $this->write_ini_file($this->cfg, __ADIR__.'/remote/arkmanager/instances/'.$this->serv.'.cfg');
+    public function cfgSave(): bool
+    {
+        if ($this->cfgKeyExists("arkserverroot") && $this->cfgKeyExists("logdir") && $this->cfgKeyExists("arkbackupdir")) {
+            $this->writeIniFile($this->cfg, $this->KUTIL->path(__ADIR__.'/remote/arkmanager/instances/'.$this->serv.'.cfg')["/path"]);
             return true;
         } else {
             return false;
@@ -285,8 +270,9 @@ class server extends Rcon {
      *
      * @return bool
      */
-    public function mod_support() {
-        return (!$this->cfg_check("arkflag_crossplay") && !$this->cfg_check("arkflag_epiconly"));
+    public function modSupport(): bool
+    {
+        return (!$this->cfgKeyExists("arkflag_crossplay") && !$this->cfgKeyExists("arkflag_epiconly"));
     }
 
     /**
@@ -298,29 +284,27 @@ class server extends Rcon {
      *
      * @return int
      */
-    public function statecode() {
+    public function stateCode(): int
+    {
         global $helper;
+        $data = $helper->fileToJson($this->KUTIL->path(__ADIR__."/app/json/serverinfo/" . $this->name() . ".json")["/path"]);
 
-        $path = __ADIR__."/app/json/serverinfo/" . $this->name() . ".json";
-        $data = $helper->file_to_json($path);
-
-        $serverstate = 0;
-        if ($this->isinstalled() == "FALSE") {
-            $serverstate = 3;
+        if ($this->isInstalled() == "FALSE") {
+            return 3;
         }
         elseif ($data["listening"] == "Yes" && $data["online"] == "Yes" && $data["run"] == "Yes") {
-            $serverstate = 2;
+            return 2;
         }
         elseif ($data["listening"] == "No" && $data["online"] == "No" && $data["run"] == "Yes") {
-            $serverstate = 1;
+            return 1;
         }
         elseif ($data["listening"] == "Yes" && $data["online"] == "No" && $data["run"] == "Yes") {
-            $serverstate = 1;
+            return 1;
         }
         elseif ($data["listening"] == "No" && $data["online"] == "Yes" && $data["run"] == "Yes") {
-            $serverstate = 1;
+            return 1;
         }
-        return $serverstate;
+        return 0;
     }
 
     /**
@@ -328,26 +312,26 @@ class server extends Rcon {
      *
      * @return data_server
      */
-    public function status() {
+    public function status(): data_server
+    {
         global $helper;
 
-        $path = __ADIR__."/app/json/serverinfo/" . $this->name() . ".json";
-        $data = $helper->file_to_json($path);
-        $class = new data_server();
+        $data                   = $helper->fileToJson($this->KUTIL->path(__ADIR__."/app/json/serverinfo/" . $this->name() . ".json")["/path"]);
+        $class                  = new data_server();
 
-        $class->aplayers = isset($data["aplayersarr"]) ? (is_countable($data["aplayersarr"]) ? count($data["aplayersarr"]) : 0) : 0;
-        $class->players = isset($data["players"]) ? $data["players"] : "";
-        $class->listening = isset($data["listening"]) ? $data["listening"] : "";
-        $class->online = isset($data["online"]) ? $data["online"] : "";
-        $class->cfg = isset($data["cfg"]) ? $data["cfg"] : "";
-        $class->ServerMap = isset($data["ServerMap"]) ? $data["ServerMap"] : "";
-        $class->ServerName = isset($data["ServerName"]) ? $data["ServerName"] : "";
-        $class->ARKServers = isset($data["ARKServers"]) ? $data["ARKServers"] : "";
-        $class->connect = isset($data["connect"]) ? $data["connect"] : "";
-        $class->run = isset($data["run"]) ? $data["run"] : "";
-        $class->pid = isset($data["pid"]) ? $data["pid"] : "";
-        $class->aplayersarr = isset($data["aplayersarr"]) ? $data["aplayersarr"] : [];
-        $class->version = isset($data["version"]) ? $data["version"] : "";
+        $class->aplayers        = isset($data["aplayersarr"])   ? (is_countable($data["aplayersarr"]) ? count($data["aplayersarr"]) : 0) : 0;
+        $class->players         = isset($data["players"])       ? $data["players"]      : "";
+        $class->listening       = isset($data["listening"])     ? $data["listening"]    : "";
+        $class->online          = isset($data["online"])        ? $data["online"]       : "";
+        $class->cfg             = isset($data["cfg"])           ? $data["cfg"]          : "";
+        $class->ServerMap       = isset($data["ServerMap"])     ? $data["ServerMap"]    : "";
+        $class->ServerName      = isset($data["ServerName"])    ? $data["ServerName"]   : "";
+        $class->ARKServers      = isset($data["ARKServers"])    ? $data["ARKServers"]   : "";
+        $class->connect         = isset($data["connect"])       ? $data["connect"]      : "";
+        $class->run             = isset($data["run"])           ? $data["run"]          : "";
+        $class->pid             = isset($data["pid"])           ? $data["pid"]          : "";
+        $class->aplayersarr     = isset($data["aplayersarr"])   ? $data["aplayersarr"]  : [];
+        $class->version         = isset($data["version"])       ? $data["version"]      : "";
 
         return $class;
     }
@@ -361,26 +345,24 @@ class server extends Rcon {
      * @param bool $group
      * @return bool
      */
-    public function ini_load(String $ini, bool $group = false) {
+    public function iniLoad(String $ini, bool $group = false) {
+        $path       = $this->dirMain();
+        $ini_str    = $this->KUTIL->fileGetContents($path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini);
 
-        $path = $this->dir_main();
-        $dir = $path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini;
-
-        if (file_exists($dir) && fileperms($dir)) {
+        if ($ini_str !== false) {
             // Lesen und Codieren
-            $ini_str = file_get_contents($dir);
             if(!preg_match('//u', $ini_str)) $ini_str = mb_convert_encoding($ini_str,'UTF-8', 'UCS-2LE');
-            $ini_str = str_replace(" ", null, $ini_str);
-            file_put_contents("$path/ShooterGame/Saved/Config/LinuxServer/conv_$ini", $ini_str);
+            $ini_str        = str_replace(" ", null, $ini_str);
+            $this->KUTIL->filePutContents("$path/ShooterGame/Saved/Config/LinuxServer/conv_$ini", $ini_str);
 
             // Schreiben
-            $this->ini = parse_ini_string($ini_str, $group, INI_SCANNER_RAW);
-            $this->iniext = extend_parse_ini("$path/ShooterGame/Saved/Config/LinuxServer/conv_$ini");
-            $this->inipath = $dir;
-            $this->inistr = $ini_str;
-            return TRUE;
+            $this->ini      = parse_ini_string($ini_str, $group, INI_SCANNER_RAW);
+            $this->iniext   = extend_parse_ini($this->KUTIL->path("$path/ShooterGame/Saved/Config/LinuxServer/conv_$ini")["/path"]);
+            $this->inipath  = $this->KUTIL->path($path.'/ShooterGame/Saved/Config/LinuxServer/'.$ini)["/path"];
+            $this->inistr   = $ini_str;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -389,25 +371,7 @@ class server extends Rcon {
      *
      * @return false|string
      */
-    public function ini_get_str() {
-        /*$INI_STRING = null;
-        $FIRST = false;
-        foreach ($this->ini_get() as $key => $item){
-            $INI_STRING .= !$FIRST ? "[$key]\n" : "\n[$key]\n" ;
-            $FIRST = true;
-            foreach ($item as $KEY => $ITEM){
-                if(is_array($ITEM)) {
-                    foreach ($ITEM as $KEY2 => $ITEM2){
-                        if(!is_array($ITEM2)) {
-                            $INI_STRING .= $KEY."[$KEY2]=$ITEM2\n";
-                        }
-                    }
-                }
-                else {
-                    $INI_STRING .= "$KEY=".(is_bool($ITEM) ? ($ITEM ? "True" : "False") : $ITEM)."\n";
-                }
-            }
-        }*/
+    public function iniGetString() {
         return $this->inistr;
     }
 
@@ -416,7 +380,7 @@ class server extends Rcon {
      *
      * @return mixed
      */
-    public function ini_get_path() {
+    public function iniGetPath() {
         return $this->inipath;
     }
 
@@ -425,7 +389,7 @@ class server extends Rcon {
      *
      * @return mixed
      */
-    public function ini_get() {
+    public function iniGetArray() {
         return $this->ini;
     }
 
@@ -435,8 +399,8 @@ class server extends Rcon {
      * @param $key
      * @return mixed
      */
-    public function ini_read($key) {
-        return ($this->ini_isset($key)) ? $this->ini[$key] : false;
+    public function iniRead($key) {
+        return ($this->iniIsKeySet($key)) ? $this->ini[$key] : false;
     }
 
     /**
@@ -445,7 +409,7 @@ class server extends Rcon {
      * @param $key
      * @return bool
      */
-    public function ini_isset($key) {
+    public function iniIsKeySet($key) {
         return isset($this->ini[$key]);
     }
 
@@ -454,11 +418,11 @@ class server extends Rcon {
      *
      * @param $key
      * @param $value
-     * @return array|false
+     * @return bool
      */
-    public function ini_write($key, $value) {
+    public function iniWrite($key, $value) {
         $this->ini[$key] = $value;
-        return $this->cfg;
+        return $this->ini[$key] === $value;
     }
 
     /**
@@ -467,10 +431,14 @@ class server extends Rcon {
      * @param $key
      * @return bool
      */
-    public function ini_remove($key) {
-        $bool = isset($this->ini[$key]);
-        if($bool) unset($this->ini[$key]);
-        return $bool;
+    public function iniRemove($key) {
+        if(isset($this->ini[$key])) {
+            unset($this->ini[$key]);
+            return !isset($this->ini[$key]);
+        }
+        else {
+            return true;
+        }
     }
 
     /**
@@ -478,9 +446,9 @@ class server extends Rcon {
      *
      * @return bool
      */
-    public function ini_save()
+    public function iniSave()
     {
-        $this->safefilerewrite($this->inipath, $this->ini);
+        $this->safeFileWrite($this->inipath, $this->ini);
         return true;
     }
 
@@ -489,145 +457,61 @@ class server extends Rcon {
     /**
      * Läd Cluster Daten
      */
-    public function cluster_load() {
+    public function clusterLoad() {
         global $helper;
-        $clusterjson_path = __ADIR__."/app/json/panel/cluster_data.json";
+        $clusterjson_path = $this->KUTIL->path(__ADIR__."/app/json/panel/cluster_data.json")["/path"];
         $infos["in"] = false;
-        if (file_exists($clusterjson_path)) {
-            $json = $helper->file_to_json($clusterjson_path);
-            $infos["mods"] = false;
-            $infos["konfig"] = false;
-            $infos["admin"] = false;
-            $infos["type"] = 0;
+        if (@file_exists($clusterjson_path)) {
+            $json = $helper->fileToJson($clusterjson_path);
+            $infos["mods"]      = false;
+            $infos["konfig"]    = false;
+            $infos["admin"]     = false;
+            $infos["type"]      = 0;
             foreach ($json as $mk => $mv) {
-                if (array_search($this->name(), array_column($mv["servers"], 'server')) !== FALSE) {
+                if (array_search($this->name(), array_column($mv["servers"], 'server')) !== false) {
                    //var_dump($mv);
-                    $infos["in"] = true;
-                    $infos["clusterid"] = $mv["clusterid"];
-                    $infos["name"] = $mv["name"];
-                    $infos["key"] = $mk;
-                    $i = array_search($this->name(), array_column($mv["servers"], 'server'));
-                    $infos["type"] =$mv["servers"][$i]["type"];
-                    $infos["mods"] = $mv["sync"]["mods"];
-                    $infos["konfig"] = $mv["sync"]["konfig"];
-                    $infos["admin"] = $mv["sync"]["admin"];
-                    $infos["whitelist"] = $mv["sync"]["whitelist"];
+                    $infos["in"]            = true;
+                    $infos["clusterid"]     = $mv["clusterid"];
+                    $infos["name"]          = $mv["name"];
+                    $infos["key"]           = $mk;
+                    $infos["type"]          = $mv["servers"][array_search($this->name(), array_column($mv["servers"], 'server'))]["type"];
+                    $infos["mods"]          = $mv["sync"]["mods"];
+                    $infos["konfig"]        = $mv["sync"]["konfig"];
+                    $infos["admin"]         = $mv["sync"]["admin"];
+                    $infos["whitelist"]     = $mv["sync"]["whitelist"];
                 }
             }
         }
-        $this->loadedcluster = true;
-        $this->cluster_data = $infos;
+        $this->loadedcluster    = true;
+        $this->cluster_data     = $infos;
     }
 
     /**
      * Gibt gesamten Daten zum Cluster als Array wieder
      *
-     * @return mixed
+     * @return array|bool
      */
-    public function cluster_array() {
-        if ($this->loadedcluster) return $this->cluster_data;
-        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
+    public function clusterArray() {
+        return $this->loadedcluster ? $this->cluster_data : false;
     }
 
     /**
      * Gibt aus ob der Server in einem Cluster ist
      *
-     * @return mixed
+     * @return bool
      */
-    public function cluster_in() {
-        if ($this->loadedcluster) return $this->cluster_data["in"];
-        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
+    public function clusterIn() {
+        return $this->loadedcluster ? $this->cluster_data["in"] : false;
     }
 
     /**
      * Gibt die Cluster ID wieder
      *
+     * @param string $key
      * @return mixed|string
      */
-    public function cluster_clusterid() {
-        if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["clusterid"];
-        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
-        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
-    }
-
-    /**
-     * Gibt den namen des Clusters wieder
-     *
-     * @return mixed|string
-     */
-    public function cluster_name() {
-        if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["name"];
-        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
-        if (!$this->cluster_data["in"]) return "{::lang::php::class::notincluster}";
-    }
-
-    /**
-     * Gibt den Cluster Schlüssel wieder
-     *
-     * @return mixed|string
-     */
-    public function cluster_key() {
-        if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["key"];
-        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
-        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
-    }
-
-    /**
-     * Gibt aus ob der Cluster Mods Syncronisiert
-     *
-     * @return mixed|string
-     */
-    public function cluster_mods() {
-        if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["mods"];
-        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
-        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
-    }
-
-
-    /**
-     * Gibt aus ob der Cluster Konfigs Syncronisiert
-     *
-     * @return mixed|string
-     */
-    public function cluster_konfig() {
-        if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["konfig"];
-        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
-        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
-    }
-
-
-    /**
-     * Gibt aus ob der Cluster Admins Syncronisiert
-     *
-     * @return mixed|string
-     */
-    public function cluster_admin() {
-        if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["admin"];
-        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
-        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
-    }
-
-
-    /**
-     * Gibt aus ob der Cluster Whitelisten Syncronisiert
-     *
-     * @return mixed|string
-     */
-    public function cluster_whitelist() {
-        if ($this->loadedcluster && $this->cluster_data["in"]) return (isset($this->cluster_data["whitelist"])) ? $this->cluster_data["whitelist"] : false;
-        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
-        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
-    }
-
-    /**
-     * Gibt aus ob der server ein "Slave" oder "Master" ist
-     *
-     * @return mixed|string
-     */
-    public function cluster_type() {
-        if ($this->loadedcluster && $this->cluster_data["in"]) return $this->cluster_data["type"];
-        if (!$this->loadedcluster) echo "{::lang::php::class::clusternotload}";
-        if (!$this->cluster_data["in"]) return "{::lang::php::class::nocluster}";
+    public function clusterRead(string $key) {
+        return isset($this->cluster_data[$key]) && $this->clusterIn() ? $this->cluster_data[$key] : false;
     }
 
     // RCON Funktionen
@@ -637,40 +521,41 @@ class server extends Rcon {
      *
      * @return bool
      */
-    public function check_rcon() {
-        return ($this->statecode() == 2 && $this->cfg_read('ark_RCONEnabled') == 'True' && $this->cfg_read('ark_ServerAdminPassword') != '');
+    public function checkRcon() {
+        return ($this->stateCode() == 2 && $this->cfgRead('ark_RCONEnabled') == 'True' && $this->cfgRead('ark_ServerAdminPassword') != '');
     }
 
     /**
      * Führt einen RCON command aus
      *
      * @param String $commmand
+     * @param bool $getResponse
      * @return int
      */
-    public function exec_rcon(String $commmand = "") {
-        if ($this->check_rcon()) {
-            $re = 12;
+    public function execRcon(String $commmand = "", bool $getResponse = false) {
+        if ($this->checkRcon()) {
+            $re     = $getResponse ? false : 12;
 
             //inz RCON
-            $ip = $_SERVER['SERVER_ADDR'];
-            $port = $this->cfg_read('ark_RCONPort');
-            $pw = $this->cfg_read('ark_ServerAdminPassword');
-            $rcon = new parent($ip, $port, $pw, 3);
+            $ip     = $_SERVER['SERVER_ADDR'];
+            $port   = $this->cfgRead('ark_RCONPort');
+            $pw     = $this->cfgRead('ark_ServerAdminPassword');
+            $rcon   = new parent($ip, $port, $pw, 3);
 
             if ($rcon->connect()) {
                 if ($commmand == "") {
-                    $re = 2;
+                    $re = $getResponse ? false : 2;
                 }
                 elseif (!$rcon->send_command($commmand)) {
-                    $re = 12;
+                    $re = $getResponse ? false : 12;
                 }
                 else {
-                    $re = 108;
+                    $re = $getResponse ? $rcon->get_response() : 108;
                 }
                 $rcon->disconnect();
             }
         } else {
-            $re = 12;
+            $re = $getResponse ? false : 12;
         }
         return $re;
     }
@@ -683,7 +568,7 @@ class server extends Rcon {
      * @param array $array
      * @param String $file
      */
-    private function write_ini_file(Array $array, String $file)
+    private function writeIniFile(Array $array, String $file)
     {
         $res = array();
         foreach ($array as $key => $val) {
@@ -692,14 +577,14 @@ class server extends Rcon {
                 foreach ($val as $skey => $sval) $res[] = $skey . "=" . (is_numeric($sval) ? $sval : '"' . $sval . '"');
             } else $res[] = $key . "=" . (is_numeric($val) ? $val : '"' . $val . '"');
         }
-        $this->safefilerewrite($file, implode("\n", $res));
+        $this->safeFileWrite($file, implode("\n", $res));
     }
 
     /**
      * @param String $fileName
      * @param String $dataToSave
      */
-    private function safefilerewrite(String $fileName, String $dataToSave)
+    private function safeFileWrite(String $fileName, String $dataToSave)
     {
         if ($fp = fopen($fileName, 'w')) {
             $startTime = microtime(TRUE);

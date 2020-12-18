@@ -19,7 +19,7 @@ function load_xml($langfile) {
     global $helper;
     // mache XML zu einem Array
     $xml = simplexml_load_file($langfile);
-    $xml = $helper->str_to_json($helper->json_to_str($xml), true);
+    $xml = $helper->stringToJson($helper->jsonToString($xml), true);
 
     //splite array um ein im Template einzubinden
     read_xml($xml, "::lang");

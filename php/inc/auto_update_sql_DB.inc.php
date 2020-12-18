@@ -10,7 +10,7 @@
 
 //check SQL
 $tables = [];
-$SQLs = scandir(__ADIR__."/app/sql");
+$SQLs   = scandir(__ADIR__."/app/sql");
 foreach ($SQLs as $FILE) {
     if($FILE != "." && $FILE != ".." && strpos($FILE, "ArkAdmin_") !== false) {
         $FILE_NAME = pathinfo(__ADIR__."/app/sql/$FILE", PATHINFO_FILENAME);
@@ -32,21 +32,21 @@ if($version == "2.0.0" && $buildid == 200.000) {
     $mycon->query("alter table `ArkAdmin_users` modify `rang` text null");
     $USERS = "SELECT * FROM `ArkAdmin_users`";
     foreach ($mycon->query($USERS)->fetchAll() as $USER) {
-        $ID = $USER["id"];
-        $FILE = __ADIR__."/app/json/user/".md5($ID).".permissions.json";
+        $ID     = $USER["id"];
+        $FILE   = __ADIR__."/app/json/user/".md5($ID).".permissions.json";
 
-        if(file_exists($FILE)) {
-            $json = json_decode(file_get_contents($FILE), true);
+        if(@file_exists($FILE)) {
+            $json = json_decode($KUTIL->fileGetContents($FILE), true);
             if(isset($json["all"]["is_admin"]) && $json["all"]["is_admin"] == "1") {
-                $query = 'UPDATE `ArkAdmin_users` SET `rang`=\'[1]\'  WHERE `id` = \''.$ID.'\'';
+                $query  = 'UPDATE `ArkAdmin_users` SET `rang`=\'[1]\'  WHERE `id` = \''.$ID.'\'';
                 $mycon->query($query);
             }
             else {
-                $QUERY = "INSERT INTO `ArkAdmin_user_group` (`name`, `editform`, `time`, `permissions`, `canadd`) VALUES (? , 1, 0, '".file_get_contents($FILE)."', '[]')";
+                $QUERY = "INSERT INTO `ArkAdmin_user_group` (`name`, `editform`, `time`, `permissions`, `canadd`) VALUES (? , 1, 0, '".$KUTIL->fileGetContents($FILE)."', '[]')";
                 if($mycon->query($QUERY, $USER["username"])) {
-                    $QUERY = "SELECT * FROM `ArkAdmin_user_group` WHERE `name`= ? ";
-                    $groupid = $mycon->query($QUERY, $USER["username"])->fetchArray()["id"];
-                    $query = 'UPDATE `ArkAdmin_users` SET `rang`=\'['.$groupid.']\'  WHERE `id` = \''.$ID.'\'';
+                    $QUERY      = "SELECT * FROM `ArkAdmin_user_group` WHERE `name`= ? ";
+                    $groupid    = $mycon->query($QUERY, $USER["username"])->fetchArray()["id"];
+                    $query      = 'UPDATE `ArkAdmin_users` SET `rang`=\'['.$groupid.']\'  WHERE `id` = \''.$ID.'\'';
                     $mycon->query($query);
                 }
             }
@@ -60,4 +60,4 @@ if($version == "2.0.0" && $buildid == 200.000) {
 }
 
 $check_json["checked"] = true;
-$helper->savejson_create($check_json, __ADIR__."/app/data/sql_check.json");
+$helper->saveFile($check_json, __ADIR__."/app/data/sql_check.json");

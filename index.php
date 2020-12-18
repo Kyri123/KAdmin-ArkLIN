@@ -7,59 +7,73 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
+
+// TODO :: DONE 2.1.0 REWORKED
+
+// Loadtime
+$stime = microtime(true);
 define("__ADIR__", __DIR__);
 
-// für Installer
+// start SessionS
+session_start();
+
+// check install
 if(isset($_GET["mod_rewrite"])) {
     echo array_key_exists('HTTP_MOD_REWRITE', $_SERVER) ? '{"HTTP_MOD_REWRITE":"on"}' : '{}';
     exit;
 }
-
-if(file_exists(__ADIR__."/app/check/done") && file_exists(__ADIR__."/install.php")) unlink(__ADIR__."/install.php");
-
-// hide errors
-$stime = microtime(true);
-include(__ADIR__.'/php/inc/config.inc.php');
-include(__ADIR__.'/php/class/helper.class.inc.php');
-$helper = new helper();
-$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
-$site_name = $content = null;
-
-$all = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
-
-// erzeuge Default Permissions FILE
-$D_PERM_ARRAY = $helper->file_to_json(__ADIR__."/app/json/user/permissions.tpl.json");
-$server = $all["cfgs_only_name"];
-foreach ($server as $item) {
-    $perm_file = file_get_contents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
-    $perm_file = str_replace("{cfg}", $item, $perm_file);
-    $default = $helper->str_to_json($perm_file);
-    $D_PERM_ARRAY["server"] += $default;
-}
-
-if (isset($_SESSION["id"])) {
-    $query = 'UPDATE `ArkAdmin_users` SET `lastlogin`=\''.time().'\' WHERE `id`= ? ';
-    $mycon->query($query, $_SESSION["id"]);
-}
-
-// Deaktiviere Error anzeige
-ini_set('display_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
-ini_set('display_startup_errors', ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
-if(isset($ckonfig["show_err"])) error_reporting(E_ALL);
-
-//check install
-if (!file_exists(__ADIR__."/app/check/subdone")) {
+if (!file_exists(__ADIR__."/app/check/done")) {
     header('Location: /install.php');
     exit;
 }
 
+// Konfig
+include(__ADIR__.'/php/inc/config.inc.php');
+
+// Inz KUTIL
+include(__ADIR__.'/php/class/KUtil.class.inc.php');
+include(__ADIR__.'/php/class/helper.class.inc.php');
+
+$helper     = new helper();
+$ckonfig    = $helper->fileToJson(__ADIR__.'/php/inc/custom_konfig.json', true);
+
+// Deaktiviere Error anzeige
+ini_set('display_errors',           ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
+ini_set('display_startup_errors',   ((isset($ckonfig["show_err"])) ? $ckonfig["show_err"] : 0));
+if(isset($ckonfig["show_err"]))           error_reporting(E_ALL);
+
+// Einige Einstellungen KUTIL und default VARS
+$site_name                  = $content = null;
+$KUTIL->replacePathFrom     = [
+    __ADIR__."/remote/serv/",
+    __ADIR__."/remote/arkmanager/",
+    __ADIR__."/remote/steamcmd/"
+];
+$KUTIL->replacePathTo   = [
+    $ckonfig["servlocdir"],
+    $ckonfig["arklocdir"],
+    $ckonfig["steamcmddir"]
+];
+
+// Entfernt Installer wenn der Vorgang abgeschlossen ist
+if(@file_exists(__ADIR__."/app/check/done")) $KUTIL->removeFile(__ADIR__."/install.php", false);
+if(@file_exists(__ADIR__."/app/check/done")) $KUTIL->removeFile(__ADIR__."/install");
+
+// erzeuge Default Permissions FILE
+$all                            = $helper->fileToJson(__ADIR__."/app/json/serverinfo/all.json");
+$D_PERM_ARRAY                   = $helper->fileToJson(__ADIR__."/app/json/user/permissions.tpl.json");
+$server                         = $all["cfgs_only_name"];
+foreach ($server as $item) {
+    $perm_file                  = $KUTIL->fileGetContents(__ADIR__."/app/json/user/permissions_servers.tpl.json");
+    $perm_file                  = str_replace("{cfg}", $item, $perm_file);
+    $default                    = $helper->stringToJson($perm_file);
+    $D_PERM_ARRAY["server"]     += $default;
+}
+
 // Define vars
 date_default_timezone_set('Europe/Amsterdam');
-$pagename = $pageimg = $titlename = $sidebar = $btns = $urltop = $g_alert = $pageicon = $tpl = null;
-$setsidebar = $g_alert_bool = false;
-
-//start SessionS
-session_start();
+$pagename       = $pageimg = $titlename = $sidebar = $btns = $urltop = $g_alert = $pageicon = $tpl = null;
+$setsidebar     = $g_alert_bool = false;
 
 // Löse URL auf
 $ROOT           = str_replace("index.php", null, $_SERVER["SCRIPT_NAME"]);
@@ -73,10 +87,10 @@ $page           = isset($url[1]) ? $url[1] : "home";
 
 
 // API
-$API_path           = __ADIR__."/php/inc/api.json";
-$API_array          = $helper->file_to_json($API_path);
-$API_ACTIVE         = boolval($API_array["active"]);
-$API_KEY            = $API_array["key"];
+$API_path       = __ADIR__."/php/inc/api.json";
+$API_array      = $helper->fileToJson($API_path);
+$API_ACTIVE     = boolval($API_array["active"]);
+$API_KEY        = $API_array["key"];
 
 // read URL
 $surl           = $_SERVER["REQUEST_URI"];
@@ -90,9 +104,15 @@ if ($url[1] == "" || $url[1] == "favicon.ico") {
 include(__ADIR__.'/php/class/mysql.class.inc.php');
 $mycon = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 
+// Update last login
+if (isset($_SESSION["id"])) {
+    $mycon->query('UPDATE `ArkAdmin_users` SET `lastlogin`=? WHERE `id`=?', time(), $_SESSION["id"]);
+}
+
+// Logge aus wenn nötig
 if($url[1] == "logout") {
     if (isset($_COOKIE["id"]) && isset($_COOKIE["validate"])) {
-        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`validate`= ? )";
+        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`validate`=?)";
         $mycon->query($query, $_COOKIE["validate"]);
         setcookie("id", "", time() - 3600);
         setcookie("validate", "", time() - 3600);
@@ -103,7 +123,8 @@ if($url[1] == "logout") {
     exit;
 }
 
-$check_json = $helper->file_to_json(__ADIR__."/app/data/sql_check.json");
+// Updater
+$check_json = $helper->fileToJson(__ADIR__."/app/data/sql_check.json");
 if($mycon->is && !$check_json["checked"]) include(__ADIR__.'/php/inc/auto_update_sql_DB.inc.php');
 
 // Include functions
@@ -134,21 +155,21 @@ include(__ADIR__.'/php/class/jobs.class.inc.php');
 include(__ADIR__.'/php/inc/template_preinz.inc.php');
 
 //create class_var
-$alert = new alert();
-$steamapi = new steamapi();
-$user = new userclass();
+$alert      = new alert();
+$steamapi   = new steamapi();
+$user       = new userclass();
 if(isset($_SESSION["id"])) {
     $user->setid($_SESSION['id']);
 
     //Prüfe ob der Benutzer gebant ist
     if ($user->read("ban") > 0) {
-        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`= ? )";
+        $query = "DELETE FROM `ArkAdmin_user_cookies` WHERE (`userid`=?)";
         $mycon->query($query, $_SESSION["id"]);
         session_destroy();
     }
 
     // Prüfe ob der Nutzer noch exsistiert
-    $query = "SELECT * FROM `ArkAdmin_users` WHERE (`id`= ? )";
+    $query = "SELECT * FROM `ArkAdmin_users` WHERE (`id`=?)";
     if (!($mycon->query($query, $_SESSION["id"])->numRows() > 0)) {
         session_destroy();
         header("Location: /login");
@@ -157,32 +178,32 @@ if(isset($_SESSION["id"])) {
 
     // Erfasse IP
     $path = __ADIR__."/app/json/user/".md5($_SESSION["id"]).".json";
-    if(!file_exists($path)) file_put_contents($path, "{}") ? null : null;
-    if(file_exists($path)) {
-        $json = $helper->file_to_json($path, true);
-        $json["ip"] = getRealIpAddr();
-        $json["id"] = $session_user->read("id");
-        $helper->savejson_create($json, $path);
+    $KUTIL->createFile($path, "{}") ? null : null;
+    if(@file_exists($path)) {
+        $json           = $helper->fileToJson($path, true);
+        $json["ip"]     = getRealIpAddr();
+        $json["id"]     = $session_user->read("id");
+        $helper->saveFile($json, $path);
     }
 }
 
 // Allgemein SteamAPI Arrays
-$steamapi_mods = (file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/mods.json", true) : array();
-$steamapi_user = (file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->file_to_json(__ADIR__."/app/json/steamapi/user.json", true) : array();
+$steamapi_mods  = (@file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/mods.json", true) : array();
+$steamapi_user  = (@file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/user.json", true) : array();
 
 // include util
 include(__ADIR__.'/php/inc/session.inc.php');
 
 //create globals vars
-$API_Key = $ckonfig['apikey'];
-$servlocdir = $ckonfig['servlocdir'];
-$expert = isset($_SESSION["id"]) ? $user->expert() : false;
-$jobs = new jobs();
+$API_Key        = $ckonfig['apikey'];
+$servlocdir     = $ckonfig['servlocdir'];
+$expert         = isset($_SESSION["id"]) ? $user->expert() : false;
+$jobs           = new jobs();
 
 // Define default page
-$page = $url[1];
+$page           = $url[1];
 
-if (file_exists(__ADIR__.'/php/page/'.$page.'.inc.php')) {
+if (@file_exists(__ADIR__.'/php/page/'.$page.'.inc.php')) {
     include(__ADIR__.'/php/page/'.$page.'.inc.php');
 } else {
     header("Location: /404");
@@ -208,11 +229,7 @@ include(__ADIR__.'/php/inc/server.inc.php');
 include(__ADIR__.'/php/inc/nav_curr.inc.php');
 
 // Define pagename for login & registration
-if ($page == "login" || $page == "registration") {
-    $pagename = '{::lang::php::index::pagename_reg}';
-    if ($page == "login") $pagename = '{::lang::php::index::pagename_login}';
-}
-
+if($page == "login" || $page == "registration") $pagename = ($page == "login") ? '{::lang::php::index::pagename_login}' : '{::lang::php::index::pagename_reg}';
 if($session_user->perm("all/manage_aas")) $btns .= '
     <div class="dropdown d-inline">
         <a class="btn btn-outline-secondary rounded-0 dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -254,7 +271,7 @@ $tpl_b->r('pageicon', $pageicon);
 $tpl_h->r('pagename', $pagename);
 $tpl_h->rif('darkmode', isset($_COOKIE["style"]) ? $_COOKIE["style"] == "dark" : false);
 $tpl_b->r('aa_version', $version);
-$tpl_b->r('lastcheck_webhelper', converttime(((file_exists($path_webhelper)) ? intval(file_get_contents($path_webhelper)) : time()), true));
+$tpl_b->r('lastcheck_webhelper', converttime(((@file_exists($path_webhelper)) ? intval($KUTIL->fileGetContents($path_webhelper)) : time()), true));
 $tpl_b->r('user', isset($_SESSION["id"]) ? $user->read("username") : "Not logged in");
 $tpl_b->r('content', $content);
 $tpl_b->r('site_name', $site_name);
@@ -287,65 +304,47 @@ $tpl_b->rif ("ifchangelog", $ifnot_traffic);
 $tpl_b->r("ltime", round((microtime(true) - $stime), 2));
 
 // Site Builder
-if ($page != "login" && $page != "registration" && $page != "crontab" && isset($_SESSION['id']) && file_exists(__ADIR__."/app/check/done")) {
-    $tpl_h->echo();
-    $tpl_b->echo();
-    $tpl_f->echo();
-} else {
+$isNotLoggedIn = [
+    "login",
+    "registration",
+    "crontab"
+];
 
-    // Login
-    if ($page == "login" && file_exists(__ADIR__."/app/check/done") && !isset($_SESSION['id'])) {
-        if (isset($_SESSION["id"])) {
-            header('Location: /home');
-            exit;
-        }
-        $tpl_h->echo();
+if($page === "crontab") {
+    $tpl_h->echo();
+    $tpl_crontab->echo();
+    $tpl_f->echo();
+}
+elseif(in_array($page, $isNotLoggedIn) && isset($_SESSION['id'])) {
+    header("location: $ROOT/home");
+    exit;
+}
+elseif(!in_array($page, $isNotLoggedIn) && !isset($_SESSION['id'])) {
+    header("location: $ROOT/login");
+    exit;
+}
+elseif(in_array($page, $isNotLoggedIn) && !isset($_SESSION['id'])) {
+    $tpl_h->echo();
+    if($page == "login") {
         $tpl_login->r("ROOT", $ROOT);
         $tpl_login->r("langlist", get_lang_list());
         $tpl_login->echo();
     }
-
-    // Registration
-    elseif ($page == "registration" && file_exists(__ADIR__."/app/check/subdone") && !isset($_SESSION['id'])) {
-        if (isset($_SESSION["id"])) {
-            header('Location: /home');
-            exit;
-        }
-        $tpl_h->echo();
+    elseif($page == "registration") {
         $tpl_register->r("ROOT", $ROOT);
         $tpl_register->r("langlist", get_lang_list());
         $tpl_register->echo();
     }
-
-    // Crontab
-    elseif ($page == "crontab" && file_exists(__ADIR__."/app/check/done")) {
+    else {
         $tpl_h->echo();
         $tpl_crontab->echo();
+        $tpl_f->echo();
     }
-
-    // Forward installer
-    elseif (!file_exists(__ADIR__."/app/check/subdone")) {
-        header('Location: /install.php');
-        exit;
-    } else {
-        // Forward installer (registration)
-        if (file_exists(__ADIR__."/app/check/subdone") && !file_exists(__ADIR__."/app/check/done")) {
-            header('Location: /registration');
-            exit;
-        }
-
-        // Forward not loggedin
-        elseif (file_exists(__ADIR__."/app/check/done")) {
-            header('Location: /login');
-            exit;
-        }
-
-        // Forward not installed
-        else {
-            header('Location: /install.php');
-            exit;
-        }
-    }
+}
+else {
+    $tpl_h->echo();
+    $tpl_b->echo();
+    $tpl_f->echo();
 }
 
 //close mysql

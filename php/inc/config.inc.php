@@ -8,22 +8,24 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 // Mysql
-if(file_exists(__ADIR__.'/php/inc/pconfig.inc.php')) include(__ADIR__.'/php/inc/pconfig.inc.php');
+if(@file_exists(__ADIR__.'/php/inc/pconfig.inc.php')) include(__ADIR__.'/php/inc/pconfig.inc.php');
 
 // allgmeine
-$sitename = "ArkAdmin2";
-$version = '2.0.2';
-$ip = $_SERVER['SERVER_ADDR'];
-$maxpanel_server = 12;
-$buildid = 202.000;
+$sitename           = "ArkAdmin2";
+$version            = '2.1.0';
+$ip                 = $_SERVER['SERVER_ADDR'];
+$maxpanel_server    = 12;
+$buildid            = 210.42804;
 
 // Webserver
-$webserver['url'] = 'https://data.chiraya.de/';
-$webserver['changelog'] = $webserver['url'].'changelog.json';
-$webserver['sendin'] = $webserver['url'].'sendin.php';
-$webserver['config'] = json_decode(file_get_contents(__ADIR__."/arkadmin_server/config/server.json") ,true);
-$webserver['config']["port"] = (isset($webserver['config']["port"])) ? $webserver['config']["port"] : 30000;
+$webserver['url']               = 'https://data.chiraya.de/';
+$webserver['changelog']         = $webserver['url'].'changelog.json';
+$webserver['sendin']            = $webserver['url'].'sendin.php';
+$webserver['config']            = json_decode(file_get_contents(__ADIR__."/arkadmin_server/config/server.json") ,true);
+$webserver['config']["port"]    = (isset($webserver['config']["port"])) ? $webserver['config']["port"] : 30000;
 
 // Webserver Platzhalter
 

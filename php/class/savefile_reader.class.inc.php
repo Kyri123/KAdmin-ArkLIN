@@ -1,6 +1,8 @@
 <?php
 //from: https://gist.github.com/Sp1rit/d8776427620d01a61f3c6c453541febd
 //Modifiziert: Kyri123 (Oliver Kaufmann)
+
+// TODO :: DONE 2.1.0 REWORKED
 class Container
 {
     public $Players = array();
@@ -230,32 +232,32 @@ class Tribe
 //--------------
 class player_json_helper {
     public function player($json, $id) {
-        $re = new Player();
+        $re                     = new Player();
 
-        $re->SteamId = $json[$id]->SteamId;
-        $re->SteamName = $json[$id]->SteamName;
-        $re->SteamId = $json[$id]->SteamId;
-        $re->CharacterName = $json[$id]->CharacterName;
-        $re->Level = $json[$id]->Level;
-        $re->Id = $json[$id]->Id;
-        $re->ExperiencePoints = $json[$id]->ExperiencePoints;
-        $re->TotalEngramPoints = $json[$id]->TotalEngramPoints;
-        $re->FirstSpawned = $json[$id]->FirstSpawned;
-        $re->FileCreated = $json[$id]->FileCreated;
-        $re->FileUpdated = $json[$id]->FileUpdated;
-        $re->TribeId = $json[$id]->TribeId;
+        $re->SteamId            = $json[$id]->SteamId;
+        $re->SteamName          = $json[$id]->SteamName;
+        $re->SteamId            = $json[$id]->SteamId;
+        $re->CharacterName      = $json[$id]->CharacterName;
+        $re->Level              = $json[$id]->Level;
+        $re->Id                 = $json[$id]->Id;
+        $re->ExperiencePoints   = $json[$id]->ExperiencePoints;
+        $re->TotalEngramPoints  = $json[$id]->TotalEngramPoints;
+        $re->FirstSpawned       = $json[$id]->FirstSpawned;
+        $re->FileCreated        = $json[$id]->FileCreated;
+        $re->FileUpdated        = $json[$id]->FileUpdated;
+        $re->TribeId            = $json[$id]->TribeId;
 
         return $re;
     }
 
     public function tribe($json, $id) {
-        $re = new Tribe();
+        $re                 = new Tribe();
 
-        $re->Id = $json[$id]->Id;
-        $re->Name = $json[$id]->Name;
-        $re->OwnerId = $json[$id]->OwnerId;
-        $re->FileCreated = $json[$id]->FileCreated;
-        $re->FileUpdated = $json[$id]->FileUpdated;
+        $re->Id             = $json[$id]->Id;
+        $re->Name           = $json[$id]->Name;
+        $re->OwnerId        = $json[$id]->OwnerId;
+        $re->FileCreated    = $json[$id]->FileCreated;
+        $re->FileUpdated    = $json[$id]->FileUpdated;
 
         return $re;
     }

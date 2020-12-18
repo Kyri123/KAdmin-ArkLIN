@@ -13,10 +13,22 @@ define("__ADIR__", __DIR__);
 // hide errors
 $stime = microtime(true);
 include(__ADIR__.'/php/inc/config.inc.php');
+include(__ADIR__.'/php/class/KUtil.class.inc.php');
 include(__ADIR__.'/php/class/helper.class.inc.php');
 $helper = new helper();
-$ckonfig = $helper->file_to_json(__ADIR__.'/php/inc/custom_konfig.json', true);
+$ckonfig = $helper->fileToJson(__ADIR__.'/php/inc/custom_konfig.json', true);
 $site_name = $content = null;
+
+$KUTIL->replacePathFrom = [
+    __ADIR__."/remote/serv/",
+    __ADIR__."/remote/arkmanager/",
+    __ADIR__."/remote/steamcmd/"
+];
+$KUTIL->replacePathTo   = [
+    $ckonfig["servlocdir"],
+    $ckonfig["arklocdir"],
+    $ckonfig["steamcmddir"]
+];
 
 // Deaktiviere Error anzeige
 ini_set('display_errors', 0);
@@ -62,7 +74,7 @@ include(__ADIR__.'/php/inc/template_preinz.inc.php');
 
 // Prüfe auf berechtigung der API abfrage
 $API_path           = __ADIR__."/php/inc/api.json";
-$API_array          = $helper->file_to_json($API_path);
+$API_array          = $helper->fileToJson($API_path);
 $API_active         = boolval($API_array["active"]);
 $API_key            = $API_array["key"];
 
@@ -72,7 +84,10 @@ $API_VALIDE_REQUEST = array(
     "statistiken"
 );
 
-if(!isset($_GET["request"]) && !isset($_GET["key"]) || isset($_GET["key"]) && $_GET["key"] != $API_key) {
+if($API_array["active"] == 0) {
+    echo '{"active": false}';
+}
+elseif(!isset($_GET["request"]) && !isset($_GET["key"]) || isset($_GET["key"]) && $_GET["key"] != $API_key) {
     echo '{"permissions": false}';
 }
 else {
@@ -99,8 +114,8 @@ else {
             // Lite
             if($opt == "lite") {
                 $ALL_PATH = __ADIR__."/app/json/serverinfo/all.json";
-                if(file_exists($ALL_PATH)) {
-                    $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
+                if(@file_exists($ALL_PATH)) {
+                    $ALL_ARRAY = $helper->fileToJson($ALL_PATH);
 
                     foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
                         $RESPONSE["response"]["server"][] = str_replace(".cfg", null, $ITEM);
@@ -116,14 +131,14 @@ else {
             // Full
             elseif($opt == "full") {
                 $ALL_PATH = __ADIR__."/app/json/serverinfo/all.json";
-                if(file_exists($ALL_PATH)) {
-                    $ALL_ARRAY = $helper->file_to_json($ALL_PATH);
+                if(@file_exists($ALL_PATH)) {
+                    $ALL_ARRAY = $helper->fileToJson($ALL_PATH);
 
                     foreach ($ALL_ARRAY["cfgs"] as $ITEM) {
                         $servername = str_replace(".cfg", null, $ITEM);
                         $SERVER_PATH = __ADIR__."/app/json/serverinfo/$servername.json";
-                        if(file_exists($SERVER_PATH)) {
-                            $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
+                        if(@file_exists($SERVER_PATH)) {
+                            $SERVER_ARRAY = $helper->fileToJson($SERVER_PATH);
 
                             if(isset($SERVER_ARRAY["warning_count"]))   unset($SERVER_ARRAY["warning_count"]);
                             if(isset($SERVER_ARRAY["error_count"]))     unset($SERVER_ARRAY["error_count"]);
@@ -132,9 +147,9 @@ else {
 
                             $server = new server($servername);
 
-                            $SERVER_ARRAY["mods"]       = $server->cfg_read("ark_GameModIds");
-                            $SERVER_ARRAY["statecode"]  = $server->statecode();
-                            $SERVER_ARRAY["server_ip"]  = "$ip:".$server->cfg_read("ark_QueryPort");
+                            $SERVER_ARRAY["mods"]       = $server->cfgRead("ark_GameModIds");
+                            $SERVER_ARRAY["statecode"]  = $server->stateCode();
+                            $SERVER_ARRAY["server_ip"]  = "$ip:".$server->cfgRead("ark_QueryPort");
 
                             $RESPONSE["response"]["server"][$servername] = $SERVER_ARRAY;
                         }
@@ -158,10 +173,10 @@ else {
          */
         if($API_REQUEST == "serverinfo") {
             $SERVER_NAME = isset($_GET["server"]) ? $_GET["server"] : "unknown";
-            if(file_exists(__ADIR__."/remote/arkmanager/instances/$SERVER_NAME.cfg")) {
+            if(@file_exists(__ADIR__."/remote/arkmanager/instances/$SERVER_NAME.cfg")) {
                 $SERVER_PATH = __ADIR__."/app/json/serverinfo/$SERVER_NAME.json";
-                if(file_exists($SERVER_PATH)) {
-                    $SERVER_ARRAY = $helper->file_to_json($SERVER_PATH);
+                if(@file_exists($SERVER_PATH)) {
+                    $SERVER_ARRAY = $helper->fileToJson($SERVER_PATH);
 
                     if(isset($SERVER_ARRAY["warning_count"]))   unset($SERVER_ARRAY["warning_count"]);
                     if(isset($SERVER_ARRAY["error_count"]))     unset($SERVER_ARRAY["error_count"]);
@@ -170,9 +185,9 @@ else {
 
                     $server = new server($SERVER_NAME);
 
-                    $SERVER_ARRAY["mods"]       = $server->cfg_read("ark_GameModIds");
-                    $SERVER_ARRAY["statecode"]  = $server->statecode();
-                    $SERVER_ARRAY["server_ip"]  = "$ip:".$server->cfg_read("ark_QueryPort");
+                    $SERVER_ARRAY["mods"]       = $server->cfgRead("ark_GameModIds");
+                    $SERVER_ARRAY["statecode"]  = $server->stateCode();
+                    $SERVER_ARRAY["server_ip"]  = "$ip:".$server->cfgRead("ark_QueryPort");
 
                     $RESPONSE["response"]["serverinfo"] = $SERVER_ARRAY;
                     echo json_encode($RESPONSE);
@@ -196,7 +211,7 @@ else {
         if($API_REQUEST == "statistiken") {
             if(isset($_GET["server"])) {
                 $SERVER_NAME = $_GET["server"];
-                if(file_exists(__ADIR__."/remote/arkmanager/instances/$SERVER_NAME.cfg")) {
+                if(@file_exists(__ADIR__."/remote/arkmanager/instances/$SERVER_NAME.cfg")) {
                     $MAX = isset($_GET["max"]) ? intval($_GET["max"]) : 100;
                     if($MAX < 1) $MAX = 1;
                     $ORDER = isset($_GET["order"]) ? ($_GET["max"] == "ASC" ? "ASC" : "DESC") : "DESC";

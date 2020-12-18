@@ -8,63 +8,50 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 require('../main.inc.php');
-$cfg = $_GET['cfg'];
-$case = $_GET['case'];
-$serv = new server($cfg);
-$serv->cluster_load();
-$ifslave = ($serv->cluster_type() == 0 && $serv->cluster_in());
-$ifcmods = ($serv->cluster_mods() && $ifslave && $serv->cluster_in());
-$dir_installed = $serv->dir_main()."/ShooterGame/Content/Mods";
+$cfg            = $_GET['cfg'];
+$case           = $_GET['case'];
+$serv           = new server($cfg);
+$serv->clusterLoad();
+$ifslave        = $serv->clusterRead("type") == 0  && $serv->clusterIn();
+$ifcmods        = $serv->clusterRead("mods")       && $ifslave && $serv->clusterIn();
+$dir_installed  = $serv->dirMain()."/ShooterGame/Content/Mods";
 
 switch ($case) {
     // CASE: Aktive Mods
     case "mods_active":
 
-        $resp = null;
-        $site = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        $resp           = null;
+        $site           = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
-        $mods = explode(',', $serv->cfg_read('ark_GameModIds'));
-        $y = 1;
+        $mods           = explode(',', $serv->cfgRead('ark_GameModIds'));
+        $y              = 1;
 
-        $total_count = (is_countable($mods)) ? count($mods) : 0;
-        $imgb = -1;
-        if ($total_count > 0 && $serv->cfg_read('ark_GameModIds') != "") {
+        $total_count    = (is_countable($mods)) ? count($mods) : 0;
+        $imgb           = -1;
+        if ($total_count > 0 && $serv->cfgRead('ark_GameModIds') != "")
             for ($i=0;$i<count($mods);$i++) {
-                $tpl = new Template('mods.htm', __ADIR__.'/app/template/lists/serv/jquery/');
+                $tpl        = new Template('mods.htm', __ADIR__.'/app/template/lists/serv/jquery/');
+                $curr_id    = $mods[$i];
+
+                $y          = $i + 1;
+                $btns       = null;
+
                 $tpl->load();
-                $curr_id = $mods[$i];
-
-                $y = $i + 1;
-                $btns = null;
-
-                if ($i == 0 && $total_count > 1) {
-                    $tpl->rif ('ifup', false);
-                    $tpl->rif ('ifdown', true);
-                } elseif ($i == 0) {
-                    $tpl->rif ('ifup', false);
-                    $tpl->rif ('ifdown', false);
-                } elseif ($y != count($mods)) {
-                    $tpl->rif ('ifup', true);
-                    $tpl->rif ('ifdown', true);
-                } else {
-                    $tpl->rif ('ifup', true);
-                    $tpl->rif ('ifdown', false);
-                }
+                $tpl->rif ('ifup',$i != 0 && $total_count > 1);
+                $tpl->rif ('ifdown',$y != $total_count);
 
                 if(isset($steamapi_mods[$mods[$i]])) {
+                    $title      = $steamapi_mods[$mods[$i]]["title"];
+                    $modname    = strlen($title) > 14 ? substr($title, 0 , 14) . "..." : $title;
+
                     $tpl->r('img', $steamapi_mods[$mods[$i]]["preview_url"]);
-                    $modname = $steamapi_mods[$mods[$i]]["title"];
-                    $l = strlen($modname); $lmax = 14;
-                    if ($l > $lmax) {
-                        $modname = substr($modname, 0 , $lmax) . "...";
-                    }
                     $tpl->r('title_full', $steamapi_mods[$mods[$i]]["title"]);
                     $tpl->r('title', $modname);
                     $tpl->r('lastupdate', date('d.m.Y - H:i', $steamapi_mods[$mods[$i]]["time_updated"]));
-
-                    // Todo Funktioniert noch nicht
-                    $tpl->rif ('ifupdate', file_exists("$dir_installed/$curr_id.mod") ? filemtime("$dir_installed/$curr_id.mod") > $steamapi_mods[$mods[$i]]["time_updated"] : false);
+                    $tpl->rif ('ifupdate', false);
                 }
                 else {
                     $tpl->r('title_full', "{::lang::allg::default::notinapimod}");
@@ -75,9 +62,8 @@ switch ($case) {
                 }
 
                 $opt = null;
-                for ($z=0;$z<count($mods);$z++) {
+                for ($z=0;$z<count($mods);$z++)
                     if($i != $z) $opt .= "<option value='$z'>$z</option>";
-                }
 
                 while (true) {
                     $rand = rand($head_img["min"], $head_img["max"]);
@@ -98,7 +84,6 @@ switch ($case) {
                 $resp .= $tpl->load_var();
                 $tpl = null;
             }
-        }
 
         // Wenn kein Mod Gefunden wurde
         if($resp == null) {
@@ -125,40 +110,39 @@ switch ($case) {
     //
     case "mods_installed":
 
-        $api = new steamapi();
+        $api        = new steamapi();
 
-        $imgb = -1;
-        $resp = null;
-        $site = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-        $dir = $serv->dir_main()."/ShooterGame/Content/Mods";
-
-        $mods = explode(',', $serv->cfg_read("ark_GameModIds"));
+        $imgb       = -1;
+        $resp       = null;
+        $site       = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        $dir        = $serv->dirMain()."/ShooterGame/Content/Mods";
+        $mods       = explode(',', $serv->cfgRead("ark_GameModIds"));
 
         //List Local mods
-        $array = scandir($dir);
-        $mod_arr = [];
+        $array      = scandir($dir);
+        $mod_arr    = [];
         
-        foreach($array as $key => $value) {
+        foreach($array as $key => $value)
             if(is_dir("$dir/$value")) {
                 $info = pathinfo("$dir/$value");
                 if(is_numeric($info['basename'])) $mod_arr[] = $info['basename'];
             }
-        }
 
-        $mods_arr = json_decode(json_encode($steamapi->getmod_list($cfg."_installed", $mod_arr, 0, true)), true)["response"]["publishedfiledetails"];
+        $mods_arr   = json_decode(json_encode($steamapi->getmod_list($cfg."_installed", $mod_arr, 0, true)), true)["response"]["publishedfiledetails"];
          
-        foreach($mods_arr as $key => $value) {
+        foreach($mods_arr as $key => $value)
             if(
-                isset($value["publishedfileid"]) &&
-                isset($value["file_url"]) &&
-                isset($value["preview_url"]) &&
-                isset($value["time_updated"]) &&
+                isset($value["publishedfileid"])    &&
+                isset($value["file_url"])           &&
+                isset($value["preview_url"])        &&
+                isset($value["time_updated"])       &&
                 isset($value["title"]) 
             ) {
-                $tpl = new Template('mods_local.htm', __ADIR__.'/app/template/lists/serv/jquery/');
-                $tpl->load();
-                $path = $serv->dir_main()."/ShooterGame/Content/Mods/".$value["publishedfileid"];
-                $installed = (file_exists($path) && in_array($value["publishedfileid"], $mods));
+                $tpl        = new Template('mods_local.htm', __ADIR__.'/app/template/lists/serv/jquery/');
+                $path       = $serv->dirMain()."/ShooterGame/Content/Mods/".$value["publishedfileid"];
+                $installed  = (@file_exists($path) && in_array($value["publishedfileid"], $mods));
+                $title      = $value["title"];
+                $modname    = strlen($title) > 25 ? substr($title, 0 , 25) . "..." : $title;
 
                 // new
                 while (true) {
@@ -169,13 +153,8 @@ switch ($case) {
                     }
                 }
 
+                $tpl->load();
                 $tpl->r('img', $value["preview_url"]);
-                $modname = $value["title"];
-                $l = strlen($modname); $lmax = 25;
-                if ($l > $lmax) {
-                    $modname = substr($modname, 0 , $lmax) . "...";
-                }
-
                 $tpl->r('title_full', $value["title"]);
                 $tpl->r('title', $modname);
                 $tpl->r('lastupdate', date('d.m.Y - H:i', $value["time_updated"]));
@@ -191,7 +170,6 @@ switch ($case) {
                 if($value["publishedfileid"] != 111111111) $resp .= $tpl->load_var();
                 $tpl = null;
             }
-        }
 
         // Wenn kein Mod Gefunden wurde
         if($resp == null) {

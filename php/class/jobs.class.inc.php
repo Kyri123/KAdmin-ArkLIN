@@ -8,6 +8,8 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 /**
  * Class jobs
  */
@@ -20,7 +22,7 @@ class jobs extends helper
      */
     public function __construct()
     {
-        #empty
+        parent::__construct();
     }
 
     /**
@@ -40,22 +42,15 @@ class jobs extends helper
      * @return bool|mysql
      */
     public function arkmanager(String $shell) {
-        if ($this->server == null) return "Server nicht gesetzt";
+        if ($this->server == null) return false;
         $serv = new server($this->server);
 
         // Füge Kommand zur DB hinzu
         global $mycon;
         $command = 'arkmanager ' . saveshell($shell) . ' @' . saveshell($serv->name()) . '; exit';
-        $query = "INSERT INTO `ArkAdmin_shell` 
-        (
-            `server`, 
-            `command`
-        ) VALUES ( 
-            '".$serv->name()."',
-            'screen -dm bash -c \'".$command."\''
-        )";
+        $query = "INSERT INTO `ArkAdmin_shell` (`server`, `command`) VALUES (?, 'screen -dm bash -c \'$command\'')";
 
-        return $mycon->query($query);
+        return $mycon->query($query, $serv->name());
     }
 
 
@@ -65,22 +60,15 @@ class jobs extends helper
      * @return bool|mysql
      */
     public function shell(String $shell) {
-        if ($this->server == null) return "Server nicht gesetzt";
+        if ($this->server == null) return false;
         $serv = new server($this->server);
 
         // Füge Kommand zur DB hinzu
         global $mycon;
         $command = saveshell($shell) . '; exit';
-        $query = "INSERT INTO `ArkAdmin_shell` 
-        (
-            `server`, 
-            `command`
-        ) VALUES ( 
-            '".$serv->name()."',
-            'screen -dm bash -c \'".$command."\''
-        )";
+        $query = "INSERT INTO `ArkAdmin_shell` (`server`, `command`) VALUES (?, 'screen -dm bash -c \'$command\'')";
         
-        return $mycon->query($query);
+        return $mycon->query($query, $serv->name());
     }
 }
 

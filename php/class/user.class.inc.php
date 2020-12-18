@@ -8,12 +8,15 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 /**
  * Class userclass
  */
 class userclass extends helper
 {
 
+    private $KUTIL;
     private $id = 0;
     private $mycon;
     private $myconisset;
@@ -27,6 +30,10 @@ class userclass extends helper
      */
     function __construct(int $id = 0)
     {
+        global $KUTIL;
+        $this->KUTIL = $KUTIL;
+
+        parent::__construct();
         global $mycon;
         $this->mycon = $mycon;
         $this->myconisset = false;
@@ -49,17 +56,17 @@ class userclass extends helper
 
             // Lade Rechte
             global $D_PERM_ARRAY;
-            $this->group_array      = parent::str_to_json($this->frech["rang"], true);
+            $this->group_array      = parent::stringToJson($this->frech["rang"], true);
             $this->permissions      = $D_PERM_ARRAY;
 
             foreach ($this->group_array as $ITEM) {
                 $QUERY     = $this->mycon->query("SELECT * FROM `ArkAdmin_user_group` WHERE `id`='$ITEM'");
                 if($QUERY->numRows() > 0) {
-                    $this->permissions = array_replace_recursive($this->permissions, parent::str_to_json($QUERY->fetchArray()["permissions"]));
+                    $this->permissions = array_replace_recursive($this->permissions, parent::stringToJson($QUERY->fetchArray()["permissions"]));
                 }
             }
 
-            parent::savejson_create($this->permissions, __ADIR__."/app/json/arkadmin_server/".md5($id).".permissions.json");
+            parent::saveFile($this->permissions, __ADIR__."/app/json/arkadmin_server/".md5($id).".permissions.json");
 
             return true;
         }
@@ -117,8 +124,8 @@ class userclass extends helper
         if ($this->myconisset && $this->id != 0) {
             $id = md5($this->id);
             $path = __ADIR__."/app/json/user/$id.json";
-            if (file_exists($path)) {
-                $json = parent::file_to_json($path, true);
+            if (@file_exists($path)) {
+                $json = parent::fileToJson($path, true);
                 if(isset($json["expert"])) {
                     return $json["expert"] == 1 && $this->perm("usersettings/expert");
                 }
@@ -139,14 +146,14 @@ class userclass extends helper
      * @param String $mode
      * @return bool
      */
-    public function show_mode(String $mode)
+    public function show_mode(String $mode): bool
     {
         // Prüfe ob Benutzer gesetzt ist
         if ($this->myconisset && $this->id != 0) {
             $id = md5($this->id);
             $path = __ADIR__."/app/json/user/$id.json";
-            if (file_exists($path)) {
-                $json = parent::file_to_json($path, true);
+            if (@file_exists($path)) {
+                $json = parent::fileToJson($path, true);
                 if(isset($json[$mode])) {
                     return $json[$mode] == 1;
                 }
@@ -167,7 +174,7 @@ class userclass extends helper
      * @param String $key Schlüssel zur permissions (multi array ist mit / zu trennen)
      * @return bool
      */
-    public function perm(String $key)
+    public function perm(String $key): bool
     {
         // Prüfe ob Benutzer gesetzt ist
         if ($this->myconisset && $this->id != 0) {

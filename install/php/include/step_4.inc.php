@@ -8,14 +8,16 @@
  * *******************************************************************************************
 */
 
-$sitetpl= new Template("step4.htm", $dirs["tpl"]);
+// TODO :: DONE 2.1.0 REWORKED
+
+$sitetpl    = new Template("step4.htm", $dirs["tpl"]);
 $sitetpl->load();
-$complete = true;
-$ppath = __ADIR__."/php/inc/custom_konfig.json";
+$complete   = true;
+$ppath      = __ADIR__."/php/inc/custom_konfig.json";
 
 
 
 
 $sitetpl->r("error", $resp);
-$title = "{::lang::install::step3::title}";
-$content = $sitetpl->load_var();
+$title      = "{::lang::install::step3::title}";
+$content    = $sitetpl->load_var();

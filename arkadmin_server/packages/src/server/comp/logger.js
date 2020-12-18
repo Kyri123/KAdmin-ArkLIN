@@ -13,9 +13,7 @@ const logfile = `data/logs/${dateFormat(global.started, "yyyy-mm-dd")}/server.lo
 // Speicher in Logdatei
 exports.log = (text) => {
     var addtext = `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] ${text}\n`;
-    fs.appendFile(logfile, addtext, function(err) {
-        if (err) throw err;
-    });
+    fs.appendFile(logfile, addtext, () => {});
 };
 
 // gebe log als String zurück

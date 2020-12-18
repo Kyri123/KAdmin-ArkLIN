@@ -8,6 +8,8 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 // call functions
 require('../main.inc.php');
 
@@ -16,15 +18,13 @@ $case = isset($_GET["case"]) ? $_GET["case"] : "nocase";
 switch ($case) {
     // CASE: RCON send command
     case "editAPI":
-        $API_path = __ADIR__."/php/inc/api.json";
-        $int = $_POST["active"] == "true" ? 1 : 0;
+        $API_path               = __ADIR__."/php/inc/api.json";
+        $int                    = $_POST["active"] == "true" ? 1 : 0;
 
-        $API_array = $helper->file_to_json($API_path, true);
-        $API_array["active"] = $int;
+        $API_array              = $helper->fileToJson($API_path, true);
+        $API_array["active"]    = $int;
 
-        $bool = $helper->savejson_create($API_array, $API_path);
-
-        echo '{"state": '.intval($bool).'}';
+        echo '{"state": '.intval($helper->saveFile($API_array, $API_path)).'}';
         break;
     default:
         echo "Case not found";

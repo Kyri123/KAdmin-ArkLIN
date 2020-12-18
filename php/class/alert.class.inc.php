@@ -8,6 +8,8 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 /**
  * alert
  * - Zur Ausgabe von Meldungen
@@ -37,6 +39,7 @@ class alert extends helper {
      */
     public function __construct()
     {
+        parent::__construct();
         $this->from = array();
         $this->to = array();
     }

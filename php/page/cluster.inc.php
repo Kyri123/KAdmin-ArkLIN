@@ -8,50 +8,52 @@
  * *******************************************************************************************
 */
 
+// TODO :: DONE 2.1.0 REWORKED
+
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
 if(!$session_user->perm("cluster/show")) {
     header("Location: /401"); exit;
 }
 
 // Vars
-$tpl_dir = __ADIR__.'/app/template/core/cluster/';
-$setsidebar = false;
-$cfglist = null;
-$pagename = "{::lang::php::cluster::pagename}";
-$urltop = "<li class=\"breadcrumb-item\">$pagename</li>";
+$tpl_dir            = __ADIR__.'/app/template/core/cluster/';
+$setsidebar         = false;
+$cfglist            = null;
+$pagename           = "{::lang::php::cluster::pagename}";
+$urltop             = "<li class=\"breadcrumb-item\">$pagename</li>";
 
-$tpl = new Template("tpl.htm", $tpl_dir);
-$tpl->load();
+$tpl                = new Template("tpl.htm", $tpl_dir);
 
-$clusterjson_path = __ADIR__."/app/json/panel/cluster_data.json";
+$clusterjson_path   = __ADIR__."/app/json/panel/cluster_data.json";
 
 // Hole Cluster Array / Json
-if (!file_exists($clusterjson_path)) if (!file_put_contents($clusterjson_path, "[]")) die;
-$json = $helper->file_to_json($clusterjson_path);
+if (!$KUTIL->createFile($clusterjson_path, "[]")) die;
+$json               = $helper->fileToJson($clusterjson_path);
 
 //Entferne Cluster
 if (isset($_POST["removecluster"]) && $session_user->perm("cluster/delete")) {
-    $key = $_POST["key"];
+    $key            = $_POST["key"];
     if (isset($json[$key])) unset($json[$key]);
-    $helper->savejson_exsists($json, $clusterjson_path);
+    $helper->saveFile($json, $clusterjson_path);
     header("Location: /cluster"); exit;
 }
 elseif(isset($_POST["removecluster"])) {
-    $resp .= $alert->rd(99);
+    $resp           .= $alert->rd(99);
 }
 
 // Entferne Server vom Cluster
 if (isset($_POST["remove"]) && $session_user->perm("cluster/remove_server")) {
-    $key = $_POST["key"];
-    $cfg = $_POST["cfg"];
-    $array = array_column($json[$key]["servers"], 'server');
+    $key        = $_POST["key"];
+    $cfg        = $_POST["cfg"];
+    $array      = array_column($json[$key]["servers"], 'server');
     foreach ($array as $k => $v) {
         if ($v == $cfg) {
-            $i = $k; break;
+            $i  = $k;
+            break;
         }
     }
     if (isset($json[$key]["servers"][$i])) unset($json[$key]["servers"][$i]);
-    $helper->savejson_exsists($json, $clusterjson_path);
+    $helper->saveFile($json, $clusterjson_path);
     header("Location: /cluster"); exit;
 }
 elseif(isset($_POST["remove"])) {
@@ -60,29 +62,29 @@ elseif(isset($_POST["remove"])) {
 
 // Toggle Type vom Server (Master/Slave)
 if (isset($_POST["settype"]) && $session_user->perm("cluster/toogle_master")) {
-    $key = $_POST["key"];
-    $cfgkey = $_POST["cfg"];
-    $to = $_POST["set"];
+    $key        = $_POST["key"];
+    $cfgkey     = $_POST["cfg"];
+    $to         = $_POST["set"];
     if ($to > 0) {
-        $to = 1;
-        $i = 0;
-        $f = false;
-        $array = array_column($json[$key]["servers"], 'type');
+        $to     = 1;
+        $i      = 0;
+        $f      = false;
+        $array  = array_column($json[$key]["servers"], 'type');
         foreach ($array as $k => $v) {
             if ($v == $to) {
                 $i = $k; $f = true; break;
             }
         }
         if (!$f) {
-            $json[$key]["servers"][$cfgkey]["type"] = 1;
+            $json[$key]["servers"][$cfgkey]["type"]     = 1;
         } else {
-            $json[$key]["servers"][$i]["type"] = 0;
-            $json[$key]["servers"][$cfgkey]["type"] = 1;
+            $json[$key]["servers"][$i]["type"]          = 0;
+            $json[$key]["servers"][$cfgkey]["type"]     = 1;
         }
     } else {
-        $json[$key]["servers"][$cfgkey]["type"] = 0;
+        $json[$key]["servers"][$cfgkey]["type"]         = 0;
     }
-    $helper->savejson_exsists($json, $clusterjson_path);
+    $helper->saveFile($json, $clusterjson_path);
     header("Location: /cluster"); exit;
 }
 elseif(isset($_POST["settype"])) {
@@ -91,41 +93,34 @@ elseif(isset($_POST["settype"])) {
 
 //Füge server zum Cluster hinzu
 if (isset($_POST["addserver"]) && $session_user->perm("cluster/add_server")) {
-    $key = $_POST["key"];
-    $cfg = $_POST["server"];
+    $key    = $_POST["key"];
+    $cfg    = $_POST["server"];
     if ($cfg != "") {
         $no = true;
-        foreach ($json as $mk => $mv) {
-            if (array_search($cfg, array_column($json[$mk]["servers"], 'server')) !== FALSE) $no = false;
-        }
+        foreach ($json as $mk => $mv) if (array_search($cfg, array_column($json[$mk]["servers"], 'server')) !== FALSE) $no = false;
         if ($no) {
-            $i = count($json[$key]["servers"]);
-            $cluster =  $json[$key]["name"];
-            $json[$key]["servers"][$i]["server"] = $cfg;
-            $json[$key]["servers"][$i]["type"] = 0;
-            $server = new server($cfg);
+            $i                                      = count($json[$key]["servers"]);
+            $cluster                                =  $json[$key]["name"];
+            $json[$key]["servers"][$i]["server"]    = $cfg;
+            $json[$key]["servers"][$i]["type"]      = 0;
+            $server                                 = new server($cfg);
 
-            if ($helper->savejson_exsists($json, $clusterjson_path)) {
+            if ($helper->saveFile($json, $clusterjson_path)) {
                 // Melde: Server hinzugefpgt
                 $alert->code = 104;
                 $alert->overwrite_text = "{::lang::php::cluster::overwrite::addedserver}";
-                $alert->r("servername", $server->cfg_read("ark_SessionName"));
+                $alert->r("servername", $server->cfgRead("ark_SessionName"));
                 $alert->r("cluster", $cluster);
                 $resp .= $alert->re();
             } else {
-                // Melde: Schreib/Lese Fehler
-                $alert->code = 1;
-                $resp .= $alert->re();
+                $resp .= $alert->rd(1);
             }
         } else {
-            // Melde: Cluster Fehler
-            $alert->code = 10;
-            $resp .= $alert->re();
+            // Melde: Cluster Fe
+            $resp .= $alert->rd(10);
         }
     } else {
-        // Melde: Server nicht ausgewählt
-        $alert->code = 9;
-        $resp .= $alert->re();
+        $resp .= $alert->rd(9);
     }
 }
 elseif(isset($_POST["addserver"])) {
@@ -136,15 +131,15 @@ elseif(isset($_POST["addserver"])) {
 // Editiere einen Cluster
 if (isset($_POST["editcluster"]) && $session_user->perm("cluster/edit_options")) {
     //set vars
-    $i = $_POST["key"];
-    $cluster = $_POST["name"];
-    $clustermd5 = md5($_POST["name"]);
+    $i                  = $_POST["key"];
+    $cluster            = $_POST["name"];
+    $clustermd5         = md5($_POST["name"]);
 
     //sync opt
-    $sync["admin"] = true; if (!isset($_POST["admin"])) $sync["admin"] = false;
-    $sync["mods"] = true; if (!isset($_POST["mods"])) $sync["mods"] = false;
-    $sync["konfig"] = true; if (!isset($_POST["konfig"])) $sync["konfig"] = false;
-    $sync["whitelist"] = true; if (!isset($_POST["whitelist"])) $sync["whitelist"] = false;
+    $sync["admin"]      = isset($_POST["admin"]);
+    $sync["mods"]       = isset($_POST["mods"]);
+    $sync["konfig"]     = isset($_POST["konfig"]);
+    $sync["whitelist"]  = isset($_POST["whitelist"]);
 
     // options / rules
     $opt["NoTransferFromFiltering"]     = isset($_POST["NoTransferFromFiltering"]);
@@ -157,20 +152,19 @@ if (isset($_POST["editcluster"]) && $session_user->perm("cluster/edit_options"))
     $opt["PreventUploadDinos"]          = isset($_POST["PreventDownloadDinos"]);
 
     if ($cluster != null && ($clustermd5 == $json[$i]["clusterid"] || array_search($clustermd5, array_column($json, 'clusterid')) === FALSE)) {
-        $json[$i]["name"] = $cluster;
-        $json[$i]["clusterid"] = $clustermd5;
-        $json[$i]["sync"] = $sync;
-        $json[$i]["opt"] = $opt;
+        $json[$i]["name"]       = $cluster;
+        $json[$i]["clusterid"]  = $clustermd5;
+        $json[$i]["sync"]       = $sync;
+        $json[$i]["opt"]        = $opt;
 
-        if ($helper->savejson_exsists($json, $clusterjson_path)) {
+        if ($helper->saveFile($json, $clusterjson_path)) {
             $alert->code = 104;
             $alert->overwrite_text = "{::lang::php::cluster::overwrite::changedcluster}";
             $alert->r("cluster", $cluster);
             $alert->r("clustermd5", $clustermd5);
             $resp .= $alert->re();
         } else {
-            $alert->code = 1;
-            $resp .= $alert->re();
+            $resp .= $alert->rd(1);
         }
     } else {
         $alert->code = 11;
@@ -185,14 +179,14 @@ elseif(isset($_POST["editcluster"])) {
 // erstelle ein Cluster
 if (isset($_POST["add"]) && $session_user->perm("cluster/create")) {
     //set vars
-    $cluster = $_POST["name"];
-    $clustermd5 = md5($_POST["name"]);
+    $cluster        = $_POST["name"];
+    $clustermd5     = md5($_POST["name"]);
 
     //sync opt
-    $sync["admin"] = true; if (!isset($_POST["admin"])) $sync["admin"] = false;
-    $sync["mods"] = true; if (!isset($_POST["mods"])) $sync["mods"] = false;
-    $sync["konfig"] = true; if (!isset($_POST["konfig"])) $sync["konfig"] = false;
-    $sync["whitelist"] = true; if (!isset($_POST["whitelist"])) $sync["whitelist"] = false;
+    $sync["admin"]      = isset($_POST["admin"]);
+    $sync["mods"]       = isset($_POST["mods"]);
+    $sync["konfig"]     = isset($_POST["konfig"]);
+    $sync["whitelist"]  = isset($_POST["whitelist"]);
 
     // options / rules
     $opt["NoTransferFromFiltering"]     = isset($_POST["NoTransferFromFiltering"]);
@@ -206,22 +200,21 @@ if (isset($_POST["add"]) && $session_user->perm("cluster/create")) {
 
     if ($cluster != null && (count($json) < 1 || array_search($clustermd5, array_column($json, 'clusterid')) === FALSE)) {
 
-        $clusterarray["name"] = $cluster;
-        $clusterarray["clusterid"] = $clustermd5;
-        $clusterarray["sync"] = $sync;
-        $clusterarray["opt"] = $opt;
-        $clusterarray["servers"] = array();
+        $clusterarray["name"]       = $cluster;
+        $clusterarray["clusterid"]  = $clustermd5;
+        $clusterarray["sync"]       = $sync;
+        $clusterarray["opt"]        = $opt;
+        $clusterarray["servers"]    = [];
 
         if (array_push($json, $clusterarray)) {
-            if ($helper->savejson_exsists($json, $clusterjson_path)) {
+            if ($helper->saveFile($json, $clusterjson_path)) {
                 $alert->code = 104;
                 $alert->overwrite_text = "{::lang::php::cluster::overwrite::createdcluster}";
                 $alert->r("cluster", $cluster);
                 $alert->r("clustermd5", $clustermd5);
                 $resp .= $alert->re();
             } else {
-                $alert->code = 1;
-                $resp .= $alert->re();
+                $resp .= $alert->rd(1);
             }
         } else {
             $alert->code = 11;
@@ -250,21 +243,16 @@ foreach ($json as $mk => $mv) {
         $i++;
     }
 }
-$helper->savejson_exsists($json, $clusterjson_path);
+$helper->saveFile($json, $clusterjson_path);
 
-$json = $helper->file_to_json($clusterjson_path);
+$json = $helper->fileToJson($clusterjson_path);
 $list = null;
 foreach ($json as $mk => $mv) {
-    $listtpl = new Template("clusters.htm", $tpl_dir);
-    $listtpl->load();
-
-    $serverlist = null;
-    $alert_r = null;
-
-
-    $count = 0; if (isset($json[$mk]["servers"])) $count = count($json[$mk]["servers"]);
-
-    $imgarr     = array();
+    $listtpl            = new Template("clusters.htm", $tpl_dir);
+    $serverlist         = null;
+    $alert_r            = null;
+    $count              = isset($json[$mk]["servers"]) ? count($json[$mk]["servers"]) : 0;
+    $imgarr             = array();
 
     $imgarr[0]["map"]   = "$ROOT/app/dist/img/igmap/ark.png";
     $imgarr[0]["bg"]    = "$ROOT/app/dist/img/igmap/bg.jpg";
@@ -288,28 +276,29 @@ foreach ($json as $mk => $mv) {
             }
 
             $listserv->rif ("ifmaster", $master);
-            $listserv->r("servername",      $server->cfg_read("ark_SessionName"));
+            $listserv->r("servername",      $server->cfgRead("ark_SessionName"));
             $listserv->r("cfg",             $server->name());
             $listserv->r("cfgkey",          $x);
             $listserv->r("key",             $mk);
             $listserv->r("curr",            $data->aplayers);
             $listserv->r("type",            $clustertype[$key["type"]]);
-            $listserv->r("max",             $server->cfg_read("ark_MaxPlayers"));
-            $listserv->r("color",           convertstate($server->statecode())["color"]);
+            $listserv->r("max",             $server->cfgRead("ark_MaxPlayers"));
+            $listserv->r("color",           convertstate($server->stateCode())["color"]);
             $listserv->r("color_type",      $color_type);
-            $listserv->r("state",           convertstate($server->statecode())["str"]);
+            $listserv->r("state",           convertstate($server->stateCode())["str"]);
 
-            $map_file   = __ADIR__."/app/dist/img/igmap/".$server->cfg_read("serverMap").".jpg";
-            $map_path   = "$ROOT/app/dist/img/igmap/".$server->cfg_read("serverMap").".jpg";
-            if (file_exists($map_file)) $imgarr[$k]["map"] = $map_path;
+            $map_file   = __ADIR__."/app/dist/img/igmap/".$server->cfgRead("serverMap").".jpg";
+            $map_path   = "$ROOT/app/dist/img/igmap/".$server->cfgRead("serverMap").".jpg";
+            if (@file_exists($map_file)) $imgarr[$k]["map"] = $map_path;
 
-            $map_file   = __ADIR__."/app/dist/img/backgrounds/".$server->cfg_read("serverMap").".jpg";
-            $map_path   = "$ROOT/app/dist/img/backgrounds/".$server->cfg_read("serverMap").".jpg";
-            if (file_exists($map_file)) $imgarr[$k]["bg"] = $map_path;
+            $map_file   = __ADIR__."/app/dist/img/backgrounds/".$server->cfgRead("serverMap").".jpg";
+            $map_path   = "$ROOT/app/dist/img/backgrounds/".$server->cfgRead("serverMap").".jpg";
+            if (@file_exists($map_file)) $imgarr[$k]["bg"] = $map_path;
 
             $map_file   = $map_path = null;
 
-            $k++; $x++;
+            $k++;
+            $x++;
 
             $serverlist .= $listserv->load_var();
         }
@@ -324,6 +313,7 @@ foreach ($json as $mk => $mv) {
     if ($json[$mk]["sync"]["konfig"])       $list_sync .= "<tr><td>Config</td></tr>";
     if ($json[$mk]["sync"]["whitelist"])    $list_sync .= "<tr><td>Whitelist</td></tr>";
 
+    $listtpl->load();
     $listtpl->rif ("Administratoren",   $json[$mk]["sync"]["admin"]);
     $listtpl->rif ("Mods",              $json[$mk]["sync"]["mods"]);
     $listtpl->rif ("Konfigurationen",   $json[$mk]["sync"]["konfig"]);
@@ -376,26 +366,25 @@ foreach ($json as $mk => $mv) {
     $list .= $listtpl->load_var();
 }
 
-$cfg_array = $helper->file_to_json(__ADIR__."/app/json/serverinfo/all.json");
+$cfg_array = $helper->fileToJson(__ADIR__."/app/json/serverinfo/all.json");
 $sel_serv = null;
 foreach ($cfg_array["cfgs"] as $key) {
-    $cfg = str_replace(".cfg", null, $key);
-    $server = new server($cfg);
-    $no = true;
-    foreach ($json as $mk => $mv) {
-        if (array_search($cfg, array_column($json[$mk]["servers"], 'server')) !== FALSE) $no = false;
-    }
-    if ($no) $sel_serv .= "<option value='$cfg'>".$server->cfg_read("ark_SessionName")."</option>";
+    $cfg        = str_replace(".cfg", null, $key);
+    $server     = new server($cfg);
+    $no         = true;
+    foreach ($json as $mk => $mv) if (array_search($cfg, array_column($json[$mk]["servers"], 'server')) !== FALSE) $no = false;
+    if ($no) $sel_serv .= "<option value='$cfg'>".$server->cfgRead("ark_SessionName")."</option>";
 }
 
 
+$tpl->load();
 $tpl->r("list", $list);
 $tpl->r("resp", $resp);
 $tpl->r("sel_serv", $sel_serv);
 $content = $tpl->load_var();
 $pageicon = "<i class=\"fas fa-random\"></i>";
 if($session_user->perm("cluster/create")) $btns = '<a href="#" class="btn btn-outline-success btn-icon-split rounded-0" data-toggle="modal" data-target="#addcluster">
-            <span class="icon">
-                <i class="fas fa-plus" aria-hidden="true"></i>
-            </span>
-        </a>';
+        <span class="icon">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+        </span>
+    </a>';
