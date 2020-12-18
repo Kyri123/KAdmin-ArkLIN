@@ -32,7 +32,7 @@ exports.auto = () => {
         } else if (res.statusCode === 200) {
             // Prüfe SHA mit API
             fs.readFile("data/sha.txt", 'utf8', (err, data) => {
-                if (err === undefined) {
+                if (err) {
                     if (data == api.commit.sha) {
                         // kein Update
                         fs.writeFileSync(`data/updater.log`, `Already up to date!`);
