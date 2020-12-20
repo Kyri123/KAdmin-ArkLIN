@@ -15,10 +15,10 @@ if(@file_exists(__ADIR__.'/php/inc/pconfig.inc.php')) include(__ADIR__.'/php/inc
 
 // allgmeine
 $sitename           = "ArkAdmin2";
-$version            = '2.1.0';
+$version            = '2.1.0a';
 $ip                 = $_SERVER['SERVER_ADDR'];
 $maxpanel_server    = 12;
-$buildid            = 210.42804;
+$buildid            = 210.51657;
 
 // Webserver
 $webserver['url']               = 'https://data.chiraya.de/';
