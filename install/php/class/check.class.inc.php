@@ -84,7 +84,7 @@ class check extends helper {
 
             // Prüfe Linux
             case "os":
-                $this->state        = !strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 2 : 0;
+                $this->state        = strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' ? 2 : 0;
             break;
 
             // Prüfe Arkmanager
