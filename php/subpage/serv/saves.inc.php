@@ -242,6 +242,7 @@ if($count !== false) {
             $FileUpdated        = time();
             $TribeId            = 7;
             $TribeName          = null;
+            $IG_level           = 0;
         }
 
         $list_tpl->r('tribe', (($TribeName != null) ? $TribeName : '{::lang::php::sc::notribe}'));
