@@ -26,12 +26,14 @@ Features:
 
 - **[Dev-Tree]** Benutzten auf eigene GEFAHR (Debugs, Tests usw.)
 - Derzeitiger Status: ***Release*** Jetzt sind die Bugs und Optimierungen dran ;)
-- Discord: https://discord.gg/ykGnw49
+- `Links`
+  - Spenden? https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=68PT9KPRABVCU&source=url
+  - Discord: https://discord.gg/ykGnw49
+  - Trello: https://trello.com/b/5eSrM5Ww/arkadmin2
+  
 - Der Port `30000` muss Frei sein für den ArkAdmin-Server (bzw. der gesetzte Port)
-
 - Unterstützt nicht:
   - "Docker"
-
 - Getestet auf:
   - Debain 9
   - Ubuntu Server
@@ -117,3 +119,8 @@ Features:
 | :---                        | :---            | :--- |
 | ArkAdmin2 für Windows       | Alpha           | https://github.com/Kyri123/ArkAdminWIN |
 | Kleines Minecraft Plugin    | Beta            | https://github.com/Kyri123/KPlugins-1.12.2 |
+
+# Danke
+- Danke an **JetBrains** für die bereitstellung der IDE's für die Entwicklung dieser Open-Source-Software
+  - Link: https://www.jetbrains.com
+- Sowie allen Testern und jeden gemeldeten BUG!
