@@ -8,17 +8,15 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 // Mysql
 if(@file_exists(__ADIR__.'/php/inc/pconfig.inc.php')) include(__ADIR__.'/php/inc/pconfig.inc.php');
 
 // allgmeine
 $sitename           = "ArkAdmin2";
-$version            = '2.1.0a';
+$version            = '2.1.0b';
 $ip                 = $_SERVER['SERVER_ADDR'];
 $maxpanel_server    = 12;
-$buildid            = 210.51657;
+$buildid            = 210.52004;
 
 // Webserver
 $webserver['url']               = 'https://data.chiraya.de/';

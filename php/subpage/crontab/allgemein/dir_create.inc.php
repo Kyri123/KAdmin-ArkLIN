@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 // Erstelle Dateien & Verzeichnis...
 $dirs = array(
     __ADIR__."/app/check/",

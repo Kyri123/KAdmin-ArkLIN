@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 require('../main.inc.php');
 
 if(isset($_GET["code"]))                                                    $alert->code                = intval($_GET["code"]);

@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 $sitetpl    = new Template("step0.htm", $dirs["tpl"]);
 $sitetpl->load();
 $list_opt   = null;

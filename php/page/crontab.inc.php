@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 $tpl_crontab        = new Template('crontab.htm', __ADIR__.'/app/template/core/system/');
 $tpl_crontab->load();
 $re                 = null;

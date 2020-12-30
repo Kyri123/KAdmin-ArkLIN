@@ -7,8 +7,6 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
-
-// TODO :: DONE 2.1.0 REWORKED
 $ROOT   = str_replace("/php/async/main.inc.php", null, $_SERVER["SCRIPT_NAME"]);
 
 require('../main.inc.php');

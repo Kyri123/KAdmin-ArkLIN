@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 $file           = __ADIR__.'/app/json/serverinfo/all.json';
 $cfg_json       = $helper->fileToJson($file);
 $sid_array      = $modid_array = array();

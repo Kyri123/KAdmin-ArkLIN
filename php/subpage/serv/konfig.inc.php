@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
 if (!$session_user->perm("$perm/konfig/show")) {
     header("Location: /401");
@@ -97,7 +95,7 @@ if (isset($_POST['savenormal']) && (($serv->stateCode() == 1 && $session_user->s
         }
         $INI_STRING .= $CUSTOM;
 
-        $path       = $serv->dirKonfig().$TYPE;
+        $path       = $serv->dirKonfig()."/$TYPE";
         $text       = ini_save_rdy($INI_STRING);
 
         // Wenn Datei geschreiben wurde
@@ -126,14 +124,14 @@ else {
 
 // Game,GUS,Engine.ini Speichern (Expertenmodus)
 if (isset($_POST['save']) && (($serv->stateCode() == 1 && $session_user->show_mode("konfig")) || !$session_user->show_mode("konfig"))) {
-    $type = $_POST["type"];
+    $TYPE = $_POST["type"];
     $text = $_POST["text"];
-    $path = $serv->dirKonfig().$type;
+    $path = $serv->dirKonfig()."/$TYPE";
 
     if(
-        ($type == "GameUserSettings.ini"    && $session_user->perm("$perm/konfig/gus")) ||
-        ($type == "Game.ini"                && $session_user->perm("$perm/konfig/game")) ||
-        ($type == "Engine.ini"              && $session_user->perm("$perm/konfig/engine"))
+        ($TYPE == "GameUserSettings.ini"    && $session_user->perm("$perm/konfig/gus")) ||
+        ($TYPE == "Game.ini"                && $session_user->perm("$perm/konfig/game")) ||
+        ($TYPE == "Engine.ini"              && $session_user->perm("$perm/konfig/engine"))
     ) {
         if (@file_exists($path)) {
             $text   = ini_save_rdy($text);

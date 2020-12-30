@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 if(!$session_user->perm("all/is_admin")) {
     header("Location: $ROOT/401");
     exit;

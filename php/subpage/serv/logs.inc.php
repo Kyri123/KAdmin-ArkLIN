@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
 if (!$session_user->perm("$perm/logs/show")) {
     header("Location: /401");

@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 // Cluster System
 $json   = $helper->fileToJson(__ADIR__."/app/json/panel/cluster_data.json");
 
