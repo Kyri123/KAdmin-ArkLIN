@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 $ipath              = $KUTIL->path(__ADIR__.'/remote/arkmanager/instances/')["/path/"];
 $dir                = scandir($ipath);
 $json_all['onserv'] = $json_all['maxserv'] = 0;

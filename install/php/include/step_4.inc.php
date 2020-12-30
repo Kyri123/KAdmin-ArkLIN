@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 $sitetpl    = new Template("step4.htm", $dirs["tpl"]);
 $sitetpl->load();
 $complete   = true;

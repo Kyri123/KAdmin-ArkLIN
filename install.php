@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 define("__ADIR__", __DIR__);
 
 $ROOT           = str_replace(["install.php"], null, $_SERVER["SCRIPT_NAME"]);

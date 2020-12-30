@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 $pagename           = '{::lang::php::sc::page::home::pagename}';
 $page_tpl           = new Template('home.htm', __ADIR__.'/app/template/sub/serv/');
 $urltop             = '<li class="breadcrumb-item"><a href="{ROOT}/servercenter/'.$url[2].'/home">'.$serv->cfgRead('ark_SessionName').'</a></li>';

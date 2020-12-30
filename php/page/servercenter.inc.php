@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 if (!file_exists(__ADIR__."/remote/arkmanager/instances/".$url[2].".cfg")) {
    header("Location: /404");
    exit;

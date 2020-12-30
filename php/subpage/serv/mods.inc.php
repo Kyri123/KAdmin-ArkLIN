@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 // Prüfe Rechte wenn nicht wird die seite nicht gefunden!
 // Wenn Modsupport deaktiviert ist leitet direkt zu ServerCenter Startseite des Servers
 if (!$session_user->perm("$perm/mods/show") || !$serv->modSupport()) {

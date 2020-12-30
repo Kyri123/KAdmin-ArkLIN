@@ -7,8 +7,6 @@
  * Github: https://github.com/Kyri123/Arkadmin
  * *******************************************************************************************
 */
-
-// TODO :: DONE 2.1.0 REWORKED
 $resp = null;
 $sitetpl    = new Template("step3.htm", $dirs["tpl"]);
 $sitetpl->load();

@@ -8,8 +8,6 @@
  * *******************************************************************************************
 */
 
-// TODO :: DONE 2.1.0 REWORKED
-
 // Vars
 $tpl_dir = __ADIR__.'/app/template/core/changelog/';
 $tpl_dir_all = __ADIR__.'/app/template/all/';
