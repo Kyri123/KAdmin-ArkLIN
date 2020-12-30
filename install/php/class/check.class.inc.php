@@ -79,7 +79,7 @@ class check extends helper {
             // Prüfe Rewrite aktiv
             case "mod_rewrite":
                 $JSON               = $this->KUTIL->fileGetContentsURL((isset($_SERVER["HTTPS"]) ? ($_SERVER["HTTPS"] == "on" ? "https" : "http") : "http") ."://".$_SERVER["HTTP_HOST"]."/?mod_rewrite", true)["Assoc"];
-                $this->state        = $JSON !== false ? (array_key_exists('HTTP_MOD_REWRITE', $JSON) ? 2 : 0) : 0;
+                $this->state        = $JSON !== false ? (is_array($JSON) ? (array_key_exists('HTTP_MOD_REWRITE', $JSON) ? 2 : 0) : 0) : 0;
             break;
 
             // Prüfe Linux
