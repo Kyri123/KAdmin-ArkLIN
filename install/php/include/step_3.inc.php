@@ -34,13 +34,13 @@ if (isset($_POST["savepanel"])) {
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "1") $a_value[$i] = 1;
         if (in_array($a_key[$i], $filter_bool) && $a_value[$i] == "0") $a_value[$i] = 0;
         if (in_array($a_key[$i], $filter_link)) {
-            if ($a_key[$i] == "servlocdir" && readlink(__ADIR__."/remote/serv") != $a_value[$i]) {
+            if ($a_key[$i] == "servlocdir" && @readlink(__ADIR__."/remote/serv") != $a_value[$i]) {
                 $loc    = __ADIR__."/remote/serv";
                 if (@file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
                 symlink($target, $loc);
             }
-            elseif ($a_key[$i] == "arklocdir" && readlink(__ADIR__."/remote/arkmanager") != $a_value[$i]) {
+            elseif ($a_key[$i] == "arklocdir" && @readlink(__ADIR__."/remote/arkmanager") != $a_value[$i]) {
                 $loc    = __ADIR__."/remote/arkmanager";
                 if (@file_exists($loc)) unlink($loc);
                 $target = $a_value[$i];
