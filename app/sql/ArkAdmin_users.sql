@@ -1,2 +1,2 @@
-create table `ArkAdmin_users` (`id` int unsigned zerofill auto_increment primary key, `username` text null, `email` text null, `password` text null, `lastlogin` double null, `registerdate` double null, `rang` int null, `ban` int default 0 null);
+create table `ArkAdmin_users` (`id` int unsigned zerofill auto_increment primary key, `username` text null, `email` text null, `password` text null, `lastlogin` double null, `registerdate` double null, `rang` text null, `ban` int default 0 null);
 INSERT INTO admin_arkmanager.ArkAdmin_users (id, username, email, password, lastlogin, registerdate, rang, ban) VALUES (1, 'Gast', 'none', 'a', 0, 0, '[1]', 0);

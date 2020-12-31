@@ -27,3 +27,7 @@ foreach ($tables as $table)
 
 $check_json["checked"] = true;
 $helper->saveFile($check_json, __ADIR__."/app/data/sql_check.json");
+//überschreibe alle user auf Admin
+if($buildid == 210.53023) {
+    $mycon->query("alter table `ArkAdmin_users` modify `rang` text null");
+}
