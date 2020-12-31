@@ -11,7 +11,7 @@ $resp = null;
 $sitetpl    = new Template("step3.htm", $dirs["tpl"]);
 $sitetpl->load();
 $complete   = false;
-$ppath      = $KUTIL->path(__ADIR__."/php/inc/custom_konfig.json");
+$ppath      = $KUTIL->path(__ADIR__."/php/inc/custom_konfig.json")["/path"];
 if(!$KUTIL->filePutContents(__ADIR__."/app/check/subdone", "true")) {
     $resp   .= $alert->rd(1);
 }

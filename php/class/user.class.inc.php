@@ -18,7 +18,7 @@ class userclass extends helper
     private $id = 0;
     private $mycon;
     private $myconisset;
-    public $frech;
+    public $fetch;
     public $permissions;
     public $group_array;
 
@@ -47,25 +47,26 @@ class userclass extends helper
     public function setid(int $id)
     {
         $this->id = $id;
-        $query = 'SELECT * FROM `ArkAdmin_users` WHERE `id` = \'' . $this->id . '\'';
-        if ($this->mycon->query($query)->numRows() > 0) {
-            $this->myconisset = true;
-            $this->frech = $this->mycon->query($query)->fetchArray();
+        $query  = 'SELECT * FROM `ArkAdmin_users` WHERE `id`=?';
+        $result = $this->mycon->query($query, $this->id);
+        if ($result->numRows() > 0) {
+            $this->myconisset   = true;
+            $this->fetch        = $result->fetchArray();
 
             // Lade Rechte
             global $D_PERM_ARRAY;
-            $this->group_array      = parent::stringToJson($this->frech["rang"], true);
+            $this->group_array      = parent::stringToJson($this->fetch["rang"]);
             $this->permissions      = $D_PERM_ARRAY;
 
             foreach ($this->group_array as $ITEM) {
-                $QUERY     = $this->mycon->query("SELECT * FROM `ArkAdmin_user_group` WHERE `id`='$ITEM'");
+                $QUERY     = $this->mycon->query("SELECT * FROM `ArkAdmin_user_group` WHERE `id`=?", $ITEM);
                 if($QUERY->numRows() > 0) {
-                    $this->permissions = array_replace_recursive($this->permissions, parent::stringToJson($QUERY->fetchArray()["permissions"]));
+                    $FETCH              = $QUERY->fetchArray();
+                    $this->permissions  = array_replace_recursive($this->permissions, parent::stringToJson($FETCH["permissions"]));
                 }
             }
 
             parent::saveFile($this->permissions, __ADIR__."/app/json/arkadmin_server/".md5($id).".permissions.json");
-
             return true;
         }
         $this->myconisset = false;
@@ -81,8 +82,8 @@ class userclass extends helper
     public function read(String $key) {
         // Prüfe ob Benutzer gesetzt ist
         if ($this->myconisset && $this->id != 0) {
-            $frech = $this->frech;
-            return $frech[$key];
+            $fetch = $this->fetch;
+            return $fetch[$key];
         } else {
             return 'Account nicht gefunden oder gesetzt!';
         }
@@ -97,18 +98,14 @@ class userclass extends helper
      */
     public function write(String $key, String $value) {
         // Prüfe ob Benutzer gesetzt ist
-        if ($this->myconisset && $this->id != 0) {
-            $query = 'UPDATE `ArkAdmin_users` SET `'.$key.'`=\''.$value.'\'  WHERE `id` = \''.$this->id.'\'';
-            if ($this->mycon->query($query)) {
+        if ($this->myconisset && $this->id != 0 && $value !== "") {
+            $query = "UPDATE `ArkAdmin_users` SET ??=?  WHERE `id`=?";
+            if($this->mycon->query($query, $key, $value, $this->id)) {
                 $this->setid($this->id);
                 return true;
             }
-            $this->myconisset = false;
-            return false;
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     /**
