@@ -18,9 +18,10 @@ $path       = $KUTIL->path(__ADIR__."/app/json/user/".md5($_SESSION["id"]).".jso
 // Speichern (Benutzerdaten)
 if(isset($_POST["saveuser"])) {
     //EMail
-    if($_POST["email"] != $user->read("email")) {
-        if($user->write("email", $_POST["email"])) {
-            $logout     = true;
+    if($_POST["email"] != $session_user->read("email")) {
+        if($session_user->write("email", $_POST["email"])) {
+            header("Location: $ROOT/logout");
+            exit;
         }
         else {
             $resp       .= $alert->rd(3);
@@ -28,9 +29,10 @@ if(isset($_POST["saveuser"])) {
     }
 
     //Username
-    if($_POST["username"] != $user->read("username")) {
-        if($user->write("username", $_POST["username"])) {
-            $logout     = true;
+    if($_POST["username"] != $session_user->read("username")) {
+        if($session_user->write("username", $_POST["username"])) {
+            header("Location: $ROOT/logout");
+            exit;
         }
         else {
             $resp       .= $alert->rd(3);
@@ -42,8 +44,9 @@ if(isset($_POST["saveuser"])) {
         $pw1    = md5($_POST["pw1"]);
         $pw2    = md5($_POST["pw2"]);
         if($pw2 == $pw1) {
-            if($user->write("password", $pw1)) {
-                $logout     = true;
+            if($session_user->write("password", $pw1)) {
+                header("Location: $ROOT/logout");
+                exit;
             }
             else {
                 $resp   .= $alert->rd(3);
@@ -52,12 +55,6 @@ if(isset($_POST["saveuser"])) {
         else {
             $resp       .= $alert->rd(27);
         }
-    }
-
-    //logout
-    if($logout) {
-        header('Location: /logout');
-        exit;
     }
 }
 
@@ -75,9 +72,9 @@ $tpl->load();
 
 //rplacer
 $tpl->r("resp", $resp);
-$tpl->r("username", $user->read("username"));
-$tpl->r("email", $user->read("email"));
-$tpl->r("c_expert", ($user->expert()) ? "checked" : null);
+$tpl->r("username", $session_user->read("username"));
+$tpl->r("email", $session_user->read("email"));
+$tpl->r("c_expert", ($session_user->expert()) ? "checked" : null);
 $tpl->r("c_konfig", ($session_user->show_mode("konfig")) ? "checked" : null);
 
 // sendet alles an Index
