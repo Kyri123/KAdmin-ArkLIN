@@ -44,7 +44,6 @@ if (isset($_POST["savewebhelper"])) {
     }
     if(substr($jsons["HTTP"], -1) != "/") $jsons["HTTP"] .= "/";
 
-    var_dump($jsons);
     // Speichern
     $json_str = $helper->jsonToString($jsons);
     if($allok) {
