@@ -31,7 +31,7 @@ for ($i=0;$i<count($dir);$i++) {
 }
 
 // Erstelle verzeichnisse
-for($i=0;$i<count($dirs);$i++) $KUTIL->mkdir($dirs[$i]);
+foreach($dirs as $ITEM) if(is_string($ITEM)) $KUTIL->mkdir($ITEM);
 
 
 //Erstelle Default Dateien
