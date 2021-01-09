@@ -95,7 +95,10 @@ class helper extends KUTIL {
      * @return string|boolean
      */
     public function jsonToString($array) {
-        return is_array($array) ? json_encode($array, JSON_INVALID_UTF8_SUBSTITUTE) : false;
+        if(is_array($array) || is_object($array)) {
+            return json_encode($array, JSON_INVALID_UTF8_SUBSTITUTE);
+        }
+        return false;
     }
     
     /**
