@@ -11,13 +11,13 @@
 $file           = __ADIR__.'/app/json/serverinfo/all.json';
 $cfg_json       = $helper->fileToJson($file);
 $sid_array      = $modid_array = array();
-$player_array   = $steamapi_user;
-$mod_array      = $steamapi_mods;
+$player_array   = (@file_exists(__ADIR__."/app/json/steamapi/mods.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/mods.json") : [];
+$mod_array      = (@file_exists(__ADIR__."/app/json/steamapi/user.json")) ? $helper->fileToJson(__ADIR__."/app/json/steamapi/user.json") : [];
 
 foreach ($cfg_json["cfgs"] as $v) {
     $name           = str_replace(".cfg", null, $v);
     $serv           = new server($name);
-    if($serv !== false) {
+    if($serv->serverfound) {
         $cheatfile      = $serv->dirSavegames(true)."/AllowedCheaterSteamIDs.txt";
         $whitelistfile  = $serv->dirMain()."/ShooterGame/Binaries/Linux/PlayersJoinNoCheckList.txt";
         $exp            = explode(",", $serv->cfgRead("ark_GameModIds"));
@@ -52,7 +52,7 @@ foreach ($cfg_json["cfgs"] as $v) {
 $arr        = $mycon->query("SELECT `SteamId` FROM ArkAdmin_players")->fetchAll();
 foreach ($arr as $v) if(!in_array($v["SteamId"], $sid_array)) $sid_array[] = $v["SteamId"];
 
-$json       = $steamapi->getsteamprofile_list("allg", $sid_array, 360)->response->players;
+$json       = isset($steamapi->getsteamprofile_list("allg", $sid_array, 360)->response->players) ? $steamapi->getsteamprofile_list("allg", $sid_array, 360)->response->players : [];
 $i          = 0;
 foreach ($json as $key => $item) {
     if(isset($item->steamid)) {

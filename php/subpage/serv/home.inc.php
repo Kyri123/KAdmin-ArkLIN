@@ -111,19 +111,19 @@ if ($serv->isInstalled() && $session_user->perm("$perm/home/admin_show")) {
 
                 if($query->numRows() > 0) {
                     $row = $query->fetchArray();
-                    $list_tpl->r("stname", $steamapi_user[$arr[$i]]["personaname"]);
+                    $list_tpl->r("stname", isset($steamapi_user[$arr[$i]]["personaname"]) ? $steamapi_user[$arr[$i]]["personaname"] : "#");
                     $list_tpl->r("igname", $row["CharacterName"]);
                 }
                 else {
-                    $list_tpl->r("stname", $steamapi_user[$arr[$i]]["personaname"]);
+                    $list_tpl->r("stname", isset($steamapi_user[$arr[$i]]["personaname"]) ? $steamapi_user[$arr[$i]]["personaname"] : "#");
                     $list_tpl->r("igname", "{::lang::allg::default::noadmin}");
                 }
 
-                $list_tpl->r("stid", $steamapi_user[$arr[$i]]["steamid"]);
-                $list_tpl->r("url", $steamapi_user[$arr[$i]]["profileurl"]);
+                $list_tpl->r("stid", $arr[$i]);
+                $list_tpl->r("url", isset($steamapi_user[$arr[$i]]["profileurl"]) ? $steamapi_user[$arr[$i]]["profileurl"] : "#");
                 $list_tpl->r("cfg", $serv->name());
                 $list_tpl->r("rndb", rndbit(25));
-                $list_tpl->r("img", $steamapi_user[$arr[$i]]["avatarmedium"]);
+                $list_tpl->r("img", isset($steamapi_user[$arr[$i]]["avatarmedium"]) ? $steamapi_user[$arr[$i]]["avatarmedium"] : "#");
                 $list_tpl->rif("hidebtn", false);
 
                 $adminlist_admin .= $list_tpl->load_var();
@@ -147,7 +147,7 @@ if ($serv->isInstalled() && $session_user->perm("$perm/home/admin_show")) {
     $query = "SELECT * FROM ArkAdmin_players WHERE `server`=?";
     $query = $mycon->query($query, $serv->name());
 
-    if($query->numRows() > 0) foreach ($query->fetchAll() as $item) if (!in_array($item["SteamId"], $arr)) $userlist_admin .= "<option value='". $item["SteamId"] ."'>". $steamapi_user[$item["SteamId"]]["personaname"] ." - ".$item["CharacterName"]."</option>";
+    if($query->numRows() > 0) foreach ($query->fetchAll() as $item) if (!in_array($item["SteamId"], $arr)) $userlist_admin .= "<option value='". $item["SteamId"] ."'>". (isset($steamapi_user[$item["SteamId"]]["personaname"]) ? $steamapi_user[$item["SteamId"]]["personaname"] : "???") ." - ".$item["CharacterName"]."</option>";
 } 
 
 // Meldung wenn Clusterseitig Admin & Whitelist deaktiviert ist

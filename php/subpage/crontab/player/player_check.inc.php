@@ -24,7 +24,7 @@ for ($i=0;$i<count($dir);$i++) {
         //erstelle Server Klasse
         $serv = new server($ifile_info['filename']);
 
-        if($serv !== false) {
+        if($serv->serverfound) {
 
             // Erstelle logdateien
             $KUTIL->createFile(__ADIR__.'/app/json/saves/chat_'.$serv->name().'.log', " ");
