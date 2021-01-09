@@ -21,7 +21,7 @@ for ($i=0;$i<count($dir);$i++) {
     if (strpos($dir[$i], ".cfg") !== false) {
         $dir[$i]    = str_replace(".cfg", null, $dir[$i]);
         $serv       = new server($dir[$i]);
-        if($serv !== false) {
+        if($serv->serverfound) {
             $dirs[]     = __ADIR__."/app/data/shell_resp/log/".$serv->name();
             $dirs[]     = $serv->cfgRead("logdir");
             $dirs[]     = $serv->cfgRead("arkserverroot");
@@ -39,7 +39,7 @@ for ($i=0;$i<count($dir);$i++) {
     if (strpos($dir[$i], ".cfg") !== false) {
         $dir[$i]    = str_replace(".cfg", null, $dir[$i]);
         $serv       = new server($dir[$i]);
-        if($serv !== false) {
+        if($serv->serverfound) {
             $KUTIL->createFile(__ADIR__.'/app/data/shell_resp/log/'.$serv->name().'/last.log', "");
             $KUTIL->createFile(__ADIR__.'/app/json/serverinfo/'.$serv->name().'.json', '{}');
         }

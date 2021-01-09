@@ -23,7 +23,7 @@ for ($i=0;$i<count($dir);$i++) {
     if ($ifile_info['extension'] == "cfg" && strpos($ifile_info['filename'], "example") === false) {
         
         $serv       = new server($ifile_info["filename"]);
-        if($serv !== false) {
+        if($serv->serverfound) {
             // Verbinde alle Chatlogs
             $path_tolog     = $KUTIL->path($serv->dirSavegames(true).'/Logs/')["/path/"];
             if(@file_exists($path_tolog) && is_dir($path_tolog)) {

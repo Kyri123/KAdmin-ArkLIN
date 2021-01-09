@@ -14,7 +14,6 @@
 class server extends Rcon {
 
     private $KUTIL;
-    private $serverfound;
     private $cfg;
     private $ini;
     private $serv_cfg_path;
@@ -25,6 +24,7 @@ class server extends Rcon {
     public $inipath;
     public $inistr;
     public $cluster_data;
+    public $serverfound;
 
     /**
      * server constructor.

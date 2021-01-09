@@ -59,7 +59,7 @@ foreach ($json as $k => $v) {
 
             if ($sv["type"] != 1) {
                 $serv = new server($sv["server"]);
-                if($serv !== false) foreach ($ini as $ck => $cv) {
+                if($serv->serverfound) foreach ($ini as $ck => $cv) {
                     $serv->iniLoad($ck, false);
                     $path   = $serv->iniGetPath();
                     if($path != "" && $path != null) $KUTIL->filePutContents($path, ini_save_rdy($cv));
@@ -112,7 +112,7 @@ foreach ($json as $k => $v) {
 
         //var_dump($json[$k]); echo "<hr>";
         $serv       = new server($sv["server"]);
-        if($serv !== false) {
+        if($serv->serverfound) {
             $changes    = false;
 
             $key        = "arkopt_clusterid";

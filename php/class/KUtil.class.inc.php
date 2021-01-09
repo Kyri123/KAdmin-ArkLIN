@@ -153,7 +153,6 @@ class KUTIL {
             }
             catch (Exception $e) {
                 if($this->debug) echo $e->getMessage();
-                echo $e->getMessage();
                 echo "<hr>";
             }
         }

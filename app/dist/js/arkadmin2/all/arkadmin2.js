@@ -16,7 +16,7 @@ function copythis(id) {
 }
 
 setInterval(function() {
-    $.getJSON("/app/json/serverinfo/all.json", function(data) {
+    $.getJSON("/app/json/serverinfo/all.json?time=" + Date.now(), function(data) {
         $("#total_serv").html(data.onserv + '/' + data.maxserv);
     });
 }, 1000);
