@@ -73,7 +73,8 @@ class helper extends KUTIL {
      * @return array|string
      */
     public function fileToJson(String $path, Bool $array = true) {
-        return parent::fileGetContents($path, true)[($array ? "Assoc" : "Obj")];
+        $file   = parent::fileGetContents($path, true);
+        return $file !== false ? $file[($array ? "Assoc" : "Obj")] : $file;
     }
     
     /**
@@ -91,14 +92,14 @@ class helper extends KUTIL {
      * Wandelt einen Array in ein String (Json Format)
      *
      * @param  mixed $array Array die umgewandelt werden soll
-     * @return string
+     * @return string|boolean
      */
     public function jsonToString($array) {
-        return json_encode($array, JSON_INVALID_UTF8_SUBSTITUTE);
+        return is_array($array) ? json_encode($array, JSON_INVALID_UTF8_SUBSTITUTE) : false;
     }
     
     /**
-     * Speichert eine Json hier muss die Datei NICHT exsistieren
+     * Speichert eine Json hier muss die Datei NICHT existieren
      *
      * @param  mixed $data Array der gespeichert werden soll
      * @param  mixed $path Pfad wo die Datei gespeichert werden soll
