@@ -1,6 +1,6 @@
 # KAdmin-ArkLIN 
 
-Webbasiertes Admin Panel für Ark-Gameserver basierend auf Arkmanager (https://github.com/FezVrasta/ark-server-tools)
+Webbasiertes Admin Panel für Ark-Gameserver basierend auf Arkmanager (https://github.com/arkmanager/ark-server-tools)
 
 Features:
 - Serververwaltung (ServerCenter)
@@ -117,7 +117,7 @@ Features:
 # Andere Projekte:
 | Projekt                     | Status          | URL | 
 | :---                        | :---            | :--- |
-| KAdmin-ArkLIN für Windows       | Alpha           | https://github.com/Kyri123/KAdmin-ArkLINWIN |
+| KAdmin-Ark für Windows      | Alpha           | https://github.com/Kyri123/KAdmin-ArkWIN |
 | Kleines Minecraft Plugin    | Beta            | https://github.com/Kyri123/KPlugins-1.12.2 |
 
 # Danke
