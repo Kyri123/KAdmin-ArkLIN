@@ -3,8 +3,8 @@
     ++++++++++++++++++++++++++++++++++++++++++++
     @author:  Oliver Kaufmann (Kyri123)
     @copyright Copyright (c) 2019-2021, Oliver Kaufmann
-    @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
-    Github: https://github.com/Kyri123/Arkadmin
+    @license MIT License (LICENSE or https://github.com/Kyri123/KAdmin-ArkLIN/blob/master/LICENSE)
+    Github: https://github.com/Kyri123/KAdmin-ArkLIN
     ++++++++++++++++++++++++++++++++++++++++++++
      -->
     <php>
@@ -90,7 +90,7 @@
 
             <permissions>
                 <!-- Titel -->
-                <all>ArkAdmin2 (Allgemein)</all>
+                <all>KAdmin-ArkLIN (Allgemein)</all>
                 <servercontrollcenter>ServerControllCenter</servercontrollcenter>
                 <userpanel>Benutzer und Rechte</userpanel>
                 <cluster>Cluster System</cluster>
@@ -114,7 +114,7 @@
                 <create>Darf Erstellen</create>
                 <delete>Darf Löschen</delete>
                 <is_admin>Ist Admin (hat Rechte auf ALLES)</is_admin>
-                <manage_aas>Darf über das Panel den ArkAdmin-Server erreichen</manage_aas>
+                <manage_aas>Darf über das Panel den Arkadmin-Server erreichen</manage_aas>
                 <show_traffic>Darf Server Traffics sehen</show_traffic>
                 <show_codes>Darf Codes sehen</show_codes>
                 <create_code>Darf Codes Erstellen</create_code>
@@ -125,8 +125,8 @@
                 <remove_server>Darf Server vom Cluster entfernen</remove_server>
                 <add_server>Darf Server zu einem Cluster hinzufügen</add_server>
                 <panel_save>Darf Panel Optionen speichern / bearbeiten</panel_save>
-                <aa_show>Darf ArkAdmin-Server sehen</aa_show>
-                <aa_save>Darf ArkAdmin-Server speichern / bearbeiten</aa_save>
+                <aa_show>Darf Arkadmin-Server sehen</aa_show>
+                <aa_save>Darf Arkadmin-Server speichern / bearbeiten</aa_save>
                 <am_show>Darf Arkmanager sehen</am_show>
                 <am_save>Darf Arkmanager speichern / bearbeiten</am_save>
                 <scmd_show>Darf SteamCMD sehen</scmd_show>
@@ -198,11 +198,11 @@
                     <apikey>Steam-API Key [a="https://steamcommunity.com/dev/apikey"](klicke Hier)[/a]</apikey>
                     <show_err>[b][Debug][/b] Zeige PHP Error</show_err>
                     <steamcmddir>SteamCMD Verzeichnis</steamcmddir>
-                    <screen_name>Name der benutzt werden soll um die Screen zu erstellen (Wo der ArkAdmin-Server läuft)</screen_name>
+                    <screen_name>Name der benutzt werden soll um die Screen zu erstellen (Wo der Arkadmin-Server läuft)</screen_name>
                 </panel>
                 <aa>
-                    <HTTP>Weblink zum Arkadmin</HTTP>
-                    <WebPath>Ordnerpfad wo Arkadmin installiert ist (Webverzeichnis)</WebPath>
+                    <HTTP>Weblink zum KAdmin-ArkLIN</HTTP>
+                    <WebPath>Ordnerpfad wo KAdmin-ArkLIN installiert ist (Webverzeichnis)</WebPath>
                     <AAPath>Ordnerpfad wo sich Arkmanager befindet</AAPath>
                     <ServerPath>Ordnerpfad wo die Server gespeichert werden</ServerPath>
                     <SteamPath>Ordnerpfad wo die SteamCMD liegt</SteamPath>
@@ -219,13 +219,13 @@
                     <CHMOD>Berechtigung für die Dateien (777 z.B. ist komplett offen)
                         [Derzeit funktioniert dies nur mit 777 andernfalls kommt es zu Schreib / Lese Fehlern im Panel tut mir leid.... ]</CHMOD>
                     <use_ssh>Aktiviere/Deaktivere SHH (1: an;0: aus) benötigt konfiguration in ssh.js</use_ssh>
-                    <port>Port den der ArkAdmin-Server benutzten soll</port>
+                    <port>Port den der Arkadmin-Server benutzten soll</port>
                     <autoupdater_active>Soll der Updater aktiv sein
                         (1: an | 0: aus)</autoupdater_active>
                     <autoupdater_branch>Welche Github Branch soll dafür verwendet werden</autoupdater_branch>
-                    <autorestart>Soll der ArkAdmin Server automatisch neustarten?</autorestart>
+                    <autorestart>Soll der KAdmin-ArkLIN Server automatisch neustarten?</autorestart>
                     <autorestart_intervall>Inverall vom Neustart (in ms | min: 1800000)</autorestart_intervall>
-                    <screen>Name der benutzt werden soll um die Screen zu erstellen (Wo der ArkAdmin-Server läuft)</screen>
+                    <screen>Name der benutzt werden soll um die Screen zu erstellen (Wo der Arkadmin-Server läuft)</screen>
                 </aa>
             </key>
         </config>

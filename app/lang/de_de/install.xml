@@ -3,8 +3,8 @@
     ++++++++++++++++++++++++++++++++++++++++++++
     @author:  Oliver Kaufmann (Kyri123)
     @copyright Copyright (c) 2019-2021, Oliver Kaufmann
-    @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
-    Github: https://github.com/Kyri123/Arkadmin
+    @license MIT License (LICENSE or https://github.com/Kyri123/KAdmin-ArkLIN/blob/master/LICENSE)
+    Github: https://github.com/Kyri123/KAdmin-ArkLIN
     ++++++++++++++++++++++++++++++++++++++++++++
      -->
 
@@ -21,7 +21,7 @@
             <showinfos>Informationen</showinfos>
             <close>Schließen</close>
             <done>Weiter zum Panel</done>
-            <texttitle>Willkommen beim Arkadmin-Installer</texttitle>
+            <texttitle>Willkommen beim KAdmin-ArkLIN-Installer</texttitle>
             <text>[b]Kostet die Benutzung etwas?[/b]
                 Natürlich ist dies 100% kostenlos und open Source!
 
@@ -55,7 +55,7 @@
                 Bitte installiere screen mit : [b]apt install screen[/b], [b]yum install screen[/b] oder [b]apt-get install screen[/b]</screen>
 
             <aa>[b]Ohje...[/b]
-                Bitte starte den ArkAdmin-Server (Alle infos unter Readme) oder stelle diesen richtig ein!</aa>
+                Bitte starte den Arkadmin-Server (Alle infos unter Readme) oder stelle diesen richtig ein!</aa>
             
             <mysqli>[b]Ohje...[/b]
                 Deiner PHP-Version fehlt das Modul MySQLi... Bitte folge diesen Link: [a="https://stackoverflow.com/questions/35424982/how-can-i-enable-the-mysqli-extension-in-php-7" blank]Klick Mich![/a]</mysqli>
@@ -65,7 +65,7 @@
         </info>
 
         <step0>
-            <title>Schritt 1: ArkAdmin-Server</title>
+            <title>Schritt 1: Arkadmin-Server</title>
             <subtitle>Stelle den Server ein</subtitle>
             <next>Speichern und weiter zu Schritt 2</next>
             <text>Speichern und weiter zu Schritt 2</text>
@@ -123,7 +123,7 @@
         <step4>
             <title>Schritt 5: Crontab und Regestrierung</title>
             <text>[b]Crontab[/b]
-                Stelle sicher dass der ArkAdmin-Server richtig eingestellt ist.
+                Stelle sicher dass der Arkadmin-Server richtig eingestellt ist.
                 Wenn der Crontab abgerufen wird wird der Abschluss der Installation freigeben [hr][b]Regestrierung[/b]
                 Dein Regestrierungs Code lautet: [b]{code}[/b][hr][b]Abschluss[/b]
                 Der Installer Löscht sich ab hier Automatisch ein erneutes Abrufen der Seite ist nicht mehr möglich!</text>

@@ -3,8 +3,8 @@
  * *******************************************************************************************
  * @author:  Oliver Kaufmann (Kyri123)
  * @copyright Copyright (c) 2019-2021, Oliver Kaufmann
- * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
- * Github: https://github.com/Kyri123/Arkadmin
+ * @license MIT License (LICENSE or https://github.com/Kyri123/KAdmin-ArkLIN/blob/master/LICENSE)
+ * Github: https://github.com/Kyri123/KAdmin-ArkLIN
  * *******************************************************************************************
 */
 
@@ -255,7 +255,7 @@ if(!isset($servercfg["autoupdater_active"]))    $servercfg["autoupdater_active"]
 if(!isset($servercfg["autoupdater_branch"]))    $servercfg["autoupdater_branch"]        = "master";
 if(!isset($servercfg["autoupdater_intervall"])) $servercfg["autoupdater_intervall"]     = 60000;
 if(!isset($servercfg["autorestart_intervall"])) $servercfg["autorestart_intervall"]     = 1800000;
-if(!isset($servercfg["screen"]))                $servercfg["screen"]                    = "ArkAdmin";
+if(!isset($servercfg["screen"]))                $servercfg["screen"]                    = "KAdmin-ArkLIN";
 
 $option_server = null;
 foreach($servercfg as $key => $value) {

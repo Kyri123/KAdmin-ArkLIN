@@ -2,8 +2,8 @@
  * *******************************************************************************************
  * @author:  Oliver Kaufmann (Kyri123)
  * @copyright Copyright (c) 2019-2021, Oliver Kaufmann
- * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
- * Github: https://github.com/Kyri123/Arkadmin
+ * @license MIT License (LICENSE or https://github.com/Kyri123/KAdmin-ArkLIN/blob/master/LICENSE)
+ * Github: https://github.com/Kyri123/KAdmin-ArkLIN
  * *******************************************************************************************
  */
 
@@ -16,9 +16,9 @@ const ip = require('ip');
 exports.auto = () => {
 
     var options = {
-        url: `https://api.github.com/repos/Kyri123/Arkadmin/branches/${config.autoupdater_branch}`,
+        url: `https://api.github.com/repos/Kyri123/KAdmin-ArkLIN/branches/${config.autoupdater_branch}`,
         headers: {
-            'User-Agent': `Arkadmin2-Server AutoUpdater :: FROM: ${ip.address()}`
+            'User-Agent': `Arkadmin-Server AutoUpdater :: FROM: ${ip.address()}`
         },
         json: true
     };
