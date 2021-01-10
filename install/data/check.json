@@ -15,7 +15,7 @@
     "php_case": "am",
     "lang": "{::lang::install::info::am}"
 }, {
-    "name": "ArkAdmin-Server",
+    "name": "Arkadmin-Server",
     "php_case": "aa",
     "lang": "{::lang::install::info::aa}"
 }, {

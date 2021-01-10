@@ -2,8 +2,8 @@
 # *******************************************************************************************
 # @author:  Oliver Kaufmann (Kyri123)
 # @copyright Copyright (c) 2019-2021, Oliver Kaufmann
-# @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
-# Github: https://github.com/Kyri123/Arkadmin
+# @license MIT License (LICENSE or https://github.com/Kyri123/KAdmin-ArkLIN/blob/master/LICENSE)
+# Github: https://github.com/Kyri123/KAdmin-ArkLIN
 # *******************************************************************************************
 # Parameter 
 WEBDIR="$1"
@@ -15,10 +15,10 @@ echo "Update...." > $LOGFILE
 rm -R tmp
 mkdir tmp
 cd tmp
-wget https://github.com/Kyri123/Arkadmin/archive/$BRANCHE.zip >> $LOGFILE
+wget https://github.com/Kyri123/KAdmin-ArkLIN/archive/$BRANCHE.zip >> $LOGFILE
 unzip $BRANCHE.zip >> $LOGFILE
 rm $BRANCHE.zip
-cd Arkadmin-$BRANCHE
+cd KAdmin-ArkLIN-$BRANCHE
 screen -S $SCREENNAME -p 0 -X quit >> $LOGFILE
 sleep 2s
 rm -R ./arkadmin_server/config

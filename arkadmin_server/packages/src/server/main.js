@@ -2,8 +2,8 @@
  * *******************************************************************************************
  * @author:  Oliver Kaufmann (Kyri123)
  * @copyright Copyright (c) 2019-2021, Oliver Kaufmann
- * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
- * Github: https://github.com/Kyri123/Arkadmin
+ * @license MIT License (LICENSE or https://github.com/Kyri123/KAdmin-ArkLIN/blob/master/LICENSE)
+ * Github: https://github.com/Kyri123/KAdmin-ArkLIN
  * *******************************************************************************************
  */
 const fs = require("fs");
@@ -29,7 +29,7 @@ if (!fs.existsSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`)){
     fs.mkdirSync(`data/logs/${dateFormat(global.started, "yyyy-mm-dd")}`);
 }
 
-// beende ArkAdmin-Server wenn die Konfiguration nicht richtig eingestellt
+// beende Arkadmin-Server wenn die Konfiguration nicht richtig eingestellt
 if (config.WebPath === "/path/to/webfiles" || config.ServerPath === "/path/to/serverfiles") {
     process.exit(2);
 }
@@ -41,7 +41,7 @@ if (config.autoupdater_branch === undefined) config.autoupdater_branch = "master
 if (config.autoupdater_intervall === undefined) config.autoupdater_intervall = 120000;
 if (config.autorestart === undefined) config.autorestart = 1;
 if (config.autorestart_intervall === undefined) config.autorestart_intervall = 1800000;
-if (config.screen === undefined) config.screen = "ArkAdmin";
+if (config.screen === undefined) config.screen = "KAdmin-ArkLIN";
 
 // prüfe Minimal werte
 if (config.WebIntervall < 5000) process.exit(4);

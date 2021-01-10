@@ -490,7 +490,7 @@
   "SessionSettings": {
     "SessionName": {
       "type": "string",
-      "default": "[ArkAdmin]"
+      "default": "[KAdmin-ArkLIN]"
     }
   },
 
@@ -498,7 +498,7 @@
   "MessageOfTheDay": {
     "Message": {
       "type": "string",
-      "default": "Dieser Server wird mit ArkAdmin2 gesteuert"
+      "default": "Dieser Server wird mit KAdmin-ArkLIN gesteuert"
     },
     "Duration": {
       "type": "int",

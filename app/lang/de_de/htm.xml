@@ -3,8 +3,8 @@
     ++++++++++++++++++++++++++++++++++++++++++++
     @author:  Oliver Kaufmann (Kyri123)
     @copyright Copyright (c) 2019-2021, Oliver Kaufmann
-    @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
-    Github: https://github.com/Kyri123/Arkadmin
+    @license MIT License (LICENSE or https://github.com/Kyri123/KAdmin-ArkLIN/blob/master/LICENSE)
+    Github: https://github.com/Kyri123/KAdmin-ArkLIN
     ++++++++++++++++++++++++++++++++++++++++++++
      -->
 
@@ -58,8 +58,8 @@
             <changelog>Changelogs</changelog>
             <btn_createserver>Server Erstellen</btn_createserver>
             <btn_update>Panel Updaten</btn_update>
-            <btn_restart>ArkAdmin-Server Neustarten</btn_restart>
-            <btn_log>ArkAdmin-Server Logs</btn_log>
+            <btn_restart>Arkadmin-Server Neustarten</btn_restart>
+            <btn_log>Arkadmin-Server Logs</btn_log>
 
             <tooltip>
                 <usersettings>Benutzer Einstellung</usersettings>
@@ -109,7 +109,7 @@
     <home>
         <cards>
             <changelog>
-                <title>Arkadmin Versionen :: Aktuell: V.{version}</title>
+                <title>KAdmin-ArkLIN Versionen :: Aktuell: V.{version}</title>
                 <btn_allchangelogs>Alle Lesen</btn_allchangelogs>
 
                 <table>
@@ -281,7 +281,7 @@
 
     <!-- login -->
     <login>
-        <title>Willkommen bei ArkAdmin!</title>
+        <title>Willkommen bei KAdmin-ArkLIN!</title>
         <savelogin>Eingeloggt bleiben</savelogin>
         <createacc>Account erstellen</createacc>
         <btn_login>Einloggen</btn_login>
@@ -355,7 +355,7 @@
         <new>Neuerungen</new>
         <change>Änderungen</change>
         <bug>Bugfixes</bug>
-        <java>ArkAdmin Server</java>
+        <java>KAdmin-ArkLIN Server</java>
     </changelog>
 
     <!-- Error404 Seite -->

@@ -3,8 +3,8 @@
  * *******************************************************************************************
  * @author:  Oliver Kaufmann (Kyri123)
  * @copyright Copyright (c) 2019-2021, Oliver Kaufmann
- * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
- * Github: https://github.com/Kyri123/Arkadmin
+ * @license MIT License (LICENSE or https://github.com/Kyri123/KAdmin-ArkLIN/blob/master/LICENSE)
+ * Github: https://github.com/Kyri123/KAdmin-ArkLIN
  * *******************************************************************************************
 */
 
@@ -12,7 +12,7 @@
 if(@file_exists(__ADIR__.'/php/inc/pconfig.inc.php')) include(__ADIR__.'/php/inc/pconfig.inc.php');
 
 // allgmeine
-$sitename           = "ArkAdmin2";
+$sitename           = "KAdmin-ArkLIN";
 $version            = '2.1.0c';
 $ip                 = $_SERVER['SERVER_ADDR'];
 $maxpanel_server    = 12;

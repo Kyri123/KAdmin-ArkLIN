@@ -3,13 +3,13 @@
  * *******************************************************************************************
  * @author:  Oliver Kaufmann (Kyri123)
  * @copyright Copyright (c) 2019-2021, Oliver Kaufmann
- * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
- * Github: https://github.com/Kyri123/Arkadmin
+ * @license MIT License (LICENSE or https://github.com/Kyri123/KAdmin-ArkLIN/blob/master/LICENSE)
+ * Github: https://github.com/Kyri123/KAdmin-ArkLIN
  * *******************************************************************************************
 */
 
 /**
- * Prüfen von Installieren Modulen oder Programmen für Arkadmin2
+ * Prüfen von Installieren Modulen oder Programmen für KAdmin-ArkLIN
  * - Benötigt: Helper
  */
 class check extends helper {
@@ -94,7 +94,7 @@ class check extends helper {
                 $this->state        = !empty($check) ? 2 : 0;
             break;
 
-            // Prüfe ArkAdmin-Server
+            // Prüfe Arkadmin-Server
             case "aa":
                 $webserver          = json_decode(file_get_contents(__ADIR__."/arkadmin_server/config/server.json") ,true);
                 $webserver["port"]  = (isset($webserver["port"])) ? $webserver["port"] : 30000;

@@ -3,8 +3,8 @@
  * *******************************************************************************************
  * @author:  Oliver Kaufmann (Kyri123)
  * @copyright Copyright (c) 2019-2021, Oliver Kaufmann
- * @license MIT License (LICENSE or https://github.com/Kyri123/Arkadmin/blob/master/LICENSE)
- * Github: https://github.com/Kyri123/Arkadmin
+ * @license MIT License (LICENSE or https://github.com/Kyri123/KAdmin-ArkLIN/blob/master/LICENSE)
+ * Github: https://github.com/Kyri123/KAdmin-ArkLIN
  * *******************************************************************************************
 */
 
@@ -144,7 +144,7 @@ class server extends Rcon {
     }
 
     /**
-     * Sendet eine Aktion an die MYSQL Datenbank um diese dann im ArkAdmin-Server zu verarbeiten
+     * Sendet eine Aktion an die MYSQL Datenbank um diese dann im Arkadmin-Server zu verarbeiten
      *
      * @param String $shell
      * @param bool $force Definiert ob dieser Befehl erzwingen wird (überspringt die prüfung ob eine Aktion derzeit läuft)
