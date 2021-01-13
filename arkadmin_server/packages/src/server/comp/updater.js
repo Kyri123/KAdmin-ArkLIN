@@ -33,7 +33,7 @@ exports.auto = () => {
             // Prüfe SHA mit API
             fs.readFile("data/sha.txt", 'utf8', (err, data) => {
                 if (!err) {
-                    if (data == api.commit.sha) {
+                    if (data.trim().toLocaleUpperCase() === api.commit.sha.trim().toLocaleUpperCase()) {
                         // kein Update
                         fs.writeFileSync(`data/updater.log`, `Already up to date!`);
                         console.log('\x1b[33m%s\x1b[0m', `[${dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss")}] Auto-Updater: \x1b[32mIst auf dem neusten Stand`);
