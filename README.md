@@ -1,4 +1,4 @@
-# KAdmin-ArkLIN
+# KAdmin-ArkLIN 
 
 Webbasiertes Admin Panel für Ark-Gameserver basierend auf Arkmanager (https://github.com/arkmanager/ark-server-tools)
 
@@ -19,8 +19,8 @@ Features:
 - Servereverwaltung
 - Benutzer mit Benutzergruppen
 - Clustersystem
-  - mit Syncronisierung der Einstellungen, wenn gewünscht und mehr!
-- und einiges Mehr!?
+   - mit Syncronisierung der Einstellungen, wenn gewünscht und mehr!
+- und einiges Mehr!? 
 
 # Wichtig
 
@@ -30,14 +30,14 @@ Features:
   - Spenden? https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=68PT9KPRABVCU&source=url
   - Discord: https://discord.gg/ykGnw49
   - Trello: https://trello.com/b/5eSrM5Ww/KAdmin-ArkLIN
-
+  
 - Der Port `30000` muss Frei sein für den Arkadmin-Server (bzw. der gesetzte Port)
 - Unterstützt nicht:
   - "Docker"
 - Getestet auf:
   - Debain 9
   - Ubuntu Server
-
+  
 # Installation
 
 - Lade die letzte Version runter und Lade die Dateien in deinen Webserver
@@ -93,26 +93,26 @@ Features:
 
 # Sprache Installieren
 
-- Lade die XML Dateien in `app/lang/<lang>/` hoch
-- WICHTIG: Es wird derzeit nur **Deutsch** mitgeliefert
+- Lade die XML Dateien in `app/lang/<lang>/` hoch 
+- WICHTIG: Es wird derzeit nur **Deutsch** mitgeliefert 
 
 # Benötigt
 
-- `Node.JS`
+- `Node.JS` 
   - Version >= 12.0.0 | < 15.0.0 **(> 15.0.0 Ungetestet)**
   - NPM
-- `PHP`
+- `PHP` 
   - Min. >= 7.3 (Empfohlen PHP >= 7.4) | < 8.0 **(> 8.0 Ungetestet)**
   - mod_rewrite
   - cURL
   - MySQLi
   - XML
   - mbstring
-- `Linux`
+- `Linux` 
   - Root rechte (bzw Rechte um chmod 777, screen & arkmanager zu benutzten)
   - Screen
   - Arkmanager (https://github.com/arkmanager/ark-server-tools)
-- `MariaDB`
+- `MariaDB` 
 
 # Andere Projekte:
 | Projekt                     | Status          | URL | 
