@@ -147,6 +147,7 @@ class KUTIL {
     {
         $filename = $this->path($filename);
         if($this->mkdir($filename["nolast"], true)) {
+            if(!@file_exists($filename["/path"])) $this->createFile($filename["/path"]);
             try {
                 if(!@file_put_contents($filename["/path"], $data)) throw new \Exception("<p style='margin-bottom:0px; margin-left: 80px;'>Cannot write File with Path <b>".$filename['/path']."</b></p>");
                 return true;

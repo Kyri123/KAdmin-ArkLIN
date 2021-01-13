@@ -71,4 +71,4 @@ for ($i=0;$i<count($dir);$i++) {
     }
 }
 
-$helper->saveFile($json_all, $file);
+var_dump($helper->saveFile($json_all, $file));
