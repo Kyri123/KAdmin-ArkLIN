@@ -6,4 +6,3 @@ workspace.code-workspace
 .vscode/*
 sh/.editorconfig
 .jshintrc
-arkadmin_server/package-lock.json
