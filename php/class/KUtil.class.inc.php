@@ -172,7 +172,7 @@ class KUTIL {
         if(@file_exists($filename["/path"])) return true;
         if($this->mkdir($filename["nolast"]) && !@file_exists($filename["/path"])) {
             try {
-                if(!@file_put_contents($filename["/path"], $data)) throw new \Exception("<p style='margin-bottom:0px; margin-left: 80px;'>Cannot create File with Path <b>$filename</b></p>");
+                if(!@file_put_contents($filename["/path"], $data)) throw new \Exception("<p style='margin-bottom:0px; margin-left: 80px;'>Cannot create File with Path <b>".$filename['/path']."</b></p>");
                 return true;
             }
             catch (Exception $e) {
