@@ -6,8 +6,8 @@
  * Github: https://github.com/Kyri123/KAdmin-ArkLIN
  * *******************************************************************************************
  */
-const SegfaultHandler = require('segfault-handler');
-SegfaultHandler.registerHandler("crash.log");
+//const SegfaultHandler = require('segfault-handler');
+//SegfaultHandler.registerHandler("crash.log");
 
 const fs            = require("fs");
 const http          = require('http');
