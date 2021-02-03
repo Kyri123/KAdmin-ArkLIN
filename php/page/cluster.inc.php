@@ -146,8 +146,8 @@ if (isset($_POST["editcluster"]) && $session_user->perm("cluster/edit_options"))
     $opt["PreventUploadSurvivors"]      = isset($_POST["PreventUploadSurvivors"]);
     $opt["PreventDownloadItems"]        = isset($_POST["PreventDownloadItems"]);
     $opt["PreventUploadItems"]          = isset($_POST["PreventUploadItems"]);
-    $opt["PreventDownloadDinos"]        = isset($_POST["NoTransferFromFiltering"]);
-    $opt["PreventUploadDinos"]          = isset($_POST["PreventDownloadDinos"]);
+    $opt["PreventDownloadDinos"]        = isset($_POST["PreventDownloadDinos"]);
+    $opt["PreventUploadDinos"]          = isset($_POST["PreventUploadDinos"]);
 
     if ($cluster != null && ($clustermd5 == $json[$i]["clusterid"] || array_search($clustermd5, array_column($json, 'clusterid')) === FALSE)) {
         $json[$i]["name"]       = $cluster;
@@ -193,8 +193,8 @@ if (isset($_POST["add"]) && $session_user->perm("cluster/create")) {
     $opt["PreventUploadSurvivors"]      = isset($_POST["PreventUploadSurvivors"]);
     $opt["PreventDownloadItems"]        = isset($_POST["PreventDownloadItems"]);
     $opt["PreventUploadItems"]          = isset($_POST["PreventUploadItems"]);
-    $opt["PreventDownloadDinos"]        = isset($_POST["NoTransferFromFiltering"]);
-    $opt["PreventUploadDinos"]          = isset($_POST["PreventDownloadDinos"]);
+    $opt["PreventDownloadDinos"]        = isset($_POST["PreventDownloadDinos"]);
+    $opt["PreventUploadDinos"]          = isset($_POST["PreventUploadDinos"]);
 
     if ($cluster != null && (count($json) < 1 || array_search($clustermd5, array_column($json, 'clusterid')) === FALSE)) {
 

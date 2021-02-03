@@ -97,21 +97,17 @@ if (isset($_POST["remove"]) && $session_user->perm("$perm/saves/remove")) {
         $KUTIL->removeFile($filename_1);
         $KUTIL->removeFile($filename_2);
 
-        $path           = __ADIR__.'/app/json/saves/player_'.$serv->name().'.json';
-        $json           = $helper->fileToJson($path);
+        /*$dir           = scandir($savedir);
+        foreach ($dir as $file) {
+            $filePath   = "$savedir/$file";
+            if(
+                strpos($filePath, '.arkprofile') !== false ||
+                strpos($filePath, '.profilebak') !== false
+            ) $KUTIL->removeFile($filePath);
+        }*/
 
-        for ($i=0;$i<count($json);$i++) {
-            $pl = $jhelper->player($json, $i);
-            if ($filetname == $pl->SteamId) {
-                $KUTIL->removeFile($json[$i]);
-                break;
-            }
-        }
-        $json           = array_values($json);
-        if ($helper->saveFile($path, $json)) {
-            header("Location: $ROOT/servercenter/".$serv->name()."/saves/");
-            exit;
-        }
+        header("Location: $ROOT/servercenter/".$serv->name()."/saves/");
+        exit;
     }
 
 
@@ -127,20 +123,8 @@ if (isset($_POST["remove"]) && $session_user->perm("$perm/saves/remove")) {
         $KUTIL->removeFile($filename_1);
         $KUTIL->removeFile($filename_2);
 
-        $path           = __ADIR__.'/app/json/saves/tribes_'.$serv->name().'.json';
-        $json           = $helper->fileToJson($path);
-        for ($i=0;$i<count($json);$i++) {
-            $pl         = $jhelper->tribe($json, $i);
-            if ($filetname == $pl->Id) {
-                $KUTIL->removeFile($json[$i]);
-                break;
-            }
-        }
-        $json           = array_values($json);
-        if ($KUTIL->saveFile($path)) {
-            header('Location: /servercenter/'.$serv->name().'/saves/');
-            exit;
-        }
+        header('Location: /servercenter/'.$serv->name().'/saves/');
+        exit;
     }
 
 
@@ -219,11 +203,12 @@ if($count !== false) {
         if($query->numRows() > 0) {
             $row                = $query->fetchArray();
             $row["SteamId"]     = intval($row["SteamId"]);
+            $sapi   = isset($steamapi_user[$row["SteamId"]]) ? $steamapi_user[$row["SteamId"]] : false;
 
-            $img                = $steamapi_user[$row["SteamId"]]["avatar"];
+            $img                = $sapi !== false ? $sapi["avatar"] : "https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png";
             $SteamId            = $row["SteamId"];
-            $surl               = $steamapi_user[$row["SteamId"]]["profileurl"];
-            $steamname          = $steamapi_user[$row["SteamId"]]["personaname"];
+            $surl               = "http://steamcommunity.com/profiles/$row[SteamId]";
+            $steamname          = $sapi !== false ? $sapi["personaname"] : "Unknown";
             $IG_level           = $row["Level"];
             $xp                 = $row["ExperiencePoints"];
             $SpielerID          = $row["id"];
@@ -231,7 +216,7 @@ if($count !== false) {
             $TribeId            = $row["TribeId"];
             $TotalEngramPoints  = $row["TotalEngramPoints"];
             $TribeName          = $row["TribeName"];
-            $IG_name            = $row["CharacterName"] == "" ? $steamapi_user[$row["SteamId"]]["personaname"] : $row["CharacterName"];
+            $IG_name            = $row["CharacterName"] == "" ? $sapi !== false ? $sapi["personaname"] : "Unknown" : $row["CharacterName"];
         }
         else {
             $img                = "https://steamuserimages-a.akamaihd.net/ugc/885384897182110030/F095539864AC9E94AE5236E04C8CA7C2725BCEFF/";
@@ -301,11 +286,13 @@ if(is_countable($tribe_save)) {
                         $playerlist_tpl = new Template('tribes_user.htm', __ADIR__.'/app/template/lists/serv/savegames/');
                         $playerlist_tpl->load();
 
+                        $sapi   = isset($steamapi_user[$row["SteamId"]]) ? $steamapi_user[$row["SteamId"]] : false;
+
                         $playerlist_tpl->r('IG:name', $row["CharacterName"]);
                         $playerlist_tpl->r('lastupdate', converttime($row["FileUpdated"]));
-                        $playerlist_tpl->r('url', $steamapi_user[$row["SteamId"]]["profileurl"]);
-                        $playerlist_tpl->r('img', $steamapi_user[$row["SteamId"]]["avatar"]);
-                        $playerlist_tpl->r('steamname', $steamapi_user[$row["SteamId"]]["personaname"]);
+                        $playerlist_tpl->r('url', "http://steamcommunity.com/profiles/$row[SteamId]");
+                        $playerlist_tpl->r('img', $sapi !== false ? $sapi["avatar"] : "https://i.pinimg.com/originals/1d/01/30/1d01304174bbe64965d47559c61470cb.png");
+                        $playerlist_tpl->r('steamname', $sapi !== false ? $sapi["personaname"] : "Unknown");
                         $rank = '<b>{::lang::php::sc::page::mods::member}</b>';
 
                         $playerlist .= $playerlist_tpl->load_var();

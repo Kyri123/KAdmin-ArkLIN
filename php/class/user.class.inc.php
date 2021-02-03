@@ -99,8 +99,8 @@ class userclass extends helper
     public function write(String $key, String $value) {
         // Prüfe ob Benutzer gesetzt ist
         if ($this->myconisset && $this->id != 0 && $value !== "") {
-            $query = "UPDATE `ArkAdmin_users` SET ??=?  WHERE `id`=?";
-            if($this->mycon->query($query, $key, $value, $this->id)) {
+            $query = "UPDATE `ArkAdmin_users` SET `$key`=?  WHERE `id`=?";
+            if($this->mycon->query($query, $value, $this->id)) {
                 $this->setid($this->id);
                 return true;
             }
