@@ -13,7 +13,7 @@ const fs = require('fs');
 const Gamedig = require('gamedig');
 const ip = require("ip");
 const osu = require('node-os-utils');
-const disk = require('diskusage');
+const disk = require('diskusage-ng');
 const logger = require('./logger');
 const si = require('systeminformation');
 

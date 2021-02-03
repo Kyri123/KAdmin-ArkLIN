@@ -13,10 +13,10 @@ if(@file_exists(__ADIR__.'/php/inc/pconfig.inc.php')) include(__ADIR__.'/php/inc
 
 // allgmeine
 $sitename           = "KAdmin-ArkLIN";
-$version            = '2.1.0e';
+$version            = '2.1.5';
 $ip                 = $_SERVER['SERVER_ADDR'];
 $maxpanel_server    = 12;
-$buildid            = 210.70018;
+$buildid            = 215.00000;
 
 // Webserver
 $webserver['url']               = 'https://data.chiraya.de/';
