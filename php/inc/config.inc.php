@@ -19,7 +19,7 @@ $maxpanel_server    = 12;
 $buildid            = 215.00000;
 
 // Webserver
-$webserver['url']               = 'https://data.chiraya.de/';
+$webserver['url']               = 'https://api.arklin.kadmin-panel.de/';
 $webserver['changelog']         = $webserver['url'].'changelog.json';
 $webserver['sendin']            = $webserver['url'].'sendin.php';
 $webserver['config']            = json_decode(file_get_contents(__ADIR__."/arkadmin_server/config/server.json") ,true);
